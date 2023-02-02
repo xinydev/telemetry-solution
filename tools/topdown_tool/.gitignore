@@ -1,0 +1,7 @@
+/__pycache__
+/.venv
+/.vscode
+/.cache
+/perf.stat.txt
+/pytest.xml
+*.pyc
