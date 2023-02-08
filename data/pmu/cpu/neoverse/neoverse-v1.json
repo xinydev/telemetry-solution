@@ -1,7 +1,7 @@
 {
     "_type": "PMU_Specification",
     "document": {
-        "timestamp": "02 Feb 14:50:22 2023",
+        "timestamp": "08 Feb 09:53:06 2023",
         "copyright": "Copyright 2022-2023 Arm Ltd.",
         "license": "Apache-2.0",
         "description": "Telemetry Specification (PMU Events, Metrics and Methodology) for Neoverse V1 processor"
@@ -1942,9 +1942,9 @@
             ]
         },
         "simd_percentage": {
-            "title": "SIMD Operations Percentage",
+            "title": "Advanced SIMD Operations Percentage",
             "formula": "((ASE_SPEC / INST_SPEC) * 100)",
-            "description": "This metric measures SIMD operations as a percentage of total operations speculatively executed.",
+            "description": "This metric measures advanced SIMD operations as a percentage of total operations speculatively executed.",
             "units": "percent of operations",
             "events": [
                 "ASE_SPEC",
