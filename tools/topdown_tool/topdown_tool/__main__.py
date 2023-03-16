@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-# Copyright 2022 Arm Limited
+# Copyright 2022-2023 Arm Limited
+
+# pyright: ignore[reportShadowedImports]
 
 import sys
 
@@ -8,22 +10,25 @@ if sys.version_info < (3, 7):
     print("Python 3.7 or later is required to run this script.", file=sys.stderr)
     sys.exit(1)
 
+# Allow relative imports when running file/package directly (not as a module).
+if __name__ == "__main__" and not __package__:
+    __package__ = "topdown_tool"  # pylint: disable=redefined-builtin
+    import os.path
+    sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
+
 import argparse
 import csv
 import logging
 import subprocess
 import textwrap
 from re import Match
-from typing import Dict, Iterable, List, Optional, Sequence, Union
+from typing import Dict, Generator, Iterable, List, Optional, Sequence, Tuple, Union
 
-import cpu_mapping
-import simple_maths
-from event_collection import (CollectBy, CollectionEventCount,
-                              GroupScheduleError, MetricScheduleError,
-                              PerfOptions, UncountedEventsError,
-                              collect_events, field_dict)
-from metric_data import (IDENTIFIER_REGEX, CombinedMetricInstance, CombinedMetricInstanceValue, MetricData,
-                         MetricInstance, MetricInstanceValue, SeparateMetricInstance, combine_instances)
+from . import cpu_mapping, simple_maths
+from .event_collection import (CPU_PMU_COUNTERS, CollectBy, EventCount, GroupScheduleError, MetricScheduleError, PerfOptions,
+                               UncountedEventsError, ZeroCyclesError, collect_events, format_command)
+from .metric_data import (IDENTIFIER_REGEX, AnyMetricInstance, AnyMetricInstanceOrValue, CombinedMetricInstance, Group,
+                          MetricData, MetricInstance, MetricInstanceValue)
 
 # Constants for nested printing
 INDENT_LEVEL = 2
@@ -32,29 +37,25 @@ DESCRIPTION_LINE_LENGTH = 80
 
 # Default stages, unless levels or metric groups are specified
 DEFAULT_ALL_STAGES = [1, 2]
+COMBINED_STAGES: List[int] = []
 
 
-def calculate_metrics(stat_data: List[CollectionEventCount], metric_instances: Iterable[MetricInstance]):
-    """Calcaulte metric values from perf stat event data."""
-
-    events_dict: Dict[str, float] = {}
-    for event in stat_data:
-        assert event.qualified_name not in events_dict, event  # No duplicate events
-        events_dict[event.qualified_name] = event.value
+def calculate_metrics(event_counts: List[EventCount], metric_instances: Iterable[MetricInstance]):
+    """Calculate metric values from perf stat event data."""
 
     output: List[MetricInstanceValue] = []
 
     for mi in metric_instances:
-        events = [e for e in stat_data if (e.metric == mi.metric or e.metric is None) and (e.group == mi.group or e.group is None)]
+        events = [e for e in event_counts if (e.event.metric == mi.metric or e.event.metric is None) and (e.event.group == mi.group or e.event.group is None)]
         formula = mi.metric.formula
 
         def event_value(match: Match):
-            event = next(e for e in events if e.name == match.group(0))
+            event = next(e for e in events if e.event.event.name == match.group(0))
             return str(event.value)
         formula = IDENTIFIER_REGEX.sub(event_value, mi.metric.formula)
 
         value = simple_maths.evaluate(formula)
-        output.append(MetricInstanceValue(**field_dict(mi), value=value))
+        output.append(MetricInstanceValue(metric_instance=mi, value=value))
 
     return output
 
@@ -68,18 +69,23 @@ def indent_lines(text: str, indent: int, line_length=100):
     return "\n".join(wrap_line(line) for line in text.splitlines())
 
 
-def print_nested_metrics(metric_instances: Iterable[SeparateMetricInstance],
+def generate_metric_values(metric_instances: Iterable[AnyMetricInstanceOrValue]) -> Generator[Tuple[AnyMetricInstance, Optional[float]], None, None]:
+    for mi in metric_instances:
+        if isinstance(mi, MetricInstanceValue):
+            yield (mi.metric_instance, mi.value)
+        else:
+            yield (mi, None)
+
+
+# pylint: disable=too-many-branches
+def print_nested_metrics(metric_instances: Iterable[AnyMetricInstanceOrValue],
                          stages: List[int],
                          show_descriptions: bool,
                          show_sample_events: bool):
 
-    last_group: Dict[int, str] = {}
+    last_group: Dict[int, Group] = {}  # level => group
     last_level = -1
     last_stage = -1
-
-    if stages:
-        metric_instances = ([i for i in metric_instances if i.stage == 1 and 1 in stages]
-                            + combine_instances([i for i in metric_instances if i.stage == 2 and 2 in stages]))
 
     if not metric_instances:  # e.g. trying to display stages on a group without a stage
         print("No metrics to display")
@@ -89,12 +95,12 @@ def print_nested_metrics(metric_instances: Iterable[SeparateMetricInstance],
         max_width = DESCRIPTION_LINE_LENGTH
     else:
         max_width = max(
-            max(INDENT_LEVEL * (getattr(instance, "level", 1) - 1) + len(instance.metric.title) for instance in metric_instances),
-            max(INDENT_LEVEL * (getattr(instance, "level", 1) - 1) + len(instance.group.title) + 2 for instance in metric_instances if instance.group)
+            INDENT_LEVEL * (getattr(mi, "level", 1) - 1) + max(len(mi.metric.title), len(mi.group.title) + 2)
+            for (mi, _) in generate_metric_values(metric_instances)
         )
 
-    for instance in metric_instances:
-        instance_level = getattr(instance, "level", 1)
+    for (instance, value) in generate_metric_values(metric_instances):
+        instance_level = get_level(instance, 1)  # Flatten level 2 CombinedMetricInstances
         indent = INDENT_LEVEL * (instance_level - 1)
 
         if stages and instance.stage != last_stage:
@@ -109,20 +115,20 @@ def print_nested_metrics(metric_instances: Iterable[SeparateMetricInstance],
             print()
 
         assert instance.group
-        if last_group.get(instance_level) != instance.group.title:
+        if instance.group is not last_group.get(instance_level) and instance.group is not last_group.get(instance_level - 1):
             if instance_level == last_level:
                 print()
 
             group_types = f"{' ' * (max_width-indent-2-len(instance.group.title))} [{STAGE_LABELS[instance.stage]} group]" if not stages else ""
             print(indent_lines(f"[{instance.group.title}]{group_types}", indent))
-            if (stages and 1 in stages) and isinstance(instance, (CombinedMetricInstance, CombinedMetricInstanceValue)):
+            if (stages and 1 in stages) and isinstance(instance, CombinedMetricInstance):
                 for parent in instance.parents:
                     print(indent_lines(f"(follows {parent.metric.title})", indent + INDENT_LEVEL))
             if show_descriptions:
                 print(indent_lines(instance.group.description, indent + INDENT_LEVEL, DESCRIPTION_LINE_LENGTH))
 
-        if isinstance(instance, (MetricInstanceValue, CombinedMetricInstanceValue)):
-            print(indent_lines(f"{instance.metric.title.ljust(max_width-indent, '.')} {instance.metric.format_value(instance.value)}", indent))
+        if value is not None:
+            print(indent_lines(f"{instance.metric.title.ljust(max_width-indent, '.')} {instance.metric.format_value(value)}", indent))
         else:
             print(indent_lines(instance.metric.title, indent))
 
@@ -132,7 +138,7 @@ def print_nested_metrics(metric_instances: Iterable[SeparateMetricInstance],
         if show_sample_events and instance.sample_events:
             print(indent_lines("Sample events: " + ", ".join(e.name for e in instance.sample_events), indent + INDENT_LEVEL, DESCRIPTION_LINE_LENGTH))
 
-        last_group[instance_level] = instance.group.title
+        last_group[instance_level] = instance.group
         last_level = instance_level
         last_stage = instance.stage
 
@@ -146,7 +152,7 @@ def get_arg_parser():
                 if values.lower() == "all":
                     value = DEFAULT_ALL_STAGES
                 elif values.lower() == "combined":
-                    value = []
+                    value = COMBINED_STAGES
                 else:
                     try:
                         value = sorted(set(ProcessStageArgs.stage_names[x.lower().strip()] for x in values.split(",")))
@@ -175,12 +181,13 @@ def get_arg_parser():
     query.add_argument("--list-metrics", action="store_true", help="list available metrics and exit")
     collection_group = parser.add_argument_group("collection options")
     collection_group.add_argument("-c", "--collect-by", type=collect_by_value, choices=list(CollectBy), default=CollectBy.METRIC, help='when multiplexing, collect events groupped by "none", "metric" (default), or "group". This can avoid comparing data collected during different time periods.')
-    collection_group.add_argument("--max-events", type=int, help="Maximum simultaneous events. If more events are required, <command> will be run multiple times. ")
-    collection_group.add_argument("--raw", action="store_true", help='pass raw event code to perf. e.g. "r01"')
+    collection_group.add_argument("--max-events", type=int, help="Maximum simultaneous events. If more events are required, <command> will be run multiple times.")
     collection_group.add_argument("-m", "--metric-group", dest="metric_groups", type=lambda x: x.split(","), help="comma separated list of metric groups to collect. See --list-groups for available groups")
     collection_group.add_argument("-n", "--node", help='name of topdown node as well as its descendents (e.g. "frontend_bound"). See --list-metrics for available nodes')
     collection_group.add_argument("-l", "--level", type=int, choices=[1, 2], help=argparse.SUPPRESS)
-    collection_group.add_argument("-s", "--stages", action=ProcessStageArgs, nargs="?", help='control which stages to display, separated by a comma. e.g. "topdown,uarch". "all" may also be specified, or "combined" to display all, but without separated the output in to stages.')
+    collection_group.add_argument("-s", "--stages", action=ProcessStageArgs, default=DEFAULT_ALL_STAGES, help='control which stages to display, separated by a comma. e.g. "topdown,uarch". "all" may also be specified, or "combined" to display all, but without separated the output in to stages.')
+    collection_group.add_argument("-i", "-I", "--interval", type=int, help="Collect/output data every <interval> milliseconds")
+    collection_group.add_argument("--use-event-names", action="store_true", help='use event names rather than event codes (e.g. "r01") when collecting data from perf. This can be useful for debugging.')
     output_group = parser.add_argument_group("output options")
     output_group.add_argument("-d", "--descriptions", action="store_true", help="show group/metric descriptions")
     output_group.add_argument("--show-sample-events", action="store_true", help="show sample events for metrics")
@@ -191,16 +198,22 @@ def get_arg_parser():
     return parser
 
 
-def write_csv(metric_values: List[MetricInstanceValue], filename: str):
+# instances without a level (CombinedMetricInstance) are uarch metrics (2)
+def get_level(instance: AnyMetricInstance, default_level=2):
+    return getattr(instance, "level", default_level)
+
+
+def write_csv(timed_metric_values: List[Tuple[Optional[float], MetricInstanceValue]], filename: str):
     with open(filename, "w") as f:  # pylint: disable=unspecified-encoding
         writer = csv.writer(f)
-        writer.writerow(["level", "stage", "group", "metric", "value", "units"])
-        for instance in metric_values:
-            group = instance.group.title if instance.group else ""
-            value = instance.value
-            writer.writerow([instance.level, instance.stage, group, instance.metric.title, value, instance.metric.units])
+        writer.writerow(["time", "level", "stage", "group", "metric", "value", "units"])
+        for (time, metric_values) in timed_metric_values:
+            for (instance, value) in metric_values:
+                group = instance.group.title if instance.group else ""
+                writer.writerow([time, get_level(instance), instance.stage, group, instance.metric.title, value, instance.metric.units])
 
 
+# pylint: disable=too-many-branches,too-many-statements,too-many-locals
 def main():
     parser = get_arg_parser()
     args = parser.parse_args()
@@ -216,6 +229,8 @@ def main():
         parser.error("Cannot specify a command and a PID")
     if len([x for x in [args.metric_groups, args.level, args.node] if x]) > 1:
         parser.error("Only one metric group or topdown metric can be specified.")
+    if args.interval and not args.csv:
+        parser.error("Interval mode must be used with CSV output.")
 
     # Get CPU metric data
     cpu = args.cpu
@@ -241,8 +256,8 @@ def main():
                 print(" " * INDENT_LEVEL + group.description)
         sys.exit(0)
     elif args.list_metrics:
-        metrics = metric_data.all_metrics()
-        print_nested_metrics(metrics, args.stages or DEFAULT_ALL_STAGES, args.descriptions, args.show_sample_events)
+        metrics = metric_data.all_metrics(args.stages)
+        print_nested_metrics(metrics, args.stages, args.descriptions, args.show_sample_events)
         sys.exit(0)
 
     if args.metric_groups:
@@ -263,19 +278,10 @@ def main():
             suggestion = f' Did you mean {suggestion}?' if suggestion else ""
             parser.error(f'"{args.node}" is not a valid metric.{suggestion}')
     else:
-        if args.stages is None:  # distinguish from [] which denotes combined stages
-            args.stages = DEFAULT_ALL_STAGES
-        metric_instances = metric_data.all_metrics()
-
-    if args.stages:
-        metric_instances = [m for m in metric_instances if m.stage in args.stages]
+        metric_instances = metric_data.all_metrics(args.stages)
 
     if not metric_instances:
         print("No metrics to collect.", file=sys.stderr)
-        sys.exit(1)
-
-    if args.raw and not metric_data.events:
-        print(f"No event data available for {args.cpu}", file=sys.stderr)
         sys.exit(1)
 
     try:
@@ -288,21 +294,32 @@ def main():
         print(f'The "{e.metric.name}" metric contains {len(e.events)} unique events, but only {e.available_events} can be collected at once.\n\nChoose different metrics or avoid collecting by metric.', file=sys.stderr)
         sys.exit(1)
     except subprocess.CalledProcessError as e:
-        print(f'"{e.cmd}" finished with exit code {e.returncode}.', file=sys.stderr)
+        print(f'"{format_command(e.cmd)}" finished with exit code {e.returncode}.', file=sys.stderr)
         sys.exit(1)
     except UncountedEventsError as e:
         print(("The following events could not be counted:\n  %s\n\n"
                "If you program completes very quickly, try running one that takes longer to complete." % "\n  ".join(e.uncounted_events)), file=sys.stderr)
         sys.exit(1)
+    except ZeroCyclesError:
+        print(f"A cycle count of zero was detected while collecting events. This likely indicates an issue with Linux Perf's ability to correctly count PMU events.\n\n"
+              f"This may be related to known issues with multiplexing in a virtualised environment.\n\n"
+              f"You may be able to work-around this by avoiding multiplexing. e.g. by specifying --max-events={CPU_PMU_COUNTERS}.", file=sys.stderr)
+        sys.exit(1)
 
-    metric_values = calculate_metrics(stat_data, metric_instances)
+    timed_metric_values = []
+    for (time, event_counts) in stat_data:
+        metric_values = calculate_metrics(event_counts, metric_instances)
+        logging.debug("\n".join(f"{v.metric_instance.group.name}/{v.metric_instance.metric.name} = {v.value}" for v in metric_values))
 
-    logging.debug("\n".join(f"{v.group.name}/{v.metric.name} = {v.value}" for v in metric_values))
+        timed_metric_values.append((time, metric_values))
+
+    if args.interval:
+        print(f'See "{args.csv}" for interval data.')
+    else:
+        print_nested_metrics(metric_values, args.stages, args.descriptions, args.show_sample_events)
 
     if args.csv:
-        write_csv(metric_values, args.csv)
-
-    print_nested_metrics(metric_values, args.stages, args.descriptions, args.show_sample_events)
+        write_csv(timed_metric_values, args.csv)
 
 
 if __name__ == "__main__":

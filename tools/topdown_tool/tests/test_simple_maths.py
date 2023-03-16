@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
-# Copyright 2022 Arm Limited
+# Copyright 2022-2023 Arm Limited
 
 import math
 
 import pytest
 
-from simple_maths import InvalidExpressionException, evaluate
+from topdown_tool.simple_maths import InvalidExpressionException, evaluate
 
 
 def test_simple():
@@ -20,7 +20,7 @@ def test_floating_point():
 
 
 def test_divide_by_zero():
-    assert evaluate("1/0") is math.nan
+    assert math.isnan(evaluate("1 / 0"))
 
 
 def test_prescedence():

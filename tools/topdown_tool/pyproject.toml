@@ -1,0 +1,63 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2022-2023 Arm Limited
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "topdown-tool"
+version = "0.1.0"
+authors = [
+  {name = "Nick Forrington", email = "nick.forrington@arm.com"}
+]
+description = "Utility to collect topdown performance analysis metrics for Arm Neoverse CPUs."
+readme = "README.md"
+keywords = ["Arm", "perf", "topdown", "metrics"]
+license = "Apache-2.0"
+requires-python = ">=3.7"
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Natural Language :: English",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3"
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+lint = ["flake8", "mypy", "pylint"]
+
+[project.urls]
+"Source code" = "https://gitlab.arm.com/telemetry-solution/telemetry-solution"
+
+[project.scripts]
+topdown-tool = "topdown_tool.__main__:main"
+
+[tool.hatch.build]
+include = [
+  "topdown_tool/*.py",
+  "topdown_tool/metrics/*.json"
+]
+
+[tool.mypy]
+exclude = ["^\\.venv/.*", "^venv"]
+check_untyped_defs = true
+
+[tool.pylint]
+good-names = ["e", "f", "g", "m", "l1", "l2", "mi", "op"]
+disable = [
+  "cell-var-from-loop",
+  "line-too-long",
+  "missing-function-docstring",
+  "missing-class-docstring",
+  "missing-module-docstring",
+  "too-few-public-methods",
+  "too-many-instance-attributes",
+  "wrong-import-position"
+]
+
+[tool.isort]
+line_length = 120

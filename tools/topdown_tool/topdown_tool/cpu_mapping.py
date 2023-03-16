@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-# Copyright 2022 Arm Limited
+# Copyright 2022-2023 Arm Limited
 
 import json
 import os

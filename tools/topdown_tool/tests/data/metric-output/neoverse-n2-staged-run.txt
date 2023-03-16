@@ -1,0 +1,98 @@
+Stage 1 (Topdown metrics)
+=========================
+[Topdown Level 1]
+Frontend Bound...................... 0.00% slots
+Backend Bound....................... 0.00% slots
+Retiring............................ 0.00% slots
+Bad Speculation..................... 0.00% slots
+
+Stage 2 (uarch metrics)
+=======================
+[Branch Effectiveness]
+  (follows Frontend Bound)
+  (follows Bad Speculation)
+Branch Misprediction Ratio.......... 0.000 per branch
+Branch MPKI......................... 0.000 misses per 1,000 instructions
+
+[Cycle Accounting]
+Backend Stalled Cycles.............. 0.00% cycles
+Frontend Stalled Cycles............. 0.00% cycles
+
+[Data TLB Effectiveness]
+  (follows Backend Bound)
+DTLB MPKI........................... 0.000 misses per 1,000 instructions
+DTLB Walk Ratio..................... 0.000 per TLB access
+L1 Data TLB Miss Ratio.............. 0.000 per TLB access
+L1 Data TLB MPKI.................... 0.000 misses per 1,000 instructions
+L2 Unified TLB Miss Ratio........... 0.000 per TLB access
+L2 Unified TLB MPKI................. 0.000 misses per 1,000 instructions
+
+[General]
+Instructions Per Cycle.............. 0.000 per cycle
+
+[Instruction TLB Effectiveness]
+  (follows Frontend Bound)
+ITLB MPKI........................... 0.000 misses per 1,000 instructions
+ITLB Walk Ratio..................... 0.000 per TLB access
+L1 Instruction TLB Miss Ratio....... 0.000 per TLB access
+L1 Instruction TLB MPKI............. 0.000 misses per 1,000 instructions
+L2 Unified TLB Miss Ratio........... 0.000 per TLB access
+L2 Unified TLB MPKI................. 0.000 misses per 1,000 instructions
+
+[L1 Data Cache Effectiveness]
+  (follows Backend Bound)
+L1D Cache Miss Ratio................ 0.000 per cache access
+L1D Cache MPKI...................... 0.000 misses per 1,000 instructions
+
+[L1 Instruction Cache Effectiveness]
+  (follows Frontend Bound)
+L1I Cache Miss Ratio................ 0.000 per cache access
+L1I Cache MPKI...................... 0.000 misses per 1,000 instructions
+
+[L2 Unified Cache Effectiveness]
+  (follows Frontend Bound)
+  (follows Backend Bound)
+L2 Cache Miss Ratio................. 0.000 per cache access
+L2 Cache MPKI....................... 0.000 misses per 1,000 instructions
+
+[Last Level Cache Effectiveness]
+  (follows Frontend Bound)
+  (follows Backend Bound)
+LL Cache Read Hit Ratio............. 0.000 per cache access
+LL Cache Read Miss Ratio............ 0.000 per cache access
+LL Cache Read MPKI.................. 0.000 misses per 1,000 instructions
+
+[Misses Per Kilo Instructions]
+Branch MPKI......................... 0.000 misses per 1,000 instructions
+DTLB MPKI........................... 0.000 misses per 1,000 instructions
+ITLB MPKI........................... 0.000 misses per 1,000 instructions
+L1D Cache MPKI...................... 0.000 misses per 1,000 instructions
+L1 Data TLB MPKI.................... 0.000 misses per 1,000 instructions
+L1I Cache MPKI...................... 0.000 misses per 1,000 instructions
+L1 Instruction TLB MPKI............. 0.000 misses per 1,000 instructions
+L2 Cache MPKI....................... 0.000 misses per 1,000 instructions
+L2 Unified TLB MPKI................. 0.000 misses per 1,000 instructions
+LL Cache Read MPKI.................. 0.000 misses per 1,000 instructions
+
+[Miss Ratio]
+Branch Misprediction Ratio.......... 0.000 per branch
+DTLB Walk Ratio..................... 0.000 per TLB access
+ITLB Walk Ratio..................... 0.000 per TLB access
+L1D Cache Miss Ratio................ 0.000 per cache access
+L1 Data TLB Miss Ratio.............. 0.000 per TLB access
+L1I Cache Miss Ratio................ 0.000 per cache access
+L1 Instruction TLB Miss Ratio....... 0.000 per TLB access
+L2 Cache Miss Ratio................. 0.000 per cache access
+L2 Unified TLB Miss Ratio........... 0.000 per TLB access
+LL Cache Read Miss Ratio............ 0.000 per cache access
+
+[Speculative Operation Mix]
+  (follows Backend Bound)
+  (follows Retiring)
+Branch Operations Percentage........ 0.00% operations
+Crypto Operations Percentage........ 0.00% operations
+Integer Operations Percentage....... 0.00% operations
+Load Operations Percentage.......... 0.00% operations
+Floating Point Operations Percentage 0.00% operations
+SIMD Operations Percentage.......... 0.00% operations
+Store Operations Percentage......... 0.00% operations

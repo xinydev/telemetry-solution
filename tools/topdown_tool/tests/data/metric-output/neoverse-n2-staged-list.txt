@@ -1,0 +1,98 @@
+Stage 1 (Topdown metrics)
+=========================
+[Topdown Level 1]
+Frontend Bound
+Backend Bound
+Retiring
+Bad Speculation
+
+Stage 2 (uarch metrics)
+=======================
+[Branch Effectiveness]
+  (follows Frontend Bound)
+  (follows Bad Speculation)
+Branch Misprediction Ratio
+Branch MPKI
+
+[Cycle Accounting]
+Backend Stalled Cycles
+Frontend Stalled Cycles
+
+[Data TLB Effectiveness]
+  (follows Backend Bound)
+DTLB MPKI
+DTLB Walk Ratio
+L1 Data TLB Miss Ratio
+L1 Data TLB MPKI
+L2 Unified TLB Miss Ratio
+L2 Unified TLB MPKI
+
+[General]
+Instructions Per Cycle
+
+[Instruction TLB Effectiveness]
+  (follows Frontend Bound)
+ITLB MPKI
+ITLB Walk Ratio
+L1 Instruction TLB Miss Ratio
+L1 Instruction TLB MPKI
+L2 Unified TLB Miss Ratio
+L2 Unified TLB MPKI
+
+[L1 Data Cache Effectiveness]
+  (follows Backend Bound)
+L1D Cache Miss Ratio
+L1D Cache MPKI
+
+[L1 Instruction Cache Effectiveness]
+  (follows Frontend Bound)
+L1I Cache Miss Ratio
+L1I Cache MPKI
+
+[L2 Unified Cache Effectiveness]
+  (follows Frontend Bound)
+  (follows Backend Bound)
+L2 Cache Miss Ratio
+L2 Cache MPKI
+
+[Last Level Cache Effectiveness]
+  (follows Frontend Bound)
+  (follows Backend Bound)
+LL Cache Read Hit Ratio
+LL Cache Read Miss Ratio
+LL Cache Read MPKI
+
+[Misses Per Kilo Instructions]
+Branch MPKI
+DTLB MPKI
+ITLB MPKI
+L1D Cache MPKI
+L1 Data TLB MPKI
+L1I Cache MPKI
+L1 Instruction TLB MPKI
+L2 Cache MPKI
+L2 Unified TLB MPKI
+LL Cache Read MPKI
+
+[Miss Ratio]
+Branch Misprediction Ratio
+DTLB Walk Ratio
+ITLB Walk Ratio
+L1D Cache Miss Ratio
+L1 Data TLB Miss Ratio
+L1I Cache Miss Ratio
+L1 Instruction TLB Miss Ratio
+L2 Cache Miss Ratio
+L2 Unified TLB Miss Ratio
+LL Cache Read Miss Ratio
+
+[Speculative Operation Mix]
+  (follows Backend Bound)
+  (follows Retiring)
+Branch Operations Percentage
+Crypto Operations Percentage
+Integer Operations Percentage
+Load Operations Percentage
+Floating Point Operations Percentage
+SIMD Operations Percentage
+Store Operations Percentage

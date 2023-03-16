@@ -5,8 +5,36 @@ Tool to collect and compute metric data for Arm Neoverse CPUs, including metrics
 
 Data is collected via Linux `perf stat` with metric information stored in per-CPU JSON files.
 
+Install
+=======
+
+This tool can optionally be installed as a python package by running the following from the project directory:
+
+```
+pip3 install .
+```
+
+or
+
+```
+pip3 install --user .
+```
+
 Usage
 =====
+
+When installed, a script will be created to execute the tool.
+
+If pip's `<install>/bin` directory is in your PATH, you can execute the tool as follows:
+
+```
+topdown-tool --help
+```
+
+Alternatively, you can execute the `topdown-tool` script from the project directory:
+```
+./topdown-tool --help
+```
 
 Choosing what to monitor
 ------------------------
@@ -14,19 +42,19 @@ Choosing what to monitor
 ### Launch and monitor an application
 
 ```
-python3 ./stat.py ./a.out
+topdown-tool ./a.out
 ```
 
 ### Monitor a running application
 
 You can specify one or more process IDs to monitor:
 ```
-$ python3 --pid ./stat.py -p 289156
+$ topdown-tool -p 289156
 Monitoring PID(s) 289156. Hit Ctrl-C to stop.
 ...
 ```
 ```
-$ python3 ./stat.py --pid 289156,289153
+$ topdown-tool --pid 289156,289153
 Monitoring PID(s) 289156,289153. Hit Ctrl-C to stop.
 ...
 ```
@@ -36,7 +64,7 @@ Monitoring PID(s) 289156,289153. Hit Ctrl-C to stop.
 If no application or process ID is specified, then system-wide monitoring will be performed (for all CPUs)
 
 ```
-$ python3 ./stat.py
+$ topdown-tool
 Starting system-wide profiling. Hit Ctrl-C to stop. (See --help for usage information.)
 ...
 ```
@@ -53,8 +81,9 @@ Examples below were collected on a Neoverse N1 system.
 To query the available metric groups:
 
 ```
-$ python3 ./stat.py --list-groups
+$ topdown-tool --list-groups
 Cycle_Accounting (Cycle Accounting)
+General (General)
 MPKI (Misses Per Kilo Instructions)
 Miss_Ratio (Miss Ratio)
 Branch_Effectiveness (Branch Effectiveness)
@@ -70,7 +99,7 @@ Operation_Mix (Speculative Operation Mix)
 To query metrics according to the Arm Topdown Performance Analysis Methodology:
 
 ```
-$ python3 ./stat.py --list-metrics
+$ topdown-tool --list-metrics
 Stage 1 (Topdown metrics)
 =========================
 [Cycle Accounting]
@@ -100,7 +129,7 @@ L2 Unified TLB MPKI
 By default, metrics from the Arm topdown performance analysis methodology will be selected, and grouped by stage:
 
 ```
-./stat.py ./a.out
+$ topdown-tool ./a.out
 Stage 1 (Topdown metrics)
 =========================
 [Cycle Accounting]
@@ -128,7 +157,7 @@ L2 Unified TLB MPKI................. 0.006 misses per 1,000 instructions
 A specific stage can also be specified by number:
 
 ```
-$ python3 ./stat.py -s 1 ./a.out
+$ topdown-tool -s 1 ./a.out
 Stage 1 (Topdown metrics)
 =========================
 ...
@@ -137,7 +166,7 @@ Stage 1 (Topdown metrics)
 or by name:
 
 ```
-$ python3 ./stat.py -s uarch ./a.out
+$ topdown-tool -s uarch ./a.out
 Stage 2 (uarch metrics)
 =======================
 ...
@@ -146,7 +175,7 @@ Stage 2 (uarch metrics)
 These metrics can also be combined into a single hierarchy:
 
 ```
-$ ./stat.py -s combined ./a.out
+$ topdown-tool -s combined ./a.out
 [Cycle Accounting]                     [Topdown group]
 Frontend Stalled Cycles............... 0.00% cycles
   [Branch Effectiveness]               [uarch group]
@@ -170,10 +199,10 @@ Backend Stalled Cycles................ 42.78% cycles
 
 ### Collecting metric groups
 
-It is also possible to collect specific specific metric groups (as show in `./stat.py --list-groups`):
+It is also possible to collect specific specific metric groups (as show in `topdown-tool --list-groups`):
 
 ```
-$ python 3 ./stat.py --metric-group MPKI,MissRatio ./a.out
+$ topdown-tool --metric-group MPKI,Miss_Ratio ./a.out
 [Misses Per Kilo Instructions] [uarch group]
 Branch MPKI................... 0.399 misses per 1,000 instructions
 ITLB MPKI..................... 0.000 misses per 1,000 instructions
@@ -205,7 +234,7 @@ Collecting a branch of the hierarchy
 It is also possible to collect a specific branch of the combined hierarchy:
 
 ```
-$ python3 ./stat.py --node backend_stalled_cycles ./a.out
+$ topdown-tool --node backend_stalled_cycles ./a.out
 [Cycle Accounting]                     [Topdown group]
 Backend Stalled Cycles................ 42.42% cycles
   [Data TLB Effectiveness]             [uarch group]
@@ -224,4 +253,4 @@ Backend Stalled Cycles................ 42.42% cycles
 Other options
 -------------
 
-See `stat.py --help` for full usage information.
+See `topdown-tool --help` for full usage information.

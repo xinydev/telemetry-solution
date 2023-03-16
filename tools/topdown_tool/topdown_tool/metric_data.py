@@ -1,11 +1,12 @@
 import dataclasses
-from difflib import get_close_matches
 import itertools
 import json
+import math
 import os
 import re
 from dataclasses import dataclass, field
-from typing import Dict, Iterable, Iterator, List, Optional, Tuple, Union
+from difflib import get_close_matches
+from typing import Dict, Iterable, List, Optional, Tuple, Union
 
 METRICS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "metrics")
 IDENTIFIER_REGEX = re.compile(r"[a-zA-Z_]\w*")
@@ -27,7 +28,10 @@ class Metric:
     formula: str
     events: Tuple[Event, ...]
 
-    def format_value(self, value):
+    def format_value(self, value: float):
+        if math.isnan(value):
+            return "nan (division by zero?)"
+
         if self.units == "percent":
             return f"{value:.2f}%"
         if self.units.startswith("percent of "):
@@ -70,11 +74,6 @@ class MetricInstance:
     parent: Optional["MetricInstance"] = None
 
 
-@dataclass(frozen=True)
-class MetricInstanceValue(MetricInstance):
-    value: float = 0.0
-
-
 @dataclass
 class CombinedMetricInstance:
     metric: Metric
@@ -84,18 +83,20 @@ class CombinedMetricInstance:
     parents: List["MetricInstance"] = field(default_factory=list)
 
 
-@dataclass
-class CombinedMetricInstanceValue(CombinedMetricInstance):
+AnyMetricInstance = Union[MetricInstance, CombinedMetricInstance]
+
+
+@dataclass(frozen=True)
+class MetricInstanceValue:
+    metric_instance: AnyMetricInstance
     value: float = 0.0
 
+    # Convenience iterator for unpacking values
+    def __iter__(self):
+        return iter((self.metric_instance, self.value))
 
-COMBINED_TYPE = {
-    MetricInstance: CombinedMetricInstance,
-    MetricInstanceValue: CombinedMetricInstanceValue
-}
 
-AnyMetricInstance = Union[MetricInstance, MetricInstanceValue, CombinedMetricInstance, CombinedMetricInstanceValue]
-SeparateMetricInstance = Union[MetricInstance, MetricInstanceValue]
+AnyMetricInstanceOrValue = Union[MetricInstance, MetricInstanceValue, CombinedMetricInstance]
 
 
 def field_dict(obj):
@@ -107,14 +108,18 @@ def field_dict(obj):
     return {f.name: getattr(obj, f.name) for f in dataclasses.fields(obj)}
 
 
-def combine_instances(instances: Iterable[SeparateMetricInstance]):
+def combine_instances(instances: Iterable[MetricInstance]):
     """Replaces similar MetricInstance and MetricInstanceValue instances with a single CombinedMetricInstance/CombinedMetricInstanceValue object"""
 
-    grouped = itertools.groupby(sorted(instances, key=lambda i: (i.group.name, i.metric.name)))
+    def grouping_key(instance: MetricInstance):
+        return (instance.group.name, instance.metric.name)
+    grouped = itertools.groupby(sorted(instances, key=grouping_key), key=grouping_key)
 
-    def combined(similar_instances: Iterator[SeparateMetricInstance], instance) -> Union[CombinedMetricInstance, CombinedMetricInstanceValue]:
+    def combined(similar_instances: Iterable[MetricInstance], _key) -> CombinedMetricInstance:
+        similar_instances = list(similar_instances)
+        instance = similar_instances[0]
         return create_dataclass(
-            COMBINED_TYPE[type(instance)],
+            CombinedMetricInstance,
             field_dict(instance),
             parents=[i.parent for i in similar_instances if i.parent]
         )
@@ -217,7 +222,7 @@ class MetricData:
         matches = get_close_matches(to_key(metric_name), self.metric_keys, 1)
         return self.metric_keys[matches[0]].name if matches else None
 
-    def metrics_for_group(self, group_name):
+    def metrics_for_group(self, group_name: str):
         group = self.find_group(group_name)
         return [MetricInstance(group=group, metric=self.metrics[metric.name], stage=self.topdown.get_stage(group.name)) for metric in self.groups[group.name].metrics]
 
@@ -274,5 +279,27 @@ class MetricData:
             output += self.metrics_for_group(g.name)
         return output
 
-    def all_metrics(self):
-        return self.methodology_metrics() + self.uncateogirsed_metrics()
+    def all_metrics(self, stages: Optional[Iterable[int]]):
+        """
+        Returns all metrics, organised by the specified stages.
+
+        If stages are not specified, metrics will be returned in a hierarchy
+
+        When the hierarchy contains a metric more than once, this will result in multiple instances of that metric.
+        e.g.
+        A  -> X -> ...
+        B  -> X -> ...
+
+        When stages are specified, the hierarchy will be flattened / duplicate metrics will be replaced by a CombinedMetricInstance
+        e.g.:
+        A -> X
+        B  /
+        """
+        metric_instances = self.methodology_metrics() + self.uncateogirsed_metrics()
+
+        if not stages:
+            return metric_instances
+
+        metric_instances = [m for m in metric_instances if m.stage in stages]
+        return ([i for i in metric_instances if i.stage == 1 and 1 in stages]
+                + combine_instances([i for i in metric_instances if i.stage == 2 and 2 in stages]))

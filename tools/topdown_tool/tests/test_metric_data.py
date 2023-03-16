@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
-# Copyright 2022 Arm Limited
+# Copyright 2022-2023 Arm Limited
 
 import json
 import os
 
-from metric_data import METRICS_DIR, CombinedMetricInstance, MetricData, combine_instances
+from topdown_tool.metric_data import METRICS_DIR, CombinedMetricInstance, MetricData, combine_instances
 
 
 def test_add_data():
@@ -140,6 +140,8 @@ def test_combine_instances():
     instances = metric_data.metrics_for_group("CycleAccounting")
     length = len(instances)
     assert instances[0].metric.name == "frontend_stalled_cycles"
+
+    # Add duplicate
     instances.append(instances[0])
 
     combined_instances = combine_instances(instances)
