@@ -174,10 +174,12 @@ def mrs_metrics_to_perf_metrics(mrs_metrics: List[mrs_data.MrsMetric]):
         Create dict in Perf format from dict in MRS format
         """
         group = ";".join(metric.groups or [])
-        return PerfMetric(PublicDescription=metric.description or None,
-                          MetricExpr=metric.formula,
+
+        # Use full description instead of title in brief description because
+        # title just repeats the name without underscores.
+        return PerfMetric(MetricExpr=metric.formula,
                           MetricName=metric.name,
-                          BriefDescription=metric.title or None,
+                          BriefDescription=metric.description or None,
                           MetricGroup=group or None,
                           ScaleUnit=f"1{metric.units}" if metric.units else None)
 
@@ -213,7 +215,8 @@ class PerfData:
             def replaced_event(event: PerfEvent):
                 common_event = find_event_in_list(event, common_events)
                 if common_event:  # If event exists in common events, include reference instead
-                    return PerfEvent(ArchStdEvent=event.EventName, Topics=event.Topics)
+                    return PerfEvent(ArchStdEvent=event.EventName, Topics=event.Topics,
+                                     PublicDescription=event.PublicDescription)
                 else:
                     assert event_codes.is_impdef(event.EventCode), \
                            f"{event.EventCode} is unknown and not IMPDEF: {event}"
