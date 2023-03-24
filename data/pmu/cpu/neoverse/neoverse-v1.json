@@ -1,7 +1,7 @@
 {
     "_type": "PMU_Specification",
     "document": {
-        "timestamp": "08 Feb 09:53:06 2023",
+        "timestamp": "28 Mar 07:29:07 2023",
         "copyright": "Copyright 2022-2023 Arm Ltd.",
         "license": "Apache-2.0",
         "description": "Telemetry Specification (PMU Events, Metrics and Methodology) for Neoverse V1 processor"
@@ -2331,91 +2331,93 @@
             }
         }
     },
-    "topdown_methodology": {
-        "title": "Topdown Methodology",
-        "description": "Topdown Performance Analysis Methodology",
-        "metric_grouping": {
-            "stage_1": [
-                "Topdown_L1"
-            ],
-            "stage_2": [
-                "Cycle_Accounting",
-                "General",
-                "MPKI",
-                "Miss_Ratio",
-                "Branch_Effectiveness",
-                "ITLB_Effectiveness",
-                "DTLB_Effectiveness",
-                "L1I_Cache_Effectiveness",
-                "L1D_Cache_Effectiveness",
-                "L2_Cache_Effectiveness",
-                "LL_Cache_Effectiveness",
-                "Operation_Mix"
-            ]
-        },
-        "decision_tree": {
-            "root_nodes": [
-                "frontend_bound",
-                "backend_bound",
-                "retiring",
-                "bad_speculation"
-            ],
-            "metrics": [
-                {
-                    "name": "frontend_bound",
-                    "group": "Topdown_L1",
-                    "next_items": [
-                        "Branch_Effectiveness",
-                        "ITLB_Effectiveness",
-                        "L1I_Cache_Effectiveness",
-                        "L2_Cache_Effectiveness",
-                        "LL_Cache_Effectiveness"
-                    ],
-                    "sample_events": [
-                        "STALL_SLOT_FRONTEND",
-                        "STALL_FRONTEND"
-                    ]
-                },
-                {
-                    "name": "backend_bound",
-                    "group": "Topdown_L1",
-                    "next_items": [
-                        "DTLB_Effectiveness",
-                        "L1D_Cache_Effectiveness",
-                        "L2_Cache_Effectiveness",
-                        "LL_Cache_Effectiveness",
-                        "Operation_Mix"
-                    ],
-                    "sample_events": [
-                        "STALL_SLOT_BACKEND",
-                        "STALL_BACKEND"
-                    ]
-                },
-                {
-                    "name": "bad_speculation",
-                    "group": "Topdown_L1",
-                    "next_items": [
-                        "Branch_Effectiveness"
-                    ],
-                    "sample_events": [
-                        "STALL_SLOT",
-                        "BR_MIS_PRED_RETIRED"
-                    ]
-                },
-                {
-                    "name": "retiring",
-                    "group": "Topdown_L1",
-                    "next_items": [
-                        "Operation_Mix"
-                    ],
-                    "sample_events": [
-                        "OP_RETIRED",
-                        "INST_RETIRED",
-                        "OP_SPEC",
-                        "INST_SPEC"
-                    ]
-                }
-            ]
+    "methodologies": {
+        "topdown_methodology": {
+            "title": "Topdown Methodology",
+            "description": "Topdown Performance Analysis Methodology",
+            "metric_grouping": {
+                "stage_1": [
+                    "Topdown_L1"
+                ],
+                "stage_2": [
+                    "Cycle_Accounting",
+                    "General",
+                    "MPKI",
+                    "Miss_Ratio",
+                    "Branch_Effectiveness",
+                    "ITLB_Effectiveness",
+                    "DTLB_Effectiveness",
+                    "L1I_Cache_Effectiveness",
+                    "L1D_Cache_Effectiveness",
+                    "L2_Cache_Effectiveness",
+                    "LL_Cache_Effectiveness",
+                    "Operation_Mix"
+                ]
+            },
+            "decision_tree": {
+                "root_nodes": [
+                    "frontend_bound",
+                    "backend_bound",
+                    "retiring",
+                    "bad_speculation"
+                ],
+                "metrics": [
+                    {
+                        "name": "frontend_bound",
+                        "group": "Topdown_L1",
+                        "next_items": [
+                            "Branch_Effectiveness",
+                            "ITLB_Effectiveness",
+                            "L1I_Cache_Effectiveness",
+                            "L2_Cache_Effectiveness",
+                            "LL_Cache_Effectiveness"
+                        ],
+                        "sample_events": [
+                            "STALL_SLOT_FRONTEND",
+                            "STALL_FRONTEND"
+                        ]
+                    },
+                    {
+                        "name": "backend_bound",
+                        "group": "Topdown_L1",
+                        "next_items": [
+                            "DTLB_Effectiveness",
+                            "L1D_Cache_Effectiveness",
+                            "L2_Cache_Effectiveness",
+                            "LL_Cache_Effectiveness",
+                            "Operation_Mix"
+                        ],
+                        "sample_events": [
+                            "STALL_SLOT_BACKEND",
+                            "STALL_BACKEND"
+                        ]
+                    },
+                    {
+                        "name": "bad_speculation",
+                        "group": "Topdown_L1",
+                        "next_items": [
+                            "Branch_Effectiveness"
+                        ],
+                        "sample_events": [
+                            "STALL_SLOT",
+                            "BR_MIS_PRED_RETIRED"
+                        ]
+                    },
+                    {
+                        "name": "retiring",
+                        "group": "Topdown_L1",
+                        "next_items": [
+                            "Operation_Mix"
+                        ],
+                        "sample_events": [
+                            "OP_RETIRED",
+                            "INST_RETIRED",
+                            "OP_SPEC",
+                            "INST_SPEC"
+                        ]
+                    }
+                ]
+            }
         }
     }
 }

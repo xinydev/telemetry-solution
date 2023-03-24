@@ -87,7 +87,9 @@ High level schema of the first release of JSON file is as below:
         "function": {} #Event groups based on CPU function
         "metrics": {}  #Metric groups for analysis and methodology
     }
-    "topdown_methodology": {} #Topdown methodology stages and decision tree
+    "methodologies": {
+        "topdown_methodology": {} #Topdown methodology stages and decision tree
+    }
 
 
 ### Event Field Definitions

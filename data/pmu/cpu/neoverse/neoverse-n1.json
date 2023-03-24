@@ -1,7 +1,7 @@
 {
     "_type": "PMU_Specification",
     "document": {
-        "timestamp": "08 Feb 09:52:47 2023",
+        "timestamp": "28 Mar 07:29:02 2023",
         "copyright": "Copyright 2022-2023 Arm Ltd.",
         "license": "Apache-2.0",
         "description": "Telemetry Specification (PMU Events, Metrics and Methodology) for Neoverse N1 processor"
@@ -1983,62 +1983,64 @@
             }
         }
     },
-    "topdown_methodology": {
-        "title": "Topdown Methodology",
-        "description": "Topdown Performance Analysis Methodology",
-        "metric_grouping": {
-            "stage_1": [
-                "Cycle_Accounting"
-            ],
-            "stage_2": [
-                "General",
-                "MPKI",
-                "Miss_Ratio",
-                "Branch_Effectiveness",
-                "ITLB_Effectiveness",
-                "DTLB_Effectiveness",
-                "L1I_Cache_Effectiveness",
-                "L1D_Cache_Effectiveness",
-                "L2_Cache_Effectiveness",
-                "LL_Cache_Effectiveness",
-                "Operation_Mix"
-            ]
-        },
-        "decision_tree": {
-            "root_nodes": [
-                "frontend_stalled_cycles",
-                "backend_stalled_cycles"
-            ],
-            "metrics": [
-                {
-                    "name": "frontend_stalled_cycles",
-                    "group": "Cycle_Accounting",
-                    "next_items": [
-                        "Branch_Effectiveness",
-                        "ITLB_Effectiveness",
-                        "L1I_Cache_Effectiveness",
-                        "L2_Cache_Effectiveness",
-                        "LL_Cache_Effectiveness"
-                    ],
-                    "sample_events": [
-                        "STALL_FRONTEND"
-                    ]
-                },
-                {
-                    "name": "backend_stalled_cycles",
-                    "group": "Cycle_Accounting",
-                    "next_items": [
-                        "DTLB_Effectiveness",
-                        "L1D_Cache_Effectiveness",
-                        "L2_Cache_Effectiveness",
-                        "LL_Cache_Effectiveness",
-                        "Operation_Mix"
-                    ],
-                    "sample_events": [
-                        "STALL_BACKEND"
-                    ]
-                }
-            ]
+    "methodologies": {
+        "topdown_methodology": {
+            "title": "Topdown Methodology",
+            "description": "Topdown Performance Analysis Methodology",
+            "metric_grouping": {
+                "stage_1": [
+                    "Cycle_Accounting"
+                ],
+                "stage_2": [
+                    "General",
+                    "MPKI",
+                    "Miss_Ratio",
+                    "Branch_Effectiveness",
+                    "ITLB_Effectiveness",
+                    "DTLB_Effectiveness",
+                    "L1I_Cache_Effectiveness",
+                    "L1D_Cache_Effectiveness",
+                    "L2_Cache_Effectiveness",
+                    "LL_Cache_Effectiveness",
+                    "Operation_Mix"
+                ]
+            },
+            "decision_tree": {
+                "root_nodes": [
+                    "frontend_stalled_cycles",
+                    "backend_stalled_cycles"
+                ],
+                "metrics": [
+                    {
+                        "name": "frontend_stalled_cycles",
+                        "group": "Cycle_Accounting",
+                        "next_items": [
+                            "Branch_Effectiveness",
+                            "ITLB_Effectiveness",
+                            "L1I_Cache_Effectiveness",
+                            "L2_Cache_Effectiveness",
+                            "LL_Cache_Effectiveness"
+                        ],
+                        "sample_events": [
+                            "STALL_FRONTEND"
+                        ]
+                    },
+                    {
+                        "name": "backend_stalled_cycles",
+                        "group": "Cycle_Accounting",
+                        "next_items": [
+                            "DTLB_Effectiveness",
+                            "L1D_Cache_Effectiveness",
+                            "L2_Cache_Effectiveness",
+                            "LL_Cache_Effectiveness",
+                            "Operation_Mix"
+                        ],
+                        "sample_events": [
+                            "STALL_BACKEND"
+                        ]
+                    }
+                ]
+            }
         }
     }
 }
