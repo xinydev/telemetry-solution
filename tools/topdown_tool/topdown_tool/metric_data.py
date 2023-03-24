@@ -197,7 +197,7 @@ class MetricData:
             for group_name, group_data in json_data["groups"]["metrics"].items()
         }
 
-        self.topdown = TopdownMethodology(self, json_data["topdown_methodology"])
+        self.topdown = TopdownMethodology(self, json_data["methodologies"]["topdown_methodology"])
 
         self.group_keys = {to_key(k): v for k, v in self.groups.items()}
         self.metric_keys = {to_key(k): v for k, v in self.metrics.items()}
