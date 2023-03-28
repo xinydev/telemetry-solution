@@ -33,6 +33,8 @@ static void stress(long runs) {
     for(int set=0; set<maxSize; set++) {
       // offset by l1d cache line size to not triggering l1d cache miss
       sum += mem[(PAGE_SIZE * set) + (L1D_CACHE_LINE_SIZE * set)];
+      // introduce load-load dependency, mem is not changed as sum is always 0
+      mem += sum;
     }
   }
   mem[0] = sum;  // store sum to volatile address so that it is not optimized away

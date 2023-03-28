@@ -30,7 +30,7 @@ struct {
     {"int2double_workload", 1500000000},
     {"isb_workload", 2800},
     {"l1d_cache_workload", 440000},
-    {"l1d_tlb_workload", 5200000},
+    {"l1d_tlb_workload", 1300000},
     {"l1i_cache_workload", 8000000},
     {"l2d_cache_workload", 4000},
     {"load_after_store_workload", 2300000},
