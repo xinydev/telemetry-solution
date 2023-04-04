@@ -60,4 +60,7 @@ disable = [
 ]
 
 [tool.isort]
-line_length = 120
+line_length = 160
+
+[tool.black]
+line_length = 160

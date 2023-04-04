@@ -25,10 +25,10 @@ from re import Match
 from typing import Dict, Generator, Iterable, List, Optional, Sequence, Tuple, Union
 
 from . import cpu_mapping, simple_maths
-from .event_collection import (CPU_PMU_COUNTERS, CollectBy, EventCount, GroupScheduleError, MetricScheduleError, PerfOptions,
-                               UncountedEventsError, ZeroCyclesError, collect_events, format_command)
-from .metric_data import (IDENTIFIER_REGEX, AnyMetricInstance, AnyMetricInstanceOrValue, CombinedMetricInstance, Group,
-                          MetricData, MetricInstance, MetricInstanceValue)
+from .event_collection import (CPU_PMU_COUNTERS, CollectBy, EventCount, GroupScheduleError, MetricScheduleError, PerfOptions, UncountedEventsError,
+                               ZeroCyclesError, collect_events, format_command)
+from .metric_data import (IDENTIFIER_REGEX, AnyMetricInstance, AnyMetricInstanceOrValue, CombinedMetricInstance, Group, MetricData, MetricInstance,
+                          MetricInstanceValue)
 
 # Constants for nested printing
 INDENT_LEVEL = 2
