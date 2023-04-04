@@ -169,6 +169,16 @@ def get_arg_parser():
     def collect_by_value(arg: str):
         return CollectBy(arg.lower())
 
+    def positive_nonzero_int(arg: str):
+        try:
+            val = int(arg)
+            if val > 0:
+                return val
+        except ValueError:
+            pass
+
+        raise argparse.ArgumentTypeError(f"invalid positive int value: '{arg}'")
+
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("command", default=None, nargs=argparse.REMAINDER, help='command to analyse. Subsequent arguments are passed as program arguments. e.g. "sleep 10"')
     parser.add_argument("--all-cpus", "-a", action="store_true", help="System-wide collection for all CPUs.")
@@ -181,7 +191,7 @@ def get_arg_parser():
     query.add_argument("--list-metrics", action="store_true", help="list available metrics and exit")
     collection_group = parser.add_argument_group("collection options")
     collection_group.add_argument("-c", "--collect-by", type=collect_by_value, choices=list(CollectBy), default=CollectBy.METRIC, help='when multiplexing, collect events groupped by "none", "metric" (default), or "group". This can avoid comparing data collected during different time periods.')
-    collection_group.add_argument("--max-events", type=int, help="Maximum simultaneous events. If more events are required, <command> will be run multiple times.")
+    collection_group.add_argument("--max-events", type=positive_nonzero_int, help="Maximum simultaneous events. If more events are required, <command> will be run multiple times.")
     collection_group.add_argument("-m", "--metric-group", dest="metric_groups", type=lambda x: x.split(","), help="comma separated list of metric groups to collect. See --list-groups for available groups")
     collection_group.add_argument("-n", "--node", help='name of topdown node as well as its descendents (e.g. "frontend_bound"). See --list-metrics for available nodes')
     collection_group.add_argument("-l", "--level", type=int, choices=[1, 2], help=argparse.SUPPRESS)
@@ -214,9 +224,9 @@ def write_csv(timed_metric_values: List[Tuple[Optional[float], MetricInstanceVal
 
 
 # pylint: disable=too-many-branches,too-many-statements,too-many-locals
-def main():
+def main(args=None):
     parser = get_arg_parser()
-    args = parser.parse_args()
+    args = parser.parse_args(args)
 
     logging.basicConfig(level=args.loglevel)
 

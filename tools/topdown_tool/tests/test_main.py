@@ -1,15 +1,17 @@
 import math
 import os.path
 from pathlib import Path
+import shlex
 from typing import List
 
 import pytest
 
-from topdown_tool.__main__ import COMBINED_STAGES, DEFAULT_ALL_STAGES, print_nested_metrics
+from topdown_tool.__main__ import COMBINED_STAGES, DEFAULT_ALL_STAGES, main, print_nested_metrics
 from topdown_tool.metric_data import AnyMetricInstance, MetricData, MetricInstanceValue
 
 TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), "data", "metric-output")
-TEST_CPUS = ["neoverse-n1", "neoverse-v1"]
+TEST_CPUS = ["neoverse-n1", "neoverse-v1", "neoverse-n2"]
+DEFAULT_TEST_ARGS = ["--cpu", "neoverse-n1"]  # Specify CPU as MIDR may not be available on test machine (/in CI)
 
 
 def create_value_instances(metric_instances: List[AnyMetricInstance]):
@@ -43,3 +45,28 @@ def test_metric_output(capsys, cpu, exec_mode, stages_mode):
 
     expected = Path(TEST_DATA_DIR, f"{cpu}-{stages_mode}-{exec_mode}.txt").read_text(encoding="utf-8")
     assert captured.out == expected
+
+
+@pytest.mark.parametrize("args", ["--list-metrics", "--list-groups"])
+def test_main_valid_args(args):
+    """Simple test to ensure entry point runs without errors."""
+
+    with pytest.raises(SystemExit) as e_info:
+        main(DEFAULT_TEST_ARGS + shlex.split(args))
+
+    assert e_info.value.code == 0
+
+
+@pytest.mark.parametrize("args", ["--blah",                     # Unknown argument
+                                  "--cpu=bad",                  # Unknown CPU
+                                  "--pid 100 ./a.out",          # Mutually exclusive
+                                  "--metric-group a --node b",  # Mutually exclusive
+                                  "--interval",                 # Value not specified
+                                  "--interval 100"])            # Requires CSV
+def test_main_invalid_args(args):
+    """Simple test to ensure entry point exits with error code on invalid arguments."""
+
+    with pytest.raises(SystemExit) as e_info:
+        main(DEFAULT_TEST_ARGS + shlex.split(args))
+
+    assert e_info.value.code != 0
