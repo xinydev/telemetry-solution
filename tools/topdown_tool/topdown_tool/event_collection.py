@@ -76,7 +76,7 @@ class MetricScheduleError(Exception):
 
 
 class UncountedEventsError(Exception):
-    def __init__(self, uncounted_events):
+    def __init__(self, uncounted_events: Iterable[str]):
         super().__init__("The follow events were not counted: " + ", ".join(uncounted_events))
         self.uncounted_events = uncounted_events
 
@@ -300,9 +300,14 @@ def collect_events(metric_instances: Iterable[MetricInstance], perf_options: Per
         if any(e.event.event.name == "CPU_CYCLES" and e.value == 0 for e in event_counts):
             raise ZeroCyclesError()
 
-        uncounted_events = set(e.event.name for e in event_counts if e.value is None)
+        uncounted_events = [e for e in event_counts if e.value is None]
         if uncounted_events:
-            raise UncountedEventsError(uncounted_events)
+            last_interval_time = event_counts[-1].time
+            if perf_options.interval and any(e.time != last_interval_time for e in event_counts) and all(e.time == last_interval_time for e in uncounted_events):
+                logging.info("Ignoring last interval as not all events could be collected. Likely too short.")
+                break
+
+            raise UncountedEventsError(set(e.event.event.name for e in uncounted_events))
 
         timed_event_counts.append((event_counts[0].time, event_counts))
 
