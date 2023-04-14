@@ -3,7 +3,14 @@ Topdown Tool
 
 Tool to collect and compute metric data for Arm Neoverse CPUs, including metrics for Topdown performance analysis.
 
-Data is collected via Linux `perf stat` with metric information stored in per-CPU JSON files.
+Event data is collected via [`perf stat` on Linux](https://perf.wiki.kernel.org/index.php/Main_Page), or [Windows Perf](https://gitlab.com/Linaro/WindowsPerf/windowsperf) on Microsoft Windows.
+
+Metrics are then calculated using information stored in per-CPU JSON files.
+
+Requirements
+============
+* A working [Linux Perf](https://perf.wiki.kernel.org/index.php/Main_Page) or [Windows Perf](https://gitlab.com/Linaro/WindowsPerf/windowsperf) (2.4.0) setup.
+* Python 3.7 or later.
 
 Install
 =======
@@ -23,17 +30,28 @@ pip3 install --user .
 Usage
 =====
 
-When installed, a script will be created to execute the tool.
+First, install and configure [Linux Perf](https://perf.wiki.kernel.org/index.php/Main_Page) or [Windows Perf](https://gitlab.com/Linaro/WindowsPerf/windowsperf).
 
-If pip's `<install>/bin` directory is in your PATH, you can execute the tool as follows:
+Running from a package install
+------------------------------
+
+If installed as a python package, and pip's `<install>/bin` directory is in your PATH, you can execute the tool as follows:
 
 ```
 topdown-tool --help
 ```
 
-Alternatively, you can execute the `topdown-tool` script from the project directory:
+Running from the repository
+---------------------------
+
+On Linux, you can execute the `topdown-tool` script from the project directory:
 ```
 ./topdown-tool --help
+```
+
+On Windows, you can also run:
+```
+python.exe .\topdown_tool
 ```
 
 Choosing what to monitor
@@ -41,11 +59,15 @@ Choosing what to monitor
 
 ### Launch and monitor an application
 
+> :warning: This is not currently supported on Windows.
+
 ```
 topdown-tool ./a.out
 ```
 
 ### Monitor a running application
+
+> :warning: This is not currently supported on Windows.
 
 You can specify one or more process IDs to monitor:
 ```
@@ -61,7 +83,7 @@ Monitoring PID(s) 289156,289153. Hit Ctrl-C to stop.
 
 ### System-wide monitoring
 
-If no application or process ID is specified, then system-wide monitoring will be performed (for all CPUs)
+If no application or process ID is specified, then system-wide monitoring will be performed (for all CPUs/cores)
 
 ```
 $ topdown-tool
@@ -226,6 +248,12 @@ L1I Cache Miss Ratio.......... 0.000 per cache access
 L1D Cache Miss Ratio.......... 0.000 per cache access
 L2 Cache Miss Ratio........... 0.065 per cache access
 LL Cache Read Miss Ratio...... 0.435 per cache access
+```
+
+Group names are case (and hyphen/underscore) insensitive, so the above is equivalent to:
+
+```
+topdown-tool --metric-group mpki,missratio ./a.out
 ```
 
 Collecting a branch of the hierarchy
