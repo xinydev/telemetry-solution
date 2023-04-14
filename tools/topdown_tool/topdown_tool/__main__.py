@@ -179,12 +179,49 @@ def get_arg_parser():
 
         raise argparse.ArgumentTypeError(f"invalid positive int value: '{arg}'")
 
-    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("command", default=None, nargs=argparse.REMAINDER, help='command to analyse. Subsequent arguments are passed as program arguments. e.g. "sleep 10"')
-    parser.add_argument("--all-cpus", "-a", action="store_true", help="System-wide collection for all CPUs.")
-    parser.add_argument("--pid", "-p", type=pid_list, dest="pids", help='comman separated list of process IDs to monitor.')
+    class PlatformArgumentParser(argparse.ArgumentParser):
+        """ArgumentParser that allows platform-specific arguments."""
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.default_namespace = argparse.Namespace()
+
+        def add_linux_argument(self, *args, **kwargs):
+            """
+            Adds an argument that only appears on Linux.
+
+            On Windows, the default value will be added to the default namespace.
+            """
+            if sys.platform == "linux":
+                self.add_argument(*args, **kwargs)
+            else:
+                # Add default argument values to default namespace
+                longest_name = max(args, key=len).lstrip(self.prefix_chars).replace("-", "_")
+                setattr(self.default_namespace,
+                        kwargs.get("dest", longest_name),
+                        kwargs.get("default"))
+
+        def add_argument_group(self, *args, **kwargs):
+            group = super().add_argument_group(*args, **kwargs)
+            setattr(group, "add_linux_argument", self.add_linux_argument)
+            return group
+
+        def parse_args(self, args):  # pylint: disable=arguments-differ
+            return super().parse_args(args, self.default_namespace)
+
+    if sys.platform == "linux":
+        default_perf_path = "perf"
+        default_perf_output = "perf.stat.txt"
+    else:
+        default_perf_path = "wperf"
+        default_perf_output = "wperf.json"
+
+    parser = PlatformArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_linux_argument("command", default=[], nargs=argparse.REMAINDER, help='command to analyse. Subsequent arguments are passed as program arguments. e.g. "sleep 10"')
+    parser.add_linux_argument("--all-cpus", "-a", action="store_true", help="System-wide collection for all CPUs.")
+    parser.add_linux_argument("--pid", "-p", type=pid_list, dest="pids", help='comman separated list of process IDs to monitor.')
+    parser.add_argument("--perf-path", default=default_perf_path, help="path to perf executable")
     parser.add_argument("--perf-args", type=str, help="additional command line arguments to pass to Perf")
-    parser.add_argument("--perf-path", default="perf", help="path to perf executable")
     parser.add_argument("--cpu", help="CPU name to use to look up event data (auto-detect by default)")
     query = parser.add_argument_group("query options")
     query.add_argument("--list-cpus", action="store_true", help="list available CPUs and exit")
@@ -197,12 +234,12 @@ def get_arg_parser():
     collection_group.add_argument("-n", "--node", help='name of topdown node as well as its descendents (e.g. "frontend_bound"). See --list-metrics for available nodes')
     collection_group.add_argument("-l", "--level", type=int, choices=[1, 2], help=argparse.SUPPRESS)
     collection_group.add_argument("-s", "--stages", action=ProcessStageArgs, default=DEFAULT_ALL_STAGES, help='control which stages to display, separated by a comma. e.g. "topdown,uarch". "all" may also be specified, or "combined" to display all, but without separated the output in to stages.')
-    collection_group.add_argument("-i", "-I", "--interval", type=int, help="Collect/output data every <interval> milliseconds")
+    collection_group.add_linux_argument("-i", "-I", "--interval", type=int, help="Collect/output data every <interval> milliseconds")
     collection_group.add_argument("--use-event-names", action="store_true", help='use event names rather than event codes (e.g. "r01") when collecting data from perf. This can be useful for debugging.')
     output_group = parser.add_argument_group("output options")
     output_group.add_argument("-d", "--descriptions", action="store_true", help="show group/metric descriptions")
     output_group.add_argument("--show-sample-events", action="store_true", help="show sample events for metrics")
-    output_group.add_argument("--perf-output", default="perf.stat.txt", help="output file for perf event data")
+    output_group.add_argument("--perf-output", default=default_perf_output, help="output file for perf event data")
     output_group.add_argument("--csv", help="output file for metric CSV data")
     output_group.add_argument("-v", "--verbose", action="store_const", dest="loglevel", const=logging.INFO, help="enable verbose output")
     output_group.add_argument("--debug", action="store_const", dest="loglevel", const=logging.DEBUG, help="enable debug output")

@@ -48,6 +48,7 @@ check_untyped_defs = true
 
 [tool.pylint]
 good-names = ["e", "f", "g", "m", "l1", "l2", "mi", "op"]
+generated-member = ["argparse._ArgumentGroup.add_linux_argument"]
 disable = [
   "cell-var-from-loop",
   "line-too-long",

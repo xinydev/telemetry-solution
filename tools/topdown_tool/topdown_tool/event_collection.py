@@ -3,6 +3,7 @@
 
 import dataclasses
 import itertools
+import json
 import logging
 import shlex
 import subprocess
@@ -94,7 +95,28 @@ def format_command(cmd):
     return str(cmd)
 
 
-def read_perf_stat_output(filename: str, perf_format: PerfStatFormat):
+def read_perf_stat_output_windows(filename: str, _perf_format: PerfStatFormat):
+    def parse_event_idx(e):
+        name = e["event_idx"]
+        return f"r{int(name, 16):x}"
+
+    def parse_value(e):
+        value = e["scaled_value"] if "scaled_value" in e else e["counter_value"]
+        if isinstance(value, str):
+            value = value.replace(",", "")
+        return float(value)
+
+    with open(filename, encoding="utf-8") as f:
+        counter_data = json.load(f)["core"]["overall"]["Systemwide_Overall_Performance_Counters"]
+
+    # Remove initial fixed cycle counter element added by wperf
+    if counter_data[0]["event_idx"] == "fixed" and counter_data[0]["event_name"] == "cycle":
+        counter_data.pop(0)
+
+    return [(parse_event_idx(e), parse_value(e), None) for e in counter_data]
+
+
+def read_perf_stat_output_linux(filename: str, perf_format: PerfStatFormat):
     def strip_modifier(event_name: str):
         """Convert EVENT_NAME:modifier to EVENT_NAME"""
         if ":" in event_name:
@@ -125,6 +147,9 @@ def read_perf_stat_output(filename: str, perf_format: PerfStatFormat):
 
     with open(filename, encoding="utf-8") as f:
         return [parse_line(line) for line in f.read().splitlines() if line and not line.startswith("#")]
+
+
+read_perf_stat_output = read_perf_stat_output_linux if sys.platform == "linux" else read_perf_stat_output_windows
 
 
 @dataclass(frozen=True, repr=False)
@@ -272,7 +297,12 @@ def collect_events(metric_instances: Iterable[MetricInstance], perf_options: Per
         else:
             perf_events_str = ",".join(["{%s}" % ",".join(e.perf_name(perf_options.use_event_names) for e in x) for x in scheduled_events if x])  # pylint: disable=consider-using-f-string
 
-        perf_command = [perf_options.perf_path, "stat", "-e", perf_events_str, "-o", perf_options.perf_output, "-x", PERF_SEPARATOR]
+        perf_command = [perf_options.perf_path, "stat", "-e", perf_events_str]
+        if sys.platform == "linux":
+            perf_command += ["-o", perf_options.perf_output, "-x", PERF_SEPARATOR]
+        else:
+            perf_command += ["-json", "--output", perf_options.perf_output]
+
         if perf_options.all_cpus:
             perf_command.append("-a")
         if perf_options.pids:
@@ -292,7 +322,7 @@ def collect_events(metric_instances: Iterable[MetricInstance], perf_options: Per
 
         def to_event_count(index: int, name: str, value: Optional[float], time: Optional[float]):
             event = flat_events[index % len(flat_events)]
-            assert name == event.perf_name(perf_options.use_event_names)
+            assert name == event.perf_name(perf_options.use_event_names) or name == event.perf_name(False)  # Note: event index always used on Windows
             return EventCount(event=event, value=value, time=time)
 
         perf_format = PerfStatFormat.INTERVAL if perf_options.interval else PerfStatFormat.NON_INTERVAL

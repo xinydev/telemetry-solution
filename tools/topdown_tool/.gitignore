@@ -5,4 +5,5 @@
 /.cache
 /perf.stat.txt
 /pytest.xml
+/wperf.json
 *.pyc

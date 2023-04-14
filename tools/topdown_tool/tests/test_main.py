@@ -1,3 +1,4 @@
+import argparse
 import math
 import os.path
 from pathlib import Path
@@ -6,7 +7,7 @@ from typing import List
 
 import pytest
 
-from topdown_tool.__main__ import COMBINED_STAGES, DEFAULT_ALL_STAGES, main, print_nested_metrics
+from topdown_tool.__main__ import COMBINED_STAGES, DEFAULT_ALL_STAGES, get_arg_parser, main, print_nested_metrics
 from topdown_tool.metric_data import AnyMetricInstance, MetricData, MetricInstanceValue
 
 TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), "data", "metric-output")
@@ -70,3 +71,21 @@ def test_main_invalid_args(args):
         main(DEFAULT_TEST_ARGS + shlex.split(args))
 
     assert e_info.value.code != 0
+
+
+def test_platform_arg_defaults():
+    """
+    Test that defaults specified to arguments are the same as what comes out when specifying no arguments.
+
+    An eample of where this is not the case is:
+    add_argument(..., default=None, nargs=argparse.REMAINDER)
+
+    This ensures we don't have unexpected default argument values, and helps keep PlatformArgumentParser behaviour is consistent with ArgumentParser.
+    """
+    parser = get_arg_parser()
+    args = parser.parse_args([])
+    for action in parser._actions:  # pylint: disable=protected-access
+        if action.default == argparse.SUPPRESS:
+            continue
+        assert action.dest in args
+        assert getattr(args, action.dest) == action.default
