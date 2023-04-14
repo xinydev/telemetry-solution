@@ -39,6 +39,7 @@ class PerfOptions:
     max_events: Optional[int] = None
     collect_by: CollectBy = CollectBy.METRIC
     use_event_names: bool = False
+    perf_path: str = "perf"
     perf_args: str = ""
     perf_output: str = "perf.stat.txt"
     interval: Optional[int] = None
@@ -271,7 +272,7 @@ def collect_events(metric_instances: Iterable[MetricInstance], perf_options: Per
         else:
             perf_events_str = ",".join(["{%s}" % ",".join(e.perf_name(perf_options.use_event_names) for e in x) for x in scheduled_events if x])  # pylint: disable=consider-using-f-string
 
-        perf_command = ["perf", "stat", "-e", perf_events_str, "-o", perf_options.perf_output, "-x", PERF_SEPARATOR]
+        perf_command = [perf_options.perf_path, "stat", "-e", perf_events_str, "-o", perf_options.perf_output, "-x", PERF_SEPARATOR]
         if perf_options.all_cpus:
             perf_command.append("-a")
         if perf_options.pids:
