@@ -250,7 +250,7 @@ def main(args=None):
     # Get CPU metric data
     cpu = args.cpu
     if not cpu:
-        cpu = cpu_mapping.get_cpu()
+        cpu = cpu_mapping.get_cpu(perf_path=args.perf_path)
         if not cpu:
             print("Could not detect CPU. Specify via --cpu", file=sys.stderr)
             sys.exit(1)
