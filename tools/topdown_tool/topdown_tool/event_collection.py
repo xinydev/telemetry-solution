@@ -9,7 +9,7 @@ import subprocess
 import sys
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Collection, Iterable, List, Optional, Set, Tuple
+from typing import Collection, Dict, Iterable, List, Optional, Set
 
 from .metric_data import Event, Group, Metric, MetricInstance
 
@@ -261,7 +261,7 @@ def collect_events(metric_instances: Iterable[MetricInstance], perf_options: Per
         print(f"Monitoring {perf_options.pids_display_string}. Hit Ctrl-C to stop.")
 
     # "Schedule" perf instances based on max_events.
-    timed_event_counts: List[Tuple[Optional[float], List[EventCount]]] = []
+    timed_event_counts: Dict[Optional[float], List[EventCount]] = {}
     for scheduled_events in schedule:
         flat_events = list(itertools.chain(*scheduled_events))  # Allows mapping of output to CollectionEvent
         # Pass duplicate events to Perf. Perf can remove them, and this makes it easier to map output back to CollectionEvents
@@ -309,6 +309,8 @@ def collect_events(metric_instances: Iterable[MetricInstance], perf_options: Per
 
             raise UncountedEventsError(set(e.event.event.name for e in uncounted_events))
 
-        timed_event_counts.append((event_counts[0].time, event_counts))
+        # Append event counts to the corresponding timed bucket
+        for time, counts_for_time in itertools.groupby(event_counts, key=lambda e: e.time):
+            timed_event_counts.setdefault(time, []).extend(counts_for_time)
 
     return timed_event_counts

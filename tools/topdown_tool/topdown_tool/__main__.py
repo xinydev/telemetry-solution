@@ -317,7 +317,7 @@ def main(args=None):
         sys.exit(1)
 
     timed_metric_values = []
-    for (time, event_counts) in stat_data:
+    for (time, event_counts) in stat_data.items():
         metric_values = calculate_metrics(event_counts, metric_instances)
         logging.debug("\n".join(f"{v.metric_instance.group.name}/{v.metric_instance.metric.name} = {v.value}" for v in metric_values))
 
