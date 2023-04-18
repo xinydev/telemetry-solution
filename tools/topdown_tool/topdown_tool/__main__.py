@@ -205,6 +205,10 @@ def get_arg_parser():
     output_group.add_argument("--csv", help="output file for metric CSV data")
     output_group.add_argument("-v", "--verbose", action="store_const", dest="loglevel", const=logging.INFO, help="enable verbose output")
     output_group.add_argument("--debug", action="store_const", dest="loglevel", const=logging.DEBUG, help="enable debug output")
+
+    # Debug option to generate dummy data without collect event data. This uses 0 for metric values.
+    parser.add_argument("--dummy-data", action="store_true", help=argparse.SUPPRESS)
+
     return parser
 
 
@@ -213,7 +217,7 @@ def get_level(instance: AnyMetricInstance, default_level=2):
     return getattr(instance, "level", default_level)
 
 
-def write_csv(timed_metric_values: List[Tuple[Optional[float], MetricInstanceValue]], filename: str):
+def write_csv(timed_metric_values: Iterable[Tuple[Optional[float], Iterable[MetricInstanceValue]]], filename: str):
     with open(filename, "w") as f:  # pylint: disable=unspecified-encoding
         writer = csv.writer(f)
         writer.writerow(["time", "level", "stage", "group", "metric", "value", "units"])
@@ -296,7 +300,8 @@ def main(args=None):
 
     try:
         perf_options = PerfOptions.from_args(args)
-        stat_data = collect_events(metric_instances, perf_options)
+        if not args.dummy_data:
+            stat_data = collect_events(metric_instances, perf_options)
     except GroupScheduleError as e:
         print(f'The "{e.group.title}" group contains {len(e.events)} unique events, but only {e.available_events} can be collected at once.\n\nChoose different groups/metrics or avoid collecting by group.', file=sys.stderr)
         sys.exit(1)
@@ -316,12 +321,16 @@ def main(args=None):
               f"You may be able to work-around this by avoiding multiplexing. e.g. by specifying --max-events={CPU_PMU_COUNTERS}.", file=sys.stderr)
         sys.exit(1)
 
-    timed_metric_values = []
-    for (time, event_counts) in stat_data.items():
-        metric_values = calculate_metrics(event_counts, metric_instances)
-        logging.debug("\n".join(f"{v.metric_instance.group.name}/{v.metric_instance.metric.name} = {v.value}" for v in metric_values))
+    if args.dummy_data:
+        metric_values = [MetricInstanceValue(mi) for mi in metric_instances]
+        timed_metric_values = [(None, metric_values)]
+    else:
+        timed_metric_values = []
+        for (time, event_counts) in stat_data.items():
+            metric_values = calculate_metrics(event_counts, metric_instances)
+            logging.debug("\n".join(f"{v.metric_instance.group.name}/{v.metric_instance.metric.name} = {v.value}" for v in metric_values))
 
-        timed_metric_values.append((time, metric_values))
+            timed_metric_values.append((time, metric_values))
 
     if args.interval:
         print(f'See "{args.csv}" for interval data.')
