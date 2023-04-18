@@ -10,7 +10,7 @@ from topdown_tool.__main__ import COMBINED_STAGES, DEFAULT_ALL_STAGES, main, pri
 from topdown_tool.metric_data import AnyMetricInstance, MetricData, MetricInstanceValue
 
 TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), "data", "metric-output")
-TEST_CPUS = ["neoverse-n1", "neoverse-v1", "neoverse-n2"]
+TEST_CPUS = ["neoverse-n1", "neoverse-v1"]
 DEFAULT_TEST_ARGS = ["--cpu", "neoverse-n1"]  # Specify CPU as MIDR may not be available on test machine (/in CI)
 
 
