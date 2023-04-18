@@ -50,7 +50,7 @@ Backend Bound......................... 0.00% slots
   Load Operations Percentage.......... 0.00% operations
   Store Operations Percentage......... 0.00% operations
   Integer Operations Percentage....... 0.00% operations
-  SIMD Operations Percentage.......... 0.00% operations
+  Advanced SIMD Operations Percentage. 0.00% operations
   Floating Point Operations Percentage 0.00% operations
   Branch Operations Percentage........ 0.00% operations
   Crypto Operations Percentage........ 0.00% operations
@@ -58,7 +58,7 @@ Retiring.............................. 0.00% slots
   Load Operations Percentage.......... 0.00% operations
   Store Operations Percentage......... 0.00% operations
   Integer Operations Percentage....... 0.00% operations
-  SIMD Operations Percentage.......... 0.00% operations
+  Advanced SIMD Operations Percentage. 0.00% operations
   Floating Point Operations Percentage 0.00% operations
   Branch Operations Percentage........ 0.00% operations
   Crypto Operations Percentage........ 0.00% operations

@@ -50,7 +50,7 @@ Backend Bound
   Load Operations Percentage
   Store Operations Percentage
   Integer Operations Percentage
-  SIMD Operations Percentage
+  Advanced SIMD Operations Percentage
   Floating Point Operations Percentage
   Branch Operations Percentage
   Crypto Operations Percentage
@@ -58,7 +58,7 @@ Retiring
   Load Operations Percentage
   Store Operations Percentage
   Integer Operations Percentage
-  SIMD Operations Percentage
+  Advanced SIMD Operations Percentage
   Floating Point Operations Percentage
   Branch Operations Percentage
   Crypto Operations Percentage

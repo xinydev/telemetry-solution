@@ -94,5 +94,5 @@ Crypto Operations Percentage
 Integer Operations Percentage
 Load Operations Percentage
 Floating Point Operations Percentage
-SIMD Operations Percentage
+Advanced SIMD Operations Percentage
 Store Operations Percentage
