@@ -173,7 +173,9 @@ def mrs_metrics_to_perf_metrics(mrs_metrics: List[mrs_data.MrsMetric]):
         """
         Create dict in Perf format from dict in MRS format
         """
-        group = ";".join(metric.groups or [])
+        # TopdownL1 is used in perf instead of Topdown_L1
+        groups = [g.replace("Topdown_L", "TopdownL") for g in metric.groups or []]
+        group = ";".join(groups)
 
         # Use full description instead of title in brief description because
         # title just repeats the name without underscores.

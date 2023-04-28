@@ -56,10 +56,6 @@ def to_mrs_event(cls: Type, dict: Dict):
     if "code" in values and isinstance(values["code"], str):
         values["code"] = int(values["code"], 0)  # 0 to guess base from prefix
 
-    # TopdownL1 is used in perf instead of Topdown_L1
-    if "MetricGroup" in values:
-        values["MetricGroup"] = values["MetricGroup"].replace("Topdown_L", "TopdownL")
-
     return cls(**values)
 
 
