@@ -3,13 +3,13 @@ Topdown Tool
 
 Tool to collect and compute metric data for Arm Neoverse CPUs, including metrics for Topdown performance analysis.
 
-Event data is collected via [`perf stat` on Linux](https://perf.wiki.kernel.org/index.php/Main_Page), or [Windows Perf](https://gitlab.com/Linaro/WindowsPerf/windowsperf) on Microsoft Windows.
+Event data is collected via [`perf stat` on Linux](https://perf.wiki.kernel.org/index.php/Main_Page), or [WindowsPerf](https://gitlab.com/Linaro/WindowsPerf/windowsperf) on Microsoft Windows.
 
 Metrics are then calculated using information stored in per-CPU JSON files.
 
 Requirements
 ============
-* A working [Linux Perf](https://perf.wiki.kernel.org/index.php/Main_Page) or [Windows Perf](https://gitlab.com/Linaro/WindowsPerf/windowsperf) (2.4.0) setup.
+* A working [Linux Perf](https://perf.wiki.kernel.org/index.php/Main_Page) or [WindowsPerf](https://gitlab.com/Linaro/WindowsPerf/windowsperf) (2.4.0) setup.
 * Python 3.7 or later.
 
 Install
@@ -30,7 +30,9 @@ pip3 install --user .
 Usage
 =====
 
-First, install and configure [Linux Perf](https://perf.wiki.kernel.org/index.php/Main_Page) or [Windows Perf](https://gitlab.com/Linaro/WindowsPerf/windowsperf).
+First, install and configure [Linux Perf](https://perf.wiki.kernel.org/index.php/Main_Page) or [WindowsPerf](https://gitlab.com/Linaro/WindowsPerf/windowsperf).
+
+Please read the [known issues section](#known-issues) below.
 
 Running from a package install
 ------------------------------
@@ -282,3 +284,30 @@ Other options
 -------------
 
 See `topdown-tool --help` for full usage information.
+
+Known Issues
+============
+Issue collecting "CPU_CYCLES" event on AWS/EC2 instances using a hypervisor
+---------------------------------------------------------------------------
+For Amazon Elastic Compute Cloud instances using a hypervisor (i.e. non-metal instances), Linux Perf may report either 0 or a reduced value for the "CPU_CYCLES" event.
+
+This is triggered when certain event combinations are requested, and affects many of the metrics used by this tool, leading to errors or bogus data.
+
+This issue is being addressed by Amazon Web Services.
+
+### Possible workarounds:
+* Use a metal instance.
+* Restrict the number of simultaneous events requested by the tool.  
+Specifying `--max-events=6` should avoid the problematic event combinations, but requires that the target application be running multiple times. (This also prevents some modes such as system-wide profiling from being used.)
+
+Reduced PMU counter availability on smaller AWS/EC2 instance types
+------------------------------------------------------------------
+When running instances smaller than a full socket on Amazon's Elastic Compute Cloud, not all hardware event counters are available to the end user.
+
+This results in fewer events being monitored simultaneously, which can increase negative effects associated with counter multiplexing.
+
+In some cases, this can prevent all events within a single metric from being scheduled together, which will trigger an error.
+
+### Possible workarounds:
+* Use a larger instance size. Ideally a full socket or a metal instance.
+* It is possible to schedule events within a metric independently by specifying `--collect-by=none`, although note that this can lead to unusual/invalid data for all but the most homogenous workloads.
