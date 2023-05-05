@@ -2,8 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2022-2023 Arm Limited
 
-# pyright: ignore[reportShadowedImports]
-
 import sys
 
 if sys.version_info < (3, 7):
@@ -351,7 +349,13 @@ def main(args=None):
         sys.exit(1)
     except UncountedEventsError as e:
         print(("The following events could not be counted:\n  %s\n\n"
-               "If you program completes very quickly, try running one that takes longer to complete." % "\n  ".join(e.uncounted_events)), file=sys.stderr)
+               "This can be caused by insufficient time to collect information on all events.\n" % "\n  ".join(e.uncounted_events)), file=sys.stderr)
+        if perf_options.interval:
+            print("Try extending the interval period, or reducing the number of collected events.", file=sys.stderr)
+        elif perf_options.command:
+            print("Try running a longer running program, or reducing the number of collected events.", file=sys.stderr)
+        else:
+            print("Try collecting more output, or reducing the number of events collected.", file=sys.stderr)
         sys.exit(1)
     except ZeroCyclesError:
         print(f"A cycle count of zero was detected while collecting events. This likely indicates an issue with Linux Perf's ability to correctly count PMU events.\n\n"
