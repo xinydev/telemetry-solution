@@ -1,7 +1,7 @@
 {
     "_type": "PMU_Specification",
     "document": {
-        "timestamp": "28 Mar 07:29:07 2023",
+        "timestamp": "02 Jun 15:51:07 2023",
         "copyright": "Copyright 2022-2023 Arm Ltd.",
         "license": "Apache-2.0",
         "description": "Telemetry Specification (PMU Events, Metrics and Methodology) for Neoverse V1 processor"
@@ -14,7 +14,7 @@
         "implementer": "0x41",
         "architecture": "armv8.4",
         "pmu_architecture": "pmu_v3",
-        "num_slots": 5,
+        "num_slots": 8,
         "num_bus_slots": 0
     },
     "events": {
@@ -1691,7 +1691,7 @@
         "dtlb_walk_ratio": {
             "title": "DTLB Walk Ratio",
             "formula": "(DTLB_WALK / L1D_TLB)",
-            "description": "This metric measures the ratio of instruction TLB Walks to the total number of data TLB accesses. This gives an indication of the effectiveness of the data TLB accesses.",
+            "description": "This metric measures the ratio of data TLB Walks to the total number of data TLB accesses. This gives an indication of the effectiveness of the data TLB accesses.",
             "units": "per TLB access",
             "events": [
                 "DTLB_WALK",
@@ -2134,6 +2134,14 @@
                     "VFP_SPEC"
                 ]
             },
+            "FP_Operation": {
+                "title": "FP OPERATION",
+                "description": "Speculatively exected floating-point events",
+                "events": [
+                    "FP_FIXED_OPS_SPEC",
+                    "FP_SCALE_OPS_SPEC"
+                ]
+            },
             "Stall": {
                 "title": "STALL",
                 "description": "Stall related events",
@@ -2181,8 +2189,6 @@
                 "title": "SVE",
                 "description": "SVE related events",
                 "events": [
-                    "FP_FIXED_OPS_SPEC",
-                    "FP_SCALE_OPS_SPEC",
                     "SVE_INST_SPEC",
                     "SVE_LDFF_FAULT_SPEC",
                     "SVE_LDFF_SPEC",

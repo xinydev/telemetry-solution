@@ -1,7 +1,7 @@
 {
     "_type": "PMU_Specification",
     "document": {
-        "timestamp": "06 Apr 10:23:43 2023",
+        "timestamp": "02 Jun 15:51:04 2023",
         "copyright": "Copyright 2022-2023 Arm Ltd.",
         "license": "Apache-2.0",
         "description": "Telemetry Specification (PMU Events, Metrics and Methodology) for Neoverse N2 processor"
@@ -1482,6 +1482,186 @@
             "architectural": false,
             "impdef": false
         },
+        "TRB_WRAP": {
+            "code": "0x400C",
+            "title": "Trace buffer current write pointer wrapped",
+            "description": "This event is generated each time the current write pointer is wrapped to the base pointer.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": true,
+            "impdef": false
+        },
+        "TRCEXTOUT0": {
+            "code": "0x4010",
+            "title": "Trace unit external output 0",
+            "description": "This event is generated each time an event is signaled by ETE external event 0.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "TRCEXTOUT1": {
+            "code": "0x4011",
+            "title": "Trace unit external output 1",
+            "description": "This event is generated each time an event is signaled by ETE external event 1.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "TRCEXTOUT2": {
+            "code": "0x4012",
+            "title": "Trace unit external output 2",
+            "description": "This event is generated each time an event is signaled by ETE external event 2.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "TRCEXTOUT3": {
+            "code": "0x4013",
+            "title": "Trace unit external output 3",
+            "description": "This event is generated each time an event is signaled by ETE external event 3.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "CTI_TRIGOUT4": {
+            "code": "0x4018",
+            "title": "Cross-trigger Interface output trigger 4",
+            "description": "This event is generated each time an event is signaled on CTI output trigger 4.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "CTI_TRIGOUT5": {
+            "code": "0x4019",
+            "title": "Cross-trigger Interface output trigger 5",
+            "description": "This event is generated each time an event is signaled on CTI output trigger 5.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "CTI_TRIGOUT6": {
+            "code": "0x401A",
+            "title": "Cross-trigger Interface output trigger 6",
+            "description": "This event is generated each time an event is signaled on CTI output trigger 6.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "CTI_TRIGOUT7": {
+            "code": "0x401B",
+            "title": "Cross-trigger Interface output trigger 7",
+            "description": "This event is generated each time an event is signaled on CTI output trigger 7.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "LDST_ALIGN_LAT": {
+            "code": "0x4020",
+            "title": "Access with additional latency from alignment",
+            "description": "Counts the number of memory read and write accesses in a cycle that incurred additional latency, due to the alignment of the address and the size of data being accessed, which results in store crossing a single cache line.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "LD_ALIGN_LAT": {
+            "code": "0x4021",
+            "title": "Load with additional latency from alignment",
+            "description": "Counts the number of memory read accesses in a cycle that incurred additional latency, due to the alignment of the address and size of data being accessed, which results in load crossing a single cache line.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "ST_ALIGN_LAT": {
+            "code": "0x4022",
+            "title": "Store with additional latency from alignment",
+            "description": "Counts the number of memory write access in a cycle that incurred additional latency, due to the alignment of the address and size of data being accessed incurred additional latency.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "MEM_ACCESS_CHECKED": {
+            "code": "0x4024",
+            "title": "Checked data memory access",
+            "description": "Counts the number of memory read and write accesses in a cycle that that are tag checked by the Memory Tagging Extension (MTE).",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "MEM_ACCESS_CHECKED_RD": {
+            "code": "0x4025",
+            "title": "Checked data memory access, read",
+            "description": "Counts the number of memory read accesses in a cycle that are tag checked by the Memory Tagging Extension (MTE).",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "MEM_ACCESS_CHECKED_WR": {
+            "code": "0x4026",
+            "title": "Checked data memory access, write",
+            "description": "Counts the number of memory write accesses in a cycle that is tag checked by the Memory Tagging Extension (MTE).",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
         "ASE_INST_SPEC": {
             "code": "0x8005",
             "title": "Operation speculatively executed, Advanced SIMD",
@@ -1498,6 +1678,42 @@
             "code": "0x8006",
             "title": "Operation speculatively executed, SVE, including load and store",
             "description": "Counts speculatively executed operations that are SVE operations.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "FP_HP_SPEC": {
+            "code": "0x8014",
+            "title": "Floating-point operation speculatively executed, half precision",
+            "description": "Counts speculatively executed half precision floating point operations.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "FP_SP_SPEC": {
+            "code": "0x8018",
+            "title": "Floating-point operation speculatively executed, single precision",
+            "description": "Counts speculatively executed single precision floating point operations.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "FP_DP_SPEC": {
+            "code": "0x801C",
+            "title": "Floating-point operation speculatively executed, double precision",
+            "description": "Counts speculatively executed double precision floating point operations.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -1554,6 +1770,18 @@
             "architectural": false,
             "impdef": false
         },
+        "SVE_PRED_NOT_FULL_SPEC": {
+            "code": "0x8079",
+            "title": "SVE predicated operations speculatively executed with no active or partially active predicates",
+            "description": "Counts speculatively executed predicated SVE operations with at least one non active predicate elements.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
         "SVE_LDFF_SPEC": {
             "code": "0x80BC",
             "title": "Operation speculatively executed, SVE first-fault load",
@@ -1594,6 +1822,54 @@
             "code": "0x80C1",
             "title": "Non-scalable floating-point element ALU operations speculatively executed",
             "description": "Counts speculatively executed non-scalable single precision floating point operations.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "ASE_SVE_INT8_SPEC": {
+            "code": "0x80E3",
+            "title": "Integer operation speculatively executed, Advanced SIMD or SVE 8-bit",
+            "description": "Counts speculatively executed Advanced SIMD or SVE integer operations with the largest data type an 8-bit integer.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "ASE_SVE_INT16_SPEC": {
+            "code": "0x80E7",
+            "title": "Integer operation speculatively executed, Advanced SIMD or SVE 16-bit",
+            "description": "Counts speculatively executed Advanced SIMD or SVE integer operations with the largest data type a 16-bit integer.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "ASE_SVE_INT32_SPEC": {
+            "code": "0x80EB",
+            "title": "Integer operation speculatively executed, Advanced SIMD or SVE 32-bit",
+            "description": "Counts speculatively executed Advanced SIMD or SVE integer operations with the largest data type a 32-bit integer.",
+            "common": true,
+            "accesses": [
+                "PMU",
+                "ETE"
+            ],
+            "architectural": false,
+            "impdef": false
+        },
+        "ASE_SVE_INT64_SPEC": {
+            "code": "0x80EF",
+            "title": "Integer operation speculatively executed, Advanced SIMD or SVE 64-bit",
+            "description": "Counts speculatively executed Advanced SIMD or SVE integer operations with the largest data type a 64-bit integer.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -1692,7 +1968,7 @@
         "dtlb_walk_ratio": {
             "title": "DTLB Walk Ratio",
             "formula": "(DTLB_WALK / L1D_TLB)",
-            "description": "This metric measures the ratio of instruction TLB Walks to the total number of data TLB accesses. This gives an indication of the effectiveness of the data TLB accesses.",
+            "description": "This metric measures the ratio of data TLB Walks to the total number of data TLB accesses. This gives an indication of the effectiveness of the data TLB accesses.",
             "units": "per TLB access",
             "events": [
                 "DTLB_WALK",
@@ -2072,11 +2348,17 @@
                 "title": "MEMORY",
                 "description": "Memory system related events",
                 "events": [
+                    "LDST_ALIGN_LAT",
+                    "LD_ALIGN_LAT",
                     "MEMORY_ERROR",
                     "MEM_ACCESS",
+                    "MEM_ACCESS_CHECKED",
                     "MEM_ACCESS_RD",
+                    "MEM_ACCESS_CHECKED_RD",
                     "MEM_ACCESS_WR",
-                    "REMOTE_ACCESS"
+                    "MEM_ACCESS_CHECKED_WR",
+                    "REMOTE_ACCESS",
+                    "ST_ALIGN_LAT"
                 ]
             },
             "Retired": {
@@ -2135,6 +2417,17 @@
                     "VFP_SPEC"
                 ]
             },
+            "FP_Operation": {
+                "title": "FP OPERATION",
+                "description": "Speculatively exected floating-point events",
+                "events": [
+                    "FP_DP_SPEC",
+                    "FP_FIXED_OPS_SPEC",
+                    "FP_HP_SPEC",
+                    "FP_SCALE_OPS_SPEC",
+                    "FP_SP_SPEC"
+                ]
+            },
             "Stall": {
                 "title": "STALL",
                 "description": "Stall related events",
@@ -2182,15 +2475,39 @@
                 "title": "SVE",
                 "description": "SVE related events",
                 "events": [
-                    "FP_FIXED_OPS_SPEC",
-                    "FP_SCALE_OPS_SPEC",
+                    "ASE_SVE_INT16_SPEC",
+                    "ASE_SVE_INT32_SPEC",
+                    "ASE_SVE_INT64_SPEC",
+                    "ASE_SVE_INT8_SPEC",
                     "SVE_INST_SPEC",
                     "SVE_LDFF_FAULT_SPEC",
                     "SVE_LDFF_SPEC",
                     "SVE_PRED_EMPTY_SPEC",
                     "SVE_PRED_FULL_SPEC",
+                    "SVE_PRED_NOT_FULL_SPEC",
                     "SVE_PRED_PARTIAL_SPEC",
                     "SVE_PRED_SPEC"
+                ]
+            },
+            "Non_PMU": {
+                "title": "NON_PMU",
+                "description": "Non-PMU related events",
+                "events": [
+                    "TRB_WRAP"
+                ]
+            },
+            "TRCEXT": {
+                "title": "TRCEXT",
+                "description": "External trace related events",
+                "events": [
+                    "CTI_TRIGOUT4",
+                    "CTI_TRIGOUT5",
+                    "CTI_TRIGOUT6",
+                    "CTI_TRIGOUT7",
+                    "TRCEXTOUT0",
+                    "TRCEXTOUT1",
+                    "TRCEXTOUT2",
+                    "TRCEXTOUT3"
                 ]
             }
         },
