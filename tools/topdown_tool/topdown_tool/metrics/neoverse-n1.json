@@ -1,8 +1,10 @@
 {
     "_type": "PMU_Specification",
     "document": {
-        "timestamp": "28 Mar 07:29:02 2023",
+        "timestamp": "03 Jul 16:14:00 2023",
         "copyright": "Copyright 2022-2023 Arm Ltd.",
+        "confidential": false,
+        "quality": "Release",
         "license": "Apache-2.0",
         "description": "Telemetry Specification (PMU Events, Metrics and Methodology) for Neoverse N1 processor"
     },
@@ -1404,7 +1406,7 @@
         "dtlb_walk_ratio": {
             "title": "DTLB Walk Ratio",
             "formula": "(DTLB_WALK / L1D_TLB)",
-            "description": "This metric measures the ratio of instruction TLB Walks to the total number of data TLB accesses. This gives an indication of the effectiveness of the data TLB accesses.",
+            "description": "This metric measures the ratio of data TLB Walks to the total number of data TLB accesses. This gives an indication of the effectiveness of the data TLB accesses.",
             "units": "per TLB access",
             "events": [
                 "DTLB_WALK",
