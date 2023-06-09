@@ -1,7 +1,7 @@
 {
     "_type": "PMU_Specification",
     "document": {
-        "timestamp": "02 Jun 15:51:05 2023",
+        "timestamp": "09 Jun 14:53:12 2023",
         "copyright": "Copyright 2022-2023 Arm Ltd.",
         "license": "Apache-2.0",
         "description": "Telemetry Specification (PMU Events, Metrics and Methodology) for Neoverse N2 processor"
@@ -2489,21 +2489,15 @@
                     "SVE_PRED_SPEC"
                 ]
             },
-            "Non_PMU": {
-                "title": "NON_PMU",
-                "description": "Non-PMU related events",
-                "events": [
-                    "TRB_WRAP"
-                ]
-            },
-            "TRCEXT": {
-                "title": "TRCEXT",
-                "description": "External trace related events",
+            "TRACE": {
+                "title": "TRACE",
+                "description": "Trace related events",
                 "events": [
                     "CTI_TRIGOUT4",
                     "CTI_TRIGOUT5",
                     "CTI_TRIGOUT6",
                     "CTI_TRIGOUT7",
+                    "TRB_WRAP",
                     "TRCEXTOUT0",
                     "TRCEXTOUT1",
                     "TRCEXTOUT2",
