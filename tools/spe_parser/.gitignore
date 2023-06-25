@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+.mypy_cache/
+.tox/
+.coverage
+
+# IDE
+.idea/
+.vscode/
+
+# Automatically downloaded files during test
+tests/testdata/
