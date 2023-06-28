@@ -17,3 +17,19 @@ The categories of workloads and their respective list of micro-benchmarks are as
 - UStress is currently verified with **gcc-10.3** on **Neoverse-V1** and **N1**.
 - The source code is sensitive to compiler optimization. Different compilers (and versions) may generate code with radically different behaviour.
 - To support new micro-architecture, add related CPU configurations to *cpuinfo.h* and flag to *Makefile*.
+
+## USAGE
+
+* Use optional parameter `<multiplier>` to extend micro benchmark execution time.
+  * For example `<benchmark_name> 2.5` command will extend execution time 2.5 times.
+* Use `<benchmark_name> --help` for usage message.
+
+## WOA BUILDS
+
+**Makefile** supports LLVM `target=arm64-pc-windows-msvc` build. Users can generate micro benchmarks from source code.
+
+Cross build: Users may want to open MSVC cross environment on their x64 machine with `vcvarsx86_arm64.bat`. **Makefile** supporting _WIN32 builds is tested in this environment.
+
+### Limitations
+
+For _WIN32 configuration two micro-benchmarks are explicitly disabled: `l1i_cache_workload` and `memcpy_workload`. This is due to compilation errors.

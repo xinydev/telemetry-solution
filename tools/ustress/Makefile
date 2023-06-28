@@ -16,12 +16,33 @@ CPUINFO = NONE
 endif
 CFLAGS += -DCPU_$(CPUINFO)
 
+ifeq ($(OS),Windows_NT)
+CC=clang
+CFLAGS += --target=arm64-pc-windows-msvc
+LINKER_FLAGS =
+
+TMPVAR := $(TARGETS)
+TARGETS = $(filter-out l1i_cache_workload, $(TMPVAR))
+
+TMPVAR := $(TARGETS)
+TARGETS = $(filter-out memcpy_workload, $(TMPVAR))
+
+TARGETS_PDB = $(TARGETS:=.pdb)
+TARGETS_ILK = $(TARGETS:=.ilk)
+TARGETS_EXE = $(TARGETS:=.exe)
+else
+TARGETS_EXE = $(TARGETS)
+endif
+
 .PHONY: clean all
 
-all: $(TARGETS)
+all: $(TARGETS_EXE)
 
 clean:
-	rm -f $(TARGETS)
+	rm -f $(TARGETS_EXE) $(TARGETS_PDB) $(TARGETS_ILK)
 
 %: %.c $(HEADERS)
+	$(CC) $(CFLAGS) -o $@ $< $(LINKER_FLAGS)
+
+%.exe: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -o $@ $< $(LINKER_FLAGS)

@@ -7,6 +7,7 @@
 #ifndef _MAIN_H
 #define _MAIN_H
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -52,8 +53,35 @@ long runs_from_exec(const char *exec) {
     return 0;
 }
 
+void usage(const char *exec) {
+    for (int i = 0; i < sizeof(exec_runs)/sizeof(exec_runs[0]); ++i)
+        if (strstr(exec, exec_runs[i].exec)) {
+            printf("%s (runs=%ld) \n", exec, exec_runs[i].runs);
+            break;
+        }
+    printf("usage: \n"
+           "\t %s [MULTIPLIER] \n"
+           "\t %s [--help] \n\n"
+           "\t MULTIPLIER \t OPTIONAL, benchmark execution time multiplier (default 1.0)", exec, exec);
+}
+
 int main(int argc, char *argv[]) {
   long runs = runs_from_exec(argv[0]);
+
+  if (argc == 2) {
+      if (strcmp(argv[1], "--help") == 0) {
+          usage(argv[0]);
+          exit(EXIT_SUCCESS);
+      }
+      else
+      {
+          double multiplier = strtod(argv[1], NULL);
+          if (multiplier < 0)
+              exit(EXIT_FAILURE);
+          runs = (long)(runs * multiplier);
+      }
+  }
+
   stress(runs);
 
   exit(EXIT_SUCCESS);

@@ -21,3 +21,8 @@ memcpy_workload
 mul32_workload
 mul64_workload
 store_buffer_full_workload
+
+# Ignore _WIN32 intermediate build files
+*.exe
+*.pdb
+*.ilk

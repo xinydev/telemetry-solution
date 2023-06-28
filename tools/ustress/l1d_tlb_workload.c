@@ -19,6 +19,11 @@
 #include "cpuinfo.h"
 #include "main.h"
 
+#ifdef _WIN32
+#define aligned_alloc _aligned_malloc
+#define free  _aligned_free
+#endif
+
 static void stress(long runs) {
   // #pages = #TLB-entries * 4
   int maxSize = L1D_TLB_SIZE * 4;
