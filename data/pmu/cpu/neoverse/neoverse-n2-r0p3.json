@@ -1,8 +1,10 @@
 {
     "_type": "PMU_Specification",
     "document": {
-        "timestamp": "09 Jun 14:53:12 2023",
+        "timestamp": "03 Jul 16:14:03 2023",
         "copyright": "Copyright 2022-2023 Arm Ltd.",
+        "confidential": false,
+        "quality": "Release",
         "license": "Apache-2.0",
         "description": "Telemetry Specification (PMU Events, Metrics and Methodology) for Neoverse N2 processor"
     },
@@ -1629,7 +1631,7 @@
         "MEM_ACCESS_CHECKED": {
             "code": "0x4024",
             "title": "Checked data memory access",
-            "description": "Counts the number of memory read and write accesses in a cycle that that are tag checked by the Memory Tagging Extension (MTE).",
+            "description": "Counts the number of memory read and write accesses in a cycle that are tag checked by the Memory Tagging Extension (MTE).",
             "common": true,
             "accesses": [
                 "PMU",
@@ -2419,7 +2421,7 @@
             },
             "FP_Operation": {
                 "title": "FP OPERATION",
-                "description": "Speculatively exected floating-point events",
+                "description": "Speculatively executed floating-point events",
                 "events": [
                     "FP_DP_SPEC",
                     "FP_FIXED_OPS_SPEC",
