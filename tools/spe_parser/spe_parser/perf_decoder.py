@@ -9,7 +9,8 @@
 #   https://github.com/torvalds/linux/blob/master/tools/perf/Documentation/perf.data-file-format.txt
 
 import logging
-from typing import Dict, List
+from functools import lru_cache
+from typing import Any, Dict, List, Set, Tuple
 
 from construct import (
     Aligned,
@@ -135,8 +136,11 @@ perf_event = Struct(
     "type"
     / Enum(
         Int32un,
-        # We only need to focus on AUXTRACE events,
-        # as SPE records are stored after AUXTRACE events.
+        # MMAP/MMAP2 records are used to extract the base address and file address
+        # of all the loaded binary/library/kernel modules
+        MMAP=1,
+        MMAP2=10,
+        # SPE records are stored after AUXTRACE events.
         AUXTRACE=71,
     ),
     "misc" / Int16un,
@@ -155,7 +159,33 @@ perf_event = Struct(
                 "cpu" / Int32un,
                 "reserved__" / Int32un,
                 "realData" / Padding(lambda this: this.auxsize),  # SPE records
-            )
+            ),
+            "MMAP": Struct(
+                "pid" / Int32un,
+                "tid" / Int32un,
+                "addr" / Int64un,
+                "len" / Int64un,
+                "pgoff" / Int64un,
+                "filename" / CString("utf8"),
+                "end2" / Tell,
+                Padding(lambda this: this._.size - (this.end2 - this._.start)),
+            ),
+            "MMAP2": Struct(
+                "pid" / Int32un,
+                "tid" / Int32un,
+                "addr" / Int64un,
+                "len" / Int64un,
+                "pgoff" / Int64un,
+                "maj" / Int32un,
+                "min" / Int32un,
+                "ino" / Int64un,
+                "ino_generation" / Int64un,
+                "prot" / Int32un,
+                "flags" / Int32un,
+                "filename" / CString("utf8"),
+                "end2" / Tell,
+                Padding(lambda this: this._.size - (this.end2 - this._.start)),
+            ),
         },
         Padding(lambda this: this.size - (this.end - this.start)),
     ),
@@ -179,6 +209,11 @@ perf_data = Struct(
 )
 
 
+@lru_cache(maxsize=2)
+def __parse_perf_data(perf_path: str) -> Any:
+    return perf_data.parse_file(perf_path)
+
+
 def get_spe_records_regions(perf_path: str) -> List[Dict]:
     """
     The SPE records have been stored in different locations within
@@ -191,7 +226,7 @@ def get_spe_records_regions(perf_path: str) -> List[Dict]:
     used to parse the SPE binary content into a readable version
     """
     spe_regions = []
-    parsed_data = perf_data.parse_file(perf_path)
+    parsed_data = __parse_perf_data(perf_path)
 
     # log some metadata in perf.data
     logging.debug(f"size: {parsed_data.header.data.size}")
@@ -213,3 +248,12 @@ def get_spe_records_regions(perf_path: str) -> List[Dict]:
                 }
             )
     return spe_regions
+
+
+def get_mmap_records(perf_path) -> Set[Tuple[str, int]]:
+    mmap_records = set()
+    parsed_data = __parse_perf_data(perf_path)
+    for evt in parsed_data.event:
+        if evt.type == "MMAP" or evt.type == "MMAP2":
+            mmap_records.add((evt.data.filename, evt.data.addr))
+    return mmap_records

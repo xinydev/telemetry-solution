@@ -6,7 +6,7 @@
 import json
 from unittest import TestCase
 
-from spe_parser.perf_decoder import get_spe_records_regions
+from spe_parser.perf_decoder import get_mmap_records, get_spe_records_regions
 from spe_parser.testutils import TESTDATA, cd, download_file
 
 
@@ -41,3 +41,8 @@ class TestPerfDecoder(TestCase):
             region_from_perfdata = len(get_spe_records_regions("perf.data"))
             region_from_perfraw = get_spe_regions_from_raw("perf.raw")
             self.assertEqual(region_from_perfdata, region_from_perfraw)
+
+    def test_decode_mmap(self) -> None:
+        with cd(TESTDATA):
+            mmap_records = get_mmap_records("perf.data")
+            self.assertEqual(118, len(mmap_records))

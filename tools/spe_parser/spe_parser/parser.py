@@ -22,13 +22,14 @@ from pandas import DataFrame
 from spe_parser.perf_decoder import get_spe_records_regions
 from spe_parser.schema import BRANCH_COLS, LDST_COLS, get_schema_renderer
 from spe_parser.spe_decoder import get_packets
+from spe_parser.symbols import init_search_symbols, search_symbols_by_addr_batch
 
 RE_CPU = re.compile(r"\bcpu:\s+(\d+)")
 
 
 def args_init():
     parser = argparse.ArgumentParser(
-        description="Parse SPE metrics from perf records.",
+        description="Parse SPE metrics from perf records",
         add_help=False,
     )
 
@@ -84,6 +85,14 @@ def args_init():
         help=f"number of threads used, defaults to {cpu_cnt}",
     )
     parser.add_argument(
+        "-s",
+        "--symbols",
+        dest="parse_symbols",
+        action="store_true",
+        default=False,
+        help="add symbol information to the output",
+    )
+    parser.add_argument(
         "-v",
         "--version",
         action="version",
@@ -95,7 +104,7 @@ def args_init():
         dest="help",
         action="store_true",
         default=False,
-        help="Show this help message and output file schema.",
+        help="Show this help message and output file schema",
     )
 
     try:
@@ -117,7 +126,16 @@ def args_init():
 def parse_single_region(task: Tuple) -> None:
     branch_recs = []
     ldst_recs = []
-    file_path, parse_br, parse_ldst, region, idx, temp_folder = task
+    (
+        file_path,
+        parse_br,
+        parse_ldst,
+        parse_symbols,
+        region,
+        idx,
+        temp_folder,
+        concurrency,
+    ) = task
     with open(file_path, "rb") as f:
         f.seek(region["offset"])
         spe_f = BytesIO(f.read(region["size"]))
@@ -173,6 +191,10 @@ def parse_single_region(task: Tuple) -> None:
             ldst_recs,
             columns=LDST_COLS,
         )
+        if parse_symbols:
+            ldst_df["symbol"] = search_symbols_by_addr_batch(
+                file_path, ldst_df["pc"].apply(int, base=16).tolist(), concurrency
+            )
         ldst_df.to_parquet(
             os.path.join(temp_folder, f"{idx}-ldst.parquet"),
             index=False,
@@ -184,6 +206,10 @@ def parse_single_region(task: Tuple) -> None:
             branch_recs,
             columns=BRANCH_COLS,
         )
+        if parse_symbols:
+            br_df["symbol"] = search_symbols_by_addr_batch(
+                file_path, br_df["pc"].apply(int, base=16).tolist(), concurrency
+            )
         br_df.to_parquet(
             os.path.join(temp_folder, f"{idx}-br.parquet"),
             index=False,
@@ -192,7 +218,11 @@ def parse_single_region(task: Tuple) -> None:
 
 
 def parse(
-    file_path: str, parse_br: bool, parse_ldst: bool, concurrency: int
+    file_path: str,
+    parse_br: bool,
+    parse_ldst: bool,
+    parse_symbols: bool,
+    concurrency: int,
 ) -> Tuple[int, str]:
     """
     parse() function is used to parse the perf.data and generate a lots
@@ -202,12 +232,18 @@ def parse(
         file_path (str): perf.data file path
         parse_br (bool): whether to parse branch instructions
         parse_ldst (bool): whether to parse load/store instructions
+        parse_symbols (bool): whether to add symbol information to the output
         concurrency (int): number of threads used
 
     Returns:
         Tuple[int, str]: number of SPE records and temporary folder path
         for intermediate files(parquet)
     """
+    if parse_symbols:
+        # cache all the data structures used for symbol search in main process
+        # for better performance
+        init_search_symbols(file_path, concurrency)
+
     # pre-creating a pool reduces the amount of memory that needs to be
     # copied from the parent process in the child processes
     pool = multiprocessing.Pool(concurrency)
@@ -235,21 +271,32 @@ def parse(
     # In fact, processing them in a random order can be more efficient
     # and reduce the overhead needed to ensure the order.
     try:
-        pool.imap_unordered(
+        for _ in pool.imap_unordered(
             parse_single_region,
             [
-                (file_path, parse_br, parse_ldst, region, idx, inter_files_dir)
+                (
+                    file_path,
+                    parse_br,
+                    parse_ldst,
+                    parse_symbols,
+                    region,
+                    idx,
+                    inter_files_dir,
+                    concurrency,
+                )
                 for idx, region in enumerate(regions)
             ],
             chunksize=int(len(regions) / concurrency) + 1,
-        )
+        ):
+            # try to get the exceptions of child processes if any
+            pass
+    except Exception as ex:
+        logging.error(f"failed to parse SPE trace file: {ex}")
+        shutil.rmtree(inter_files_dir)
+        raise err.ParseRegionError(ex)
+    finally:
         pool.close()
         pool.join()
-    except Exception as ex:
-        shutil.rmtree(inter_files_dir)
-        logging.error(f"failed to parse SPE trace file: {ex}")
-        raise err.ParseRegionError(ex)
-
     return len(regions), inter_files_dir
 
 
@@ -319,7 +366,11 @@ def main():
     logging.info(f"Processing SPE trace file: {args.file}")
 
     region_cnt, inter_files_dir = parse(
-        args.file, args.parse_br, args.parse_ldst, args.concurrency
+        args.file,
+        args.parse_br,
+        args.parse_ldst,
+        args.parse_symbols,
+        args.concurrency,
     )
     logging.info("SPE trace file processing is completed")
 
