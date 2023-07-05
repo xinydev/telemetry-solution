@@ -77,7 +77,7 @@ def test_platform_arg_defaults():
     """
     Test that defaults specified to arguments are the same as what comes out when specifying no arguments.
 
-    An eample of where this is not the case is:
+    An example of where this is not the case is:
     add_argument(..., default=None, nargs=argparse.REMAINDER)
 
     This ensures we don't have unexpected default argument values, and helps keep PlatformArgumentParser behaviour is consistent with ArgumentParser.

@@ -23,7 +23,7 @@ def test_divide_by_zero():
     assert math.isnan(evaluate("1 / 0"))
 
 
-def test_prescedence():
+def test_precedence():
     assert evaluate("2 * 3 + 4") == evaluate("(2 * 3) + 4") == 10
     assert evaluate("2 * (3 + 4)") == 14
 
@@ -36,6 +36,6 @@ def test_restricted():
         evaluate('print("Hello World")')
 
 
-def test_maformed():
+def test_malformed():
     with pytest.raises(InvalidExpressionException):
         evaluate("1+")

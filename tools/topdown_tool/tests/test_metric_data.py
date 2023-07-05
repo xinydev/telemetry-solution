@@ -59,7 +59,7 @@ def test_level():
     ]  # Check for a specific metric
 
 
-def test_descendents():
+def test_descendants():
     metric_data = MetricData("neoverse-n1")
     metrics = metric_data.metrics_descended_from("frontend_stalled_cycles")
 
@@ -90,7 +90,7 @@ def test_descendents():
 
 def test_uncategorised():
     metric_data = MetricData("neoverse-n1")
-    metrics = metric_data.uncateogirsed_metrics()
+    metrics = metric_data.uncategorised_metrics()
 
     assert sorted(m.metric.title for m in metrics) == sorted([
         "Branch MPKI",

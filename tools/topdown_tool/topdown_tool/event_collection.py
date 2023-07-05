@@ -234,7 +234,7 @@ def schedule_for_events(metric_instances: Iterable[MetricInstance], collect_by: 
     # Events can be collected multiple times (with associated group or metric) depending on collecy_by option
     collection_events = set(itertools.chain(*[create_collection_events(mi) for mi in metric_instances]))
 
-    # A list of sets, where each set represents the events requried for a particular group or metric (depending on collect-by)
+    # A list of sets, where each set represents the events required for a particular group or metric (depending on collect-by)
     collection_groups: List[Set[CollectionEvent]] = []
     available_events = min(max_events, CPU_PMU_COUNTERS)
     if collect_by is CollectBy.GROUP:

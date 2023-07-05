@@ -100,7 +100,7 @@ AnyMetricInstanceOrValue = Union[MetricInstance, MetricInstanceValue, CombinedMe
 
 
 def field_dict(obj):
-    """Covnerts dataclass to a dictionary of field: value.
+    """Converts dataclass to a dictionary of field: value.
 
     Unlike dataclasses.asdict, this does not convert nested dataclasses - useful for expanding as kwargs
     """
@@ -263,9 +263,9 @@ class MetricData:
     def methodology_metrics(self):
         return self.metrics_up_to_level(999)
 
-    def uncateogirsed_metrics(self):
+    def uncategorised_metrics(self):
         """
-        Metrics from groups that do no appear in the topdown methodlogy.
+        Metrics from groups that do no appear in the topdown methodology.
 
         Note: This does not include:
         * Metrics that are not part of any group.
@@ -295,7 +295,7 @@ class MetricData:
         A -> X
         B  /
         """
-        metric_instances = self.methodology_metrics() + self.uncateogirsed_metrics()
+        metric_instances = self.methodology_metrics() + self.uncategorised_metrics()
 
         if not stages:
             return metric_instances

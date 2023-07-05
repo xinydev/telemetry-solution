@@ -310,4 +310,4 @@ In some cases, this can prevent all events within a single metric from being sch
 
 ### Possible workarounds:
 * Use a larger instance size. Ideally a full socket or a metal instance.
-* It is possible to schedule events within a metric independently by specifying `--collect-by=none`, although note that this can lead to unusual/invalid data for all but the most homogenous workloads.
+* It is possible to schedule events within a metric independently by specifying `--collect-by=none`, although note that this can lead to unusual/invalid data for all but the most homogeneous workloads.
