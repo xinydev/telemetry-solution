@@ -51,7 +51,7 @@ Please subscribe to release notifications on this [GitLab](https://gitlab.arm.co
 
 | Content                      | Description                                                                           | Folder |
 |------------------------------|---------------------------------------------------------------------------------------|--------|
-| Core Telemetry Specification | Telemetry specification of the CPU PMU events, metrics and methodology as JSON files. | [data/pmu/cpu](https://gitlab.oss.arm.com/engineering/valetudo/telemetry-solution/-/tree/main/data/pmu/cpu) |
+| Core Telemetry Specification | Telemetry specification of the CPU PMU events, metrics and methodology as JSON files. | [data/pmu/cpu](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/data/pmu/cpu) |
 
 For all the CPUs, key references for PMU events are as below:
 
@@ -132,10 +132,10 @@ The tools folder contains a collection of tools used for performance analysis on
 
 | Name                | Description | Folder |
 |---------------------|-------------|--------|
-| Perf JSON Generator | Tool to generate JSON files for Linux perf tool which enable and document Arm PMU events and metrics. | [tools/perf_json_generator](https://gitlab.oss.arm.com/engineering/valetudo/telemetry-solution/-/tree/main/tools/perf_json_generator) |
-| SPE Parser          | Tool to parse SPE raw data and generate a Parquet or CSV file for further processing and analysis. | [tools/spe_parser](https://gitlab.oss.arm.com/engineering/valetudo/telemetry-solution/-/tree/main/tools/spe_parser) |
-| Topdown Tool        | Tool to support the Arm topdown methodology by collecting derived metrics based on Performance Monitoring Unit (PMU) events. | [tools/topdown_tool](https://gitlab.oss.arm.com/engineering/valetudo/telemetry-solution/-/tree/main/tools/topdown_tool) |
-| UStress workload    | Validation workload suite to stress test major CPU resources. | [tools/ustress](https://gitlab.oss.arm.com/engineering/valetudo/telemetry-solution/-/tree/main/tools/ustress) |
+| Perf JSON Generator | Tool to generate JSON files for Linux perf tool which enable and document Arm PMU events and metrics. | [tools/perf_json_generator](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/perf_json_generator) |
+| SPE Parser          | Tool to parse SPE raw data and generate a Parquet or CSV file for further processing and analysis. | [tools/spe_parser](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/spe_parser) |
+| Topdown Tool        | Tool to support the Arm topdown methodology by collecting derived metrics based on Performance Monitoring Unit (PMU) events. | [tools/topdown_tool](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/topdown_tool) |
+| UStress workload    | Validation workload suite to stress test major CPU resources. | [tools/ustress](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/ustress) |
 
 
 ## Support
