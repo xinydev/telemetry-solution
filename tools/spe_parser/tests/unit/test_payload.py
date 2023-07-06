@@ -107,10 +107,8 @@ class TestBranch(TestCase):
         ]
 
         for i in range(len(input)):
-            rec = payload.RecordPayload()
-            for ik in input[i]:
-                rec.add_data(ik, input[i][ik])
-            df = deepdiff.DeepDiff(output[i], rec.to_branch(54), ignore_order=True)
+            rec = payload.create_record(input[i], 54)
+            df = deepdiff.DeepDiff(output[i], rec.to_dict(), ignore_order=True)
             if len(df) != 0:
                 print(df)
             self.assertTrue(len(df) == 0)
@@ -226,11 +224,8 @@ class TestLoadStore(TestCase):
         ]
 
         for i in range(len(input)):
-            rec = payload.RecordPayload()
-            for ik in input[i]:
-                rec.add_data(ik, input[i][ik])
-
-            df = deepdiff.DeepDiff(output[i], rec.to_load_store(0), ignore_order=True)
+            rec = payload.create_record(input[i], 0)
+            df = deepdiff.DeepDiff(output[i], rec.to_dict(), ignore_order=True)
             if len(df) != 0:
                 print(df)
             self.assertTrue(len(df) == 0)
@@ -252,11 +247,8 @@ class TestUnknownPacket(TestCase):
             }
         ]
         for i in range(len(input)):
-            rec = payload.RecordPayload()
-            for ik in input[i]:
-                rec.add_data(ik, input[i][ik])
-
-            self.assertEqual(rec.get_type(), payload.RecordType.UNKNOWN)
+            rec = payload.create_record(input[i], 0)
+            self.assertEqual(rec.type, payload.RecordType.UNKNOWN)
 
 
 if __name__ == "__main__":

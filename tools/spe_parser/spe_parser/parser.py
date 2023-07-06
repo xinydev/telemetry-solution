@@ -122,39 +122,44 @@ def parse_single_region(task: Tuple) -> None:
         f.seek(region["offset"])
         spe_f = BytesIO(f.read(region["size"]))
         cpu = region["cpu"]
-        rec = payload.RecordPayload()
         unknown_rec = None
         unknown_rec_cnt = 0
+        record_dict = {}
         for pkt in get_packets(spe_f):
-            tokens = pkt.split(" ")
-            if tokens[0] == "LAT":
-                if len(tokens) != 3:
-                    logging.warning(f"invalid LAT packet: {tokens}")
+            pkt_type, *pkt_value = pkt.split(" ")
+            if pkt_type == "LAT":
+                # two examples of LAT packets:
+                # LAT 1 XLAT
+                # LAT 627 ISSUE
+                if len(pkt_value) != 2:
+                    logging.warning(f"invalid LAT packet: {pkt}")
                 else:
-                    rec.add_data(tokens[2], [tokens[1]])
+                    lat_type, lat_cnt = pkt_value[1], pkt_value[0]
+                    record_dict[lat_type] = [lat_cnt]
                 continue
-            rec.add_data(tokens[0], list(tokens[1:]))
-            if tokens[0] == "TS" or tokens[0] == "END":
+            record_dict[pkt_type] = pkt_value
+            if pkt_type == "TS" or pkt_type == "END":
                 # Each SPE record is terminated by a TS packet, so reaching
                 # this point indicates that all packets of a complete
                 # record have been obtained.
-                rec_type = rec.get_type()
-                if rec_type == payload.RecordType.BRANCH:
+                rec = payload.create_record(record_dict, cpu)
+                record_dict = {}
+                if rec.type == payload.RecordType.BRANCH:
                     # branch
                     if parse_br:
-                        branch_recs.append(rec.to_branch(cpu))
+                        branch_recs.append(rec.to_dict())
                 elif (
-                    rec_type == payload.RecordType.LOAD
-                    or rec_type == payload.RecordType.STORE
+                    rec.type == payload.RecordType.LOAD
+                    or rec.type == payload.RecordType.STORE
                 ):
                     # ldst
                     if parse_ldst:
-                        ldst_recs.append(rec.to_load_store(cpu))
+                        ldst_recs.append(rec.to_dict())
                 else:
                     # unknown(OTHER packet or packet due to parsing error)
                     unknown_rec = rec
                     unknown_rec_cnt += 1
-                rec = payload.RecordPayload()
+
         if unknown_rec:
             logging.debug(
                 f"unknown record count: {unknown_rec_cnt}, last unknown record: {unknown_rec}"
@@ -163,7 +168,7 @@ def parse_single_region(task: Tuple) -> None:
             f"extracted {len(branch_recs)}(branch)+{len(ldst_recs)}(ldst) records from cpu:{region['cpu']}"
         )
 
-    if parse_ldst and len(ldst_recs) > 0:
+    if parse_ldst and ldst_recs:
         ldst_df = DataFrame.from_records(
             ldst_recs,
             columns=LDST_COLS,
@@ -174,7 +179,7 @@ def parse_single_region(task: Tuple) -> None:
             engine="pyarrow",
         )
 
-    if parse_br and len(branch_recs) > 0:
+    if parse_br and branch_recs:
         br_df = DataFrame.from_records(
             branch_recs,
             columns=BRANCH_COLS,
