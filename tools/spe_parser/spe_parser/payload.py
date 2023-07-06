@@ -26,7 +26,7 @@ class RecordPayload:
         self.__data[name] = tokens
 
     def get_type(self) -> Optional[RecordType]:
-        if not self.__record_type:
+        if self.__record_type is None:
             self.__update_type()
 
         return self.__record_type
@@ -45,7 +45,7 @@ class RecordPayload:
             elif k == "B":
                 self.__record_type = RecordType.BRANCH
                 return
-        self.__record_type == RecordType.UNKNOWN
+        self.__record_type = RecordType.UNKNOWN
 
     def to_load_store(self, cpu: int) -> dict:
         if self.get_type() != RecordType.LOAD and self.get_type() != RecordType.STORE:

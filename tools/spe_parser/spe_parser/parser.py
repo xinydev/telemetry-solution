@@ -123,6 +123,8 @@ def parse_single_region(task: Tuple) -> None:
         spe_f = BytesIO(f.read(region["size"]))
         cpu = region["cpu"]
         rec = payload.RecordPayload()
+        unknown_rec = None
+        unknown_rec_cnt = 0
         for pkt in get_packets(spe_f):
             tokens = pkt.split(" ")
             if tokens[0] == "LAT":
@@ -132,22 +134,31 @@ def parse_single_region(task: Tuple) -> None:
                     rec.add_data(tokens[2], [tokens[1]])
                 continue
             rec.add_data(tokens[0], list(tokens[1:]))
-            if tokens[0] == "TS":
+            if tokens[0] == "TS" or tokens[0] == "END":
                 # Each SPE record is terminated by a TS packet, so reaching
                 # this point indicates that all packets of a complete
                 # record have been obtained.
-                if rec.get_type() == payload.RecordType.UNKNOWN:
-                    logging.error(f"invalid auxtrace record: {rec}")
-                    continue
-                elif rec.get_type() == payload.RecordType.BRANCH:
+                rec_type = rec.get_type()
+                if rec_type == payload.RecordType.BRANCH:
                     # branch
                     if parse_br:
                         branch_recs.append(rec.to_branch(cpu))
-                else:
+                elif (
+                    rec_type == payload.RecordType.LOAD
+                    or rec_type == payload.RecordType.STORE
+                ):
+                    # ldst
                     if parse_ldst:
                         ldst_recs.append(rec.to_load_store(cpu))
+                else:
+                    # unknown(OTHER packet or packet due to parsing error)
+                    unknown_rec = rec
+                    unknown_rec_cnt += 1
                 rec = payload.RecordPayload()
-        logging.debug(f"record: {rec}")
+        if unknown_rec:
+            logging.debug(
+                f"unknown record count: {unknown_rec_cnt}, last unknown record: {unknown_rec}"
+            )
         logging.debug(
             f"extracted {len(branch_recs)}(branch)+{len(ldst_recs)}(ldst) records from cpu:{region['cpu']}"
         )
@@ -250,19 +261,23 @@ def merge_write(
             os.path.join(inter_files_dir, f"{idx}-{file_type}.parquet")
             for idx in range(region_cnt)
         ]
-        if not os.path.exists(source_files[0]):
-            logging.warning(f"no {file_type} records found")
+        valid_files = [f for f in source_files if os.path.exists(f)]
+        if not valid_files:
+            logging.warning(f"No {file_type} records found")
+            logging.warning(
+                "Please check if related SPE events are enabled in perf record"
+            )
             return
+        logging.debug(f"Total records files count: {len(valid_files)}")
 
         output_file_name = f"{ouput_prefix}-{file_type}.{format}"
         logging.info(f"Generating {format} file: {output_file_name}")
         with writer_func(
-            output_file_name, schema=pq.ParquetFile(source_files[0]).schema_arrow
+            output_file_name, schema=pq.ParquetFile(valid_files[0]).schema_arrow
         ) as writer:
-            for src in source_files:
-                if not os.path.exists(src):
-                    continue
+            for src in valid_files:
                 writer.write_table(pq.read_table(src))
+        logging.info(f"SPE {file_type} trace files created successfully")
 
     def writer_parquet(file_name, schema):
         return pq.ParquetWriter(file_name, schema=schema, compression="gzip")
@@ -314,4 +329,3 @@ def main():
         )
     finally:
         shutil.rmtree(inter_files_dir)
-    logging.info("SPE trace files created successfully")

@@ -236,5 +236,28 @@ class TestLoadStore(TestCase):
             self.assertTrue(len(df) == 0)
 
 
+class TestUnknownPacket(TestCase):
+    def test_unknown(self):
+        input = [
+            {
+                "DATA-SOURCE": ["0"],
+                "EV": ["RETIRED", "L1D-ACCESS", "TLB-ACCESS"],
+                "ISSUE": ["24"],
+                "PC": ["0xffbbf3da99a6a0", "el2", "ns=1"],
+                "TOT": ["38"],
+                "TS": ["20685196991554"],
+                "VA": ["0xff083e7fccbca8"],
+                "XLAT": ["1"],
+                "CONTEXT": ["0xffc0c286854480", "el2"],
+            }
+        ]
+        for i in range(len(input)):
+            rec = payload.RecordPayload()
+            for ik in input[i]:
+                rec.add_data(ik, input[i][ik])
+
+            self.assertEqual(rec.get_type(), payload.RecordType.UNKNOWN)
+
+
 if __name__ == "__main__":
     main()
