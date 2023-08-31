@@ -10,6 +10,7 @@ import os
 import re
 import shutil
 import sys
+from dataclasses import dataclass
 from io import BytesIO
 from typing import Tuple
 
@@ -20,7 +21,7 @@ import spe_parser.errors as err
 import spe_parser.payload as payload
 from pandas import DataFrame
 from spe_parser.perf_decoder import get_spe_records_regions
-from spe_parser.schema import BRANCH_COLS, LDST_COLS, get_schema_renderer
+from spe_parser.schema import BRANCH_COLS, LDST_COLS, OTHER_COLS, get_schema_renderer
 from spe_parser.spe_decoder import get_packets
 from spe_parser.symbols import init_search_symbols, search_symbols_by_addr_batch
 
@@ -75,6 +76,13 @@ def args_init():
         default=True,
         help="disable Branch instructions parsing",
     )
+    parser.add_argument(
+        "--noother",
+        dest="parse_other",
+        action="store_false",
+        default=True,
+        help="disable Other instructions parsing",
+    )
     cpu_cnt = multiprocessing.cpu_count()
     parser.add_argument(
         "-c",
@@ -123,23 +131,27 @@ def args_init():
         sys.exit(1)
 
 
-def parse_single_region(task: Tuple) -> None:
+@dataclass
+class RegionTaskParams:
+    file_path: str
+    parse_br: bool
+    parse_ldst: bool
+    parse_other: bool
+    parse_symbols: bool
+    region: dict
+    idx: int
+    temp_folder: str
+    concurrency: int
+
+
+def parse_single_region(task: RegionTaskParams) -> None:
     branch_recs = []
     ldst_recs = []
-    (
-        file_path,
-        parse_br,
-        parse_ldst,
-        parse_symbols,
-        region,
-        idx,
-        temp_folder,
-        concurrency,
-    ) = task
-    with open(file_path, "rb") as f:
-        f.seek(region["offset"])
-        spe_f = BytesIO(f.read(region["size"]))
-        cpu = region["cpu"]
+    other_recs = []
+    with open(task.file_path, "rb") as f:
+        f.seek(task.region["offset"])
+        spe_f = BytesIO(f.read(task.region["size"]))
+        cpu = task.region["cpu"]
         unknown_rec = None
         unknown_rec_cnt = 0
         record_dict = {}
@@ -157,24 +169,28 @@ def parse_single_region(task: Tuple) -> None:
                 continue
             record_dict[pkt_type] = pkt_value
             if pkt_type == "TS" or pkt_type == "END":
-                # Each SPE record is terminated by a TS packet, so reaching
+                # Each SPE record is terminated by a TS or END packet, so reaching
                 # this point indicates that all packets of a complete
                 # record have been obtained.
                 rec = payload.create_record(record_dict, cpu)
                 record_dict = {}
                 if rec.type == payload.RecordType.BRANCH:
                     # branch
-                    if parse_br:
+                    if task.parse_br:
                         branch_recs.append(rec.to_dict())
                 elif (
                     rec.type == payload.RecordType.LOAD
                     or rec.type == payload.RecordType.STORE
                 ):
                     # ldst
-                    if parse_ldst:
+                    if task.parse_ldst:
                         ldst_recs.append(rec.to_dict())
+                elif rec.type == payload.RecordType.OTHER:
+                    # other
+                    if task.parse_other:
+                        other_recs.append(rec.to_dict())
                 else:
-                    # unknown(OTHER packet or packet due to parsing error)
+                    # unknown(packet due to parsing error)
                     unknown_rec = rec
                     unknown_rec_cnt += 1
 
@@ -183,44 +199,43 @@ def parse_single_region(task: Tuple) -> None:
                 f"unknown record count: {unknown_rec_cnt}, last unknown record: {unknown_rec}"
             )
         logging.debug(
-            f"extracted {len(branch_recs)}(branch)+{len(ldst_recs)}(ldst) records from cpu:{region['cpu']}"
+            f"extracted {len(branch_recs)}(branch)+{len(ldst_recs)}(ldst) records from cpu:{task.region['cpu']}"
         )
 
-    if parse_ldst and ldst_recs:
-        ldst_df = DataFrame.from_records(
-            ldst_recs,
-            columns=LDST_COLS,
+    def store_records(parse_records, records, default_cols, name):
+        if not parse_records:
+            logging.info(f"skip {name} records")
+            return
+        if not records:
+            logging.info(f"no {name} records found")
+            return
+
+        df = DataFrame.from_records(
+            records,
+            columns=default_cols,
         )
-        if parse_symbols:
-            ldst_df["symbol"] = search_symbols_by_addr_batch(
-                file_path, ldst_df["pc"].apply(int, base=16).tolist(), concurrency
+        if task.parse_symbols:
+            df["symbol"] = search_symbols_by_addr_batch(
+                task.file_path,
+                df["pc"].apply(int, base=16).tolist(),
+                task.concurrency,
             )
-        ldst_df.to_parquet(
-            os.path.join(temp_folder, f"{idx}-ldst.parquet"),
+        df.to_parquet(
+            os.path.join(task.temp_folder, f"{task.idx}-{name}.parquet"),
             index=False,
             engine="pyarrow",
         )
 
-    if parse_br and branch_recs:
-        br_df = DataFrame.from_records(
-            branch_recs,
-            columns=BRANCH_COLS,
-        )
-        if parse_symbols:
-            br_df["symbol"] = search_symbols_by_addr_batch(
-                file_path, br_df["pc"].apply(int, base=16).tolist(), concurrency
-            )
-        br_df.to_parquet(
-            os.path.join(temp_folder, f"{idx}-br.parquet"),
-            index=False,
-            engine="pyarrow",
-        )
+    store_records(task.parse_ldst, ldst_recs, LDST_COLS, "ldst")
+    store_records(task.parse_br, branch_recs, BRANCH_COLS, "br")
+    store_records(task.parse_other, other_recs, OTHER_COLS, "other")
 
 
 def parse(
     file_path: str,
     parse_br: bool,
     parse_ldst: bool,
+    parse_other: bool,
     parse_symbols: bool,
     concurrency: int,
 ) -> Tuple[int, str]:
@@ -232,6 +247,7 @@ def parse(
         file_path (str): perf.data file path
         parse_br (bool): whether to parse branch instructions
         parse_ldst (bool): whether to parse load/store instructions
+        parse_other (bool): whether to parse other instructions
         parse_symbols (bool): whether to add symbol information to the output
         concurrency (int): number of threads used
 
@@ -274,15 +290,16 @@ def parse(
         for _ in pool.imap_unordered(
             parse_single_region,
             [
-                (
-                    file_path,
-                    parse_br,
-                    parse_ldst,
-                    parse_symbols,
-                    region,
-                    idx,
-                    inter_files_dir,
-                    concurrency,
+                RegionTaskParams(
+                    file_path=file_path,
+                    parse_br=parse_br,
+                    parse_ldst=parse_ldst,
+                    parse_other=parse_other,
+                    parse_symbols=parse_symbols,
+                    region=region,
+                    idx=idx,
+                    temp_folder=inter_files_dir,
+                    concurrency=concurrency,
                 )
                 for idx, region in enumerate(regions)
             ],
@@ -307,6 +324,7 @@ def merge_write(
     format: str,
     parse_br: bool,
     parse_ldst: bool,
+    parse_other: bool,
 ):
     def write_file(file_type, writer_func):
         source_files = [
@@ -347,6 +365,8 @@ def merge_write(
         write_file("br", writer_func)
     if parse_ldst:
         write_file("ldst", writer_func)
+    if parse_other:
+        write_file("other", writer_func)
 
 
 def init_logging(debug: bool):
@@ -369,6 +389,7 @@ def main():
         args.file,
         args.parse_br,
         args.parse_ldst,
+        args.parse_other,
         args.parse_symbols,
         args.concurrency,
     )
@@ -382,6 +403,7 @@ def main():
             args.output_type,
             args.parse_br,
             args.parse_ldst,
+            args.parse_other,
         )
     finally:
         shutil.rmtree(inter_files_dir)

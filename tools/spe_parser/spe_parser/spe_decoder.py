@@ -147,7 +147,9 @@ PKT_OPERATION_CLASS_BR_ERET = bytes_to_int(b"\x02")
 
 
 def pkt_operation_class_sve_other(v: int) -> int:
-    return (v % lshift(7) | lshift(3) | lshift(0)) == 8
+    # 0b0000000x: Other operation
+    # 0b0xxx1xx0: SVE operation
+    return (v & 0b10001001) == 0x8
 
 
 PKT_OPERATION_COND = lshift(0)

@@ -111,12 +111,47 @@ __spe_parser_schema: Dict[str, Any] = {
         "type": str,
     },
     # Operation Type Packet
-    "op": {
+    "op": {  # available in all packets
         "description": "Defines the type of operation sampled. Included for all operations.",
         "values": {
             "LD": "Load operation.",
             "ST": "Store operation.",
             "B": "Branch operation.",
+        },
+        "type": str,
+    },
+    "sve_evl": {  # available in other and ldst packets
+        "description": "Effective Vector Length. the length of vector operated on by the sampled operation",
+        "type": int,
+    },
+    "sve_pred": {  # available in other and ldst packets
+        "description": "Predicated SVE operation",
+        "values": {
+            True: "Predicated SVE operation. The operation is an SVE operation that writes to a vector destination register under a Governing predicate using either zeroing or merging predication",
+            False: "Not predicated",
+        },
+        "type": bool,
+    },
+    "condition": {  # available in other and branch packets
+        "description": "Operation conditional.",
+        "values": {
+            True: "Conditional operation or select.",
+            False: "Unconditional operation.",
+        },
+        "type": bool,
+    },
+    "subclass": {  # available in other and ldst packets
+        "description": "Second-level instruction class. Defines the type of instruction.",
+        "values": {
+            "(LDST)GP-REG": "A load/store targeting the general-purpose registers, other than an atomic operation, load-acquire, store-release or exclusive.",
+            "(LDST)SIMD-FP": "A load/store targeting the SIMD&FP registers.",
+            "(LDST)UNSPEC-REG": "A load/store targeting unspecified registers.",
+            "(LDST)NV-SYSREG": "An MRS or MSR operation at EL1 transformed to a load/store when HCR_EL2.NV2 is 1.",
+            "(LDST)MTE-TAG": "A load/store of an Allocation Tag or multiple Allocation Tags.",
+            "(LDST)MEMCPY": "A load/store from a Memory Copy operation.",
+            "(LDST)MEMSET": "A store from a Memory Set operation.",
+            "(OTHER)SVE": "SVE operation",
+            "(OTHER)OTHER": "Other operation",
         },
         "type": str,
     },
@@ -145,33 +180,21 @@ __spe_parser_schema: Dict[str, Any] = {
         },
         "type": bool,
     },
-    "subclass": {
-        "description": "Second-level instruction class. Indicates the load/store type.",
-        "values": {
-            "GP-REG": "A load/store targeting the general-purpose registers, other than an atomic operation, load-acquire, store-release or exclusive.",
-            "SIMD-FP": "A load/store targeting the SIMD&FP registers.",
-            "UNSPEC-REG": "A load/store targeting unspecified registers.",
-            "NV-SYSREG": "An MRS or MSR operation at EL1 transformed to a load/store when HCR_EL2.NV2 is 1.",
-            "MTE-TAG": "A load/store of an Allocation Tag or multiple Allocation Tags.",
-            "MEMCPY": "A load/store from a Memory Copy operation.",
-            "MEMSET": "A store from a Memory Set operation.",
-        },
-        "type": str,
-    },
     # Operation Type Packet: Branch
-    "condition": {
-        "description": "Branch conditional.",
-        "values": {
-            True: "Conditional operation or select.",
-            False: "Unconditional operation.",
-        },
-        "type": bool,
-    },
     "indirect": {
         "description": "Branch type.",
         "values": {
             True: "Indirect branch.",
             False: "Direct branch.",
+        },
+        "type": bool,
+    },
+    # Operation Type Packet: Other
+    "sve_fp": {
+        "description": "Floating-point operation",
+        "values": {
+            True: "Floating-point",
+            False: "Integer",
         },
         "type": bool,
     },
@@ -225,6 +248,23 @@ BRANCH_COLS = [
     "ts",
 ]
 
+OTHER_COLS = [
+    "cpu",
+    "op",
+    "pc",
+    "el",
+    "subclass",
+    "sve_evl",
+    "sve_pred",
+    "sve_fp",
+    "condition",
+    "event",
+    "issue_lat",
+    "total_lat",
+    "context",
+    "ts",
+]
+
 
 def __gen_default_record(cols) -> Dict[str, Any]:
     ret: Dict[str, Any] = {}
@@ -245,6 +285,10 @@ def get_branch_default_record() -> Dict[str, Any]:
 
 def get_ldst_default_record() -> Dict[str, Any]:
     return __gen_default_record(LDST_COLS)
+
+
+def get_other_default_record() -> Dict[str, Any]:
+    return __gen_default_record(OTHER_COLS)
 
 
 def get_schema_renderer():
@@ -269,7 +313,13 @@ class PlainSchemaRenderer(SchemaRenderer):
         if additional_contents:
             contents += f"{additional_contents}\n\n"
         contents += "File Schema:\n"
-        contents += self.__get_ldst_content() + self.__get_branch_content()
+        contents += "".join(
+            [
+                self.__get_ldst_content(),
+                self.__get_branch_content(),
+                self.__get_other_content(),
+            ]
+        )
         pydoc.pager(contents)
 
     def __get_branch_content(self) -> str:
@@ -281,6 +331,12 @@ class PlainSchemaRenderer(SchemaRenderer):
     def __get_ldst_content(self) -> str:
         ret = "Load/Store Schema:\n"
         for col in LDST_COLS:
+            ret += self.__gen_content_for_col(col)
+        return ret
+
+    def __get_other_content(self) -> str:
+        ret = "Other Schema:\n"
+        for col in OTHER_COLS:
             ret += self.__gen_content_for_col(col)
         return ret
 

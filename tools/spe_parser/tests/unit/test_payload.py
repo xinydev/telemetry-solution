@@ -251,5 +251,121 @@ class TestUnknownPacket(TestCase):
             self.assertEqual(rec.type, payload.RecordType.UNKNOWN)
 
 
+class TestOtherPacket(TestCase):
+    def test_other(self):
+        input = [
+            {
+                "OTHER": ["INSN-OTHER"],
+                "EV": ["RETIRED"],
+                "ISSUE": ["7"],
+                "PC": ["0xff8000084072ac", "el2", "ns=1"],
+                "TOT": ["8"],
+                "CONTEXT": ["0xffc0c286854480", "el2"],
+                "TS": ["192683490484967"],
+            },
+            {
+                "OTHER": ["INSN-OTHER"],
+                "EV": ["RETIRED"],
+                "ISSUE": ["5"],
+                "PC": ["0xff80000842ed1c", "el2", "ns=1"],
+                "TOT": ["10"],
+                "CONTEXT": ["0xffc0c286854480", "el2"],
+                "TS": ["192683490485836"],
+            },
+            {
+                "SVE-OTHER": ["EVLEN", "32"],
+                "EV": ["RETIRED"],
+                "ISSUE": ["13"],
+                "PC": ["0xaaaaada13270", "el0", "ns=1"],
+                "TOT": ["14"],
+                "CONTEXT": ["0xffc0c286854480", "el2"],
+                "TS": ["193586967013941"],
+            },
+            {
+                "SVE-OTHER": ["EVLEN", "32", "FP"],
+                "EV": ["RETIRED"],
+                "ISSUE": ["17"],
+                "PC": ["0xaaaae4c10e50", "el0", "ns=1"],
+                "TOT": ["19"],
+                "CONTEXT": ["0xffc0c286854480", "el2"],
+                "TS": ["196770407753590"],
+            },
+        ]
+
+        output = [
+            {
+                "cpu": 54,
+                "op": "OTHER",
+                "pc": "0xffff8000084072ac",
+                "el": 2,
+                "subclass": "OTHER",
+                "sve_evl": 0,
+                "sve_pred": False,
+                "sve_fp": False,
+                "condition": False,
+                "event": "RETIRED",
+                "issue_lat": 7,
+                "total_lat": 8,
+                "context": "0xffc0c286854480",
+                "ts": 192683490484967,
+            },
+            {
+                "cpu": 54,
+                "op": "OTHER",
+                "pc": "0xffff80000842ed1c",
+                "el": 2,
+                "subclass": "OTHER",
+                "sve_evl": 0,
+                "sve_pred": False,
+                "sve_fp": False,
+                "condition": False,
+                "event": "RETIRED",
+                "issue_lat": 5,
+                "total_lat": 10,
+                "context": "0xffc0c286854480",
+                "ts": 192683490485836,
+            },
+            {
+                "cpu": 54,
+                "op": "OTHER",
+                "pc": "0xaaaaada13270",
+                "el": 0,
+                "subclass": "SVE",
+                "sve_evl": 32,
+                "sve_pred": False,
+                "sve_fp": False,
+                "condition": False,
+                "event": "RETIRED",
+                "issue_lat": 13,
+                "total_lat": 14,
+                "context": "0xffc0c286854480",
+                "ts": 193586967013941,
+            },
+            {
+                "cpu": 54,
+                "op": "OTHER",
+                "pc": "0xaaaae4c10e50",
+                "el": 0,
+                "subclass": "SVE",
+                "sve_evl": 32,
+                "sve_pred": False,
+                "sve_fp": True,
+                "condition": False,
+                "event": "RETIRED",
+                "issue_lat": 17,
+                "total_lat": 19,
+                "context": "0xffc0c286854480",
+                "ts": 196770407753590,
+            },
+        ]
+
+        for i in range(len(input)):
+            rec = payload.create_record(input[i], 54)
+            df = deepdiff.DeepDiff(output[i], rec.to_dict(), ignore_order=True)
+            if len(df) != 0:
+                print(df)
+            self.assertTrue(len(df) == 0)
+
+
 if __name__ == "__main__":
     main()
