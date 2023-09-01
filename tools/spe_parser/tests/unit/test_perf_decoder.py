@@ -45,4 +45,4 @@ class TestPerfDecoder(TestCase):
     def test_decode_mmap(self) -> None:
         with cd(TESTDATA):
             mmap_records = get_mmap_records("perf.data")
-            self.assertEqual(118, len(mmap_records))
+            self.assertEqual(120, len(mmap_records))

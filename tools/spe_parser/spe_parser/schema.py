@@ -150,7 +150,7 @@ __spe_parser_schema: Dict[str, Any] = {
             "(LDST)MTE-TAG": "A load/store of an Allocation Tag or multiple Allocation Tags.",
             "(LDST)MEMCPY": "A load/store from a Memory Copy operation.",
             "(LDST)MEMSET": "A store from a Memory Set operation.",
-            "(OTHER)SVE": "SVE operation",
+            "(LDST/OTHER)SVE": "SVE operation",
             "(OTHER)OTHER": "Other operation",
         },
         "type": str,
@@ -177,6 +177,14 @@ __spe_parser_schema: Dict[str, Any] = {
         "values": {
             True: "Atomic.",
             False: "Not atomic.",
+        },
+        "type": bool,
+    },
+    "sve_sg": {
+        "description": "Gather/scatter load/store",
+        "values": {
+            True: "Gather load or scatter store.",
+            False: "Not gather load or scatter store.",
         },
         "type": bool,
     },
@@ -219,6 +227,9 @@ LDST_COLS = [
     "excl",
     "ar",
     "subclass",
+    "sve_evl",
+    "sve_pred",
+    "sve_sg",
     "event",
     "issue_lat",
     "total_lat",

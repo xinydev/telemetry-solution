@@ -2,4 +2,4 @@
 #
 # Copyright (C) Arm Ltd. 2023
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"

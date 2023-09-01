@@ -139,6 +139,7 @@ class LoadRecord(Record):
             record["atomic"] = False
             record["excl"] = False
             record["subclass"] = "GP-REG"
+            record["sve_evl"] = 0
 
             vstr = " ".join(v)
             if "AT" in vstr:
@@ -150,7 +151,21 @@ class LoadRecord(Record):
             if "AR" in vstr:
                 record["ar"] = True
                 record["subclass"] = ""
-            if not record["atomic"] and not record["ar"] and not record["excl"]:
+            if "EVLEN" in vstr:
+                # evl value is following EVLEN
+                # ST EVLEN 128 PRED
+                record["sve_evl"] = int(v[v.index("EVLEN") + 1])
+                record["subclass"] = "SVE"
+            if "PRED" in vstr:
+                record["sve_pred"] = True
+            if "SG" in vstr:
+                record["sve_sg"] = True
+            if (
+                not record["atomic"]
+                and not record["ar"]
+                and not record["excl"]
+                and not record["sve_evl"]
+            ):
                 record["subclass"] = v[0]
         if "CONTEXT" in keys:
             record["context"] = self.data["CONTEXT"][0]
@@ -213,7 +228,7 @@ class OtherRecord(Record):
             record["op"] = "OTHER"
         if "EV" in keys:
             record["event"] = ":".join(
-                set(self.data["EV"]) - events_should_not_in_other_record
+                sorted(set(self.data["EV"]) - events_should_not_in_other_record)
             )
 
         if "ISSUE" in keys:
