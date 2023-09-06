@@ -38,6 +38,10 @@ def is_recommended(code):
     # These pmu event number ranges were taken from the Arm V8 architecture
     # references manual, version G.b, page D7-2875 available at
     # https://developer.arm.com/documentation/ddi0487/gb/?lang=en
+    #
+    # Since FEAT_PMUv3p8 (Armv8.8), these ranges are now 'common' rather than
+    # 'recommended', but they will remain here (and in recommended.json in
+    # Perf) in the interest of backwards compatibility.
 
     if isinstance(code, str):
         code = to_int(code)
