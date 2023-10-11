@@ -42,6 +42,9 @@ class ArmDataEventGrouper(EventGrouper):
             print(f"{event_name} matches a regular expression and has a specific group entry",
                   file=sys.stderr)
 
+        assert regex_group or specific_group, \
+            f"{event_name} does not match any category, please update {MNEMONICS_FILENAME}"
+
         return [specific_group or regex_group]
 
 
