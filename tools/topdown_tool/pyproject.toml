@@ -57,7 +57,8 @@ disable = [
   "missing-module-docstring",
   "too-few-public-methods",
   "too-many-instance-attributes",
-  "wrong-import-position"
+  "wrong-import-position",
+  "fixme"
 ]
 
 [tool.isort]

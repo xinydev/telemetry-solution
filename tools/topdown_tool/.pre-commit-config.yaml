@@ -1,0 +1,29 @@
+files: '^tools/topdown_tool/'
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-ast
+      - id: check-executables-have-shebangs
+      - id: check-json
+      - id: check-vcs-permalinks
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: name-tests-test
+        args: ["--pytest-test-first"]
+      - id: requirements-txt-fixer
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        args: ['--ignore=E501,W503']
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.4.1
+    hooks:
+      - id: mypy
+  - repo: 'https://github.com/codespell-project/codespell'
+    rev: v2.2.5
+    hooks:
+      - id: codespell

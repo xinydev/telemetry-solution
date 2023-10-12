@@ -266,7 +266,7 @@ def schedule_for_events(metric_instances: Iterable[MetricInstance], collect_by: 
     return schedule_events(collection_groups, max_events)
 
 
-# pylint: disable=too-many-branches
+# pylint: disable=too-many-branches,too-many-statements
 def collect_events(metric_instances: Iterable[MetricInstance], perf_options: PerfOptions):
     schedule = schedule_for_events(metric_instances, perf_options.collect_by, perf_options.max_events or sys.maxsize)
 

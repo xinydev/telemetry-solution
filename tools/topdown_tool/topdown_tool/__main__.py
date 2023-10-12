@@ -141,6 +141,7 @@ def print_nested_metrics(metric_instances: Iterable[AnyMetricInstanceOrValue],
         last_stage = instance.stage
 
 
+# pylint: disable=too-many-statements
 def get_arg_parser():
     class ProcessStageArgs(argparse.Action):
         stage_names = {"topdown": 1, "uarch": 2, "1": 1, "2": 2}
