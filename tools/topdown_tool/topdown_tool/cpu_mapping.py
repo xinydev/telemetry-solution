@@ -4,8 +4,10 @@
 
 import json
 import os
-import subprocess
 import sys
+
+from .utils import get_midr_string_windows
+
 
 MIDR_PATH = "/sys/devices/system/cpu/cpu0/regs/identification/midr_el1"
 MAPPING_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "metrics", "mapping.json")
@@ -20,32 +22,12 @@ def get_midr_string_linux():
         return f.readline().rstrip()
 
 
-def get_midr_string_wperf(perf_path):
-    result = subprocess.run([perf_path or "wperf", "test", "--json"], stdout=subprocess.PIPE, check=True)
-    # {
-    #   "Test_Results": [
-    #     ...
-    #     {
-    #       "Result": "0x000000000000413fd0c1",
-    #       "Test_Name": "PMU_CTL_QUERY_HW_CFG [midr_value]"
-    #     },
-    #     ...
-    #   ]
-    # }
-    data = {
-        item["Test_Name"]: item["Result"]
-        for item in json.loads(result.stdout.decode("utf-8"))["Test_Results"]
-    }
-
-    return data["PMU_CTL_QUERY_HW_CFG [midr_value]"]
-
-
 def get_cpuid(midr_string=None, perf_path=None):
     """Create a CPU ID from the implementer and part num components of the specified MIDR string.
 
     If no MIDR is specified, the MIDR of the first CPU/core on the current machine will be used."""
     if not midr_string:
-        midr_string = get_midr_string_linux() if sys.platform == "linux" else get_midr_string_wperf(perf_path)
+        midr_string = get_midr_string_linux() if sys.platform == "linux" else get_midr_string_windows(perf_path)
 
     midr = int(midr_string, 16)
     implementer = (midr & 0xff000000) >> 24

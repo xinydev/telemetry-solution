@@ -12,7 +12,8 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Collection, Dict, Iterable, List, Optional, Set
 
-from .metric_data import Event, Group, Metric, MetricInstance
+from .metric_data import Event, Group, Metric, MetricData, MetricInstance
+from .utils import get_pmu_counters_windows
 
 # Separator used in perf stat output
 PERF_SEPARATOR = ";"
@@ -83,6 +84,10 @@ class UncountedEventsError(Exception):
         self.uncounted_events = uncounted_events
 
 
+class NoPMUCounterError(Exception):
+    pass
+
+
 class ZeroCyclesError(Exception):
     pass
 
@@ -138,7 +143,7 @@ def read_perf_stat_output_linux(filename: str, perf_format: PerfStatFormat):
         if count_str == "<not counted>":
             logging.info("Perf event %s was not counted", event)
         elif count_str == "<not supported>":
-            logging.info("Perf event %s was not supported. --max-size too big or not specified?", event)
+            logging.info("Perf event %s was not supported. --max-events too big or not specified?", event)
 
         if count_str == "0":
             logging.info("Perf counted 0 %s events", event)
@@ -266,19 +271,79 @@ def schedule_for_events(metric_instances: Iterable[MetricInstance], collect_by: 
     return schedule_events(collection_groups, max_events)
 
 
-# pylint: disable=too-many-branches,too-many-statements
+# pylint: disable=too-many-branches
+def __run_scheduled_events(scheduled_events: List[Set[CollectionEvent]], perf_options: PerfOptions):
+    timed_event_counts: Dict[Optional[float], List[EventCount]] = {}
+    flat_events = list(itertools.chain(*scheduled_events))  # Allows mapping of output to CollectionEvent
+    # Pass duplicate events to Perf. Perf can remove them, and this makes it easier to map output back to CollectionEvents
+    if perf_options.collect_by is CollectBy.NONE:
+        assert all(len(g) == 1 for g in scheduled_events)
+        perf_events_str = ",".join(e.perf_name(perf_options.use_event_names) for e in itertools.chain(*scheduled_events))
+    else:
+        perf_events_str = ",".join(["{%s}" % ",".join(e.perf_name(perf_options.use_event_names) for e in x) for x in scheduled_events if x])  # pylint: disable=consider-using-f-string
+
+    perf_command = [perf_options.perf_path, "stat", "-e", perf_events_str]
+    if sys.platform == "linux":
+        perf_command += ["-o", perf_options.perf_output, "-x", PERF_SEPARATOR]
+    else:
+        perf_command += ["--json", "--output", perf_options.perf_output]
+
+    if perf_options.all_cpus:
+        perf_command.append("-a")
+    if perf_options.pids:
+        perf_command += ["-p", perf_options.pids_string]
+    if perf_options.interval:
+        perf_command += ["-I", str(perf_options.interval)]
+    if perf_options.perf_args:
+        perf_command += shlex.split(perf_options.perf_args)
+    perf_command += perf_options.command
+    logging.info('Running "%s"', format_command(perf_command))
+    logging.debug("Unique events: %s", ",".join(set(e.event.name for e in flat_events)))
+
+    try:
+        subprocess.check_call(perf_command)
+    except KeyboardInterrupt:
+        logging.info("Received interrupt. Analysing data.")
+
+    def to_event_count(index: int, name: str, value: Optional[float], time: Optional[float]):
+        event = flat_events[index % len(flat_events)]
+        assert name == event.perf_name(perf_options.use_event_names) or name == event.perf_name(False)  # Note: event index always used on Windows
+        return EventCount(event=event, value=value, time=time)
+
+    perf_format = PerfStatFormat.INTERVAL if perf_options.interval else PerfStatFormat.NON_INTERVAL
+    event_counts = [to_event_count(index, name, value, time) for index, (name, value, time) in enumerate(read_perf_stat_output(perf_options.perf_output, perf_format))]
+
+    if any(e.event.event.name == "CPU_CYCLES" and e.value == 0 for e in event_counts):
+        raise ZeroCyclesError()
+
+    uncounted_events = [e for e in event_counts if e.value is None]
+    if uncounted_events:
+        last_interval_time = event_counts[-1].time
+        if perf_options.interval and any(e.time != last_interval_time for e in event_counts) and all(e.time == last_interval_time for e in uncounted_events):
+            logging.info("Ignoring last interval as not all events could be collected. Likely too short.")
+            return timed_event_counts
+
+        raise UncountedEventsError(set(e.event.event.name for e in uncounted_events))
+
+    # Append event counts to the corresponding timed bucket
+    for time, counts_for_time in itertools.groupby(event_counts, key=lambda e: e.time):
+        timed_event_counts.setdefault(time, []).extend(counts_for_time)
+
+    return timed_event_counts
+
+
 def collect_events(metric_instances: Iterable[MetricInstance], perf_options: PerfOptions):
     schedule = schedule_for_events(metric_instances, perf_options.collect_by, perf_options.max_events or sys.maxsize)
 
     if len(schedule) > 1:
         if not perf_options.command:
-            print("Can't do system-wide profiling with multiple runs. Remove --max-events.", file=sys.stderr)
+            print("Can't do system-wide profiling with multiple runs. Remove or increase --max-events.", file=sys.stderr)
             sys.exit(1)
         elif perf_options.pids:
-            print("Can't monitor PID(s) with multiple runs. Remove --max-events.", file=sys.stderr)
+            print("Can't monitor PID(s) with multiple runs. Remove or increase --max-events.", file=sys.stderr)
             sys.exit(1)
         elif perf_options.interval:
-            print("Can't collect interval data with multiple runs. Remove --max-events", file=sys.stderr)
+            print("Can't collect interval data with multiple runs. Remove or increase --max-events.", file=sys.stderr)
             sys.exit(1)
 
     if not perf_options.command:
@@ -289,59 +354,47 @@ def collect_events(metric_instances: Iterable[MetricInstance], perf_options: Per
     # "Schedule" perf instances based on max_events.
     timed_event_counts: Dict[Optional[float], List[EventCount]] = {}
     for scheduled_events in schedule:
-        flat_events = list(itertools.chain(*scheduled_events))  # Allows mapping of output to CollectionEvent
-        # Pass duplicate events to Perf. Perf can remove them, and this makes it easier to map output back to CollectionEvents
-        if perf_options.collect_by is CollectBy.NONE:
-            assert all(len(g) == 1 for g in scheduled_events)
-            perf_events_str = ",".join(e.perf_name(perf_options.use_event_names) for e in itertools.chain(*scheduled_events))
-        else:
-            perf_events_str = ",".join(["{%s}" % ",".join(e.perf_name(perf_options.use_event_names) for e in x) for x in scheduled_events if x])  # pylint: disable=consider-using-f-string
-
-        perf_command = [perf_options.perf_path, "stat", "-e", perf_events_str]
-        if sys.platform == "linux":
-            perf_command += ["-o", perf_options.perf_output, "-x", PERF_SEPARATOR]
-        else:
-            perf_command += ["--json", "--output", perf_options.perf_output]
-
-        if perf_options.all_cpus:
-            perf_command.append("-a")
-        if perf_options.pids:
-            perf_command += ["-p", perf_options.pids_string]
-        if perf_options.interval:
-            perf_command += ["-I", str(perf_options.interval)]
-        if perf_options.perf_args:
-            perf_command += shlex.split(perf_options.perf_args)
-        perf_command += perf_options.command
-        logging.info('Running "%s"', format_command(perf_command))
-        logging.debug("Unique events: %s", ",".join(set(e.event.name for e in flat_events)))
-
-        try:
-            subprocess.check_call(perf_command)
-        except KeyboardInterrupt:
-            logging.info("Received interrupt. Analysing data.")
-
-        def to_event_count(index: int, name: str, value: Optional[float], time: Optional[float]):
-            event = flat_events[index % len(flat_events)]
-            assert name == event.perf_name(perf_options.use_event_names) or name == event.perf_name(False)  # Note: event index always used on Windows
-            return EventCount(event=event, value=value, time=time)
-
-        perf_format = PerfStatFormat.INTERVAL if perf_options.interval else PerfStatFormat.NON_INTERVAL
-        event_counts = [to_event_count(index, name, value, time) for index, (name, value, time) in enumerate(read_perf_stat_output(perf_options.perf_output, perf_format))]
-
-        if any(e.event.event.name == "CPU_CYCLES" and e.value == 0 for e in event_counts):
-            raise ZeroCyclesError()
-
-        uncounted_events = [e for e in event_counts if e.value is None]
-        if uncounted_events:
-            last_interval_time = event_counts[-1].time
-            if perf_options.interval and any(e.time != last_interval_time for e in event_counts) and all(e.time == last_interval_time for e in uncounted_events):
-                logging.info("Ignoring last interval as not all events could be collected. Likely too short.")
-                break
-
-            raise UncountedEventsError(set(e.event.event.name for e in uncounted_events))
-
-        # Append event counts to the corresponding timed bucket
-        for time, counts_for_time in itertools.groupby(event_counts, key=lambda e: e.time):
+        for time, counts_for_time in __run_scheduled_events(scheduled_events, perf_options).items():
             timed_event_counts.setdefault(time, []).extend(counts_for_time)
-
     return timed_event_counts
+
+
+def get_pmu_counters_linux(cpu: str, perf_path: str) -> int:
+    """Detect the maximum number of programmable counters available on the current machine
+
+    First will run the following perf command with 6 events:
+    sudo perf stat -e {event1,event2,event3...} -- sleep 0.1
+
+    If the event's data is not collected, the corresponding perf output result is <not counted> or <not supported>.
+    However, outputting 0 is considered as data has been collected, which does not affect the logic of detecting the number of PMU counters.
+
+    If the events's data is not collected, it means the number of PMU counts is less than the number of events specified in the command,
+    we shall then reduce one event and try again.
+
+    """
+
+    metric_data = MetricData(cpu)
+    # CPU_CYCLES event has a dedicated counter, here we only care about the number of programmable counters.
+    events = (e for e in metric_data.events.values() if e.name != "CPU_CYCLES")
+
+    for cnt in range(CPU_PMU_COUNTERS, 0, -1):
+        try:
+            scheduled_events = {CollectionEvent(event=e) for e in itertools.islice(events, cnt)}
+            perf_options = PerfOptions(command=["sleep", "0"],
+                                       all_cpus=False,
+                                       collect_by=CollectBy.GROUP,
+                                       perf_path=perf_path
+                                       )
+            logging.info("Detect the number of available programmable counters, try to collect %s events at the same time", cnt)
+            __run_scheduled_events([scheduled_events], perf_options)
+            logging.info("There are %s programmable PMU counters available", cnt)
+            return cnt
+        except UncountedEventsError:
+            pass
+    raise NoPMUCounterError()
+
+
+def get_pmu_counters(cpu: str, perf_path: str) -> int:
+    if sys.platform == "linux":
+        return get_pmu_counters_linux(cpu, perf_path)
+    return get_pmu_counters_windows(perf_path)

@@ -24,7 +24,7 @@ from typing import Dict, Generator, Iterable, List, Optional, Sequence, Tuple, U
 
 from . import cpu_mapping, simple_maths
 from .event_collection import (CPU_PMU_COUNTERS, CollectBy, EventCount, GroupScheduleError, MetricScheduleError, PerfOptions, UncountedEventsError,
-                               ZeroCyclesError, collect_events, format_command)
+                               ZeroCyclesError, collect_events, format_command, get_pmu_counters)
 from .metric_data import (IDENTIFIER_REGEX, AnyMetricInstance, AnyMetricInstanceOrValue, CombinedMetricInstance, Group, MetricData, MetricInstance,
                           MetricInstanceValue)
 
@@ -340,10 +340,10 @@ def main(args=None):
         if not args.dummy_data:
             stat_data = collect_events(metric_instances, perf_options)
     except GroupScheduleError as e:
-        print(f'The "{e.group.title}" group contains {len(e.events)} unique events, but only {e.available_events} can be collected at once.\n\nChoose different groups/metrics or avoid collecting by group.', file=sys.stderr)
+        print(f'The "{e.group.title}" group contains {len(e.events)} unique events, but only {min(e.available_events, get_pmu_counters(cpu, args.perf_path))} can be collected at once.\n\nChoose different groups/metrics or avoid collecting by group.', file=sys.stderr)
         sys.exit(1)
     except MetricScheduleError as e:
-        print(f'The "{e.metric.name}" metric contains {len(e.events)} unique events, but only {e.available_events} can be collected at once.\n\nChoose different metrics or avoid collecting by metric.', file=sys.stderr)
+        print(f'The "{e.metric.name}" metric contains {len(e.events)} unique events, but only {min(e.available_events, get_pmu_counters(cpu, args.perf_path))} can be collected at once.\n\nChoose different metrics or avoid collecting by metric.', file=sys.stderr)
         sys.exit(1)
     except subprocess.CalledProcessError as e:
         print(f'"{format_command(e.cmd)}" finished with exit code {e.returncode}.', file=sys.stderr)
