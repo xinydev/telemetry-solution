@@ -1,7 +1,7 @@
 {
     "_type": "PMU_Specification",
     "document": {
-        "timestamp": "03 Jul 16:14:02 2023",
+        "timestamp": "24 Oct 10:50:53 2023",
         "copyright": "Copyright 2022-2023 Arm Ltd.",
         "confidential": false,
         "quality": "Release",
@@ -215,7 +215,7 @@
         "L2D_CACHE": {
             "code": "0x0016",
             "title": "Level 2 data cache access",
-            "description": "Counts level 2 cache accesses. level 2 cache is a unified cache for data and instruction accesses. Accesses are for misses in the first level caches or translation resolutions due to accesses. This event also counts write back of dirty data from level 1 data cache to the L2 cache.",
+            "description": "Counts level 2 cache accesses. Level 2 cache is a unified cache for data and instruction accesses. Accesses are for misses in the first level caches or translation resolutions due to accesses. This event also counts write back of dirty data from level 1 data cache to the L2 cache.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -227,7 +227,7 @@
         "L2D_CACHE_REFILL": {
             "code": "0x0017",
             "title": "Level 2 data cache refill",
-            "description": "Counts cache line refills into the level 2 cache. level 2 cache is a unified cache for data and instruction accesses. Accesses are for misses in the level 1 caches or translation resolutions due to accesses.",
+            "description": "Counts cache line refills into the level 2 cache. Level 2 cache is a unified cache for data and instruction accesses. Accesses are for misses in the level 1 caches or translation resolutions due to accesses.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -323,7 +323,7 @@
         "L2D_CACHE_ALLOCATE": {
             "code": "0x0020",
             "title": "Level 2 data cache allocation without refill",
-            "description": "TBD",
+            "description": "Counts level 2 cache line allocates that do not fetch data from outside the level 2 data or unified cache.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -431,7 +431,7 @@
         "L3D_CACHE": {
             "code": "0x002B",
             "title": "Level 3 data cache access",
-            "description": "Counts level 3 cache accesses. level 3 cache is a unified cache for data and instruction accesses. Accesses are for misses in the lower level caches or translation resolutions due to accesses.",
+            "description": "Counts level 3 cache accesses. Level 3 cache is a unified cache for data and instruction accesses. Accesses are for misses in the lower level caches or translation resolutions due to accesses.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -767,7 +767,7 @@
         "L2D_CACHE_RD": {
             "code": "0x0050",
             "title": "Level 2 data cache access, read",
-            "description": "Counts level 2 cache accesses due to memory read operations. level 2 cache is a unified cache for data and instruction accesses, accesses are for misses in the level 1 caches or translation resolutions due to accesses.",
+            "description": "Counts level 2 cache accesses due to memory read operations. Level 2 cache is a unified cache for data and instruction accesses, accesses are for misses in the level 1 caches or translation resolutions due to accesses.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -779,7 +779,7 @@
         "L2D_CACHE_WR": {
             "code": "0x0051",
             "title": "Level 2 data cache access, write",
-            "description": "Counts level 2 cache accesses due to memory write operations. level 2 cache is a unified cache for data and instruction accesses, accesses are for misses in the level 1 caches or translation resolutions due to accesses.",
+            "description": "Counts level 2 cache accesses due to memory write operations. Level 2 cache is a unified cache for data and instruction accesses, accesses are for misses in the level 1 caches or translation resolutions due to accesses.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -791,7 +791,7 @@
         "L2D_CACHE_REFILL_RD": {
             "code": "0x0052",
             "title": "Level 2 data cache refill, read",
-            "description": "Counts refills for memory accesses due to memory read operation counted by L2D_CACHE_RD. level 2 cache is a unified cache for data and instruction accesses, accesses are for misses in the level 1 caches or translation resolutions due to accesses.",
+            "description": "Counts refills for memory accesses due to memory read operation counted by L2D_CACHE_RD. Level 2 cache is a unified cache for data and instruction accesses, accesses are for misses in the level 1 caches or translation resolutions due to accesses.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -803,7 +803,7 @@
         "L2D_CACHE_REFILL_WR": {
             "code": "0x0053",
             "title": "Level 2 data cache refill, write",
-            "description": "Counts refills for memory accesses due to memory write operation counted by L2D_CACHE_WR. level 2 cache is a unified cache for data and instruction accesses, accesses are for misses in the level 1 caches or translation resolutions due to accesses.",
+            "description": "Counts refills for memory accesses due to memory write operation counted by L2D_CACHE_WR. Level 2 cache is a unified cache for data and instruction accesses, accesses are for misses in the level 1 caches or translation resolutions due to accesses.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -1367,7 +1367,7 @@
         "L3D_CACHE_RD": {
             "code": "0x00A0",
             "title": "Level 3 data cache access, read",
-            "description": "TBD",
+            "description": "Counts level 3 cache accesses caused by any memory read operation. Level 3 cache is a unified cache for data and instruction accesses. Accesses are for misses in the lower level caches or translation resolutions due to accesses.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -2071,7 +2071,7 @@
         "l1d_tlb_mpki": {
             "title": "L1 Data TLB MPKI",
             "formula": "((L1D_TLB_REFILL / INST_RETIRED) * 1000)",
-            "description": "This metric measures the number of level 1 instruction TLB accesses missed per thousand instructions executed.",
+            "description": "This metric measures the number of level 1 data TLB accesses missed per thousand instructions executed.",
             "units": "MPKI",
             "events": [
                 "INST_RETIRED",
