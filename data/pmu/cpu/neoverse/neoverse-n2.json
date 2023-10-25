@@ -1,7 +1,7 @@
 {
     "_type": "PMU_Specification",
     "document": {
-        "timestamp": "08 Oct 22:39:13 2023",
+        "timestamp": "24 Oct 10:50:53 2023",
         "copyright": "Copyright 2022-2023 Arm Ltd.",
         "confidential": false,
         "quality": "Release",
@@ -1367,7 +1367,7 @@
         "L3D_CACHE_RD": {
             "code": "0x00A0",
             "title": "Level 3 data cache access, read",
-            "description": "TBD",
+            "description": "Counts level 3 cache accesses caused by any memory read operation. Level 3 cache is a unified cache for data and instruction accesses. Accesses are for misses in the lower level caches or translation resolutions due to accesses.",
             "common": true,
             "accesses": [
                 "PMU",
