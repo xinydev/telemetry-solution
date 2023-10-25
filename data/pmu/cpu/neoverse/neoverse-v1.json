@@ -1608,7 +1608,7 @@
     "metrics": {
         "backend_bound": {
             "title": "Backend Bound",
-            "formula": "((100 * STALL_SLOT_BACKEND) / (CPU_CYCLES * 8))",
+            "formula": "((STALL_SLOT_BACKEND / (8 * CPU_CYCLES)) * 100)",
             "description": "This metric is the percentage of total slots that were stalled due to resource constraints in the backend of the processor.",
             "units": "percent of slots",
             "events": [
@@ -1923,7 +1923,7 @@
         },
         "retiring": {
             "title": "Retiring",
-            "formula": "((100 * (OP_RETIRED / OP_SPEC)) * (1 - (STALL_SLOT / (CPU_CYCLES * 8))))",
+            "formula": "(((1 - (STALL_SLOT / (CPU_CYCLES * 8))) * (OP_RETIRED / OP_SPEC)) * 100)",
             "description": "This metric is the percentage of total slots that retired operations, which indicates cycles that were utilized efficiently.",
             "units": "percent of slots",
             "events": [
