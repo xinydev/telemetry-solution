@@ -21,7 +21,7 @@ def get_midr_string_linux():
 
 
 def get_midr_string_wperf(perf_path):
-    result = subprocess.run([perf_path or "wperf", "-json", "test"], stdout=subprocess.PIPE, check=True)
+    result = subprocess.run([perf_path or "wperf", "test", "--json"], stdout=subprocess.PIPE, check=True)
     # {
     #   "Test_Results": [
     #     ...

@@ -301,7 +301,7 @@ def collect_events(metric_instances: Iterable[MetricInstance], perf_options: Per
         if sys.platform == "linux":
             perf_command += ["-o", perf_options.perf_output, "-x", PERF_SEPARATOR]
         else:
-            perf_command += ["-json", "--output", perf_options.perf_output]
+            perf_command += ["--json", "--output", perf_options.perf_output]
 
         if perf_options.all_cpus:
             perf_command.append("-a")
