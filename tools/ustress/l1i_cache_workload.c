@@ -21,6 +21,8 @@
 #include "cpuinfo.h"
 #include "main.h"
 
+#define UNUSED(x) (void)x
+
 #define FUNC(f) \
   static __attribute__((aligned(L1I_CACHE_SIZE))) void f(void* fp) { \
     void (**funcPtr)(void*) = fp; \
@@ -41,7 +43,8 @@ FUNC(fJ)
 FUNC(fK)
 FUNC(fL)
 
-static __attribute__((aligned(L1I_CACHE_SIZE))) void fZ(void* __unused fp) { \
+static __attribute__((aligned(L1I_CACHE_SIZE))) void fZ(void* fp) {
+    UNUSED(fp);
 }
 
 static void (*funcs[])(void*) = {
@@ -53,7 +56,8 @@ static void assertFuncsArePageAligned(void) {
   void(**funcPtr)(void*) = funcs;
   uintptr_t pageMask = (uintptr_t)(L1I_CACHE_SIZE - 1);
   while(*funcPtr) {
-    uintptr_t __unused diff = (uintptr_t)(*funcPtr) & pageMask;
+    uintptr_t diff = (uintptr_t)(*funcPtr) & pageMask;
+    UNUSED(diff);
     assert(diff == 0);
     funcPtr++;
   }
