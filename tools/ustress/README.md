@@ -24,12 +24,21 @@ The categories of workloads and their respective list of micro-benchmarks are as
   * For example `<benchmark_name> 2.5` command will extend execution time 2.5 times.
 * Use `<benchmark_name> --help` for usage message.
 
-## WOA BUILDS
+## Building UStress
+
+### AArch64 GNU/Linux Builds
+
+**Makefile** supports native GCC AArch64 GNU/Linux build. Users can generate micro benchmarks from source code.
+
+For native builds, users may want to use `make CPU=<CPU>` where supported values for`<CPU>` are defined in **cpuinfo.h**.
+For example `make CPU=neoverse-n1` builds UStress for Neoverse-N1 CPU.
+
+### WOA Builds
 
 **Makefile** supports LLVM `target=arm64-pc-windows-msvc` build. Users can generate micro benchmarks from source code.
 
 Cross build: Users may want to open MSVC cross environment on their x64 machine with `vcvarsx86_arm64.bat`. **Makefile** supporting _WIN32 builds is tested in this environment.
 
-### Limitations
+#### Limitations
 
 For _WIN32 configuration two micro-benchmarks are explicitly disabled: `l1i_cache_workload` and `memcpy_workload`. This is due to compilation errors.
