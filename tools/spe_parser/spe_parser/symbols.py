@@ -10,6 +10,7 @@ from bisect import bisect_right
 from functools import lru_cache
 from typing import Dict, List, Tuple
 
+from elftools.common.exceptions import ELFError
 from elftools.elf.elffile import ELFFile
 from spe_parser.perf_decoder import get_mmap_records
 
@@ -19,7 +20,11 @@ def __decode_elf_symbols(
 ) -> Dict[int, Tuple[str, int]]:
     symbols = {}
     with open(binary_path, "rb") as file:
-        elffile = ELFFile(file)
+        try:
+            elffile = ELFFile(file)
+        except ELFError:
+            logging.warning(f"symbols: file {binary_path} is not an ELF")
+            return symbols
         # Some libraries will have .symtab deleted, so when it cannot be obtained
         # try to read .dynsym instead
         tab = elffile.get_section_by_name(".symtab") or elffile.get_section_by_name(
