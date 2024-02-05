@@ -85,7 +85,7 @@ def get_kernel_symbols() -> Dict[int, Tuple[str, int]]:
             kallsyms_lines = f.read().splitlines()
             # if open /proc/kallsyms as non-root user, all the address will be 0
             if kallsyms_lines and kallsyms_lines[-1].startswith("0000000000000000"):
-                raise
+                raise Exception("symbols: opened /proc/kallsyms as non-root user")
     except Exception:
         # There are multiple reasons why reading /proc/kallsyms may fail, such as
         # permission issues or kernel compilation options.
