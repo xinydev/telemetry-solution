@@ -235,6 +235,7 @@ def get_arg_parser():
     collection_group.add_argument("-s", "--stages", action=ProcessStageArgs, default=DEFAULT_ALL_STAGES, help='control which stages to display, separated by a comma. e.g. "topdown,uarch". "all" may also be specified, or "combined" to display all, but without separated the output in to stages.')
     collection_group.add_linux_argument("-i", "-I", "--interval", type=int, help="Collect/output data every <interval> milliseconds")
     collection_group.add_argument("--use-event-names", action="store_true", help='use event names rather than event codes (e.g. "r01") when collecting data from perf. This can be useful for debugging.')
+    collection_group.add_argument("--core", "-C", help="count only on the list of CPUs provided. Multiple CPUs can be provided as a comma-separated list with no space.")
     output_group = parser.add_argument_group("output options")
     output_group.add_argument("-d", "--descriptions", action="store_true", help="show group/metric descriptions")
     output_group.add_argument("--show-sample-events", action="store_true", help="show sample events for metrics")

@@ -36,6 +36,7 @@ PerfStatFormat = Enum("PerfStatFormat", "NON_INTERVAL INTERVAL")
 @dataclass(frozen=True)
 class PerfOptions:
     command: List[str]
+    core: Optional[str] = None
     all_cpus: bool = False
     pids: List[int] = field(default_factory=list)
     max_events: Optional[int] = None
@@ -112,7 +113,11 @@ def read_perf_stat_output_windows(filename: str, _perf_format: PerfStatFormat):
         return float(value)
 
     with open(filename, encoding="utf-8") as f:
-        counter_data = json.load(f)["core"]["overall"]["Systemwide_Overall_Performance_Counters"]
+        core_data = json.load(f)["core"]
+
+        counter_data = core_data["overall"].get("Systemwide_Overall_Performance_Counters")
+        if not counter_data:
+            counter_data = core_data["cores"][0]["Performance_counter"]
 
     # Remove initial fixed cycle counter element added by wperf
     if counter_data[0]["event_idx"] == "fixed" and counter_data[0]["event_name"] == "cycle":
@@ -285,8 +290,12 @@ def __run_scheduled_events(scheduled_events: List[Set[CollectionEvent]], perf_op
     perf_command = [perf_options.perf_path, "stat", "-e", perf_events_str]
     if sys.platform == "linux":
         perf_command += ["-o", perf_options.perf_output, "-x", PERF_SEPARATOR]
+        if perf_options.core:
+            perf_command += ["-C", perf_options.core]
     else:
         perf_command += ["--json", "--output", perf_options.perf_output]
+        if perf_options.core:
+            perf_command += ["-c", perf_options.core]
 
     if perf_options.all_cpus:
         perf_command.append("-a")
