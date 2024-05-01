@@ -216,7 +216,7 @@ def get_arg_parser():
         default_perf_output = "wperf.json"
 
     parser = PlatformArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_linux_argument("command", default=[], nargs=argparse.REMAINDER, help='command to analyse. Subsequent arguments are passed as program arguments. e.g. "sleep 10"')
+    parser.add_argument("command", default=[], nargs=argparse.REMAINDER, help='command to analyse. Subsequent arguments are passed as program arguments. e.g. "sleep 10"')
     parser.add_linux_argument("--all-cpus", "-a", action="store_true", help="System-wide collection for all CPUs.")
     parser.add_linux_argument("--pid", "-p", type=pid_list, dest="pids", help='comma separated list of process IDs to monitor.')
     parser.add_argument("--perf-path", default=default_perf_path, help="path to perf executable")
@@ -283,6 +283,9 @@ def main(args=None):
         parser.error("Only one metric group or topdown metric can be specified.")
     if args.interval and not args.csv:
         parser.error("Interval mode must be used with CSV output.")
+    if not sys.platform == "linux":
+        if args.command and not args.core:
+            parser.error("Specify process spawn core via -C")
 
     # Get CPU metric data
     cpu = args.cpu

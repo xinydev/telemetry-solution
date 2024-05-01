@@ -305,6 +305,9 @@ def __run_scheduled_events(scheduled_events: List[Set[CollectionEvent]], perf_op
         perf_command += ["-I", str(perf_options.interval)]
     if perf_options.perf_args:
         perf_command += shlex.split(perf_options.perf_args)
+    if perf_options.command:
+        perf_command += ["--"]  # double-dash delimiter is accepted by Linux and WindowsPerf CLI parser
+        perf_command += perf_options.command
     perf_command += perf_options.command
     logging.info('Running "%s"', format_command(perf_command))
     logging.debug("Unique events: %s", ",".join(set(e.event.name for e in flat_events)))

@@ -9,7 +9,7 @@ Metrics are then calculated using information stored in per-CPU JSON files.
 
 Requirements
 ============
-* A working [Linux Perf](https://perf.wiki.kernel.org/index.php/Main_Page) or [WindowsPerf](https://gitlab.com/Linaro/WindowsPerf/windowsperf) (3.0.0 or later) setup.
+* A working [Linux Perf](https://perf.wiki.kernel.org/index.php/Main_Page) or [WindowsPerf](https://gitlab.com/Linaro/WindowsPerf/windowsperf) (3.3.3 or later) setup.
 * Python 3.7 or later.
 
 Install
@@ -61,10 +61,14 @@ Choosing what to monitor
 
 ### Launch and monitor an application
 
-> :warning: This is not currently supported on Windows.
-
 ```
 topdown-tool ./a.out
+```
+
+> :warning: On Windows you must explicitly specify core on which application will spawn.
+
+```
+topdown-tool -C 0 ./a.out
 ```
 
 ### Monitor a running application
