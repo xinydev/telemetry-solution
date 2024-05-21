@@ -22,6 +22,7 @@ COMMON_MICROARCH_FILENAME = "common-and-microarch.json"
 RECOMMENDED_FILENAME = "recommended.json"
 MAPFILE_FILENAME = "mapfile.csv"
 METRICS_FILENAME = "metrics.json"
+METRICS_ADJUSTMENTS_FILENAME = "metrics_adjustments.json"
 
 
 @dataclass(frozen=True)
@@ -168,7 +169,8 @@ def mrs_events_to_perf_events(cpu_events: List[MrsEvent], common_events: List[Mr
     return (perf_cpu_events, present_perf_common_events)
 
 
-def mrs_metrics_to_perf_metrics(mrs_metrics: List[mrs_data.MrsMetric]):
+def mrs_metrics_to_perf_metrics(mrs_metrics: List[mrs_data.MrsMetric], metrics_adj_info: dict):
+
     def mrs_to_perf_metric(metric: mrs_data.MrsMetric):
         """
         Create dict in Perf format from dict in MRS format
@@ -177,13 +179,22 @@ def mrs_metrics_to_perf_metrics(mrs_metrics: List[mrs_data.MrsMetric]):
         groups = [g.replace("Topdown_L", "TopdownL") for g in metric.groups or []]
         group = ";".join(groups)
 
+        # Get the scale and units from the metric adjustments file.
+        scale_value = 1
+        scale_units = metric.units
+        if metric.units and metric.name in metrics_adj_info:
+            metric_adj = metrics_adj_info[metric.name]
+            if 'scale_value' in metric_adj:
+                scale_value = metric_adj['scale_value']
+                scale_units = metric_adj['scale_units']
+
         # Use full description instead of title in brief description because
         # title just repeats the name without underscores.
         return PerfMetric(MetricExpr=metric.formula,
                           MetricName=metric.name,
                           BriefDescription=metric.description or None,
                           MetricGroup=group or None,
-                          ScaleUnit=f"1{metric.units}" if metric.units else None)
+                          ScaleUnit=f"{scale_value}{scale_units}" if metric.units else None)
 
     return [mrs_to_perf_metric(m) for m in mrs_metrics]
 
@@ -200,6 +211,8 @@ class PerfData:
         self.cpu_events = {}
         self.metrics = {}
         self.event_grouper = event_grouper
+        metrics_adj_file = os.path.join(os.path.dirname(__file__), METRICS_ADJUSTMENTS_FILENAME)
+        self.metrics_adj_info = read_json(metrics_adj_file)
 
     def add_cpu(self, mrs_cpu_info: mapping.MidrFields, mrs_cpu_events: List[MrsEvent],
                 mrs_common_events: List[MrsEvent], perf_cpu_name: str, source_file_name: str = ""):
@@ -285,7 +298,8 @@ class PerfData:
         assert perf_cpu_name not in self.metrics
 
         # Get processed MRS data (in Perf event format)
-        self.metrics[perf_cpu_name] = sort_by_metric_name(mrs_metrics_to_perf_metrics(mrs_metrics))
+        self.metrics[perf_cpu_name] = sort_by_metric_name(mrs_metrics_to_perf_metrics
+                                                          (mrs_metrics, self.metrics_adj_info))
 
         # Add CPU mapping
         self.mapfile.add_if_not_present(mrs_cpu_info, perf_cpu_name)

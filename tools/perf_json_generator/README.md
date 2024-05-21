@@ -32,6 +32,12 @@ of the CPUs that should be generated:
 ./generate.py <perf-folder> --arm-data-path <arm-data-folder> --arm-data-cpus neoverse-n2
 ```
 
+## Perf metrics adjustments
+
+In telemetry mode, a scale can be applied to Perf metrics by adding them to
+https://gitlab.arm.com/telemetry-solution/telemetry-solution/tools/perf_json_generator/metrics_adjustments.json file.
+The scale_value and scale_units will replace the default scale and units respectively.
+
 ## Categorization
 
 In Arm-data mode only, events are categorized by pattern matching in

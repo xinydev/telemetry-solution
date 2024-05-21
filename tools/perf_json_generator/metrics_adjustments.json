@@ -1,0 +1,46 @@
+{
+    "branch_misprediction_ratio": {
+        "scale_value":  100,
+        "scale_units": "percent of branches"
+    },
+    "dtlb_walk_ratio": {
+        "scale_value":  100,
+        "scale_units": "percent of TLB accesses"
+    },
+    "itlb_walk_ratio": {
+        "scale_value":  100,
+        "scale_units": "percent of TLB accesses"
+    },
+    "l1d_cache_miss_ratio": {
+        "scale_value":  100,
+        "scale_units": "percent of cache accesses"
+    },
+    "l1d_tlb_miss_ratio": {
+        "scale_value":  100,
+        "scale_units": "percent of TLB accesses"
+    },
+    "l1i_cache_miss_ratio": {
+        "scale_value":  100,
+        "scale_units": "percent of cache accesses"
+    },
+    "l1i_tlb_miss_ratio": {
+        "scale_value":  100,
+        "scale_units": "percent of TLB accesses"
+    },
+    "l2_cache_miss_ratio": {
+        "scale_value":  100,
+        "scale_units": "percent of cache accesses"
+    },
+    "l2_tlb_miss_ratio": {
+        "scale_value":  100,
+        "scale_units": "percent of TLB accesses"
+    },
+    "ll_cache_read_hit_ratio": {
+        "scale_value":  100,
+        "scale_units": "percent of cache accesses"
+    },
+    "ll_cache_read_miss_ratio": {
+        "scale_value":  100,
+        "scale_units": "percent of cache accesses"
+    }
+}
