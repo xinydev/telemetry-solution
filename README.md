@@ -40,7 +40,7 @@ Key chapters from this whitepaper are as below:
 
 **Note:** We support this solution for Neoverse CPUs at the moment with PMU events, metrics and methodology specified and upstreamed on Linux perf for Neoverse N1 and V1 CPUs. More Arm CPU support for the telemetry solution is coming soon.
 
-For beginners who are not familiar with the Linux perf tool or looking for a quick primer on how to collect PMU events for performance analysis, refer to Chapter 4 of a previous whitepaper on this topic [Arm Neoverse N1 Performance Analysis Methodology whitepaper](https://armkeil.blob.core.windows.net/developer/Files/pdf/white-paper/neoverse-n1-core-performance-v2.pdf).
+For beginners who are not familiar with the Linux perf tool or looking for a quick primer on how to collect PMU events for performance analysis, refer to Chapter 4 of a previous whitepaper on this topic [Arm Neoverse N1 Performance Analysis Methodology whitepaper](https://armkeil.blob.core.windows.net/developer/Files/pdf/white-paper/neoverse-n1-core-performance-v2.pdf). On a Linux system we recommend the [Arm System Capabilities Reporter](https://github.com/ArmDeveloperEcosystem/sysreport) to optimize your performance tools experience.
 
 
 ## PMU Events
