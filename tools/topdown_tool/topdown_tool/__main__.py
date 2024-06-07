@@ -133,8 +133,10 @@ def print_nested_metrics(metric_instances: Iterable[AnyMetricInstanceOrValue],
         if show_descriptions:
             print(indent_lines(instance.metric.description, indent + INDENT_LEVEL, DESCRIPTION_LINE_LENGTH))
 
-        if show_sample_events and instance.sample_events:
-            print(indent_lines("Sample events: " + ", ".join(e.name for e in instance.sample_events), indent + INDENT_LEVEL, DESCRIPTION_LINE_LENGTH))
+        # Latest format include sample_events from metrics themselves. It takes precedence over node sample_events.
+        sample_events = instance.metric.sample_events or instance.sample_events
+        if show_sample_events and sample_events:
+            print(indent_lines("Sample events: " + ", ".join(e.name for e in sample_events), indent + INDENT_LEVEL, DESCRIPTION_LINE_LENGTH))
 
         last_group[instance_level] = instance.group
         last_level = instance_level

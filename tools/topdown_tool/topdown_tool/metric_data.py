@@ -27,6 +27,7 @@ class Metric:
     units: str
     formula: str
     events: Tuple[Event, ...]
+    sample_events: Tuple[Event, ...]
 
     def format_value(self, value: float):
         if math.isnan(value):
@@ -183,6 +184,7 @@ class MetricData:
                 metric_data,
                 name=name,
                 events=tuple(self.events[e] for e in metric_data["events"]),
+                sample_events=tuple(self.events[e] for e in metric_data.get("sample_events", [])),
             )
             for name, metric_data in json_data["metrics"].items()
         }
