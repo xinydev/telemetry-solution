@@ -107,13 +107,14 @@ High level schema of the first release of JSON file is as below:
 
 ### Metric Field Definitions
 
-| Field         |   Definition                              |
-|---------------|-------------------------------------------|
-| `title`       |   Title of the Metrics                    |
-| `formula`     |   Formula to compute the metrics          |
-| `description` |   Description of the metrics              |
-| `units`       |   Metrics unit                            |
-| `events`      |   Events needed to calculate the metrics  |
+| Field                |   Definition                                                        |
+|----------------------|---------------------------------------------------------------------|
+| `title`              |   Title of the Metrics                                              |
+| `formula`            |   Formula to compute the metrics                                    |
+| `description`        |   Description of the metrics                                        |
+| `units`              |   Metrics unit                                                      |
+| `events`             |   Events needed to calculate the metrics                            |
+| `sample_events`      |   Events for sampling if a bottleneck is detected with this metric  |
 
 
 ### Topdown Methodology Field Definitions

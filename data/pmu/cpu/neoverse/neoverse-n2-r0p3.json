@@ -1,7 +1,7 @@
 {
     "_type": "PMU_Specification",
     "document": {
-        "timestamp": "24 Oct 10:50:54 2023",
+        "timestamp": "10 Jun 10:57:23 2024",
         "copyright": "Copyright 2022-2023 Arm Ltd.",
         "confidential": false,
         "quality": "Release",
@@ -119,7 +119,7 @@
         "EXC_RETURN": {
             "code": "0x000A",
             "title": "Instruction architecturally executed, Condition code check pass, exception return",
-            "description": "Counts any architecturally executed exception return instructions. Eg: AArch64: ERET",
+            "description": "Counts any architecturally executed exception return instructions. For example: AArch64: ERET",
             "common": true,
             "accesses": [
                 "PMU",
@@ -131,7 +131,7 @@
         "CID_WRITE_RETIRED": {
             "code": "0x000B",
             "title": "Instruction architecturally executed, Condition code check pass, write to CONTEXTIDR",
-            "description": "Counts architecturally executed writes to the CONTEXTIDR register, which usually contain the kernel PID and can be output with hardware trace.",
+            "description": "Counts architecturally executed writes to the CONTEXTIDR_EL1 register, which usually contain the kernel PID and can be output with hardware trace.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -167,7 +167,7 @@
         "BR_PRED": {
             "code": "0x0012",
             "title": "Predictable branch instruction speculatively executed",
-            "description": "Counts branches speculatively executed and were predicted right.",
+            "description": "Counts all speculatively executed branches.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -311,7 +311,7 @@
         "CHAIN": {
             "code": "0x001E",
             "title": "Chain a pair of event counters",
-            "description": "Counts whenever the even numbered PMU counter registers overflow. This event is used when the even/odd pairs of registers are used as a single counter.",
+            "description": "For odd-numbered counters, this event increments the count by one for each overflow of the preceding even-numbered counter. For even-numbered counters, there is no increment. This event is used when the even/odd pairs of registers are used as a single counter.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -359,7 +359,7 @@
         "STALL_FRONTEND": {
             "code": "0x0023",
             "title": "No operation sent for execution due to the frontend",
-            "description": "Counts cycles when frontend could not send any micro-operations to the rename stage because of frontend resource stalls caused by fetch memory latency or branch prediction flow stalls. All the frontend slots were empty during the cycle when this event counts.",
+            "description": "Counts cycles when frontend could not send any micro-operations to the rename stage because of frontend resource stalls caused by fetch memory latency or branch prediction flow stalls. STALL_FRONTEND_SLOTS counts SLOTS during the cycle when this event counts.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -479,7 +479,7 @@
         "DTLB_WALK": {
             "code": "0x0034",
             "title": "Data TLB access with at least one translation table walk",
-            "description": "Counts data memory translation table walks caused by a miss in the L2 TLB driven by a memory access. Note that partial translations that also cause a table walk are counted. This event does not count table walks caused by TLB maintenance operations.",
+            "description": "Counts number of demand data translation table walks caused by a miss in the L2 TLB and performing at least one memory access. Translation table walks are counted even if the translation ended up taking a translation fault for reasons different than EPD, E0PD and NFD. Note that partial translations that cause a translation table walk are also counted. Also note that this event counts walks triggered by software preloads, but not walks triggered by hardware prefetchers, and that this event does not count walks triggered by TLB maintenance operations.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -491,7 +491,7 @@
         "ITLB_WALK": {
             "code": "0x0035",
             "title": "Instruction TLB access with at least one translation table walk",
-            "description": "Counts instruction memory translation table walks caused by a miss in the L2 TLB driven by a memory access. Partial translations that also cause a table walk are counted. This event does not count table walks caused by TLB maintenance operations.",
+            "description": "Counts number of instruction translation table walks caused by a miss in the L2 TLB and performing at least one memory access. Translation table walks are counted even if the translation ended up taking a translation fault for reasons different than EPD, E0PD and NFD. Note that partial translations that cause a translation table walk are also counted. Also note that this event does not count walks triggered by TLB maintenance operations.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -503,7 +503,7 @@
         "LL_CACHE_RD": {
             "code": "0x0036",
             "title": "Last level cache access, read",
-            "description": "Counts read transactions that were returned from outside the core cluster. This event counts when the system register CPUECTLR.EXTLLC bit is set. This event counts read transactions returned from outside the core if those transactions are either hit in the system level cache or missed in the SLC and are returned from any other external sources.",
+            "description": "Counts read transactions that were returned from outside the core cluster. This event counts for external last level cache  when the system register CPUECTLR.EXTLLC bit is set, otherwise it counts for the L3 cache. This event counts read transactions returned from outside the core if those transactions are either hit in the system level cache or missed in the SLC and are returned from any other external sources.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -515,7 +515,7 @@
         "LL_CACHE_MISS_RD": {
             "code": "0x0037",
             "title": "Last level cache miss, read",
-            "description": "Counts read transactions that were returned from outside the core cluster but missed in the system level cache. This event counts when the system register CPUECTLR.EXTLLC bit is set. This event counts read transactions returned from outside the core if those transactions are missed in the System level Cache. The data source of the transaction is indicated by a field in the CHI transaction returning to the CPU. This event does not count reads caused by cache maintenance operations.",
+            "description": "Counts read transactions that were returned from outside the core cluster but missed in the system level cache. This event counts for external last level cache when the system register CPUECTLR.EXTLLC bit is set, otherwise it counts for L3 cache. This event counts read transactions returned from outside the core if those transactions are missed in the System level Cache. The data source of the transaction is indicated by a field in the CHI transaction returning to the CPU. This event does not count reads caused by cache maintenance operations.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -563,7 +563,7 @@
         "STALL": {
             "code": "0x003C",
             "title": "No operation sent for execution",
-            "description": "Counts cycles when no operations are sent to the rename unit from the frontend or from the rename unit to the backend for any reason (either frontend or backend stall).",
+            "description": "Counts cycles when no operations are sent to the rename unit from the frontend or from the rename unit to the backend for any reason (either frontend or backend stall). This event is the sum of STALL_FRONTEND and STALL_BACKEND",
             "common": true,
             "accesses": [
                 "PMU",
@@ -575,7 +575,7 @@
         "STALL_SLOT_BACKEND": {
             "code": "0x003D",
             "title": "No operation sent for execution on a Slot due to the backend",
-            "description": "Counts slots per cycle in which no operations are sent from the rename unit to the backend due to backend resource constraints.",
+            "description": "Counts slots per cycle in which no operations are sent from the rename unit to the backend due to backend resource constraints. STALL_BACKEND counts during the cycle when STALL_SLOT_BACKEND counts at least 1.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -599,7 +599,7 @@
         "STALL_SLOT": {
             "code": "0x003F",
             "title": "No operation sent for execution on a Slot",
-            "description": "Counts slots per cycle in which no operations are sent to the rename unit from the frontend or from the rename unit to the backend for any reason (either frontend or backend stall).",
+            "description": "Counts slots per cycle in which no operations are sent to the rename unit from the frontend or from the rename unit to the backend for any reason (either frontend or backend stall). STALL_SLOT is the sum of STALL_SLOT_FRONTEND and STALL_SLOT_BACKEND.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -779,7 +779,7 @@
         "L2D_CACHE_WR": {
             "code": "0x0051",
             "title": "Level 2 data cache access, write",
-            "description": "Counts level 2 cache accesses due to memory write operations. Level 2 cache is a unified cache for data and instruction accesses, accesses are for misses in the level 1 caches or translation resolutions due to accesses.",
+            "description": "Counts level 1 data cache refills caused by speculatively executed load or store operations that missed in the level 1 data cache. This event only counts one event per cache line. This event does not count cache line allocations from preload instructions or from hardware cache prefetching.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -983,7 +983,7 @@
         "LDREX_SPEC": {
             "code": "0x006C",
             "title": "Exclusive operation speculatively executed, Load-Exclusive",
-            "description": "Counts Load-Exclusive operations that have been speculatively executed. Eg: LDREX, LDX",
+            "description": "Counts Load-Exclusive operations that have been speculatively executed. For example: LDREX, LDX",
             "common": true,
             "accesses": [
                 "PMU",
@@ -1115,7 +1115,7 @@
         "BR_IMMED_SPEC": {
             "code": "0x0078",
             "title": "Branch speculatively executed, immediate branch",
-            "description": "Counts immediate branch operations which are speculatively executed.",
+            "description": "Counts direct branch operations which are speculatively executed.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -1127,7 +1127,7 @@
         "BR_RETURN_SPEC": {
             "code": "0x0079",
             "title": "Branch speculatively executed, procedure return",
-            "description": "Counts procedure return operations (RET) which are speculatively executed.",
+            "description": "Counts procedure return operations (RET, RETAA and RETAB) which are speculatively executed.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -1139,7 +1139,7 @@
         "BR_INDIRECT_SPEC": {
             "code": "0x007A",
             "title": "Branch speculatively executed, indirect branch",
-            "description": "Counts indirect branch operations including procedure returns, which are speculatively executed. This includes operations that force a software change of the PC, other than exception-generating operations.  Eg: BR Xn, RET",
+            "description": "Counts indirect branch operations including procedure returns, which are speculatively executed. This includes operations that force a software change of the PC, other than exception-generating operations and direct branch instructions. Some examples of the instructions counted by this event include BR Xn, RET, etc...",
             "common": true,
             "accesses": [
                 "PMU",
@@ -1343,7 +1343,7 @@
         "RC_LD_SPEC": {
             "code": "0x0090",
             "title": "Release consistency operation speculatively executed, Load-Acquire",
-            "description": "Counts any load acquire operations that are speculatively executed. Eg: LDAR, LDARH, LDARB",
+            "description": "Counts any load acquire operations that are speculatively executed. For example: LDAR, LDARH, LDARB",
             "common": true,
             "accesses": [
                 "PMU",
@@ -1355,7 +1355,7 @@
         "RC_ST_SPEC": {
             "code": "0x0091",
             "title": "Release consistency operation speculatively executed, Store-Release",
-            "description": "Counts any store release operations that are speculatively executed. Eg: STLR, STLRH, STLRB'",
+            "description": "Counts any store release operations that are speculatively executed. For example: STLR, STLRH, STLRB",
             "common": true,
             "accesses": [
                 "PMU",
@@ -1427,7 +1427,7 @@
         "CNT_CYCLES": {
             "code": "0x4004",
             "title": "Constant frequency cycles",
-            "description": "Counts constant frequency cycles",
+            "description": "Increments at a constant frequency equal to the rate of increment of the System Counter, CNTPCT_EL0.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -1631,7 +1631,7 @@
         "MEM_ACCESS_CHECKED": {
             "code": "0x4024",
             "title": "Checked data memory access",
-            "description": "Counts the number of memory read and write accesses in a cycle that are tag checked by the Memory Tagging Extension (MTE).",
+            "description": "Counts the number of memory read and write accesses counted by MEM_ACCESS that are tag checked by the Memory Tagging Extension (MTE). This event is implemented as the sum of MEM_ACCESS_CHECKED_RD and MEM_ACCESS_CHECKED_WR",
             "common": true,
             "accesses": [
                 "PMU",
@@ -1884,28 +1884,34 @@
     "metrics": {
         "backend_bound": {
             "title": "Backend Bound",
-            "formula": "(100 * ((STALL_SLOT_BACKEND / (CPU_CYCLES * 5)) - ((BR_MIS_PRED * 3) / CPU_CYCLES)))",
+            "formula": "100 * (STALL_SLOT_BACKEND / (CPU_CYCLES * 5) - BR_MIS_PRED * 3 / CPU_CYCLES)",
             "description": "This metric is the percentage of total slots that were stalled due to resource constraints in the backend of the processor.",
             "units": "percent of slots",
             "events": [
                 "BR_MIS_PRED",
                 "CPU_CYCLES",
                 "STALL_SLOT_BACKEND"
+            ],
+            "sample_events": [
+                "STALL_SLOT_BACKEND"
             ]
         },
         "backend_stalled_cycles": {
             "title": "Backend Stalled Cycles",
-            "formula": "((STALL_BACKEND / CPU_CYCLES) * 100)",
+            "formula": "STALL_BACKEND / CPU_CYCLES * 100",
             "description": "This metric is the percentage of cycles that were stalled due to resource constraints in the backend unit of the processor.",
             "units": "percent of cycles",
             "events": [
                 "CPU_CYCLES",
                 "STALL_BACKEND"
+            ],
+            "sample_events": [
+                "STALL_BACKEND"
             ]
         },
         "bad_speculation": {
             "title": "Bad Speculation",
-            "formula": "(100 * (((1 - (OP_RETIRED / OP_SPEC)) * (1 - (STALL_SLOT / (CPU_CYCLES * 5)))) + ((BR_MIS_PRED * 4) / CPU_CYCLES)))",
+            "formula": "100 * ((1 - OP_RETIRED / OP_SPEC) * (1 - STALL_SLOT / (CPU_CYCLES * 5)) + BR_MIS_PRED * 4 / CPU_CYCLES)",
             "description": "This metric is the percentage of total slots that executed operations and didn't retire due to a pipeline flush.\nThis indicates cycles that were utilized but inefficiently.",
             "units": "percent of slots",
             "events": [
@@ -1914,293 +1920,382 @@
                 "OP_RETIRED",
                 "OP_SPEC",
                 "STALL_SLOT"
+            ],
+            "sample_events": [
+                "STALL_SLOT",
+                "BR_MIS_PRED"
             ]
         },
         "branch_misprediction_ratio": {
             "title": "Branch Misprediction Ratio",
-            "formula": "(BR_MIS_PRED_RETIRED / BR_RETIRED)",
+            "formula": "BR_MIS_PRED_RETIRED / BR_RETIRED",
             "description": "This metric measures the ratio of branches mispredicted to the total number of branches architecturally executed. This gives an indication of the effectiveness of the branch prediction unit.",
             "units": "per branch",
             "events": [
                 "BR_MIS_PRED_RETIRED",
                 "BR_RETIRED"
+            ],
+            "sample_events": [
+                "BR_MIS_PRED_RETIRED"
             ]
         },
         "branch_mpki": {
             "title": "Branch MPKI",
-            "formula": "((BR_MIS_PRED_RETIRED / INST_RETIRED) * 1000)",
+            "formula": "BR_MIS_PRED_RETIRED / INST_RETIRED * 1000",
             "description": "This metric measures the number of branch mispredictions per thousand instructions executed.",
             "units": "MPKI",
             "events": [
                 "BR_MIS_PRED_RETIRED",
                 "INST_RETIRED"
+            ],
+            "sample_events": [
+                "BR_MIS_PRED_RETIRED"
             ]
         },
         "branch_percentage": {
             "title": "Branch Operations Percentage",
-            "formula": "(((BR_IMMED_SPEC + BR_INDIRECT_SPEC) / INST_SPEC) * 100)",
+            "formula": "(BR_IMMED_SPEC + BR_INDIRECT_SPEC) / INST_SPEC * 100",
             "description": "This metric measures branch operations as a percentage of operations speculatively executed.",
             "units": "percent of operations",
             "events": [
                 "BR_IMMED_SPEC",
                 "BR_INDIRECT_SPEC",
                 "INST_SPEC"
+            ],
+            "sample_events": [
+                "BR_IMMED_SPEC",
+                "BR_INDIRECT_SPEC"
             ]
         },
         "crypto_percentage": {
             "title": "Crypto Operations Percentage",
-            "formula": "((CRYPTO_SPEC / INST_SPEC) * 100)",
+            "formula": "CRYPTO_SPEC / INST_SPEC * 100",
             "description": "This metric measures crypto operations as a percentage of operations speculatively executed.",
             "units": "percent of operations",
             "events": [
                 "CRYPTO_SPEC",
                 "INST_SPEC"
+            ],
+            "sample_events": [
+                "CRYPTO_SPEC"
             ]
         },
         "dtlb_mpki": {
             "title": "DTLB MPKI",
-            "formula": "((DTLB_WALK / INST_RETIRED) * 1000)",
+            "formula": "DTLB_WALK / INST_RETIRED * 1000",
             "description": "This metric measures the number of data TLB Walks per thousand instructions executed.",
             "units": "MPKI",
             "events": [
                 "DTLB_WALK",
                 "INST_RETIRED"
+            ],
+            "sample_events": [
+                "DTLB_WALK"
             ]
         },
         "dtlb_walk_ratio": {
             "title": "DTLB Walk Ratio",
-            "formula": "(DTLB_WALK / L1D_TLB)",
+            "formula": "DTLB_WALK / L1D_TLB",
             "description": "This metric measures the ratio of data TLB Walks to the total number of data TLB accesses. This gives an indication of the effectiveness of the data TLB accesses.",
             "units": "per TLB access",
             "events": [
                 "DTLB_WALK",
                 "L1D_TLB"
+            ],
+            "sample_events": [
+                "DTLB_WALK"
             ]
         },
         "frontend_bound": {
             "title": "Frontend Bound",
-            "formula": "(100 * ((STALL_SLOT_FRONTEND / (CPU_CYCLES * 5)) - (BR_MIS_PRED / CPU_CYCLES)))",
+            "formula": "100 * (STALL_SLOT_FRONTEND / (CPU_CYCLES * 5) - BR_MIS_PRED / CPU_CYCLES)",
             "description": "This metric is the percentage of total slots that were stalled due to resource constraints in the frontend of the processor.",
             "units": "percent of slots",
             "events": [
                 "BR_MIS_PRED",
                 "CPU_CYCLES",
                 "STALL_SLOT_FRONTEND"
+            ],
+            "sample_events": [
+                "STALL_SLOT_FRONTEND"
             ]
         },
         "frontend_stalled_cycles": {
             "title": "Frontend Stalled Cycles",
-            "formula": "((STALL_FRONTEND / CPU_CYCLES) * 100)",
+            "formula": "STALL_FRONTEND / CPU_CYCLES * 100",
             "description": "This metric is the percentage of cycles that were stalled due to resource constraints in the frontend unit of the processor.",
             "units": "percent of cycles",
             "events": [
                 "CPU_CYCLES",
                 "STALL_FRONTEND"
+            ],
+            "sample_events": [
+                "STALL_FRONTEND"
             ]
         },
         "integer_dp_percentage": {
             "title": "Integer Operations Percentage",
-            "formula": "((DP_SPEC / INST_SPEC) * 100)",
+            "formula": "DP_SPEC / INST_SPEC * 100",
             "description": "This metric measures scalar integer operations as a percentage of operations speculatively executed.",
             "units": "percent of operations",
             "events": [
                 "DP_SPEC",
                 "INST_SPEC"
+            ],
+            "sample_events": [
+                "DP_SPEC"
             ]
         },
         "ipc": {
             "title": "Instructions Per Cycle",
-            "formula": "(INST_RETIRED / CPU_CYCLES)",
+            "formula": "INST_RETIRED / CPU_CYCLES",
             "description": "This metric measures the number of instructions retired per cycle.",
             "units": "per cycle",
             "events": [
                 "CPU_CYCLES",
                 "INST_RETIRED"
+            ],
+            "sample_events": [
+                "INST_RETIRED"
             ]
         },
         "itlb_mpki": {
             "title": "ITLB MPKI",
-            "formula": "((ITLB_WALK / INST_RETIRED) * 1000)",
+            "formula": "ITLB_WALK / INST_RETIRED * 1000",
             "description": "This metric measures the number of instruction TLB Walks per thousand instructions executed.",
             "units": "MPKI",
             "events": [
                 "INST_RETIRED",
                 "ITLB_WALK"
+            ],
+            "sample_events": [
+                "ITLB_WALK"
             ]
         },
         "itlb_walk_ratio": {
             "title": "ITLB Walk Ratio",
-            "formula": "(ITLB_WALK / L1I_TLB)",
+            "formula": "ITLB_WALK / L1I_TLB",
             "description": "This metric measures the ratio of instruction TLB Walks to the total number of instruction TLB accesses. This gives an indication of the effectiveness of the instruction TLB accesses.",
             "units": "per TLB access",
             "events": [
                 "ITLB_WALK",
                 "L1I_TLB"
+            ],
+            "sample_events": [
+                "ITLB_WALK"
             ]
         },
         "l1d_cache_miss_ratio": {
             "title": "L1D Cache Miss Ratio",
-            "formula": "(L1D_CACHE_REFILL / L1D_CACHE)",
+            "formula": "L1D_CACHE_REFILL / L1D_CACHE",
             "description": "This metric measures the ratio of level 1 data cache accesses missed to the total number of level 1 data cache accesses. This gives an indication of the effectiveness of the level 1 data cache.",
             "units": "per cache access",
             "events": [
                 "L1D_CACHE",
                 "L1D_CACHE_REFILL"
+            ],
+            "sample_events": [
+                "L1D_CACHE_REFILL"
             ]
         },
         "l1d_cache_mpki": {
             "title": "L1D Cache MPKI",
-            "formula": "((L1D_CACHE_REFILL / INST_RETIRED) * 1000)",
+            "formula": "L1D_CACHE_REFILL / INST_RETIRED * 1000",
             "description": "This metric measures the number of level 1 data cache accesses missed per thousand instructions executed.",
             "units": "MPKI",
             "events": [
                 "INST_RETIRED",
                 "L1D_CACHE_REFILL"
+            ],
+            "sample_events": [
+                "L1D_CACHE_REFILL"
             ]
         },
         "l1d_tlb_miss_ratio": {
             "title": "L1 Data TLB Miss Ratio",
-            "formula": "(L1D_TLB_REFILL / L1D_TLB)",
+            "formula": "L1D_TLB_REFILL / L1D_TLB",
             "description": "This metric measures the ratio of level 1 data TLB accesses missed to the total number of level 1 data TLB accesses. This gives an indication of the effectiveness of the level 1 data TLB.",
             "units": "per TLB access",
             "events": [
                 "L1D_TLB",
                 "L1D_TLB_REFILL"
+            ],
+            "sample_events": [
+                "L1D_TLB_REFILL"
             ]
         },
         "l1d_tlb_mpki": {
             "title": "L1 Data TLB MPKI",
-            "formula": "((L1D_TLB_REFILL / INST_RETIRED) * 1000)",
+            "formula": "L1D_TLB_REFILL / INST_RETIRED * 1000",
             "description": "This metric measures the number of level 1 data TLB accesses missed per thousand instructions executed.",
             "units": "MPKI",
             "events": [
                 "INST_RETIRED",
                 "L1D_TLB_REFILL"
+            ],
+            "sample_events": [
+                "L1D_TLB_REFILL"
             ]
         },
         "l1i_cache_miss_ratio": {
             "title": "L1I Cache Miss Ratio",
-            "formula": "(L1I_CACHE_REFILL / L1I_CACHE)",
+            "formula": "L1I_CACHE_REFILL / L1I_CACHE",
             "description": "This metric measures the ratio of level 1 instruction cache accesses missed to the total number of level 1 instruction cache accesses. This gives an indication of the effectiveness of the level 1 instruction cache.",
             "units": "per cache access",
             "events": [
                 "L1I_CACHE",
                 "L1I_CACHE_REFILL"
+            ],
+            "sample_events": [
+                "L1I_CACHE_REFILL"
             ]
         },
         "l1i_cache_mpki": {
             "title": "L1I Cache MPKI",
-            "formula": "((L1I_CACHE_REFILL / INST_RETIRED) * 1000)",
+            "formula": "L1I_CACHE_REFILL / INST_RETIRED * 1000",
             "description": "This metric measures the number of level 1 instruction cache accesses missed per thousand instructions executed.",
             "units": "MPKI",
             "events": [
                 "INST_RETIRED",
                 "L1I_CACHE_REFILL"
+            ],
+            "sample_events": [
+                "L1I_CACHE_REFILL"
             ]
         },
         "l1i_tlb_miss_ratio": {
             "title": "L1 Instruction TLB Miss Ratio",
-            "formula": "(L1I_TLB_REFILL / L1I_TLB)",
+            "formula": "L1I_TLB_REFILL / L1I_TLB",
             "description": "This metric measures the ratio of level 1 instruction TLB accesses missed to the total number of level 1 instruction TLB accesses. This gives an indication of the effectiveness of the level 1 instruction TLB.",
             "units": "per TLB access",
             "events": [
                 "L1I_TLB",
                 "L1I_TLB_REFILL"
+            ],
+            "sample_events": [
+                "L1I_TLB_REFILL"
             ]
         },
         "l1i_tlb_mpki": {
             "title": "L1 Instruction TLB MPKI",
-            "formula": "((L1I_TLB_REFILL / INST_RETIRED) * 1000)",
+            "formula": "L1I_TLB_REFILL / INST_RETIRED * 1000",
             "description": "This metric measures the number of level 1 instruction TLB accesses missed per thousand instructions executed.",
             "units": "MPKI",
             "events": [
                 "INST_RETIRED",
                 "L1I_TLB_REFILL"
+            ],
+            "sample_events": [
+                "L1I_TLB_REFILL"
             ]
         },
         "l2_cache_miss_ratio": {
             "title": "L2 Cache Miss Ratio",
-            "formula": "(L2D_CACHE_REFILL / L2D_CACHE)",
+            "formula": "L2D_CACHE_REFILL / L2D_CACHE",
             "description": "This metric measures the ratio of level 2 cache accesses missed to the total number of level 2 cache accesses. This gives an indication of the effectiveness of the level 2 cache, which is a unified cache that stores both data and instruction. Note that cache accesses in this cache are either data memory access or instruction fetch as this is a unified cache.",
             "units": "per cache access",
             "events": [
                 "L2D_CACHE",
                 "L2D_CACHE_REFILL"
+            ],
+            "sample_events": [
+                "L2D_CACHE_REFILL"
             ]
         },
         "l2_cache_mpki": {
             "title": "L2 Cache MPKI",
-            "formula": "((L2D_CACHE_REFILL / INST_RETIRED) * 1000)",
+            "formula": "L2D_CACHE_REFILL / INST_RETIRED * 1000",
             "description": "This metric measures the number of level 2 unified cache accesses missed per thousand instructions executed. Note that cache accesses in this cache are either data memory access or instruction fetch as this is a unified cache.",
             "units": "MPKI",
             "events": [
                 "INST_RETIRED",
                 "L2D_CACHE_REFILL"
+            ],
+            "sample_events": [
+                "L2D_CACHE_REFILL"
             ]
         },
         "l2_tlb_miss_ratio": {
             "title": "L2 Unified TLB Miss Ratio",
-            "formula": "(L2D_TLB_REFILL / L2D_TLB)",
+            "formula": "L2D_TLB_REFILL / L2D_TLB",
             "description": "This metric measures the ratio of level 2 unified TLB accesses missed to the total number of level 2 unified TLB accesses. This gives an indication of the effectiveness of the level 2 TLB.",
             "units": "per TLB access",
             "events": [
                 "L2D_TLB",
                 "L2D_TLB_REFILL"
+            ],
+            "sample_events": [
+                "L2D_TLB_REFILL"
             ]
         },
         "l2_tlb_mpki": {
             "title": "L2 Unified TLB MPKI",
-            "formula": "((L2D_TLB_REFILL / INST_RETIRED) * 1000)",
+            "formula": "L2D_TLB_REFILL / INST_RETIRED * 1000",
             "description": "This metric measures the number of level 2 unified TLB accesses missed per thousand instructions executed.",
             "units": "MPKI",
             "events": [
                 "INST_RETIRED",
                 "L2D_TLB_REFILL"
+            ],
+            "sample_events": [
+                "L2D_TLB_REFILL"
             ]
         },
         "ll_cache_read_hit_ratio": {
             "title": "LL Cache Read Hit Ratio",
-            "formula": "((LL_CACHE_RD - LL_CACHE_MISS_RD) / LL_CACHE_RD)",
+            "formula": "(LL_CACHE_RD - LL_CACHE_MISS_RD) / LL_CACHE_RD",
             "description": "This metric measures the ratio of last level cache read accesses hit in the cache to the total number of last level cache accesses. This gives an indication of the effectiveness of the last level cache for read traffic. Note that cache accesses in this cache are either data memory access or instruction fetch as this is a system level cache.",
             "units": "per cache access",
             "events": [
                 "LL_CACHE_MISS_RD",
                 "LL_CACHE_RD"
+            ],
+            "sample_events": [
+                "LL_CACHE_MISS_RD"
             ]
         },
         "ll_cache_read_miss_ratio": {
             "title": "LL Cache Read Miss Ratio",
-            "formula": "(LL_CACHE_MISS_RD / LL_CACHE_RD)",
+            "formula": "LL_CACHE_MISS_RD / LL_CACHE_RD",
             "description": "This metric measures the ratio of last level cache read accesses missed to the total number of last level cache accesses. This gives an indication of the effectiveness of the last level cache for read traffic. Note that cache accesses in this cache are either data memory access or instruction fetch as this is a system level cache.",
             "units": "per cache access",
             "events": [
                 "LL_CACHE_MISS_RD",
                 "LL_CACHE_RD"
+            ],
+            "sample_events": [
+                "LL_CACHE_MISS_RD"
             ]
         },
         "ll_cache_read_mpki": {
             "title": "LL Cache Read MPKI",
-            "formula": "((LL_CACHE_MISS_RD / INST_RETIRED) * 1000)",
+            "formula": "LL_CACHE_MISS_RD / INST_RETIRED * 1000",
             "description": "This metric measures the number of last level cache read accesses missed per thousand instructions executed.",
             "units": "MPKI",
             "events": [
                 "INST_RETIRED",
                 "LL_CACHE_MISS_RD"
+            ],
+            "sample_events": [
+                "LL_CACHE_MISS_RD"
             ]
         },
         "load_percentage": {
             "title": "Load Operations Percentage",
-            "formula": "((LD_SPEC / INST_SPEC) * 100)",
+            "formula": "LD_SPEC / INST_SPEC * 100",
             "description": "This metric measures load operations as a percentage of operations speculatively executed.",
             "units": "percent of operations",
             "events": [
                 "INST_SPEC",
                 "LD_SPEC"
+            ],
+            "sample_events": [
+                "LD_SPEC"
             ]
         },
         "retiring": {
             "title": "Retiring",
-            "formula": "(((1 - (STALL_SLOT / (CPU_CYCLES * 5))) * (OP_RETIRED / OP_SPEC)) * 100)",
+            "formula": "(1 - STALL_SLOT / (CPU_CYCLES * 5)) * (OP_RETIRED / OP_SPEC) * 100",
             "description": "This metric is the percentage of total slots that retired operations, which indicates cycles that were utilized efficiently.",
             "units": "percent of slots",
             "events": [
@@ -2208,36 +2303,62 @@
                 "OP_RETIRED",
                 "OP_SPEC",
                 "STALL_SLOT"
+            ],
+            "sample_events": [
+                "OP_RETIRED",
+                "OP_SPEC"
             ]
         },
         "scalar_fp_percentage": {
             "title": "Floating Point Operations Percentage",
-            "formula": "((VFP_SPEC / INST_SPEC) * 100)",
+            "formula": "VFP_SPEC / INST_SPEC * 100",
             "description": "This metric measures scalar floating point operations as a percentage of operations speculatively executed.",
             "units": "percent of operations",
             "events": [
                 "INST_SPEC",
                 "VFP_SPEC"
+            ],
+            "sample_events": [
+                "VFP_SPEC"
             ]
         },
         "simd_percentage": {
             "title": "Advanced SIMD Operations Percentage",
-            "formula": "((ASE_SPEC / INST_SPEC) * 100)",
+            "formula": "ASE_SPEC / INST_SPEC * 100",
             "description": "This metric measures advanced SIMD operations as a percentage of total operations speculatively executed.",
             "units": "percent of operations",
             "events": [
                 "ASE_SPEC",
                 "INST_SPEC"
+            ],
+            "sample_events": [
+                "ASE_SPEC"
             ]
         },
         "store_percentage": {
             "title": "Store Operations Percentage",
-            "formula": "((ST_SPEC / INST_SPEC) * 100)",
+            "formula": "ST_SPEC / INST_SPEC * 100",
             "description": "This metric measures store operations as a percentage of operations speculatively executed.",
             "units": "percent of operations",
             "events": [
                 "INST_SPEC",
                 "ST_SPEC"
+            ],
+            "sample_events": [
+                "ST_SPEC"
+            ]
+        },
+        "sve_all_percentage": {
+            "title": "SVE Operations (Load/Store Inclusive) Percentage",
+            "formula": "SVE_INST_SPEC / INST_SPEC * 100",
+            "description": "This metric measures scalable vector operations, including loads and stores, as a percentage of operations speculatively executed.",
+            "units": "percent of operations",
+            "events": [
+                "INST_SPEC",
+                "SVE_INST_SPEC"
+            ],
+            "sample_events": [
+                "SVE_INST_SPEC"
             ]
         }
     },
@@ -2640,7 +2761,8 @@
                     "simd_percentage",
                     "scalar_fp_percentage",
                     "branch_percentage",
-                    "crypto_percentage"
+                    "crypto_percentage",
+                    "sve_all_percentage"
                 ]
             }
         }
@@ -2687,8 +2809,7 @@
                             "LL_Cache_Effectiveness"
                         ],
                         "sample_events": [
-                            "STALL_SLOT_FRONTEND",
-                            "STALL_FRONTEND"
+                            "STALL_SLOT_FRONTEND"
                         ]
                     },
                     {
@@ -2702,8 +2823,7 @@
                             "Operation_Mix"
                         ],
                         "sample_events": [
-                            "STALL_SLOT_BACKEND",
-                            "STALL_BACKEND"
+                            "STALL_SLOT_BACKEND"
                         ]
                     },
                     {
@@ -2714,7 +2834,7 @@
                         ],
                         "sample_events": [
                             "STALL_SLOT",
-                            "BR_MIS_PRED_RETIRED"
+                            "BR_MIS_PRED"
                         ]
                     },
                     {
@@ -2725,9 +2845,7 @@
                         ],
                         "sample_events": [
                             "OP_RETIRED",
-                            "INST_RETIRED",
-                            "OP_SPEC",
-                            "INST_SPEC"
+                            "OP_SPEC"
                         ]
                     }
                 ]
