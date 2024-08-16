@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# Copyright 2022-2023 Arm Limited
+# Copyright 2022-2024 Arm Limited
 
 import dataclasses
 import itertools
@@ -384,7 +384,7 @@ def get_pmu_counters_linux(cpu: str, perf_path: str) -> int:
 
     """
 
-    metric_data = MetricData(cpu)
+    metric_data = MetricData.get_data_for_cpu(cpu)
     # CPU_CYCLES event has a dedicated counter, here we only care about the number of programmable counters.
     events = (e for e in metric_data.events.values() if e.name != "CPU_CYCLES")
 

@@ -20,7 +20,7 @@ def create_value_instances(metric_instances: List[AnyMetricInstance]):
 
 
 def test_nan_output(capsys):
-    metric_data = MetricData("neoverse-n1")
+    metric_data = MetricData.get_data_for_cpu("neoverse-n1")
     metric_instance = metric_data.metrics_for_group("cycle-accounting")[0]
     print_nested_metrics([MetricInstanceValue(metric_instance=metric_instance, value=math.nan)], COMBINED_STAGES, False, False)
     captured = capsys.readouterr()
@@ -35,7 +35,7 @@ def test_nan_output(capsys):
 def test_metric_output(capsys, cpu, exec_mode, stages_mode):
     stages = {"staged": DEFAULT_ALL_STAGES, "combined": COMBINED_STAGES}[stages_mode]
 
-    metric_data = MetricData(cpu)
+    metric_data = MetricData.get_data_for_cpu(cpu)
     metrics = metric_data.all_metrics(stages)
 
     if exec_mode == "run":

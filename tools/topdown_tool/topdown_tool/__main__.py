@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-# Copyright 2022-2023 Arm Limited
+# Copyright 2022-2024 Arm Limited
 
 import sys
 
@@ -223,7 +223,7 @@ def get_arg_parser():
     parser.add_linux_argument("--pid", "-p", type=pid_list, dest="pids", help='comma separated list of process IDs to monitor.')
     parser.add_argument("--perf-path", default=default_perf_path, help="path to perf executable")
     parser.add_argument("--perf-args", type=str, help="additional command line arguments to pass to Perf")
-    parser.add_argument("--cpu", help="CPU name to use to look up event data (auto-detect by default)")
+    parser.add_argument("--cpu", help="CPU information (file name or cpu name). CPU name is auto-detected, if this option is not provided.")
     query = parser.add_argument_group("query options").add_mutually_exclusive_group()
     query.add_argument("--list-cpus", action="store_true", help="list available CPUs and exit")
     query.add_argument("--list-groups", action="store_true", help="list available metric groups and exit")
@@ -297,14 +297,12 @@ def main(args=None):
         if not cpu:
             print("Could not detect CPU. Specify via --cpu", file=sys.stderr)
             sys.exit(1)
+
     try:
-        if cpu == "mapping":  # Special-case to handle collision with mapping file
-            parser.error(f'no data for "{cpu}" CPU')
-
-        metric_data = MetricData(cpu)
-    except FileNotFoundError:
-        parser.error(f'no data for "{cpu}" CPU')
-
+        import os.path
+        metric_data = MetricData.load_from_file(cpu) if os.path.isfile(cpu) else MetricData.get_data_for_cpu(cpu)
+    except (ValueError, FileNotFoundError):
+        parser.error(f'No data for CPU "{cpu}"')
     if args.list_groups:
         for name, group in metric_data.groups.items():
             if args.stages and metric_data.topdown.get_stage(name) not in args.stages:

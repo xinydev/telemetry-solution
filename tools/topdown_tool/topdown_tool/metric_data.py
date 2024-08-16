@@ -169,15 +169,8 @@ def create_dataclass(dataclass_type, data: Dict, **kwargs):
 
 
 class MetricData:
-    def __init__(self, cpu_or_json: str):
-        if isinstance(cpu_or_json, str):
-            with open(os.path.join(METRICS_DIR, f"{cpu_or_json}.json"), encoding="utf-8") as f:
-                json_data: Dict = json.load(f)
-        else:
-            json_data = cpu_or_json
-
+    def __init__(self, json_data: Dict):
         self.events = {k: Event(name=k, code=int(v["code"], 16)) for k, v in json_data.get("events", {}).items()}
-
         self.metrics = {
             name: create_dataclass(
                 Metric,
@@ -203,6 +196,17 @@ class MetricData:
 
         self.group_keys = {to_key(k): v for k, v in self.groups.items()}
         self.metric_keys = {to_key(k): v for k, v in self.metrics.items()}
+
+    @staticmethod
+    def load_from_file(filename: str):
+        with open(filename, encoding="utf-8") as f:
+            return MetricData(json.load(f))
+
+    @staticmethod
+    def get_data_for_cpu(cpu: str):
+        if cpu == "mapping":
+            raise ValueError
+        return MetricData.load_from_file(os.path.join(METRICS_DIR, f"{cpu}.json"))
 
     @staticmethod
     def list_cpus():

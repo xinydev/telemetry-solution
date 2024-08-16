@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# Copyright 2022-2023 Arm Limited
+# Copyright 2022-2024 Arm Limited
 
 import itertools
 import sys
@@ -18,7 +18,7 @@ MULTIPLEX_GROUPS = ["Topdown_L1", "Operation_Mix", "Miss_Ratio", "MPKI", "Topdow
 
 @pytest.fixture(name="metric_data")
 def metric_data_fixture():
-    return MetricData("neoverse-n1")
+    return MetricData.get_data_for_cpu("neoverse-n1")
 
 
 def test_collect_by_none_simple(metric_data):
@@ -55,7 +55,7 @@ def test_collect_by_none_multiplex(metric_data):
 @pytest.mark.parametrize("cpu", TEST_CPUS)
 def test_no_multiplex_all_events(cpu, collect_by):
     """Schedule all events without multiplexing, with different collect-by options."""
-    metric_data = MetricData(cpu)
+    metric_data = MetricData.get_data_for_cpu(cpu)
     metrics = metric_data.all_metrics(DEFAULT_ALL_STAGES)
 
     try:
@@ -72,7 +72,7 @@ def test_no_multiplex_all_events(cpu, collect_by):
 @pytest.mark.parametrize("cpu", TEST_CPUS)
 def test_no_multiplex_groups(cpu):
     """Ensure groups (other than the known "multiplex groups") can be scheduled without multiplexing."""
-    metric_data = MetricData(cpu)
+    metric_data = MetricData.get_data_for_cpu(cpu)
 
     for group_name in (g for g in metric_data.groups if g not in MULTIPLEX_GROUPS):
         metrics = metric_data.metrics_for_group(group_name)
@@ -87,7 +87,7 @@ def test_no_multiplex_groups(cpu):
 @pytest.mark.parametrize("cpu", TEST_CPUS)
 def test_multiplex_groups(cpu):
     """Ensure all multiplex groups raise an exception when trying to collect by group."""
-    metric_data = MetricData(cpu)
+    metric_data = MetricData.get_data_for_cpu(cpu)
 
     for group_name in (g for g in MULTIPLEX_GROUPS if g in metric_data.groups):
         metrics = metric_data.metrics_for_group(group_name)

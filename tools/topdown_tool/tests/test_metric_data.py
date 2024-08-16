@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# Copyright 2022-2023 Arm Limited
+# Copyright 2022-2024 Arm Limited
 
 import json
 import os
@@ -29,7 +29,7 @@ def test_add_data():
 
 
 def test_group():
-    metric_data = MetricData("neoverse-n1")
+    metric_data = MetricData.get_data_for_cpu("neoverse-n1")
     metric_instances = metric_data.metrics_for_group("Cycle_Accounting")
     assert [instance.metric.name for instance in metric_instances] == [
         "frontend_stalled_cycles",
@@ -39,7 +39,7 @@ def test_group():
 
 
 def test_level():
-    metric_data = MetricData("neoverse-n1")
+    metric_data = MetricData.get_data_for_cpu("neoverse-n1")
     l1 = metric_data.metrics_up_to_level(1)
     assert all(instance.level == 1 for instance in l1)
     assert set(instance.metric.name for instance in l1) == {
@@ -60,7 +60,7 @@ def test_level():
 
 
 def test_descendants():
-    metric_data = MetricData("neoverse-n1")
+    metric_data = MetricData.get_data_for_cpu("neoverse-n1")
     metrics = metric_data.metrics_descended_from("frontend_stalled_cycles")
 
     assert sorted(instance.metric.name for instance in metrics) == sorted(
@@ -89,7 +89,7 @@ def test_descendants():
 
 
 def test_uncategorised():
-    metric_data = MetricData("neoverse-n1")
+    metric_data = MetricData.get_data_for_cpu("neoverse-n1")
     metrics = metric_data.uncategorised_metrics()
 
     assert sorted(m.metric.title for m in metrics) == sorted([
@@ -118,7 +118,7 @@ def test_uncategorised():
 
 
 def test_case_insensitive():
-    metric_data = MetricData("neoverse-n1")
+    metric_data = MetricData.get_data_for_cpu("neoverse-n1")
     assert (metric_data.metrics_for_group("Cycle_Accounting")
             == metric_data.metrics_for_group("cycle_accounting")
             == metric_data.metrics_for_group("CYCLE_ACCOUNTING")
@@ -136,7 +136,7 @@ def test_case_insensitive():
 def test_combine_instances():
     assert combine_instances([]) == []
 
-    metric_data = MetricData("neoverse-n1")
+    metric_data = MetricData.get_data_for_cpu("neoverse-n1")
     instances = metric_data.metrics_for_group("CycleAccounting")
     length = len(instances)
     assert instances[0].metric.name == "frontend_stalled_cycles"
