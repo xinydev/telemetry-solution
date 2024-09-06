@@ -1,0 +1,137 @@
+Stage 1 (Topdown metrics)
+=========================
+[Topdown Level 1]
+Frontend Bound.................................. 0.00% slots
+  [Topdown Frontend]
+  Frontend Core Bound........................... 0.00% cycles
+    Frontend Core Flush Bound................... 0.00% cycles
+    Frontend Core Flow Bound.................... 0.00% cycles
+  Frontend Memory Bound......................... 0.00% cycles
+    Frontend Mem Cache Bound.................... 0.00% cycles
+      Frontend Cache L1I Bound.................. 0.00% cycles
+      Frontend Cache L2I Bound.................. 0.00% cycles
+    Frontend Mem TLB Bound...................... 0.00% cycles
+Backend Bound................................... 0.00% slots
+  [Topdown Backend]
+  Backend Core Bound............................ 0.00% cycles
+    Backend Core Rename Bound................... 0.00% cycles
+  Backend Memory Bound.......................... 0.00% cycles
+    Backend Memory Cache Bound.................. 0.00% cycles
+      Backend Cache L1D Bound................... 0.00% cycles
+      Backend Cache L2D Bound................... 0.00% cycles
+    Backend Memory TLB Bound.................... 0.00% cycles
+    Backend Memory Store Bound.................. 0.00% cycles
+Retiring........................................ 0.00% slots
+Bad Speculation................................. 0.00% slots
+
+Stage 2 (uarch metrics)
+=======================
+[Branch Effectiveness]
+  (follows Frontend Core Flush Bound)
+  (follows Frontend Core Flow Bound)
+  (follows Bad Speculation)
+Branch Direct Ratio............................. 0.000 per branch
+Branch Indirect Ratio........................... 0.000 per branch
+Branch Misprediction Ratio...................... 0.000 per branch
+Branch MPKI..................................... 0.000 misses per 1,000 instructions
+Branch Return Ratio............................. 0.000 per branch
+
+[Cycle Accounting]
+Backend Stalled Cycles.......................... 0.00% cycles
+Frontend Stalled Cycles......................... 0.00% cycles
+
+[Data TLB Effectiveness]
+  (follows Backend Memory TLB Bound)
+DTLB MPKI....................................... 0.000 misses per 1,000 instructions
+DTLB Walk Ratio................................. 0.000 per TLB access
+L1 Data TLB Miss Ratio.......................... 0.000 per TLB access
+L1 Data TLB MPKI................................ 0.000 misses per 1,000 instructions
+L2 Unified TLB Miss Ratio....................... 0.000 per TLB access
+L2 Unified TLB MPKI............................. 0.000 misses per 1,000 instructions
+
+[Floating Point Arithmetic Intensity]
+Floating Point Operations per Cycle............. 0.000 operations per cycle
+Non-SVE Floating Point Operations per Cycle..... 0.000 operations per cycle
+SVE Floating Point Operations per Cycle......... 0.000 operations per cycle
+
+[Floating Point Precision]
+Half Precision Floating Point Percentage........ 0.00% operations
+Single Precision Floating Point Percentage...... 0.00% operations
+Double Precision Floating Point Percentage...... 0.00% operations
+
+[General]
+Instructions Per Cycle.......................... 0.000 per cycle
+
+[Instruction TLB Effectiveness]
+  (follows Frontend Mem TLB Bound)
+ITLB MPKI....................................... 0.000 misses per 1,000 instructions
+ITLB Walk Ratio................................. 0.000 per TLB access
+L1 Instruction TLB Miss Ratio................... 0.000 per TLB access
+L1 Instruction TLB MPKI......................... 0.000 misses per 1,000 instructions
+L2 Unified TLB Miss Ratio....................... 0.000 per TLB access
+L2 Unified TLB MPKI............................. 0.000 misses per 1,000 instructions
+
+[L1 Data Cache Effectiveness]
+  (follows Backend Cache L1D Bound)
+L1D Cache Miss Ratio............................ 0.000 per cache access
+L1D Cache MPKI.................................. 0.000 misses per 1,000 instructions
+
+[L1 Instruction Cache Effectiveness]
+  (follows Frontend Cache L1I Bound)
+L1I Cache Miss Ratio............................ 0.000 per cache access
+L1I Cache MPKI.................................. 0.000 misses per 1,000 instructions
+
+[L2 Unified Cache Effectiveness]
+  (follows Frontend Cache L2I Bound)
+  (follows Backend Cache L2D Bound)
+L2 Cache Miss Ratio............................. 0.000 per cache access
+L2 Cache MPKI................................... 0.000 misses per 1,000 instructions
+
+[Last Level Cache Effectiveness]
+  (follows Frontend Cache L2I Bound)
+  (follows Backend Cache L2D Bound)
+LL Cache Read Hit Ratio......................... 0.000 per cache access
+LL Cache Read Miss Ratio........................ 0.000 per cache access
+LL Cache Read MPKI.............................. 0.000 misses per 1,000 instructions
+
+[Misses Per Kilo Instructions]
+Branch MPKI..................................... 0.000 misses per 1,000 instructions
+DTLB MPKI....................................... 0.000 misses per 1,000 instructions
+ITLB MPKI....................................... 0.000 misses per 1,000 instructions
+L1D Cache MPKI.................................. 0.000 misses per 1,000 instructions
+L1 Data TLB MPKI................................ 0.000 misses per 1,000 instructions
+L1I Cache MPKI.................................. 0.000 misses per 1,000 instructions
+L1 Instruction TLB MPKI......................... 0.000 misses per 1,000 instructions
+L2 Cache MPKI................................... 0.000 misses per 1,000 instructions
+L2 Unified TLB MPKI............................. 0.000 misses per 1,000 instructions
+LL Cache Read MPKI.............................. 0.000 misses per 1,000 instructions
+
+[Miss Ratio]
+Branch Misprediction Ratio...................... 0.000 per branch
+DTLB Walk Ratio................................. 0.000 per TLB access
+ITLB Walk Ratio................................. 0.000 per TLB access
+L1D Cache Miss Ratio............................ 0.000 per cache access
+L1 Data TLB Miss Ratio.......................... 0.000 per TLB access
+L1I Cache Miss Ratio............................ 0.000 per cache access
+L1 Instruction TLB Miss Ratio................... 0.000 per TLB access
+L2 Cache Miss Ratio............................. 0.000 per cache access
+L2 Unified TLB Miss Ratio....................... 0.000 per TLB access
+LL Cache Read Miss Ratio........................ 0.000 per cache access
+
+[Speculative Operation Mix]
+  (follows Retiring)
+Barrier Operations Percentage................... 0.00% operations
+Branch Operations Percentage.................... 0.00% operations
+Crypto Operations Percentage.................... 0.00% operations
+Integer Operations Percentage................... 0.00% operations
+Load Operations Percentage...................... 0.00% operations
+Floating Point Operations Percentage............ 0.00% operations
+Advanced SIMD Operations Percentage............. 0.00% operations
+Store Operations Percentage..................... 0.00% operations
+SVE Operations (Load/Store Inclusive) Percentage 0.00% operations
+
+[SVE Effectiveness]
+SVE Empty Predicate Percentage.................. 0.00% operations
+SVE Full Predicate Percentage................... 0.00% operations
+SVE Partial Predicate Percentage................ 0.00% operations
+SVE Predicate Percentage........................ 0.00% operations

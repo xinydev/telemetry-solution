@@ -5,10 +5,16 @@
     "0x41d49": {
         "name": "neoverse-n2"
     },
+    "0x41d8e": {
+        "name": "neoverse-n3"
+    },
     "0x41d40": {
         "name": "neoverse-v1"
     },
     "0x41d4f": {
         "name": "neoverse-v2"
+    },
+    "0x41d83": {
+        "name": "neoverse-v3"
     }
 }

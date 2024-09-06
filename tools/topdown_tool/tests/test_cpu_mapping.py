@@ -11,6 +11,8 @@ def test_get_cpu():
     assert get_cpu("0x00000000410fd400") == "neoverse-v1"
     assert get_cpu("0x00000000410fd490") == "neoverse-n2"
     assert get_cpu("0x00000000410fd4f0") == "neoverse-v2"
+    assert get_cpu("0x00000000410fd8e0") == "neoverse-n3"
+    assert get_cpu("0x00000000410fd830") == "neoverse-v3"
 
 
 def test_no_mapping():

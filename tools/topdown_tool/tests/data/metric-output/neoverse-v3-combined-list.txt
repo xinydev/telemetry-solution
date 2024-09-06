@@ -1,0 +1,132 @@
+[Topdown Level 1]                                  [Topdown group]
+Frontend Bound
+  [Topdown Frontend]                               [Topdown group]
+  Frontend Core Bound
+    Frontend Core Flush Bound
+      [Branch Effectiveness]                       [uarch group]
+      Branch MPKI
+      Branch Direct Ratio
+      Branch Indirect Ratio
+      Branch Return Ratio
+      Branch Misprediction Ratio
+    Frontend Core Flow Bound
+      Branch MPKI
+      Branch Direct Ratio
+      Branch Indirect Ratio
+      Branch Return Ratio
+      Branch Misprediction Ratio
+  Frontend Memory Bound
+    Frontend Mem Cache Bound
+      Frontend Cache L1I Bound
+        [L1 Instruction Cache Effectiveness]       [uarch group]
+        L1I Cache MPKI
+        L1I Cache Miss Ratio
+      Frontend Cache L2I Bound
+        [L2 Unified Cache Effectiveness]           [uarch group]
+        L2 Cache MPKI
+        L2 Cache Miss Ratio
+
+        [Last Level Cache Effectiveness]           [uarch group]
+        LL Cache Read MPKI
+        LL Cache Read Miss Ratio
+        LL Cache Read Hit Ratio
+    Frontend Mem TLB Bound
+      [Instruction TLB Effectiveness]              [uarch group]
+      ITLB MPKI
+      L1 Instruction TLB MPKI
+      L2 Unified TLB MPKI
+      ITLB Walk Ratio
+      L1 Instruction TLB Miss Ratio
+      L2 Unified TLB Miss Ratio
+Backend Bound
+  [Topdown Backend]                                [Topdown group]
+  Backend Core Bound
+    Backend Core Rename Bound
+  Backend Memory Bound
+    Backend Memory Cache Bound
+      Backend Cache L1D Bound
+        [L1 Data Cache Effectiveness]              [uarch group]
+        L1D Cache MPKI
+        L1D Cache Miss Ratio
+      Backend Cache L2D Bound
+        [L2 Unified Cache Effectiveness]           [uarch group]
+        L2 Cache MPKI
+        L2 Cache Miss Ratio
+
+        [Last Level Cache Effectiveness]           [uarch group]
+        LL Cache Read MPKI
+        LL Cache Read Miss Ratio
+        LL Cache Read Hit Ratio
+    Backend Memory TLB Bound
+      [Data TLB Effectiveness]                     [uarch group]
+      DTLB MPKI
+      L1 Data TLB MPKI
+      L2 Unified TLB MPKI
+      DTLB Walk Ratio
+      L1 Data TLB Miss Ratio
+      L2 Unified TLB Miss Ratio
+    Backend Memory Store Bound
+Retiring
+  [Speculative Operation Mix]                      [uarch group]
+  Load Operations Percentage
+  Store Operations Percentage
+  Integer Operations Percentage
+  Advanced SIMD Operations Percentage
+  Floating Point Operations Percentage
+  Barrier Operations Percentage
+  Branch Operations Percentage
+  Crypto Operations Percentage
+  SVE Operations (Load/Store Inclusive) Percentage
+Bad Speculation
+  [Branch Effectiveness]                           [uarch group]
+  Branch MPKI
+  Branch Direct Ratio
+  Branch Indirect Ratio
+  Branch Return Ratio
+  Branch Misprediction Ratio
+[Cycle Accounting]                                 [uarch group]
+Frontend Stalled Cycles
+Backend Stalled Cycles
+
+[General]                                          [uarch group]
+Instructions Per Cycle
+
+[Misses Per Kilo Instructions]                     [uarch group]
+Branch MPKI
+ITLB MPKI
+L1 Instruction TLB MPKI
+DTLB MPKI
+L1 Data TLB MPKI
+L2 Unified TLB MPKI
+L1I Cache MPKI
+L1D Cache MPKI
+L2 Cache MPKI
+LL Cache Read MPKI
+
+[Miss Ratio]                                       [uarch group]
+Branch Misprediction Ratio
+ITLB Walk Ratio
+DTLB Walk Ratio
+L1 Instruction TLB Miss Ratio
+L1 Data TLB Miss Ratio
+L2 Unified TLB Miss Ratio
+L1I Cache Miss Ratio
+L1D Cache Miss Ratio
+L2 Cache Miss Ratio
+LL Cache Read Miss Ratio
+
+[SVE Effectiveness]                                [uarch group]
+SVE Predicate Percentage
+SVE Full Predicate Percentage
+SVE Partial Predicate Percentage
+SVE Empty Predicate Percentage
+
+[Floating Point Arithmetic Intensity]              [uarch group]
+SVE Floating Point Operations per Cycle
+Non-SVE Floating Point Operations per Cycle
+Floating Point Operations per Cycle
+
+[Floating Point Precision]                         [uarch group]
+Half Precision Floating Point Percentage
+Single Precision Floating Point Percentage
+Double Precision Floating Point Percentage
