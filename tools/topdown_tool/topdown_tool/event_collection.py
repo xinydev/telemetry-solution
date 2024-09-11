@@ -12,8 +12,8 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Collection, Dict, Iterable, List, Optional, Set
 
-from .metric_data import Event, Group, Metric, MetricData, MetricInstance
-from .utils import get_pmu_counters_windows
+from topdown_tool.metric_data import Event, Group, Metric, MetricData, MetricInstance
+from topdown_tool.utils import get_pmu_counters_windows
 
 # Separator used in perf stat output
 PERF_SEPARATOR = ";"

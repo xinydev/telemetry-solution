@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-# Copyright 2022-2023 Arm Limited
+# Copyright 2022-2024 Arm Limited
 
 import ast
 import logging
@@ -35,8 +35,8 @@ def eval_node(node: ast.expr):
             raise ForbiddenExpressionException(f'Operator "{op_type.__name__}" is not allowed.')
         return operators[op_type]
 
-    if isinstance(node, ast.Num):
-        return node.n
+    if isinstance(node, ast.Constant):
+        return node.value
     if isinstance(node, ast.BinOp):
         op = get_op_function(node.op)
         return op(eval_node(node.left), eval_node(node.right))  # type: ignore

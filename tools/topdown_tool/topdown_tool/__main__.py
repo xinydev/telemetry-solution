@@ -2,16 +2,15 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2022-2024 Arm Limited
 
+import os.path
 import sys
 
 if sys.version_info < (3, 7):
     print("Python 3.7 or later is required to run this script.", file=sys.stderr)
     sys.exit(1)
 
-# Allow relative imports when running file/package directly (not as a module).
+# Update path when running file/package directly (not as a module).
 if __name__ == "__main__" and not __package__:
-    __package__ = "topdown_tool"  # pylint: disable=redefined-builtin
-    import os.path
     sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
 import argparse
@@ -22,11 +21,11 @@ import textwrap
 from re import Match
 from typing import Dict, Generator, Iterable, List, Optional, Sequence, Tuple, Union
 
-from . import cpu_mapping, simple_maths
-from .event_collection import (CPU_PMU_COUNTERS, CollectBy, EventCount, GroupScheduleError, MetricScheduleError, PerfOptions, UncountedEventsError,
-                               ZeroCyclesError, collect_events, format_command, get_pmu_counters)
-from .metric_data import (IDENTIFIER_REGEX, AnyMetricInstance, AnyMetricInstanceOrValue, CombinedMetricInstance, Group, MetricData, MetricInstance,
-                          MetricInstanceValue)
+from topdown_tool import cpu_mapping, simple_maths
+from topdown_tool.event_collection import (CPU_PMU_COUNTERS, CollectBy, EventCount, GroupScheduleError, MetricScheduleError, PerfOptions, UncountedEventsError,
+                                           ZeroCyclesError, collect_events, format_command, get_pmu_counters)
+from topdown_tool.metric_data import (IDENTIFIER_REGEX, AnyMetricInstance, AnyMetricInstanceOrValue, CombinedMetricInstance, Group, MetricData, MetricInstance,
+                                      MetricInstanceValue)
 
 # Constants for nested printing
 INDENT_LEVEL = 2
@@ -75,7 +74,7 @@ def generate_metric_values(metric_instances: Iterable[AnyMetricInstanceOrValue])
             yield (mi, None)
 
 
-# pylint: disable=too-many-branches
+# pylint: disable=too-many-branches,too-many-locals
 def print_nested_metrics(metric_instances: Iterable[AnyMetricInstanceOrValue],
                          stages: List[int],
                          show_descriptions: bool,
@@ -117,7 +116,7 @@ def print_nested_metrics(metric_instances: Iterable[AnyMetricInstanceOrValue],
             if instance_level == last_level:
                 print()
 
-            group_types = f"{' ' * (max_width-indent-2-len(instance.group.title))} [{STAGE_LABELS[instance.stage]} group]" if not stages else ""
+            group_types = f"{' ' * (max_width - indent - 2 - len(instance.group.title))} [{STAGE_LABELS[instance.stage]} group]" if not stages else ""
             print(indent_lines(f"[{instance.group.title}]{group_types}", indent))
             if (stages and 1 in stages) and isinstance(instance, CombinedMetricInstance):
                 for parent in instance.parents:
@@ -126,7 +125,7 @@ def print_nested_metrics(metric_instances: Iterable[AnyMetricInstanceOrValue],
                 print(indent_lines(instance.group.description, indent + INDENT_LEVEL, DESCRIPTION_LINE_LENGTH))
 
         if value is not None:
-            print(indent_lines(f"{instance.metric.title.ljust(max_width-indent, '.')} {instance.metric.format_value(value)}", indent))
+            print(indent_lines(f"{instance.metric.title.ljust(max_width - indent, '.')} {instance.metric.format_value(value)}", indent))
         else:
             print(indent_lines(instance.metric.title, indent))
 
@@ -207,7 +206,7 @@ def get_arg_parser():
             setattr(group, "add_linux_argument", self.add_linux_argument)
             return group
 
-        def parse_args(self, args):  # pylint: disable=arguments-differ
+        def parse_args(self, args: Optional[Sequence[str]] = None):  # type: ignore # pylint: disable=arguments-differ
             return super().parse_args(args, self.default_namespace)
 
     if sys.platform == "linux":
@@ -217,7 +216,7 @@ def get_arg_parser():
         default_perf_path = "wperf"
         default_perf_output = "wperf.json"
 
-    parser = PlatformArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = PlatformArgumentParser(prog="topdown-tool", formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("command", default=[], nargs=argparse.REMAINDER, help='command to analyse. Subsequent arguments are passed as program arguments. e.g. "sleep 10"')
     parser.add_linux_argument("--all-cpus", "-a", action="store_true", help="System-wide collection for all CPUs.")
     parser.add_linux_argument("--pid", "-p", type=pid_list, dest="pids", help='comma separated list of process IDs to monitor.')
@@ -286,7 +285,7 @@ def main(args=None):
         parser.error("Only one metric group or topdown metric can be specified.")
     if args.interval and not args.csv:
         parser.error("Interval mode must be used with CSV output.")
-    if not sys.platform == "linux":
+    if sys.platform != "linux":
         if args.command and not args.core:
             parser.error("Specify process spawn core via -C")
 
@@ -299,7 +298,6 @@ def main(args=None):
             sys.exit(1)
 
     try:
-        import os.path
         metric_data = MetricData.load_from_file(cpu) if os.path.isfile(cpu) else MetricData.get_data_for_cpu(cpu)
     except (ValueError, FileNotFoundError):
         parser.error(f'No data for CPU "{cpu}"')
@@ -342,8 +340,7 @@ def main(args=None):
 
     try:
         perf_options = PerfOptions.from_args(args)
-        if not args.dummy_data:
-            stat_data = collect_events(metric_instances, perf_options)
+        stat_data = collect_events(metric_instances, perf_options) if not args.dummy_data else {}
     except GroupScheduleError as e:
         print(f'The "{e.group.title}" group contains {len(e.events)} unique events, but only {min(e.available_events, get_pmu_counters(cpu, args.perf_path))} can be collected at once.\n\nChoose different groups/metrics or avoid collecting by group.', file=sys.stderr)
         sys.exit(1)

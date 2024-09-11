@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-# Copyright 2022-2023 Arm Limited
+# Copyright 2022-2024 Arm Limited
 
 import json
 import os
 import sys
 
-from .utils import get_midr_string_windows
+# Update path when running file/package directly (not as a module).
+if __name__ == "__main__" and not __package__:
+    sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
+
+from topdown_tool.utils import get_midr_string_windows
 
 
 MIDR_PATH = "/sys/devices/system/cpu/cpu0/regs/identification/midr_el1"
