@@ -224,7 +224,7 @@ def get_arg_parser():
     parser.add_argument("--perf-path", default=default_perf_path, help="path to perf executable")
     parser.add_argument("--perf-args", type=str, help="additional command line arguments to pass to Perf")
     parser.add_argument("--cpu", help="CPU name to use to look up event data (auto-detect by default)")
-    query = parser.add_argument_group("query options")
+    query = parser.add_argument_group("query options").add_mutually_exclusive_group()
     query.add_argument("--list-cpus", action="store_true", help="list available CPUs and exit")
     query.add_argument("--list-groups", action="store_true", help="list available metric groups and exit")
     query.add_argument("--list-metrics", action="store_true", help="list available metrics and exit")
@@ -243,8 +243,9 @@ def get_arg_parser():
     output_group.add_argument("--show-sample-events", action="store_true", help="show sample events for metrics")
     output_group.add_argument("--perf-output", default=default_perf_output, help="output file for perf event data")
     output_group.add_argument("--csv", help="output file for metric CSV data")
-    output_group.add_argument("-v", "--verbose", action="store_const", dest="loglevel", const=logging.INFO, help="enable verbose output")
-    output_group.add_argument("--debug", action="store_const", dest="loglevel", const=logging.DEBUG, help="enable debug output")
+    logging_group = output_group.add_mutually_exclusive_group()
+    logging_group.add_argument("-v", "--verbose", action="store_const", dest="loglevel", const=logging.INFO, help="enable verbose output")
+    logging_group.add_argument("--debug", action="store_const", dest="loglevel", const=logging.DEBUG, help="enable debug output")
 
     # Debug option to generate dummy data without collect event data. This uses 0 for metric values.
     parser.add_argument("--dummy-data", action="store_true", help=argparse.SUPPRESS)
