@@ -10,7 +10,9 @@ reason the path to the Perf subfolder in the Linux repo should be given
 as the first argument. In this readme it is denoted as `<perf-folder>`,
 and as an example it could be:
 
+```
   /work/linux/tools/perf
+```
 
 ## Usage for telemetry-solution input format
 
