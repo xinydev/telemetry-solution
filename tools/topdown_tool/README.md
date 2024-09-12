@@ -291,27 +291,14 @@ See `topdown-tool --help` for full usage information.
 
 Known Issues
 ============
-Issue collecting "CPU_CYCLES" event on AWS/EC2 instances using a hypervisor
----------------------------------------------------------------------------
-For Amazon Elastic Compute Cloud instances using a hypervisor (i.e. non-metal instances), Linux Perf may report either 0 or a reduced value for the "CPU_CYCLES" event.
-
-This is triggered when certain event combinations are requested, and affects many of the metrics used by this tool, leading to errors or bogus data.
-
-This issue is being addressed by Amazon Web Services.
-
-### Possible workarounds:
-* Use a metal instance.
-* Restrict the number of simultaneous events requested by the tool.  
-Specifying `--max-events=6` should avoid the problematic event combinations, but requires that the target application be running multiple times. (This also prevents some modes such as system-wide profiling from being used.)
-
-Reduced PMU counter availability on smaller AWS/EC2 instance types
-------------------------------------------------------------------
-When running instances smaller than a full socket on Amazon's Elastic Compute Cloud, not all hardware event counters are available to the end user.
+Reduced PMU counter availability for non-metal AWS/EC2 instances
+----------------------------------------------------------------
+When running non-metal instances on Amazon's Elastic Compute Cloud, not all hardware event counters are available to the end user (even when reserving all cores on a node).
 
 This results in fewer events being monitored simultaneously, which can increase negative effects associated with counter multiplexing.
 
 In some cases, this can prevent all events within a single metric from being scheduled together, which will trigger an error.
 
 ### Possible workarounds:
-* Use a larger instance size. Ideally a full socket or a metal instance.
+* Use a metal instance.
 * It is possible to schedule events within a metric independently by specifying `--collect-by=none`, although note that this can lead to unusual/invalid data for all but the most homogeneous workloads.
