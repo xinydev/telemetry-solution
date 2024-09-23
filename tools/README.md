@@ -6,6 +6,10 @@ This folder contains the MVP tools for Telemetry specification and methodologies
 
 Validation workload suite to stress test major CPU resources.
 
+### ustress_charts
+
+Chart generation tool for metrics for workloads from ustress suite.
+
 ## topdown_tool
 
 Tool to support the Arm topdown methodology by collecting derived metrics based on Performance Monitoring Unit (PMU) events.
