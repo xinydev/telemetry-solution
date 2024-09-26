@@ -1,7 +1,7 @@
 files: '^tools/topdown_tool/'
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.6.0
     hooks:
       - id: check-ast
       - id: check-executables-have-shebangs
@@ -15,15 +15,15 @@ repos:
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
   - repo: https://github.com/PyCQA/flake8
-    rev: 6.0.0
+    rev: 7.1.1
     hooks:
       - id: flake8
         args: ['--ignore=E501,W503']
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.4.1
+    rev: v1.11.2
     hooks:
       - id: mypy
   - repo: 'https://github.com/codespell-project/codespell'
-    rev: v2.2.5
+    rev: v2.3.0
     hooks:
       - id: codespell
