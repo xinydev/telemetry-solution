@@ -18,7 +18,7 @@
 #include "cpuinfo.h"
 #include "main.h"
 
-static void stress(long runs) {
+void stress(long runs) {
   for(long n=runs; n>0; n--) {
     for(int m=10000; m>0; m--) {
 #if defined(__aarch64__)

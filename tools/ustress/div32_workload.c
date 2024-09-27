@@ -17,6 +17,8 @@
 #include <stdint.h>
 #include "main.h"
 
+#if USE_C
+
 static int kernel(long runs, int32_t result, int32_t divider) {
   for(long n=runs; n>0; n--) {
     result /= divider;
@@ -27,7 +29,26 @@ static int kernel(long runs, int32_t result, int32_t divider) {
   return result;
 }
 
-static void stress(long runs) {
+#else
+
+int kernel(long, int32_t, int32_t);
+
+__asm__ (
+"kernel:            \n"
+"0:                 \n"
+"sdiv    w1, w1, w2 \n" // result /= divider
+"sdiv    w1, w1, w2 \n" // result /= divider
+"sdiv    w1, w1, w2 \n" // result /= divider
+"sdiv    w1, w1, w2 \n" // result /= divider
+"subs    x0, x0, #1 \n" // n--
+"bne     0b         \n"
+"mov     w0, w1     \n"
+"ret                \n"
+);
+
+#endif
+
+void stress(long runs) {
   /* This volatile use of result should prevent the computation from being optimised away by the compiler. */
   int32_t result;
   volatile int32_t a = INT32_MAX, b = 9;

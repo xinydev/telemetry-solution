@@ -12,7 +12,7 @@
 #include <string.h>
 #include <time.h>
 
-static void stress(long runs);
+void stress(long runs);
 
 /* run each stress test about 1s */
 struct {

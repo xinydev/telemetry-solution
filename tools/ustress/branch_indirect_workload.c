@@ -26,6 +26,9 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include "cpuinfo.h"
+
+#if USE_C
 
 static volatile int v = 0;
 
@@ -85,3 +88,92 @@ int main(void) {
   return EXIT_SUCCESS;
 }
 #pragma GCC diagnostic pop
+
+#else
+
+#define STRINGIFY(x) #x
+#define TOSTRING(x) STRINGIFY(x)
+
+__asm__ (
+".equ L1D_CACHE_LINE_SIZE, " TOSTRING(L1D_CACHE_LINE_SIZE) "\n"
+
+".globl main                                                                                    \n"
+"main:                                                                                          \n"
+
+"# Save frame pointer                                                                           \n"
+"stp     fp, lr, [sp, #-16]!                                                                    \n"
+"mov     fp, sp                                                                                 \n"
+
+"# Align stack to cache line                                                                    \n"
+"mov     x0, sp                                                                                 \n"
+"and     sp, x0, -L1D_CACHE_LINE_SIZE                                                           \n"
+
+"# Fill labels[]                                                                                \n"
+"mov     w0, #15                                                                                \n"
+"adr     x1, 2f + 4                                                                             \n"
+"adr     x2, 2f                                                                                 \n"
+"0:                                                                                             \n"
+"stp     x1, x2, [sp, #-16]!                                                                    \n"
+"add     x1, x1, #8                                                                             \n"
+"add     x2, x2, #8                                                                             \n"
+"subs    w0, w0, #1                                                                             \n"
+"bne     0b                                                                                     \n"
+"adr     x1, 3f                                                                                 \n"
+"stp     x1, x2, [sp, #-16]!                                                                    \n"
+
+"# Mask = 0x1F                                                                                  \n"
+"mov     w0, #0x1F                                                                              \n"
+
+"# Outer loop                                                                                   \n"
+"1:                                                                                             \n"
+
+"# LFSR = 0xACE1                                                                                \n"
+"mov     w1, #0xACE1                                                                            \n"
+
+"# N = 3000000                                                                                  \n"
+"movz    w2, 3000000 & 0xFFFF                                                                   \n"
+"movk    w2, 3000000 >> 16, LSL #16                                                             \n"
+
+"# Inner loop                                                                                   \n"
+"/* l31: v; *                                                                                   \n"
+" * l30: v; *                                                                                   \n"
+" * l29: v; *                                                                                   \n"
+" * ...     */                                                                                  \n"
+"2:                                                                                             \n"
+".rept 31                                                                                       \n"
+"nop                                                                                            \n"
+".endr                                                                                          \n"
+
+"# lfsr = (lfsr >> 1) | ((((lfsr >> 0) ^ (lfsr >> 2) ^ (lfsr >> 3) ^ (lfsr >> 5) ) & 1) << 15); \n"
+"lsr     w3, w1, #1                                                                             \n"
+"eor     w1, w1, w1, LSR #2                                                                     \n"
+"eor     w1, w1, w1, LSR #3                                                                     \n"
+"and     w1, w1, #1                                                                             \n"
+"orr     w1, w3, w1, LSL #15                                                                    \n"
+
+"# goto *labels[lfsr & mask];                                                                   \n"
+"and     w3, w0, w1                                                                             \n"
+"ldr     x3, [sp, x3, LSL #3]                                                                   \n"
+"br      x3                                                                                     \n"
+
+"# l0: n--;                                                                                     \n"
+"3:                                                                                             \n"
+"subs    x2, x2, #1                                                                             \n"
+"bne     2b                                                                                     \n"
+
+"# mask >>= 1                                                                                   \n"
+"adds    w0, wzr, w0, lsr #1                                                                    \n"
+
+"# mask > 0                                                                                     \n"
+"bne     1b                                                                                     \n"
+
+"# Restore stack pointer                                                                        \n"
+"mov     sp, fp                                                                                 \n"
+"# Restore frame pointer                                                                        \n"
+"ldp     fp, lr, [sp], #16                                                                      \n"
+
+"# return EXIT_SUCCESS;                                                                         \n"
+"ret                                                                                            \n"
+);
+
+#endif

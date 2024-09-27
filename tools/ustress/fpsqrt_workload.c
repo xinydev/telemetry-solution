@@ -17,6 +17,8 @@
 #include <stdlib.h>
 #include "main.h"
 
+#if USE_C
+
 static double kernel(long runs, double result) {
   for(long n=runs; n>0; n--) {
     result = sqrt(result);
@@ -27,7 +29,25 @@ static double kernel(long runs, double result) {
   return result;
 }
 
-static void stress(long runs) {
+#else
+
+double kernel(long, double);
+
+__asm__ (
+"kernel:            \n"
+"0:                 \n"
+"fsqrt   d0, d0     \n" // result = sqrt(result)
+"fsqrt   d0, d0     \n" // result = sqrt(result)
+"fsqrt   d0, d0     \n" // result = sqrt(result)
+"fsqrt   d0, d0     \n" // result = sqrt(result)
+"subs    x0, x0, #1 \n" // n--
+"bne     0b         \n"
+"ret                \n"
+);
+
+#endif
+
+void stress(long runs) {
   /* This volatile use of result should prevent the computation from being optimised away by the compiler. */
   double result;
   *((volatile double*)&result) = kernel(runs, 1e20);

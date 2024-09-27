@@ -21,7 +21,7 @@
 #include "cpuinfo.h"
 #include "main.h"
 
-static void stress(long runs) {
+void** setup(void) {
   /* Create and initialise a block of memory with a non-linear pointer chain. */
   size_t memSize = L1D_CACHE_SIZE * 2;
   void** mem = malloc(memSize);
@@ -34,6 +34,13 @@ static void stress(long runs) {
     idx = idxNext;
   }
   mem[stepSize * idx] = NULL;
+  return mem;
+}
+
+#if USE_C
+
+void stress(long runs) {
+  void** mem = setup();
 
   /* Repeatedly follow the pointer chain to generate cache refills. */
   int sum = 0;
@@ -50,3 +57,31 @@ static void stress(long runs) {
 
   free((void*)mem);
 }
+
+#else
+
+__asm__ (
+"stress:                       \n"
+"stp     fp, lr, [sp, #-16]!   \n"
+"mov     fp, sp                \n"
+"stp     x19, xzr, [sp, #-16]! \n"
+"mov     x19, x0               \n" // runs
+
+"bl      setup                 \n"
+
+"0:                            \n"
+"mov     x1, x0                \n" // next = mem
+"1:                            \n"
+"ldr     x1, [x1]              \n" // next = *next
+"cbnz    x1, 1b                \n"
+"subs    x19, x19, #1          \n"
+"bne     0b                    \n"
+
+"bl      free                  \n"
+
+"ldp     x19, xzr, [sp], #16   \n"
+"ldp     fp, lr, [sp], #16     \n"
+"ret                           \n"
+);
+
+#endif
