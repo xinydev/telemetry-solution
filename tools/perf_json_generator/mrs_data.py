@@ -13,7 +13,7 @@ CPUS_FILENAME = "cpus.json"
 
 @dataclass(frozen=True)
 class MrsEvent:
-    description: str
+    description: Optional[str]
     code: Optional[int] = None  # Some events don't have an event code
     name: Optional[str] = None  # Some events don't have a name
     impdef: bool = False
