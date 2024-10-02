@@ -18,11 +18,21 @@ repos:
     rev: 7.1.1
     hooks:
       - id: flake8
-        args: ['--ignore=E501,W503']
+        args: ["--config", "tools/topdown_tool/setup.cfg"]
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.11.2
     hooks:
       - id: mypy
+        args: ["--config-file", "tools/topdown_tool/pyproject.toml"]
+        additional_dependencies:
+          - pytest
+  - repo: https://github.com/pycqa/pylint
+    rev: v3.3.1
+    hooks:
+      - id: pylint
+        args: ["--rcfile", "tools/topdown_tool/pyproject.toml"]
+        additional_dependencies:
+          - pytest
   - repo: 'https://github.com/codespell-project/codespell'
     rev: v2.3.0
     hooks:
