@@ -1,7 +1,7 @@
 {
     "_type": "PMU_Specification",
     "document": {
-        "timestamp": "26 Sep 07:44:25 2024",
+        "timestamp": "11 Oct 10:34:51 2024",
         "copyright": "Copyright 2022-2023 Arm Ltd.",
         "confidential": false,
         "quality": "Release",
@@ -1351,7 +1351,7 @@
         "IMP_STALL_BACKEND_IQ_SX": {
             "code": "0x015C",
             "title": "Backend stall cycles, SX IQ full",
-            "description": "\"Counts each cycle counted by STALL_BACKEND_BUSY where the backend is stalled due to the SX IQ being full\"",
+            "description": "Counts each cycle counted by STALL_BACKEND_BUSY where the backend is stalled due to the SX IQ being full",
             "common": false,
             "accesses": [
                 "PMU"
@@ -1362,7 +1362,7 @@
         "IMP_STALL_BACKEND_IQ_MX": {
             "code": "0x015D",
             "title": "Backend stall cycles, MX IQ full",
-            "description": "\"Counts each cycle counted by STALL_BACKEND_BUSY where the backend is stalled due to the MX IQ being full\"",
+            "description": "Counts each cycle counted by STALL_BACKEND_BUSY where the backend is stalled due to the MX IQ being full",
             "common": false,
             "accesses": [
                 "PMU"
@@ -1373,7 +1373,7 @@
         "IMP_STALL_BACKEND_IQ_LS": {
             "code": "0x015E",
             "title": "Backend stall cycles, LS IQ full",
-            "description": "\"Counts each cycle counted by STALL_BACKEND_BUSY where the backend is stalled due to the LS IQ being full\"",
+            "description": "Counts each cycle counted by STALL_BACKEND_BUSY where the backend is stalled due to the LS IQ being full",
             "common": false,
             "accesses": [
                 "PMU"
@@ -1384,7 +1384,7 @@
         "IMP_STALL_BACKEND_IQ_VX": {
             "code": "0x015F",
             "title": "Backend stall cycles, VX IQ full",
-            "description": "\"Counts each cycle counted by STALL_BACKEND_BUSY where the backend is stalled due to the VX IQ being full\"",
+            "description": "Counts each cycle counted by STALL_BACKEND_BUSY where the backend is stalled due to the VX IQ being full",
             "common": false,
             "accesses": [
                 "PMU"
@@ -1395,7 +1395,7 @@
         "IMP_STALL_BACKEND_MCQ": {
             "code": "0x0160",
             "title": "Backend stall cycles, MCQ full",
-            "description": "\"Counts each cycle counted by STALL_BACKEND_CPUBOUND where the backend is stalled due to the MCQ being full\"",
+            "description": "Counts each cycle counted by STALL_BACKEND_CPUBOUND where the backend is stalled due to the MCQ being full",
             "common": false,
             "accesses": [
                 "PMU"
@@ -1461,7 +1461,7 @@
         "IMP_STALL_BACKEND_PCRF": {
             "code": "0x1003",
             "title": "Backend stall cycles, PCRF full",
-            "description": "\"Counts each cycle counted by STALL_BACKEND_CPUBOUND where the backend is stalled due to the PCRF being full\"",
+            "description": "Counts each cycle counted by STALL_BACKEND_CPUBOUND where the backend is stalled due to the PCRF being full",
             "common": false,
             "accesses": [
                 "PMU"
@@ -1472,7 +1472,7 @@
         "IMP_STALL_BACKEND_RSTACK": {
             "code": "0x1005",
             "title": "Backend stall cycles, return stack full",
-            "description": "\"Counts each cycle counted by STALL_BACKEND_CPUBOUND where the backend is stalled due to the return stack being full\"",
+            "description": "Counts each cycle counted by STALL_BACKEND_CPUBOUND where the backend is stalled due to the return stack being full",
             "common": false,
             "accesses": [
                 "PMU"
