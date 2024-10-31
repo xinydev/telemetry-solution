@@ -129,6 +129,11 @@ class TestGetPackets(TestCase):
         outputs = ["LAT 7 ISSUE", "LAT 11 TOT", "LAT 1 XLAT"]
         self.assertTrue(check_single_packet(inputs, outputs))
 
+    def test_get_end(self):
+        inputs = ["01"]
+        outputs = ["END"]
+        self.assertTrue(check_single_packet(inputs, outputs))
+
     def test_get_ts(self):
         inputs = ["71 6c f8 a5 83 00 0c 00 00"]
         outputs = ["TS 13196348225644"]
@@ -181,6 +186,54 @@ class TestGetPackets(TestCase):
                 "LAT 1 XLAT",
                 "PA 0x8032c955a43 ns=1 ch=0 pat=0",
                 "DATA-SOURCE 0",
+            ]
+        ]
+        self.assertTrue(check_packets(inputs, outputs))
+
+    def test_get_frame_final_packet_end(self):
+        """Validate records can end with an END packet.
+        Generated with:
+            > wperf record -e arm_spe_0/b=1,ts=0/ -c 7 -- benchmark.exe
+            > xxd -p spe.data
+        """
+        inputs = [
+            "b0 e0 43 21 bf fd 7f 00 80 00 00 00 00 00 00 00 00 00 00 4a 01 52 02 00 99 27 00 98 28 00"
+            "b1 08 44 21 bf fd 7f 00 80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
+            "00 00 00 01"
+        ]
+        outputs = [
+            [
+                "PC 0x7ffdbf2143e0 el0 ns=1",
+                "B COND",
+                "EV RETIRED",
+                "LAT 39 ISSUE",
+                "LAT 40 TOT",
+                "TGT 0x7ffdbf214408 el0 ns=1",
+                "END"
+            ]
+        ]
+        self.assertTrue(check_packets(inputs, outputs))
+
+    def test_get_frame_final_packet_ts(self):
+        """Validate records can end with a TS packet (ts_enable=1)
+        Generated with:
+            > wperf record -e arm_spe_0/b=1,ts=1/ -c 7 -- benchmark.exe
+            > xxd -p spe.data
+        """
+        inputs = [
+            "b0 e0 43 21 bf fd 7f 00 80 00 00 00 00 00 00 00 00 00 00 4a 01 52 02 00 99 29 00 98 2a 00"
+            "b1 08 44 21 bf fd 7f 00 80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 71 6b 72 5a 1d"
+            "8f 03 00 00"
+        ]
+        outputs = [
+            [
+                "PC 0x7ffdbf2143e0 el0 ns=1",
+                "B COND",
+                "EV RETIRED",
+                "LAT 41 ISSUE",
+                "LAT 42 TOT",
+                "TGT 0x7ffdbf214408 el0 ns=1",
+                "TS 3913207673451"
             ]
         ]
         self.assertTrue(check_packets(inputs, outputs))

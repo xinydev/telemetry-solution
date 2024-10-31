@@ -195,6 +195,14 @@ def is_pkt_operation_indirect_branch(v: int) -> int:
     return (v & gen_mask(7, 1)) == 2
 
 
+def spe_get_end(hdr: int, fh: BinaryIO) -> str:
+    """End packet characteristics are:
+    - Defines the end of a record if a Timestamp packet is not present.
+    - 8-bit packet (on payload).
+    """
+    return "END"
+
+
 def spe_get_timestamp(hdr: int, fh: BinaryIO) -> str:
     payload = spe_get_payload(hdr, None, fh)
     return f"TS {payload}"
@@ -340,7 +348,7 @@ def get_packets(fh: BinaryIO) -> Generator:
         if hdr == HEADER_SHORT_PAD:
             continue
         if hdr == HEADER_SHORT_END:
-            logging.debug("end of spe records")
+            yield spe_get_end(hdr, fh)
             continue
         if hdr == HEADER_SHORT_TIMESTAMP:
             yield spe_get_timestamp(hdr, fh)
