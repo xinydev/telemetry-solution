@@ -101,6 +101,14 @@ def args_init():
         help="add symbol information to the output",
     )
     parser.add_argument(
+        "-r",
+        "--raw-buffer",
+        dest="parse_raw",
+        action="store_true",
+        default=False,
+        help="parse input file in raw SPE fill buffer format",
+    )
+    parser.add_argument(
         "-v",
         "--version",
         action="version",
@@ -138,6 +146,7 @@ class RegionTaskParams:
     parse_ldst: bool
     parse_other: bool
     parse_symbols: bool
+    parse_raw: bool
     region: dict
     idx: int
     temp_folder: str
@@ -148,6 +157,7 @@ def parse_single_region(task: RegionTaskParams) -> None:
     branch_recs = []
     ldst_recs = []
     other_recs = []
+
     with open(task.file_path, "rb") as f:
         f.seek(task.region["offset"])
         spe_f = BytesIO(f.read(task.region["size"]))
@@ -237,6 +247,7 @@ def parse(
     parse_ldst: bool,
     parse_other: bool,
     parse_symbols: bool,
+    parse_raw: bool,
     concurrency: int,
 ) -> Tuple[int, str]:
     """
@@ -249,6 +260,7 @@ def parse(
         parse_ldst (bool): whether to parse load/store instructions
         parse_other (bool): whether to parse other instructions
         parse_symbols (bool): whether to add symbol information to the output
+        parse_raw (bool): whether to parse raw SPE fill buffer input
         concurrency (int): number of threads used
 
     Returns:
@@ -264,9 +276,15 @@ def parse(
     # copied from the parent process in the child processes
     pool = multiprocessing.Pool(concurrency)
 
-    # SPE records are scattered across different locations in the
-    # perf.data file, so each region can be processed in parallel.
-    regions = get_spe_records_regions(file_path)
+    regions = []
+    if parse_raw:
+        # Load raw buffer from file where whole file content is the buffer.
+        # File payload contains only SPE fill buffer records composed of packets.
+        regions.append({"offset": 0, "size": os.stat(file_path).st_size, "cpu": 0})
+    else:
+        # SPE records are scattered across different locations in the
+        # perf.data file, so each region can be processed in parallel.
+        regions = get_spe_records_regions(file_path)
     # force garbage collection as we can be sure that a lot of
     # temporary memory was used in get_spe_records_regions(), there
     # will definitely be a significant amount of memory to be reclaimed here.
@@ -296,6 +314,7 @@ def parse(
                     parse_ldst=parse_ldst,
                     parse_other=parse_other,
                     parse_symbols=parse_symbols,
+                    parse_raw=parse_raw,
                     region=region,
                     idx=idx,
                     temp_folder=inter_files_dir,
@@ -391,6 +410,7 @@ def main():
         args.parse_ldst,
         args.parse_other,
         args.parse_symbols,
+        args.parse_raw,
         args.concurrency,
     )
     logging.info("SPE trace file processing is completed")

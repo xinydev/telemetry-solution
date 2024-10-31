@@ -2,8 +2,10 @@
 #
 # Copyright (C) Arm Ltd. 2023
 
+import csv
 import json
 import os
+from typing import List
 from unittest import TestCase, main
 
 import pandas as pd
@@ -50,6 +52,49 @@ class TestParser(TestCase):
                         check_dtype=False,
                     )
                     os.remove(ci_output)
+
+    def test_parse_raw_spe_fill_buffer(self):
+        """Test whether we can correctly parse raw SPE fill buffer with END or
+        TS as record ending packets.
+        `input_files` files were generated with WindowsPerf commands:
+            * `wperf record -e arm_spe_0/b=1,ts=0/ -- ...` and
+            * `wperf record -e arm_spe_0/b=1,ts=1/ -- ...` respectively.
+        """
+
+        def get_csv_data_from_file(file_path: str) -> List[List[str]]:
+            """Reads a CSV file and returns its contents as a list of rows.
+            Args:
+                file_path (str): The path to the CSV file to be read.
+            Returns:
+                List (List[str]): A list of rows, where each row is
+                represented as a list of strings.
+            """
+            rows = []
+            with open(file_path) as fp:
+                reader = csv.reader(fp, delimiter=",")
+                for row in reader:
+                    rows.append(row)
+            return rows
+
+        input_files = ["spe-b1-ts0.data", "spe-b1-ts1.data"]
+        output_files = ["spe-b1-ts0.csv", "spe-b1-ts1.csv"]
+        prefix = "citest"
+        with cd(TESTDATA):
+            for input_file, output_file in zip(input_files, output_files):
+                run(f"spe-parser -r {input_file} -p {prefix} -t csv")
+                # check the output files
+
+                ci_output = f"{prefix}-br.csv"  # Only B records to check
+                self.assertTrue(
+                    os.path.isfile(ci_output), f"File {ci_output} does not exist"
+                )
+                ci_output_csv = get_csv_data_from_file(ci_output)
+                output_file_rows = get_csv_data_from_file(output_file)
+                os.remove(ci_output)  # Cleanup before we assert
+
+                self.assertTrue(len(ci_output_csv) == len(output_file_rows))
+                for ci_out, out in zip(ci_output_csv, output_file_rows):
+                    self.assertTrue(ci_out == out)
 
 
 if __name__ == "__main__":

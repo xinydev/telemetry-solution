@@ -4,6 +4,9 @@ __pycache__/
 .tox/
 .coverage
 
+# Output files
+*.csv
+
 # IDE
 .idea/
 .vscode/

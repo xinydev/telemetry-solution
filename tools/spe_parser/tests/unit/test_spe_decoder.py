@@ -209,7 +209,7 @@ class TestGetPackets(TestCase):
                 "LAT 39 ISSUE",
                 "LAT 40 TOT",
                 "TGT 0x7ffdbf214408 el0 ns=1",
-                "END"
+                "END",
             ]
         ]
         self.assertTrue(check_packets(inputs, outputs))
@@ -233,7 +233,7 @@ class TestGetPackets(TestCase):
                 "LAT 41 ISSUE",
                 "LAT 42 TOT",
                 "TGT 0x7ffdbf214408 el0 ns=1",
-                "TS 3913207673451"
+                "TS 3913207673451",
             ]
         ]
         self.assertTrue(check_packets(inputs, outputs))

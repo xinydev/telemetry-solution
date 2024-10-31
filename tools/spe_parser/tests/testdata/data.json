@@ -28,5 +28,29 @@
         "name": "spe-other.parquet",
         "md5": "87897877d374bb8fefcf8526087ababa",
         "_comment": ""
+    },
+    {
+        "url": "https://gitlab.oss.arm.com/engineering/valetudo/test-data/-/raw/f663a57225a1c4fb921607c77a2a434386124538/spe-parser/spe-b1-ts0.data",
+        "name": "spe-b1-ts0.data",
+        "md5": "1969106b6ec18bc6c929b41ca2ae12f9",
+        "_comment": "wperf record -e arm_spe_0/b=1,ts=1/"
+    },
+    {
+        "url": "https://gitlab.oss.arm.com/engineering/valetudo/test-data/-/raw/f663a57225a1c4fb921607c77a2a434386124538/spe-parser/spe-b1-ts1.data",
+        "name": "spe-b1-ts1.data",
+        "md5": "fff368e2389be202104e4e3e22867a59",
+        "_comment": "wperf record -e arm_spe_0/b=1,ts=0/"
+    },
+    {
+        "url": "https://gitlab.oss.arm.com/engineering/valetudo/test-data/-/raw/f663a57225a1c4fb921607c77a2a434386124538/spe-parser/spe-b1-ts0.csv",
+        "name": "spe-b1-ts0.csv",
+        "md5": "77d620af0ee166897ebabcd7192b9c81",
+        "_comment": "spe-parser -r spe-b1-ts0.data -t csv"
+    },
+    {
+        "url": "https://gitlab.oss.arm.com/engineering/valetudo/test-data/-/raw/f663a57225a1c4fb921607c77a2a434386124538/spe-parser/spe-b1-ts1.csv",
+        "name": "spe-b1-ts1.csv",
+        "md5": "33cc0322fb5675802edc9ba42260b5c8",
+        "_comment": "spe-parser -r spe-b1-ts1.data -t csv"
     }
 ]
