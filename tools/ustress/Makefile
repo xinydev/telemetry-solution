@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# Copyright (C) Arm Ltd. 2022
+# Copyright (C) Arm Ltd. 2022-2024
 
 HEADERS = $(wildcard *.h)
 SOURCES = $(wildcard *.c)
@@ -15,6 +15,10 @@ else
 CPUINFO = NONE
 endif
 CFLAGS += -DCPU_$(CPUINFO)
+
+ifeq ($(USE_C), 1)
+CFLAGS += -DUSE_C
+endif
 
 ifeq ($(OS),Windows_NT)
 CC=clang

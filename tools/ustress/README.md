@@ -42,3 +42,5 @@ Cross build: Users may want to open MSVC cross environment on their x64 machine 
 #### Limitations
 
 For _WIN32 configuration two micro-benchmarks are explicitly disabled: `l1i_cache_workload` and `memcpy_workload`. This is due to compilation errors.
+
+Use `make ... USE_C=1` to fall back to C implementation of micro-benchmarks in case of inline assembly compilation issues.
