@@ -93,7 +93,7 @@ void stress(long runs) {
 __asm__ (
 ".equ L1I_CACHE_SIZE, " TOSTRING(L1I_CACHE_SIZE) "\n"
 
-".section .rodata, \"a\", %progbits \n"
+".balign 128                        \n"
 "funcs:                             \n"
 ".quad fA                           \n"
 ".quad fB                           \n"
@@ -109,7 +109,6 @@ __asm__ (
 ".quad fL                           \n"
 ".quad fZ                           \n"
 
-".section .text, \"ax\", %progbits  \n"
 ".macro fN letter                   \n"
 ".balign L1I_CACHE_SIZE             \n"
 "f\\letter:                         \n"

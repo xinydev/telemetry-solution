@@ -20,7 +20,7 @@
 #include "main.h"
 
 #ifdef _WIN32
-#define aligned_alloc _aligned_malloc
+#define aligned_alloc(a, b) _aligned_malloc(b, a)
 #define free  _aligned_free
 #endif
 
@@ -85,7 +85,11 @@ __asm__ (
 "subs    x19, x19, #1                \n"
 "bne     0b                          \n"
 
+#ifdef _WIN32
+"bl      _aligned_free               \n"
+#else
 "bl      free                        \n"
+#endif
 
 "ldp     x19, xzr, [sp], #16         \n"
 "ldp     fp, lr, [sp], #16           \n"

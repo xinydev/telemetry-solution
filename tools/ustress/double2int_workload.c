@@ -28,12 +28,10 @@ void stress(long runs) {
 #else
 
 __asm__ (
-".section .rodata, \"a\", %progbits \n"
 ".balign 16                         \n"
 "seed: .double 2.345                \n"
 "step: .double 0.1                  \n"
 
-".section .text, \"ax\", %progbits  \n"
 "stress:                            \n"
 "adr     x1, seed                   \n"
 "ldp     d0, d1, [x1]               \n"

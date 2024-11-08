@@ -22,8 +22,13 @@
 
 #if USE_C
 
+#ifdef _WIN32
+#define aligned_alloc(a, b) _aligned_malloc(b, a)
+#define free  _aligned_free
+#endif
+
 void stress(long runs) {
-  char* mem = memalign(L1D_CACHE_SIZE, L1D_CACHE_SIZE);
+  char* mem = aligned_alloc(L1D_CACHE_SIZE, L1D_CACHE_SIZE);
   // Make sure the physical pages are allocated.
   // Reading from demand paging won't allocate physical memory. Instead, it
   // simply reads from a zerod page preallocated by kernel.
@@ -53,9 +58,15 @@ __asm__ (
 
 "mov     x19, x0                    \n" // runs
 
-"mov     w0, L1D_CACHE_SIZE         \n"
-"mov     w1, L1D_CACHE_SIZE         \n"
-"bl      memalign                   \n"
+#ifdef _WIN32
+"mov     w0, L1D_CACHE_SIZE         \n" // size
+"mov     w1, L1D_CACHE_SIZE         \n" // alignment
+"bl      _aligned_malloc            \n" // ON WINDOWS ORDER OF ARGUMENTS IS SWAPPED
+#else
+"mov     w0, L1D_CACHE_SIZE         \n" // alignment
+"mov     w1, L1D_CACHE_SIZE         \n" // size
+"bl      aligned_alloc              \n"
+#endif
 
 "mov     x1, #0x0101010101010101    \n" // Uses "MOV (bitmask immediate)" instruction
 "mov     x2, #0x0101010101010101    \n" // Uses "MOV (bitmask immediate)" instruction
@@ -78,7 +89,11 @@ __asm__ (
 "subs    x19, x19, #1               \n"
 "bne     1b                         \n"
 
+#ifdef _WIN32
+"bl      _aligned_free              \n"
+#else
 "bl      free                       \n"
+#endif
 
 "ldp     x19, xzr, [sp], #16        \n"
 "ldp     fp, lr, [sp], #16          \n"

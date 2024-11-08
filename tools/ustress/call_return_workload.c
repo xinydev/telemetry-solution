@@ -104,11 +104,11 @@ void stress(long runs) {
 #else
 
 __asm__ (
-".section .bss, \"aw\", %nobits    \n"
+".section .bss                     \n"
 ".balign 64                        \n"
 "calls: .fill 8, 8, 0              \n"
 
-".section .text, \"ax\", %progbits \n"
+".section .text                    \n"
 ".macro fN letter number           \n"
 ".balign 64                        \n"
 "f\\letter:                        \n"
