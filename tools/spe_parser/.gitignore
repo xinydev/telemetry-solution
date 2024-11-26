@@ -6,6 +6,7 @@ __pycache__/
 
 # Output files
 *.csv
+/reports
 
 # IDE
 .idea/

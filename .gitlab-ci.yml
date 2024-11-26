@@ -1,0 +1,202 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2024 Arm Limited
+
+default:
+  # cancel the job if a new pipeline is triggered on the same branch
+  interruptible: true
+
+workflow:
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "web"
+
+stages:
+  - docker-check
+  - prepare
+  - build-and-test
+
+###
+# Prepare: Docker build
+###
+variables:
+  DOCKER_REGISTRY_KEY: "oss-android--docker"
+  ARTIFACTORY_REGISTRY_URL: "${DOCKER_REGISTRY_KEY}.artifactory.eu02.arm.com"
+  REGISTRY_IMAGE_X86_64: "${ARTIFACTORY_REGISTRY_URL}/telemetry-solution-x86_64:$CI_COMMIT_REF_SLUG" # Not in use at the moment
+  REGISTRY_IMAGE_AARCH64: "${ARTIFACTORY_REGISTRY_URL}/telemetry-solution-aarch64:$CI_COMMIT_REF_SLUG"    
+
+# check-docker-tag validates if the docker image is available in artifactory.
+# It sets the variable DOCKER_IMAGE_NOT_PRESENT_IN_REGISTRY which is shared
+# with subsequent jobs
+check-docker-tag:
+  stage: docker-check
+  tags: [linux_x86_64]
+  image: badouralix/curl-jq:alpine
+  variables:
+    GIT_STRATEGY: none
+  script: 
+    - curl -u ${ARTIFACTORY_USER}:${ARTIFACTORY_API_KEY}  -X GET ${ARTIFACTORY_AWS_EU_WEST_1_URL}/artifactory/api/docker/${DOCKER_REGISTRY_KEY}/v2/telemetry-solution-x86_64/tags/list > tags
+    - cat tags | jq ".tags | index(\"$CI_COMMIT_REF_SLUG\")" > docker-image-index || true
+    - |-
+        if [[ "$(cat docker-image-index)" == null ]]; then
+          echo "DOCKER_IMAGE_NOT_PRESENT_IN_REGISTRY=1" >> build.env
+        else
+          echo "DOCKER_IMAGE_NOT_PRESENT_IN_REGISTRY=0" >> build.env
+        fi
+  artifacts:
+    reports:
+      dotenv: build.env
+ 
+# check-docker-change sets DOCKERFILE_CHANGED to 1 if the Dockerfile 
+# has changed or if the pipeline is not part of a merge request. 
+# Comparison is made with the target branch.
+check-docker-change:
+  stage: docker-check
+  tags: [linux_x86_64]
+  image: alpine:3.20.2
+  variables:
+    GIT_STRATEGY: none
+  needs: 
+    - check-docker-tag
+  script: echo "DOCKERFILE_CHANGED=1" >> build.env
+  rules:
+    - changes:
+        - .ci/Dockerfile
+    - when: never
+  artifacts:
+    reports:
+      dotenv: build.env
+
+# Build the docker image if the image is not present in the registry or 
+# if the dockerfile has changed.
+.build-docker:
+  image:
+    name: mirrors--gcr-io.artifactory.eu02.arm.com/kaniko-project/executor:debug
+    entrypoint: [""]
+  stage: prepare
+  script:
+    - |-
+      if [ "$DOCKER_IMAGE_NOT_PRESENT_IN_REGISTRY" == "1" ] || [ "$DOCKERFILE_CHANGED" == "1" ]; then
+        mkdir -p /kaniko/.docker
+        echo "{\"auths\":{\"${ARTIFACTORY_REGISTRY_URL}\":{\"auth\":\"$(printf "%s:%s" "${ARTIFACTORY_USER}" "${ARTIFACTORY_API_KEY}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+        /kaniko/executor \
+          --registry-mirror mirrors--dockerhub.artifactory.eu02.arm.com \
+          --context "${CI_PROJECT_DIR}" \
+          --dockerfile "${CI_PROJECT_DIR}/.ci/Dockerfile" \
+          --destination "${REGISTRY_IMAGE}"
+      fi
+
+build-docker-x64:
+  variables:
+    REGISTRY_IMAGE: $REGISTRY_IMAGE_X86_64
+  extends: .build-docker
+  tags: [linux_x86_64]
+
+###
+# Build and test:
+###
+
+# Base job for all the build and test jobs.
+# It declares: The image, tag, cache and artifacts to use
+.build-base:
+  image: $REGISTRY_IMAGE_X86_64
+  tags: [linux_x86_64]
+  stage: build-and-test
+
+build-ustress:
+  extends: .build-base
+  parallel:
+    matrix:
+      - UARCH: [V1, N1, N2]
+        COMPILER: [aarch64-linux-gnu-gcc-10,aarch64-linux-gnu-gcc-13]
+        USE_C_FLAG: [0, 1]
+  script:
+    - |
+      cd tools/ustress
+      CC="$COMPILER" make CPU=NEOVERSE-"$UARCH" USE_C="$USE_C_FLAG"
+      find . -type f -perm /111 -print | xargs zip "ustress-${UARCH}-${COMPILER}-USE_C-${USE_C_FLAG}.zip"
+      make clean
+  artifacts:
+    paths:
+      - tools/ustress/ustress-*.zip
+    expire_in: 7 days
+
+spe-parser:
+  extends: .build-base
+  parallel:
+    matrix:
+      - PYENV: 
+        - py311
+        - py310
+        - py39
+        - py38
+        - fix,type,pkg_meta
+  script:
+    - |
+      python3 -m venv .venv
+      source .venv/bin/activate
+      pip install tox
+      cd tools/spe_parser
+      tox -e $PYENV
+  artifacts:
+    reports:
+      junit:
+        - tools/spe_parser/reports/*.xml
+
+topdown-tool:
+  extends: .build-base
+  parallel:
+    matrix:
+      - PYENV: 
+        - py312
+        - py311
+        - py310
+        - py39
+        - py38
+        - codestyle,pkg_meta
+  script:
+    - |
+      python3 -m venv .venv
+      source .venv/bin/activate
+      pip install tox
+      cd tools/topdown_tool
+      tox -e $PYENV
+  artifacts:
+    reports:
+      junit:
+        - tools/topdown_tool/reports/*.xml
+
+perf-json-generator:
+  extends: .build-base
+  script:
+    - |
+      export WORKSPACE=$PWD
+      python3 -m venv .venv
+      source .venv/bin/activate
+      pushd tools/perf_json_generator
+      pip install pre-commit
+      pre-commit install
+      pre-commit run --all-files
+      git clone --sparse --depth=1 --single-branch https://github.com/torvalds/linux.git
+      pushd linux
+      git sparse-checkout add tools/perf
+      popd
+      find $WORKSPACE/data/* -name '*.json' | xargs -I '{}' ./generate.py linux/tools/perf --telemetry-files '{}'
+      pushd linux
+      git diff --name-only > changed_files.txt
+      git ls-files --others --exclude-standard >> changed_files.txt
+      git diff > perf-update.patch
+      mkdir -p artifacts
+      while read file; do cp --parents "$file" artifacts/; done < changed_files.txt
+      popd
+      popd 
+      mv tools/perf_json_generator/linux/artifacts/tools/perf/pmu-events/arch/arm64 tools/perf_json_generator/linux/perf-update.patch .
+  artifacts:
+    paths:
+      - arm64
+      - perf-update.patch
+    reports:
+      junit:
+        - tools/perf_json_generator/reports/*.xml
+    expose_as: 'Perf JSON'
+    expire_in: 7 days

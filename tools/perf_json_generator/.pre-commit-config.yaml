@@ -19,7 +19,7 @@ repos:
     hooks:
       - id: pytest-check
         name: pytest-check
-        entry: bash -c 'cd tools/perf_json_generator && exec pytest'
+        entry: bash -c 'cd tools/perf_json_generator && exec pytest --junitxml=reports/junit.xml'
         language: python
         additional_dependencies:
           - pytest

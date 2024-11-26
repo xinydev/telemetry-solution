@@ -1,6 +1,5 @@
 /__pycache__
 /.coverage
-/.venv
 /.vscode
 /.cache
 /perf.stat.txt
@@ -8,3 +7,4 @@
 /wperf.json
 *.pyc
 /.tox
+/reports
