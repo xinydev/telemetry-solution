@@ -18,7 +18,7 @@ from spe_parser.perf_decoder import get_mmap_records
 def __decode_elf_symbols(
     binary_path: str, base_addr: int
 ) -> Dict[int, Tuple[str, int]]:
-    symbols = {}
+    symbols: Dict[int, Tuple[str, int]] = {}
     with open(binary_path, "rb") as file:
         try:
             elffile = ELFFile(file)

@@ -23,7 +23,7 @@ dependencies = [
   "pyelftools==0.29"
 ]
 optional-dependencies.testing = [
-  "deepdiff==6.2.3",
+  "deepdiff==6.7.1",
   "coverage==5.5",
   "pytest==7.1.3",
 ]

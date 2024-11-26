@@ -2,7 +2,7 @@ files: '^tools/spe_parser/'
 exclude: '^tools/spe_parser/LICENSES/'
 repos:
   - repo: 'https://github.com/pre-commit/pre-commit-hooks'
-    rev: v4.2.0
+    rev: v4.6.0
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
@@ -23,7 +23,7 @@ repos:
     hooks:
       - id: black
   - repo: 'https://github.com/pycqa/flake8'
-    rev: 4.0.1
+    rev: 7.1.1
     hooks:
       - id: flake8
         args: ['--ignore=E203,E226,E501,W503,W504']

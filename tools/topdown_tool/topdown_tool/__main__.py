@@ -371,6 +371,7 @@ def main(args=None):
         timed_metric_values = [(None, metric_values)]
     else:
         timed_metric_values = []
+        # pylint: disable=possibly-used-before-assignment
         for (time, event_counts) in stat_data.items():
             metric_values = calculate_metrics(event_counts, metric_instances)
             logging.debug("\n".join(f"{v.metric_instance.group.name}/{v.metric_instance.metric.name} = {v.value}" for v in metric_values))
