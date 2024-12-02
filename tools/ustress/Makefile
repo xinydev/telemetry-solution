@@ -8,6 +8,10 @@ TARGETS = $(SOURCES:.c=)
 CFLAGS = -std=c11 -O2 -g -Wall -pedantic
 LINKER_FLAGS = -lm
 
+ifeq ($(WERROR), 1)
+	CFLAGS += -Werror
+endif
+
 # make CPU=NEOVERSE-V1 --> gcc -DCPU_NEOVERSE_V1
 ifdef CPU
 CPUINFO = $(shell echo $(CPU) | tr '[a-z\-]' '[A-Z_]')
