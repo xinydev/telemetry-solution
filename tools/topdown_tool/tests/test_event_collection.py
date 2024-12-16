@@ -11,7 +11,7 @@ from topdown_tool.event_collection import CPU_PMU_COUNTERS, CollectBy, GroupSche
 from topdown_tool.metric_data import MetricData
 
 
-TEST_CPUS = ["neoverse-n1", "neoverse-v1", "neoverse-n2", "neoverse-v2", "neoverse-n3", "neoverse-v3"]
+TEST_CPUS = ["neoverse-n1", "neoverse-v1", "neoverse-n2", "neoverse-n2-r0p3", "neoverse-v2", "neoverse-n3", "neoverse-v3"]
 # Collecting all metrics in these groups requires more events than can be counted simultaneously
 MULTIPLEX_GROUPS = ["Topdown_L1", "Operation_Mix", "Miss_Ratio", "MPKI", "Topdown_Frontend", "Topdown_Backend"]
 

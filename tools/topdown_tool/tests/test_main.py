@@ -17,6 +17,7 @@ TEST_CPU_SETS = [
     ("neoverse-n1", "neoverse-n1"),
     ("neoverse-v1", "neoverse-v1"),
     ("neoverse-n2", "neoverse-v1"),
+    ("neoverse-n2-r0p3", "neoverse-v1"),
     ("neoverse-v2", "neoverse-v1"),
     ("neoverse-n3", "neoverse-n3"),
     ("neoverse-v3", "neoverse-n3")

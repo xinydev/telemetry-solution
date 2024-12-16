@@ -1,11 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
-# Copyright 2022-2023 Arm Limited
+# Copyright 2022-2024 Arm Limited
 
 import json
 import subprocess
+from typing import Optional
 
 
-def get_wperf_test_results(perf_path):
+def get_wperf_test_results(perf_path: Optional[str] = None):
     result = subprocess.run([perf_path or "wperf", "test", "--json"], stdout=subprocess.PIPE, check=True)
     # {
     #   "Test_Results": [
