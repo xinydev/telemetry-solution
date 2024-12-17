@@ -3,7 +3,7 @@ import math
 import os.path
 from pathlib import Path
 import shlex
-from typing import List
+from typing import List, Tuple
 
 import pytest
 
@@ -11,7 +11,16 @@ from topdown_tool.__main__ import COMBINED_STAGES, DEFAULT_ALL_STAGES, get_arg_p
 from topdown_tool.metric_data import AnyMetricInstance, MetricData, MetricInstanceValue
 
 TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), "data", "metric-output")
-TEST_CPUS = ["neoverse-n1", "neoverse-v1", "neoverse-n2", "neoverse-v2"]
+
+# Mapping of CPU name to the name of the CPU test data to be used
+TEST_CPU_SETS = [
+    ("neoverse-n1", "neoverse-n1"),
+    ("neoverse-v1", "neoverse-v1"),
+    ("neoverse-n2", "neoverse-v1"),
+    ("neoverse-v2", "neoverse-v1"),
+    ("neoverse-n3", "neoverse-n3"),
+    ("neoverse-v3", "neoverse-n3")
+]
 DEFAULT_TEST_ARGS = ["--cpu", "neoverse-n1"]  # Specify CPU as MIDR may not be available on test machine (/in CI)
 
 
@@ -19,7 +28,7 @@ def create_value_instances(metric_instances: List[AnyMetricInstance]):
     return [MetricInstanceValue(metric_instance=mi, value=0.0) for mi in metric_instances]
 
 
-def test_nan_output(capsys):
+def test_nan_output(capsys: pytest.CaptureFixture[str]):
     metric_data = MetricData.get_data_for_cpu("neoverse-n1")
     metric_instance = metric_data.metrics_for_group("cycle-accounting")[0]
     print_nested_metrics([MetricInstanceValue(metric_instance=metric_instance, value=math.nan)], COMBINED_STAGES, False, False)
@@ -31,8 +40,9 @@ def test_nan_output(capsys):
 
 @pytest.mark.parametrize("stages_mode", ["staged", "combined"])
 @pytest.mark.parametrize("exec_mode", ["list", "run"])
-@pytest.mark.parametrize("cpu", TEST_CPUS)
-def test_metric_output(capsys, cpu, exec_mode, stages_mode):
+@pytest.mark.parametrize("cpu_data", TEST_CPU_SETS)
+def test_metric_output(capsys: pytest.CaptureFixture[str], cpu_data: Tuple[str, str], exec_mode: str, stages_mode: str):
+    cpu, test_data_cpu = cpu_data
     stages = {"staged": DEFAULT_ALL_STAGES, "combined": COMBINED_STAGES}[stages_mode]
 
     metric_data = MetricData.get_data_for_cpu(cpu)
@@ -44,12 +54,12 @@ def test_metric_output(capsys, cpu, exec_mode, stages_mode):
     print_nested_metrics(metrics, stages, False, False)
     captured = capsys.readouterr()
 
-    expected = Path(TEST_DATA_DIR, f"{cpu}-{stages_mode}-{exec_mode}.txt").read_text(encoding="utf-8")
+    expected = Path(TEST_DATA_DIR, f"{test_data_cpu}-{stages_mode}-{exec_mode}.txt").read_text(encoding="utf-8")
     assert captured.out == expected
 
 
 @pytest.mark.parametrize("args", ["--list-metrics", "--list-groups"])
-def test_main_valid_args(args):
+def test_main_valid_args(args: str):
     """Simple test to ensure entry point runs without errors."""
 
     with pytest.raises(SystemExit) as e_info:
@@ -64,7 +74,7 @@ def test_main_valid_args(args):
                                   "--metric-group a --node b",  # Mutually exclusive
                                   "--interval",                 # Value not specified
                                   "--interval 100"])            # Requires CSV
-def test_main_invalid_args(args):
+def test_main_invalid_args(args: str):
     """Simple test to ensure entry point exits with error code on invalid arguments."""
 
     with pytest.raises(SystemExit) as e_info:
