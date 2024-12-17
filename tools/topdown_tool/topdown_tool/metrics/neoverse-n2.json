@@ -1,7 +1,7 @@
 {
     "_type": "PMU_Specification",
     "document": {
-        "timestamp": "10 Jun 10:57:23 2024",
+        "timestamp": "17 Dec 08:40:11 2024",
         "copyright": "Copyright 2022-2023 Arm Ltd.",
         "confidential": false,
         "quality": "Release",
@@ -779,7 +779,7 @@
         "L2D_CACHE_WR": {
             "code": "0x0051",
             "title": "Level 2 data cache access, write",
-            "description": "Counts level 1 data cache refills caused by speculatively executed load or store operations that missed in the level 1 data cache. This event only counts one event per cache line. This event does not count cache line allocations from preload instructions or from hardware cache prefetching.",
+            "description": "Counts level 2 cache accesses due to memory write operations. Level 2 cache is a unified cache for data and instruction accesses, accesses are for misses in the level 1 caches or translation resolutions due to accesses.",
             "common": true,
             "accesses": [
                 "PMU",
@@ -2347,6 +2347,19 @@
             "sample_events": [
                 "ST_SPEC"
             ]
+        },
+        "sve_all_percentage": {
+            "title": "SVE Operations (Load/Store Inclusive) Percentage",
+            "formula": "SVE_INST_SPEC / INST_SPEC * 100",
+            "description": "This metric measures scalable vector operations, including loads and stores, as a percentage of operations speculatively executed.",
+            "units": "percent of operations",
+            "events": [
+                "INST_SPEC",
+                "SVE_INST_SPEC"
+            ],
+            "sample_events": [
+                "SVE_INST_SPEC"
+            ]
         }
     },
     "groups": {
@@ -2748,7 +2761,8 @@
                     "simd_percentage",
                     "scalar_fp_percentage",
                     "branch_percentage",
-                    "crypto_percentage"
+                    "crypto_percentage",
+                    "sve_all_percentage"
                 ]
             }
         }

@@ -96,3 +96,4 @@ Load Operations Percentage
 Floating Point Operations Percentage
 Advanced SIMD Operations Percentage
 Store Operations Percentage
+SVE Operations (Load/Store Inclusive) Percentage
