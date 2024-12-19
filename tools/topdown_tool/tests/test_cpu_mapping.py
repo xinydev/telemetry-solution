@@ -20,5 +20,11 @@ def test_get_cpu_full_midr():
     assert get_cpu("0x00000000410fd493") == "neoverse-n2-r0p3"
 
 
+def test_cobalt_100_cpu():
+    # Microsoft Azure Cobalt 100 report a Neoverse N2 part number, but a different implementer code
+    assert get_cpu("0x000000006d0fd490") == "neoverse-n2"
+    assert get_cpu("0x000000006d0fd493") == "neoverse-n2-r0p3"
+
+
 def test_no_mapping():
     assert "mapping" not in MetricData.list_cpus()
