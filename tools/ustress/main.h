@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright (C) Arm Ltd. 2022
+ * Copyright (C) Arm Ltd. 2022-2025
  */
 
 #ifndef _MAIN_H
@@ -54,37 +54,36 @@ long runs_from_exec(const char *exec) {
 }
 
 void usage(const char *exec) {
-    for (int i = 0; i < sizeof(exec_runs)/sizeof(exec_runs[0]); ++i)
-        if (strstr(exec, exec_runs[i].exec)) {
-            printf("%s (runs=%ld) \n", exec, exec_runs[i].runs);
-            break;
-        }
     printf("usage: \n"
-           "\t %s [MULTIPLIER] \n"
-           "\t %s [--help] \n\n"
-           "\t MULTIPLIER \t OPTIONAL, benchmark execution time multiplier (default 1.0)", exec, exec);
+           "\t%s [MULTIPLIER]\n"
+           "\t%s [--help]\n\n"
+           "\tMULTIPLIER\tMultiply the number of iterations performed by this workload. (Default: 1.0)\n", exec, exec);
 }
 
 int main(int argc, char *argv[]) {
-  long runs = runs_from_exec(argv[0]);
+    if (argc > 2) {
+        usage(argv[0]);
+        return EXIT_FAILURE;
+    }
 
-  if (argc == 2) {
-      if (strcmp(argv[1], "--help") == 0) {
-          usage(argv[0]);
-          exit(EXIT_SUCCESS);
-      }
-      else
-      {
-          double multiplier = strtod(argv[1], NULL);
-          if (multiplier < 0)
-              exit(EXIT_FAILURE);
-          runs = (long)(runs * multiplier);
-      }
-  }
+    double multiplier = 1.0;
+    if (argc == 2) {
+        if (strcmp(argv[1], "--help") == 0) {
+            usage(argv[0]);
+            return EXIT_SUCCESS;
+        }
 
-  stress(runs);
+        multiplier = strtod(argv[1], NULL);
+        if (multiplier <= 0.0) {
+            usage(argv[0]);
+            return EXIT_FAILURE;
+        }
+    }
 
-  exit(EXIT_SUCCESS);
+    long runs = runs_from_exec(argv[0]) * multiplier;
+    stress(runs);
+
+    return EXIT_SUCCESS;
 }
 
 #endif
