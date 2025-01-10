@@ -20,6 +20,8 @@ repos:
       - id: pytest-check
         name: pytest-check
         entry: bash -c 'cd tools/perf_json_generator && exec pytest'
-        language: system
+        language: python
+        additional_dependencies:
+          - pytest
         pass_filenames: false
         always_run: true
