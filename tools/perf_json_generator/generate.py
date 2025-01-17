@@ -127,15 +127,27 @@ def mrs_events_to_perf_events(cpu_events: List[MrsEvent], common_events: List[Mr
 
         return (true_list, false_list)
 
+    def format_code(code):
+        return '0x{:>02X}'.format(code) if code is not None else None
+
     def mrs_to_perf_event(event: mrs_data.MrsEvent):
         """Create dict in Perf format from dict in MRS format"""
-        def format_code(code):
-            return '0x{:>02X}'.format(code) if code is not None else None
-
         return PerfEvent(PublicDescription=event.description,
                          EventCode=format_code(event.code),
                          EventName=event.name,
                          BriefDescription=event.description)
+
+    def mrs_to_common_perf_event(event: mrs_data.MrsEvent):
+        """
+        Convert MRS format to Perf format for new common events.
+
+        The returned PerfEvent takes the short 'title' from the telemetry-solution data
+        and uses it for BriefDescription which shouldn't contain impdef stuff. In arm-data
+        mode it might end up using a longer string.
+        """
+        return PerfEvent(EventCode=format_code(event.code),
+                         EventName=event.name,
+                         BriefDescription=event.title or event.description)
 
     # Some events are defined without names or codes
     # e.g. 0xC0 and last events in
@@ -167,12 +179,12 @@ def mrs_events_to_perf_events(cpu_events: List[MrsEvent], common_events: List[Mr
               file=sys.stderr)
 
     perf_cpu_events = [mrs_to_perf_event(e) for e in cpu_events if e.code != CHAIN_EVENT_CODE]
-    perf_common_events = [mrs_to_perf_event(e) for e in common_events]
+    perf_common_events = [mrs_to_common_perf_event(e) for e in common_events]
 
     # List of common events that are present in the specified CPU events
     # (may not be 1:1. e.g. impdef events)
-    present_perf_common_events = [e for e in perf_cpu_events
-                                  if find_event_in_list(e, perf_common_events)]
+    present_perf_common_events = [e for e in perf_common_events
+                                  if find_event_in_list(e, perf_cpu_events)]
 
     return (perf_cpu_events, present_perf_common_events)
 
@@ -390,20 +402,6 @@ def do_telemetry_mode(args, perf_data):
     def filter_common(events: List[MrsEvent]):
         return [e for e in events if e.common or e.recommended]
 
-    def describe_common(events: List[MrsEvent]):
-        """
-        TODO: If telemetry-solution also includes the arch name for common events like:
-              "arch_long_description, arch_short_description" then this function could replace title
-              and description for just for those events. That way Perf's common and recommended
-              files don't have arch specific descriptions in them.
-
-              eg:
-                title = e.arch_short_description, description = e.arch_long_description
-
-              Until then use only the title from common events.
-        """
-        return [dataclasses.replace(e, description=e.title) for e in events]
-
     for cpu in args.telemetry_files:
         if args.verbose:
             print(f"Processing {cpu}...")
@@ -418,7 +416,7 @@ def do_telemetry_mode(args, perf_data):
             mrs_events = mrs_data.read_telemetry_events(cpu)
             mrs_metrics = mrs_data.read_telemetry_metrics(cpu)
 
-            common_events = describe_common(filter_common(mrs_events))
+            common_events = filter_common(mrs_events)
             perf_data.add_cpu(mrs_cpu_info, mrs_events, common_events, perf_cpu_name, cpu)
             perf_data.add_metrics(mrs_cpu_info, mrs_metrics, perf_cpu_name)
         except Exception as e:
