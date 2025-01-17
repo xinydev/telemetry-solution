@@ -142,6 +142,7 @@ def mrs_events_to_perf_events(cpu_events: List[MrsEvent], common_events: List[Mr
     # https://developer.arm.com/documentation/ddi0500/j/Performance-Monitor-Unit/Events?lang=en
     cpu_events, skipped_no_code = partition(cpu_events, lambda e: e.code is not None)
     cpu_events, skipped_no_name = partition(cpu_events, lambda e: bool(e.name))
+    cpu_events, skipped_imp = partition(cpu_events, lambda e: not str(e.name).startswith("IMP_"))
 
     if skipped_no_name:
         # If no name, they should be IMPDEF
@@ -156,6 +157,13 @@ def mrs_events_to_perf_events(cpu_events: List[MrsEvent], common_events: List[Mr
 
         messages = [shorten(e) for e in skipped_no_code]
         print("Warning: Skipped events with no event code:\n  %s" % "\n  ".join(messages),
+              file=sys.stderr)
+
+    if skipped_imp:
+        # IMP_ in telemetry-solution means not in TRM, not validated and not grouped.
+        # Skip until we decide what to do with them in Perf.
+        skipped_names = ", ".join([e.name for e in skipped_imp])
+        print(f"Warning: Skipped events with IMP_ prefix:\n{skipped_names}",
               file=sys.stderr)
 
     perf_cpu_events = [mrs_to_perf_event(e) for e in cpu_events if e.code != CHAIN_EVENT_CODE]
