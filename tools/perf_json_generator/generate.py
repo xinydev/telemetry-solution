@@ -131,11 +131,17 @@ def mrs_events_to_perf_events(cpu_events: List[MrsEvent], common_events: List[Mr
         return '0x{:>02X}'.format(code) if code is not None else None
 
     def mrs_to_perf_event(event: mrs_data.MrsEvent):
-        """Create dict in Perf format from dict in MRS format"""
+        """
+        Convert MRS format to Perf format for non-common events.
+
+        Telemetry-solution events get both short and long descriptions but
+        arm-data has None for title so BriefDescription will be empty. Perf
+        can handle this.
+        """
         return PerfEvent(PublicDescription=event.description,
                          EventCode=format_code(event.code),
                          EventName=event.name,
-                         BriefDescription=event.description)
+                         BriefDescription=event.title)
 
     def mrs_to_common_perf_event(event: mrs_data.MrsEvent):
         """
@@ -251,7 +257,8 @@ class PerfData:
                 common_event = find_event_in_list(event, common_events)
                 if common_event:  # If event exists in common events, include reference instead
                     return PerfEvent(ArchStdEvent=event.EventName, Topics=event.Topics,
-                                     PublicDescription=event.PublicDescription)
+                                     PublicDescription=event.PublicDescription or
+                                     event.BriefDescription)
                 else:
                     assert event_codes.is_impdef(event.EventCode), \
                            f"{event.EventCode} is unknown and not IMPDEF: {event}"
