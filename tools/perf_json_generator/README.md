@@ -108,5 +108,5 @@ mypy .
 
 For questions and help with this tool:
 
-James Clark <james.clark@arm.com>
+James Clark <james.clark@linaro.org>
 Nick Forrington <nick.forrington@arm.com>
