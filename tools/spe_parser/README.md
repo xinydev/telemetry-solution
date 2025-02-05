@@ -88,7 +88,7 @@ Please make sure your workload is compiled with debug information (e.g. -g).
 
 ---
 
-To parse raw SPE fill buffer data (e.g. generated with [WindowsPerf](https://github.com/arm-developer-tools/windowsperf)), use the options below:
+To parse raw SPE fill buffer data (e.g. generated with [WindowsPerf](https://gitlab.com/Linaro/WindowsPerf/windowsperf)), use the options below:
 
 ```bash
 spe-parser spe.data --raw-buffer
