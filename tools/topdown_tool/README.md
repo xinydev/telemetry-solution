@@ -10,7 +10,7 @@ Metrics are then calculated using information stored in per-CPU JSON files.
 Requirements
 ============
 * A working [Linux Perf](https://perf.wiki.kernel.org/index.php/Main_Page) or [WindowsPerf](https://gitlab.com/Linaro/WindowsPerf/windowsperf) (3.3.3 or later) setup.
-* Python 3.7 or later.
+* Python 3.8 or later.
 
 Install
 =======

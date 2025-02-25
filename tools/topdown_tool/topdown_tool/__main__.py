@@ -5,8 +5,8 @@
 import os.path
 import sys
 
-if sys.version_info < (3, 7):
-    print("Python 3.7 or later is required to run this script.", file=sys.stderr)
+if sys.version_info < (3, 8):
+    print("Python 3.8 or later is required to run this script.", file=sys.stderr)
     sys.exit(1)
 
 # Update path when running file/package directly (not as a module).

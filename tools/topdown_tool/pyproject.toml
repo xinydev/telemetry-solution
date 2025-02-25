@@ -15,7 +15,7 @@ description = "Utility to collect topdown performance analysis metrics for Arm N
 readme = "README.md"
 keywords = ["Arm", "perf", "topdown", "metrics"]
 license = "Apache-2.0"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Environment :: Console",
