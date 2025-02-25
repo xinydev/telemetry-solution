@@ -350,6 +350,9 @@ def main(args=None):
     except subprocess.CalledProcessError as e:
         print(f'"{format_command(e.cmd)}" finished with exit code {e.returncode}.', file=sys.stderr)
         sys.exit(1)
+    except KeyboardInterrupt:
+        print("Interrupt received. Exiting.")
+        sys.exit(1)
     except UncountedEventsError as e:
         print(("The following events could not be counted:\n  %s\n\n"
                "This can be caused by insufficient time to collect information on all events.\n" % "\n  ".join(e.uncounted_events)), file=sys.stderr)

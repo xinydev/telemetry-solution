@@ -311,10 +311,12 @@ def __run_scheduled_events(scheduled_events: List[Set[CollectionEvent]], perf_op
     logging.info('Running "%s"', format_command(perf_command))
     logging.debug("Unique events: %s", ",".join(set(e.event.name for e in flat_events)))
 
+    interrupted = False
     try:
         subprocess.check_call(perf_command)
     except KeyboardInterrupt:
-        logging.info("Received interrupt. Analysing data.")
+        interrupted = True
+        logging.info("Received interrupt.")
 
     def to_event_count(index: int, name: str, value: Optional[float], time: Optional[float]):
         event = flat_events[index % len(flat_events)]
@@ -332,7 +334,7 @@ def __run_scheduled_events(scheduled_events: List[Set[CollectionEvent]], perf_op
         last_interval_time = event_counts[-1].time
         if perf_options.interval and any(e.time != last_interval_time for e in event_counts) and all(e.time == last_interval_time for e in uncounted_events):
             logging.info("Ignoring last interval as not all events could be collected. Likely too short.")
-            return timed_event_counts
+            return timed_event_counts, interrupted
 
         raise UncountedEventsError(set(e.event.event.name for e in uncounted_events))
 
@@ -340,7 +342,7 @@ def __run_scheduled_events(scheduled_events: List[Set[CollectionEvent]], perf_op
     for time, counts_for_time in itertools.groupby(event_counts, key=lambda e: e.time):
         timed_event_counts.setdefault(time, []).extend(counts_for_time)
 
-    return timed_event_counts
+    return timed_event_counts, interrupted
 
 
 def collect_events(metric_instances: Iterable[MetricInstance], perf_options: PerfOptions):
@@ -365,8 +367,19 @@ def collect_events(metric_instances: Iterable[MetricInstance], perf_options: Per
     # "Schedule" perf instances based on max_events.
     timed_event_counts: Dict[Optional[float], List[EventCount]] = {}
     for scheduled_events in schedule:
-        for time, counts_for_time in __run_scheduled_events(scheduled_events, perf_options).items():
+        event_counts, interrupted = __run_scheduled_events(scheduled_events, perf_options)
+
+        if interrupted:
+            if len(schedule) == 1:
+                # If there's only one perf run, use the data
+                print("Interrupt received. Showing results...")
+            else:
+                # For multiple perf runs, don't launch more processes, or use the data
+                raise KeyboardInterrupt()
+
+        for time, counts_for_time in event_counts.items():
             timed_event_counts.setdefault(time, []).extend(counts_for_time)
+
     return timed_event_counts
 
 
