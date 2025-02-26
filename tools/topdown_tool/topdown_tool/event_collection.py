@@ -5,6 +5,7 @@ import dataclasses
 import itertools
 import json
 import logging
+import os.path
 import shlex
 import subprocess
 import sys
@@ -19,6 +20,28 @@ from topdown_tool.utils import get_pmu_counters_windows
 PERF_SEPARATOR = ";"
 # TODO: Read from MRS data when available
 CPU_PMU_COUNTERS = 6
+
+
+def check_call_with_timeout(cmd: List[str]):
+    """Custom version of subprocess.check_call that ensures a timeout of 40s
+    between process being interrupted and being killed will be used if a
+    KeyboardInterrupt is caught. This behaviour is useful when a benchmark makes
+    the system unresponsive and it takes longer than usual to kill perf.
+    """
+    try:
+        with subprocess.Popen(cmd) as proc:
+            if hasattr(proc, "_sigint_wait_secs"):
+                proc._sigint_wait_secs = 40  # Increase wait time on interrupt
+            return_code = proc.wait()
+            if return_code != 0:
+                raise subprocess.CalledProcessError(return_code, cmd)
+    except KeyboardInterrupt:
+        # If the process is still alive, kill it
+        if proc.poll() is None:
+            proc.kill()
+            logging.info(f"Timeout while waiting for {os.path.basename(cmd[0])} to shutdown, killing {os.path.basename(cmd[0])}")
+            proc.wait()
+        raise
 
 
 class CollectBy(Enum):
@@ -311,12 +334,25 @@ def __run_scheduled_events(scheduled_events: List[Set[CollectionEvent]], perf_op
     logging.info('Running "%s"', format_command(perf_command))
     logging.debug("Unique events: %s", ",".join(set(e.event.name for e in flat_events)))
 
+    def get_mtime_or_none(file: str) -> Optional[float]:
+        try:
+            stat_file_mtime = os.path.getmtime(file)
+        except OSError:
+            stat_file_mtime = None
+        return stat_file_mtime
+
     interrupted = False
+    # Datetime to compare if perf went beyond initialization
+    initial_stat_file_mtime = get_mtime_or_none(perf_options.perf_output)
     try:
-        subprocess.check_call(perf_command)
+        check_call_with_timeout(perf_command)
     except KeyboardInterrupt:
         interrupted = True
         logging.info("Received interrupt.")
+    final_stat_file_mtime = get_mtime_or_none(perf_options.perf_output)
+    if final_stat_file_mtime is None or final_stat_file_mtime == initial_stat_file_mtime:
+        logging.info("Perf didn't proceed to capture beyond initialization")
+        raise UncountedEventsError(set(e.event.name for e in flat_events))
 
     def to_event_count(index: int, name: str, value: Optional[float], time: Optional[float]):
         event = flat_events[index % len(flat_events)]
