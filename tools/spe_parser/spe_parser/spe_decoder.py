@@ -131,6 +131,7 @@ PKT_EVENTS_TYPE = {
     lshift(9): "LLC-REFILL",  # EV_LLC_MISS
     lshift(10): "REMOTE-ACCESS",
     lshift(11): "ALIGNMENT",
+    lshift(12): "LATE-PREFETCH",
     lshift(17): "SVE-PARTIAL-PRED",  # EV_PARTIAL_PREDICATE
     lshift(18): "SVE-EMPTY-PRED",  # EV_EMPTY_PREDICATE
 }
