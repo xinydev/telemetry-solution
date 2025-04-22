@@ -1,0 +1,8 @@
+                                           CPU TestCPU groups                                            
+┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Key                ┃ Group                               ┃ Description                                ┃
+┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ topdown_root_group │ Topdown Root Group - title          │ Root group - description                   │
+│ stage1_left_group  │ Stage1 - left branch group - title  │ Stage 1 - Left branch group - description  │
+│ stage1_right_group │ Stage1 - right branch group - title │ Stage 1 - Right branch group - description │
+└────────────────────┴─────────────────────────────────────┴────────────────────────────────────────────┘

@@ -9,13 +9,14 @@ build-backend = "hatchling.build"
 name = "topdown-tool"
 version = "0.1.0"
 authors = [
-  {name = "Nick Forrington", email = "nick.forrington@arm.com"}
+  {name = "Vincent Coubard", email = "vincent.coubard@arm.com"},
+  {name = "Adam Zenker", email = "adam.zenker@arm.com"}
 ]
 description = "Utility to collect topdown performance analysis metrics for Arm Neoverse CPUs."
 readme = "README.md"
 keywords = ["Arm", "perf", "topdown", "metrics"]
 license = "Apache-2.0"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Environment :: Console",
@@ -25,9 +26,10 @@ classifiers = [
   "Operating System :: POSIX :: Linux",
   "Programming Language :: Python :: 3"
 ]
+dependencies = ["rich", "pydantic"]
 
 [project.optional-dependencies]
-test = ["pytest"]
+test = ["pytest", "tox", "pytest-mock"]
 lint = ["flake8", "mypy", "pylint"]
 
 [project.urls]
@@ -36,15 +38,19 @@ lint = ["flake8", "mypy", "pylint"]
 [project.scripts]
 topdown-tool = "topdown_tool.__main__:main"
 
+[project.entry-points."topdown_tool.probe_factories"]
+cpu_probe_factory = "topdown_tool.cpu_probe.cpu_factory:CpuProbeFactory"
+
 [tool.hatch.build]
 include = [
-  "topdown_tool/*.py",
-  "topdown_tool/metrics/*.json"
+  "topdown_tool/**/*.py",
+  "topdown_tool/cpu_probe/metrics/*.json"
 ]
 
 [tool.mypy]
-exclude = ["^\\.venv/.*", "^venv"]
+exclude = ["^\\.venv/.*", "^venv", "pmu_discovery", "^tests/"]
 check_untyped_defs = true
+disallow_untyped_defs = true
 
 [tool.pylint]
 good-names = ["e", "f", "g", "m", "l1", "l2", "mi", "op"]
@@ -62,7 +68,7 @@ disable = [
 ]
 
 [tool.isort]
-line_length = 160
+line_length = 100
 
 [tool.black]
-line_length = 160
+line_length = 100

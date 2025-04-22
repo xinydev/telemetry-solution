@@ -1,0 +1,57 @@
+CPU TestCPU metrics
+├── Stage 1 (Topdown metrics)
+│   ├── Topdown Root Group - title (topdown_root_group)
+│   │   ├── Root group - description
+│   │   └── ┏━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+│   │       ┃ Key            ┃ Metric                       ┃ Sample events ┃
+│   │       ┡━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│   │       │ root_metric1   │ Root Node - Metric 1 - title │ evt1          │
+│   │       │ root_metric2   │ Root Node - Metric 2 - title │ evt2, evt3    │
+│   │       │ shared_metric1 │ Shared Metric 1 - title      │ evt3          │
+│   │       └────────────────┴──────────────────────────────┴───────────────┘
+│   ├── Stage1 - left branch group - title (stage1_left_group)
+│   │   ├── Stage 1 - Left branch group - description
+│   │   └── ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+│   │       ┃ Key                          ┃ Metric                                                    ┃ Sample events ┃
+│   │       ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│   │       │ stage1_left_lv1_metric       │ Stage1 - left branch - level 1 - metric 1 - title         │ evt4          │
+│   │       │ stage1_left_lv2_left_metric  │ Stage1 - left branch - level 2 - left branch - metric 2 - │ evt5          │
+│   │       │                              │ title                                                     │               │
+│   │       │ stage1_left_lv2_right_metric │ Stage1 - left branch - level 2 - right branch - metric 2  │ evt4          │
+│   │       │                              │ - title                                                   │               │
+│   │       └──────────────────────────────┴───────────────────────────────────────────────────────────┴───────────────┘
+│   └── Stage1 - right branch group - title (stage1_right_group)
+│       ├── Stage 1 - Right branch group - description
+│       └── ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+│           ┃ Key                     ┃ Metric                                         ┃ Sample events ┃
+│           ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│           │ stage1_right_lv1_metric │ Stage1 - right branch - level 1 metric - title │ evt6          │
+│           └─────────────────────────┴────────────────────────────────────────────────┴───────────────┘
+├── Stage 2 (uarch metrics)
+│   ├── Stage2 - Group1 - title (stage2_group1)
+│   │   ├── Stage 2 - Group1 - description
+│   │   └── ┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+│   │       ┃ Key                    ┃ Metric                            ┃ Sample events ┃
+│   │       ┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│   │       │ shared_metric1         │ Shared Metric 1 - title           │ evt3          │
+│   │       │ stage_2_group1_metric1 │ Stage2 - Group1 - Metric1 - title │ evt5, evt6    │
+│   │       │ stage_2_group1_metric2 │ Stage2 - Group1 - Metric2 - title │ evt7, evt8    │
+│   │       └────────────────────────┴───────────────────────────────────┴───────────────┘
+│   └── Stage2 Group2 - title (stage2_group2)
+│       ├── Stage 2 - Group2 - description
+│       └── ┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+│           ┃ Key                    ┃ Metric                            ┃ Sample events ┃
+│           ┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│           │ shared_metric2         │ Shared Metric 2 - title           │ evt8          │
+│           │ stage_2_group2_metric1 │ Stage2 - Group1 - Metric2 - title │ evt3, evt9    │
+│           └────────────────────────┴───────────────────────────────────┴───────────────┘
+└── General
+    └── Freestanding Group - title (freestanding_group)
+        ├── Freestanding group - description
+        └── ┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+            ┃ Key                  ┃ Metric                                ┃ Sample events ┃
+            ┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+            │ freestanding_metric1 │ Freestanding Group - Metric 1 - title │ evt10         │
+            │ freestanding_metric2 │ Freestanding Group - Metric 2 - title │ evt11         │
+            │ shared_metric2       │ Shared Metric 2 - title               │ evt8          │
+            └──────────────────────┴───────────────────────────────────────┴───────────────┘

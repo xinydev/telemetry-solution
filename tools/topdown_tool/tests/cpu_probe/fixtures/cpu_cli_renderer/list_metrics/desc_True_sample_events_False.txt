@@ -1,0 +1,63 @@
+CPU TestCPU metrics
+├── Stage 1 (Topdown metrics)
+│   ├── Topdown Root Group - title (topdown_root_group)
+│   │   ├── Root group - description
+│   │   └── ┏━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+│   │       ┃ Key            ┃ Metric                       ┃ Description                        ┃
+│   │       ┡━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│   │       │ root_metric1   │ Root Node - Metric 1 - title │ Root Node - Metric 1 - description │
+│   │       │ root_metric2   │ Root Node - Metric 2 - title │ Root Node - Metric 2 - description │
+│   │       │ shared_metric1 │ Shared Metric 1 - title      │ Shared Metric 1 - description      │
+│   │       └────────────────┴──────────────────────────────┴────────────────────────────────────┘
+│   ├── Stage1 - left branch group - title (stage1_left_group)
+│   │   ├── Stage 1 - Left branch group - description
+│   │   └── ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+│   │       ┃ Key                          ┃ Metric                              ┃ Description                         ┃
+│   │       ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│   │       │ stage1_left_lv1_metric       │ Stage1 - left branch - level 1 -    │ Stage1 - left branch - level 1 -    │
+│   │       │                              │ metric 1 - title                    │ metric 1 - description              │
+│   │       │ stage1_left_lv2_left_metric  │ Stage1 - left branch - level 2 -    │ Stage1 - left branch - level 2 -    │
+│   │       │                              │ left branch - metric 2 - title      │ left branch - metric 2 -            │
+│   │       │                              │                                     │ description                         │
+│   │       │ stage1_left_lv2_right_metric │ Stage1 - left branch - level 2 -    │ Stage1 - left branch - level 2 -    │
+│   │       │                              │ right branch - metric 2 - title     │ right branch - metric 2 -           │
+│   │       │                              │                                     │ description                         │
+│   │       └──────────────────────────────┴─────────────────────────────────────┴─────────────────────────────────────┘
+│   └── Stage1 - right branch group - title (stage1_right_group)
+│       ├── Stage 1 - Right branch group - description
+│       └── ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+│           ┃ Key                     ┃ Metric                                 ┃ Description                           ┃
+│           ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│           │ stage1_right_lv1_metric │ Stage1 - right branch - level 1 metric │ Stage1 - right branch - level 1       │
+│           │                         │ - title                                │ metric - description                  │
+│           └─────────────────────────┴────────────────────────────────────────┴───────────────────────────────────────┘
+├── Stage 2 (uarch metrics)
+│   ├── Stage2 - Group1 - title (stage2_group1)
+│   │   ├── Stage 2 - Group1 - description
+│   │   └── ┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+│   │       ┃ Key                    ┃ Metric                            ┃ Description                             ┃
+│   │       ┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│   │       │ shared_metric1         │ Shared Metric 1 - title           │ Shared Metric 1 - description           │
+│   │       │ stage_2_group1_metric1 │ Stage2 - Group1 - Metric1 - title │ Stage2 - Group1 - Metric1 - description │
+│   │       │ stage_2_group1_metric2 │ Stage2 - Group1 - Metric2 - title │ Stage2 - Group1 - Metric2 - description │
+│   │       └────────────────────────┴───────────────────────────────────┴─────────────────────────────────────────┘
+│   └── Stage2 Group2 - title (stage2_group2)
+│       ├── Stage 2 - Group2 - description
+│       └── ┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+│           ┃ Key                    ┃ Metric                            ┃ Description                             ┃
+│           ┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│           │ shared_metric2         │ Shared Metric 2 - title           │ Shared Metric 2 - description           │
+│           │ stage_2_group2_metric1 │ Stage2 - Group1 - Metric2 - title │ Stage2 - Group1 - Metric2 - description │
+│           └────────────────────────┴───────────────────────────────────┴─────────────────────────────────────────┘
+└── General
+    └── Freestanding Group - title (freestanding_group)
+        ├── Freestanding group - description
+        └── ┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+            ┃ Key                  ┃ Metric                                ┃ Description                               ┃
+            ┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+            │ freestanding_metric1 │ Freestanding Group - Metric 1 - title │ Freestanding Group - Metric 1 -           │
+            │                      │                                       │ description                               │
+            │ freestanding_metric2 │ Freestanding Group - Metric 2 - title │ Freestanding Group - Metric 2 -           │
+            │                      │                                       │ description                               │
+            │ shared_metric2       │ Shared Metric 2 - title               │ Shared Metric 2 - description             │
+            └──────────────────────┴───────────────────────────────────────┴───────────────────────────────────────────┘

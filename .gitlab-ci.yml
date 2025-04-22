@@ -126,10 +126,10 @@ spe-parser:
   parallel:
     matrix:
       - PYENV: 
+        - py312
         - py311
         - py310
         - py39
-        - py38
         - fix,type,pkg_meta
   script:
     - |
@@ -152,8 +152,8 @@ topdown-tool:
         - py311
         - py310
         - py39
-        - py38
         - codestyle,pkg_meta
+        - mypy
   script:
     - |
       python3 -m venv .venv

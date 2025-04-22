@@ -1,0 +1,17 @@
+    CPU TestCPU events     
+┏━━━━━━┳━━━━━━━┳━━━━━━━━━━┓
+┃ Code ┃ Event ┃ Title    ┃
+┡━━━━━━╇━━━━━━━╇━━━━━━━━━━┩
+│ 0x1  │ evt1  │ Event 1  │
+│ 0x2  │ evt2  │ Event 2  │
+│ 0x3  │ evt3  │ Event 3  │
+│ 0x4  │ evt4  │ Event 4  │
+│ 0x5  │ evt5  │ Event 5  │
+│ 0x6  │ evt6  │ Event 6  │
+│ 0x7  │ evt7  │ Event 7  │
+│ 0x8  │ evt8  │ Event 8  │
+│ 0x9  │ evt9  │ Event 9  │
+│ 0xa  │ evt10 │ Event 10 │
+│ 0xb  │ evt11 │ Event 11 │
+│ 0xc  │ evt12 │ Event 12 │
+└──────┴───────┴──────────┘

@@ -14,26 +14,25 @@ repos:
       - id: requirements-txt-fixer
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
+        exclude: 'fixtures/.*'
   - repo: https://github.com/PyCQA/flake8
     rev: 7.1.1
     hooks:
       - id: flake8
         args: ["--config", "tools/topdown_tool/setup.cfg"]
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.11.2
-    hooks:
-      - id: mypy
-        args: ["--config-file", "tools/topdown_tool/pyproject.toml"]
-        additional_dependencies:
-          - pytest
   - repo: https://github.com/pycqa/pylint
     rev: v3.3.1
     hooks:
       - id: pylint
         args: ["--rcfile", "tools/topdown_tool/pyproject.toml"]
         additional_dependencies:
+          - rich
+          - pydantic
           - pytest
+          - pytest-mock
+        exclude: '^tools/topdown_tool/tests/'
   - repo: 'https://github.com/codespell-project/codespell'
     rev: v2.3.0
     hooks:
       - id: codespell
+        args: ["--ignore-words", "tools/topdown_tool/.codespell-ignore-words.txt"]

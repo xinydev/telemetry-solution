@@ -1,390 +1,394 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-# Copyright 2022-2024 Arm Limited
+# Copyright 2022-2025 Arm Limited
 
-import os.path
 import sys
+import os
+import os.path
 
-if sys.version_info < (3, 7):
-    print("Python 3.7 or later is required to run this script.", file=sys.stderr)
+if sys.version_info < (3, 9):
+    print("Python 3.9 or later is required to run this script.", file=sys.stderr)
     sys.exit(1)
 
-# Update path when running file/package directly (not as a module).
+# Allow relative imports when running file/package directly (not as a module).
 if __name__ == "__main__" and not __package__:
+    __package__ = "topdown_tool"  # pylint: disable=redefined-builtin
+
     sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
 import argparse
-import csv
 import logging
-import subprocess
-import textwrap
-from re import Match
-from typing import Dict, Generator, Iterable, List, Optional, Sequence, Tuple, Union
 
-from topdown_tool import cpu_mapping, simple_maths
-from topdown_tool.event_collection import (CPU_PMU_COUNTERS, CollectBy, EventCount, GroupScheduleError, MetricScheduleError, PerfOptions, UncountedEventsError,
-                                           ZeroCyclesError, collect_events, format_command, get_pmu_counters)
-from topdown_tool.metric_data import (IDENTIFIER_REGEX, AnyMetricInstance, AnyMetricInstanceOrValue, CombinedMetricInstance, Group, MetricData, MetricInstance,
-                                      MetricInstanceValue)
+from typing import Iterable, List, Optional, Sequence, Set
 
-# Constants for nested printing
-INDENT_LEVEL = 2
-STAGE_LABELS = {0: "uncategorised", 1: "Topdown", 2: "uarch"}
-DESCRIPTION_LINE_LENGTH = 80
+from rich import get_console
+import rich.traceback
+from rich.console import Console
+from topdown_tool.probe.probe import load_probe_factories
+from topdown_tool.perf import Perf
+from topdown_tool.probe import Probe, ProbeFactory
+from topdown_tool.workload import CommandWorkload, PidWorkload, SystemwideWorkload
 
-# Default stages, unless levels or metric groups are specified
-DEFAULT_ALL_STAGES = [1, 2]
-COMBINED_STAGES: List[int] = []
+# Install rich pretty exception handler globally and show local variables in tracebacks
+rich.traceback.install(show_locals=True)
+
+LOG_FORMAT = "%(asctime)s [%(levelname)s] %(module)s:%(funcName)s - %(message)s"
 
 
-def calculate_metrics(event_counts: List[EventCount], metric_instances: Iterable[MetricInstance]):
-    """Calculate metric values from perf stat event data."""
-
-    output: List[MetricInstanceValue] = []
-
-    for mi in metric_instances:
-        events = [e for e in event_counts if (e.event.metric == mi.metric or e.event.metric is None) and (e.event.group == mi.group or e.event.group is None)]
-        formula = mi.metric.formula
-
-        def event_value(match: Match):
-            event = next(e for e in events if e.event.event.name == match.group(0))
-            return str(event.value)
-        formula = IDENTIFIER_REGEX.sub(event_value, mi.metric.formula)
-
-        value = simple_maths.evaluate(formula)
-        output.append(MetricInstanceValue(metric_instance=mi, value=value))
-
-    return output
+try:
+    PROBE_FACTORY = load_probe_factories()
+except Exception:  # pylint: disable=broad-exception-caught
+    print("Failed to load probe entry points. Please install topdown_tool with pip")
+    sys.exit(1)
 
 
-def indent_lines(text: str, indent: int, line_length=100):
-    """Indent all lines in `text` by `indent` spaces"""
+def get_selected_factories_from_args(
+    all_factories: Sequence[ProbeFactory],
+    canonical_probe_names: Sequence[str],
+    default_probe_names: Sequence[str],
+    _args: Optional[Sequence[str]],
+    console: Console,
+) -> Sequence[ProbeFactory]:
+    """
+    Parse CLI arguments for probe selection and return the selected probe factories.
 
-    def wrap_line(line: str):
-        return "\n".join(" " * indent + line for line in textwrap.wrap(line, line_length - indent))
+    Args:
+        all_factories (Sequence[ProbeFactory]): All available ProbeFactory instances.
+        canonical_probe_names (Sequence[str]): List of canonical probe names (from .name()).
+        default_probe_names (Sequence[str]): List of probe names (from .name()) to use if --probe is not specified.
+        _args (Optional[Sequence[str]]): Argument list to parse (typically sys.argv[1:]). If None, uses sys.argv.
+        console: Optional rich console for printing errors/messages.
 
-    return "\n".join(wrap_line(line) for line in text.splitlines())
+    Returns:
+        list: List of selected ProbeFactory instances, in user-specified or default order.
 
+    Raises:
+        SystemExit: If no valid probes are selected, or user input is invalid.
+    """
+    available_probe_names = {pf.name().lower(): pf for pf in all_factories}
 
-def generate_metric_values(metric_instances: Iterable[AnyMetricInstanceOrValue]) -> Generator[Tuple[AnyMetricInstance, Optional[float]], None, None]:
-    for mi in metric_instances:
-        if isinstance(mi, MetricInstanceValue):
-            yield (mi.metric_instance, mi.value)
-        else:
-            yield (mi, None)
+    # Step 1: Minimal parse for --probe
+    minimal_parser = argparse.ArgumentParser(add_help=False)
+    minimal_parser.add_argument(
+        "--probe",
+        action="append",
+        metavar="NAME[,NAME...]",
+        help=f"Select probes to enable (default: {', '.join(default_probe_names)}). NAME is one of: {', '.join(canonical_probe_names)}",
+    )
+    probe_args, _ = minimal_parser.parse_known_args(_args)
 
-
-# pylint: disable=too-many-branches,too-many-locals
-def print_nested_metrics(metric_instances: Iterable[AnyMetricInstanceOrValue],
-                         stages: List[int],
-                         show_descriptions: bool,
-                         show_sample_events: bool):
-
-    last_group: Dict[int, Group] = {}  # level => group
-    last_level = -1
-    last_stage = -1
-
-    if not metric_instances:  # e.g. trying to display stages on a group without a stage
-        print("No metrics to display")
-        return
-
-    if show_descriptions:
-        max_width = DESCRIPTION_LINE_LENGTH
+    # Step 2: Normalize/collect --probe args
+    selected_names = []
+    if probe_args.probe:
+        for entry in probe_args.probe:
+            selected_names.extend(
+                [name.strip().lower() for name in entry.split(",") if name.strip()]
+            )
     else:
-        max_width = max(
-            INDENT_LEVEL * (getattr(mi, "level", 1) - 1) + max(len(mi.metric.title), len(mi.group.title) + 2)
-            for (mi, _) in generate_metric_values(metric_instances)
+        selected_names = [name.lower() for name in default_probe_names]
+    selected_factories = []
+    invalid_names = []
+    for name in selected_names:
+        pf = available_probe_names.get(name)
+        if pf:
+            selected_factories.append(pf)
+        else:
+            invalid_names.append(name)
+    if not selected_factories:
+        console.print(
+            f"No valid probes selected. Please specify using --probe. "
+            f"Valid options are: {', '.join(canonical_probe_names)}"
         )
-
-    for (instance, value) in generate_metric_values(metric_instances):
-        instance_level = get_level(instance, 1)  # Flatten level 2 CombinedMetricInstances
-        indent = INDENT_LEVEL * (instance_level - 1)
-
-        if stages and instance.stage != last_stage:
-            if last_stage != -1:
-                print()
-            heading = f"Stage {instance.stage} ({STAGE_LABELS[instance.stage]} metrics)"
-            print(f"{heading}\n{'=' * len(heading)}")
-            last_level = -1
-
-        # On level-change, clear previous description
-        if show_descriptions and instance_level != last_level and last_level != -1:
-            print()
-
-        assert instance.group
-        if instance.group is not last_group.get(instance_level) and instance.group is not last_group.get(instance_level - 1):
-            if instance_level == last_level:
-                print()
-
-            group_types = f"{' ' * (max_width - indent - 2 - len(instance.group.title))} [{STAGE_LABELS[instance.stage]} group]" if not stages else ""
-            print(indent_lines(f"[{instance.group.title}]{group_types}", indent))
-            if (stages and 1 in stages) and isinstance(instance, CombinedMetricInstance):
-                for parent in instance.parents:
-                    print(indent_lines(f"(follows {parent.metric.title})", indent + INDENT_LEVEL))
-            if show_descriptions:
-                print(indent_lines(instance.group.description, indent + INDENT_LEVEL, DESCRIPTION_LINE_LENGTH))
-
-        if value is not None:
-            print(indent_lines(f"{instance.metric.title.ljust(max_width - indent, '.')} {instance.metric.format_value(value)}", indent))
-        else:
-            print(indent_lines(instance.metric.title, indent))
-
-        if show_descriptions:
-            print(indent_lines(instance.metric.description, indent + INDENT_LEVEL, DESCRIPTION_LINE_LENGTH))
-
-        # Latest format include sample_events from metrics themselves. It takes precedence over node sample_events.
-        sample_events = instance.metric.sample_events or instance.sample_events
-        if show_sample_events and sample_events:
-            print(indent_lines("Sample events: " + ", ".join(e.name for e in sample_events), indent + INDENT_LEVEL, DESCRIPTION_LINE_LENGTH))
-
-        last_group[instance_level] = instance.group
-        last_level = instance_level
-        last_stage = instance.stage
+    elif invalid_names:
+        console.print(
+            f"Unrecognized probe(s): {', '.join(invalid_names)}. "
+            f"Valid options are: {', '.join(canonical_probe_names)}"
+        )
+        sys.exit(1)
+    return selected_factories
 
 
-# pylint: disable=too-many-statements
-def get_arg_parser():
-    class ProcessStageArgs(argparse.Action):
-        stage_names = {"topdown": 1, "uarch": 2, "1": 1, "2": 2}
+def build_arg_parser(
+    selected_factories: Iterable[ProbeFactory],
+    canonical_probe_names: Iterable[str],
+    default_probe_names: Iterable[str],
+) -> argparse.ArgumentParser:
+    """
+    Build the application argument parser with global and selected probe-specific arguments.
 
-        def __call__(self, parser: argparse.ArgumentParser, namespace: argparse.Namespace, values: Union[str, Sequence, None], option_string: Optional[str] = None) -> None:
-            if isinstance(values, str):
-                if values.lower() == "all":
-                    value = DEFAULT_ALL_STAGES
-                elif values.lower() == "combined":
-                    value = COMBINED_STAGES
-                else:
-                    try:
-                        value = sorted(set(ProcessStageArgs.stage_names[x.lower().strip()] for x in values.split(",")))
-                    except KeyError as e:
-                        parser.error(f'"{e.args[0]}" is not a valid stage name.')
+    Args:
+        selected_factories (Iterable[ProbeFactory]): Probe factories to add argument options from.
+        canonical_probe_names (Iterable[str]): List of all canonical probe names for help.
+        default_probe_names (Iterable[str]): List of default probe names, for setting argument default.
 
-            else:
-                assert False
-            setattr(namespace, self.dest, value)
+    Returns:
+        argparse.ArgumentParser: App argument parser.
+    """
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
+    # Add --probe purely for help (so appears in usage synopsis)
+    parser.add_argument(
+        "--probe",
+        action="append",
+        metavar="NAME[,NAME...]",
+        help=f"Select probes to enable (default: {', '.join(default_probe_names)}). NAME is one of: {', '.join(canonical_probe_names)}",
+    )
+    parser.add_argument(
+        "command",
+        default=[],
+        nargs=argparse.REMAINDER,
+        help='Command to analyse. Subsequent arguments are passed as program arguments. e.g. "sleep 10"',
+    )
 
-    def pid_list(arg: str):
-        return [int(p) for p in arg.split(",")]
+    # Extract pids from the --pid argument
+    def pid_set(arg: str) -> Set[int]:
+        return set(int(pid) for pid in arg.split(","))
 
-    def collect_by_value(arg: str):
-        return CollectBy(arg.lower())
-
-    def positive_nonzero_int(arg: str):
-        try:
-            val = int(arg)
-            if val > 0:
-                return val
-        except ValueError:
-            pass
-
-        raise argparse.ArgumentTypeError(f"invalid positive int value: '{arg}'")
-
-    class PlatformArgumentParser(argparse.ArgumentParser):
-        """ArgumentParser that allows platform-specific arguments."""
-
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self.default_namespace = argparse.Namespace()
-
-        def add_linux_argument(self, *args, **kwargs):
-            """
-            Adds an argument that only appears on Linux.
-
-            On Windows, the default value will be added to the default namespace.
-            """
-            if sys.platform == "linux":
-                self.add_argument(*args, **kwargs)
-            else:
-                # Add default argument values to default namespace
-                longest_name = max(args, key=len).lstrip(self.prefix_chars).replace("-", "_")
-                setattr(self.default_namespace,
-                        kwargs.get("dest", longest_name),
-                        kwargs.get("default"))
-
-        def add_argument_group(self, *args, **kwargs):
-            group = super().add_argument_group(*args, **kwargs)
-            setattr(group, "add_linux_argument", self.add_linux_argument)
-            return group
-
-        def parse_args(self, args: Optional[Sequence[str]] = None):  # type: ignore # pylint: disable=arguments-differ
-            return super().parse_args(args, self.default_namespace)
-
-    if sys.platform == "linux":
-        default_perf_path = "perf"
-        default_perf_output = "perf.stat.txt"
-    else:
-        default_perf_path = "wperf"
-        default_perf_output = "wperf.json"
-
-    parser = PlatformArgumentParser(prog="topdown-tool", formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("command", default=[], nargs=argparse.REMAINDER, help='command to analyse. Subsequent arguments are passed as program arguments. e.g. "sleep 10"')
-    parser.add_linux_argument("--all-cpus", "-a", action="store_true", help="System-wide collection for all CPUs.")
-    parser.add_linux_argument("--pid", "-p", type=pid_list, dest="pids", help='comma separated list of process IDs to monitor.')
-    parser.add_argument("--perf-path", default=default_perf_path, help="path to perf executable")
-    parser.add_argument("--perf-args", type=str, help="additional command line arguments to pass to Perf")
-    parser.add_argument("--cpu", help="CPU information (file name or cpu name). CPU name is auto-detected, if this option is not provided.")
-    query = parser.add_argument_group("query options").add_mutually_exclusive_group()
-    query.add_argument("--list-cpus", action="store_true", help="list available CPUs and exit")
-    query.add_argument("--list-groups", action="store_true", help="list available metric groups and exit")
-    query.add_argument("--list-metrics", action="store_true", help="list available metrics and exit")
-    collection_group = parser.add_argument_group("collection options")
-    collection_group.add_argument("-c", "--collect-by", type=collect_by_value, choices=list(CollectBy), default=CollectBy.METRIC, help='when multiplexing, collect events grouped by "none", "metric" (default), or "group". This can avoid comparing data collected during different time periods.')
-    collection_group.add_argument("--max-events", type=positive_nonzero_int, help="Maximum simultaneous events. If more events are required, <command> will be run multiple times.")
-    collection_group.add_argument("-m", "--metric-group", dest="metric_groups", type=lambda x: x.split(","), help="comma separated list of metric groups to collect. See --list-groups for available groups")
-    collection_group.add_argument("-n", "--node", help='name of topdown node as well as its descendants (e.g. "frontend_bound"). See --list-metrics for available nodes')
-    collection_group.add_argument("-l", "--level", type=int, choices=[1, 2], help=argparse.SUPPRESS)
-    collection_group.add_argument("-s", "--stages", action=ProcessStageArgs, default=DEFAULT_ALL_STAGES, help='control which stages to display, separated by a comma. e.g. "topdown,uarch". "all" may also be specified, or "combined" to display all, but without separated the output in to stages.')
-    collection_group.add_linux_argument("-i", "-I", "--interval", type=int, help="Collect/output data every <interval> milliseconds")
-    collection_group.add_argument("--use-event-names", action="store_true", help='use event names rather than event codes (e.g. "r01") when collecting data from perf. This can be useful for debugging.')
-    collection_group.add_argument("--core", "-C", help="count only on the list of CPUs provided. Multiple CPUs can be provided as a comma-separated list with no space.")
+    parser.add_argument(
+        "--pid",
+        "-p",
+        type=pid_set,
+        dest="pids",
+        help="Comma separated list of process IDs to monitor.",
+    )
     output_group = parser.add_argument_group("output options")
-    output_group.add_argument("-d", "--descriptions", action="store_true", help="show group/metric descriptions")
-    output_group.add_argument("--show-sample-events", action="store_true", help="show sample events for metrics")
-    output_group.add_argument("--perf-output", default=default_perf_output, help="output file for perf event data")
-    output_group.add_argument("--csv", help="output file for metric CSV data")
     logging_group = output_group.add_mutually_exclusive_group()
-    logging_group.add_argument("-v", "--verbose", action="store_const", dest="loglevel", const=logging.INFO, help="enable verbose output")
-    logging_group.add_argument("--debug", action="store_const", dest="loglevel", const=logging.DEBUG, help="enable debug output")
+    logging_group.add_argument(
+        "--verbose",
+        "-v",
+        action="store_const",
+        dest="loglevel",
+        const=logging.INFO,
+        help="Enable verbose output",
+    )
+    logging_group.add_argument(
+        "--debug",
+        action="store_const",
+        dest="loglevel",
+        const=logging.DEBUG,
+        help="Enable debug output",
+    )
+    output_group.add_argument("--events-csv", help="Output directory for events CSV data")
 
-    # Debug option to generate dummy data without collect event data. This uses 0 for metric values.
-    parser.add_argument("--dummy-data", action="store_true", help=argparse.SUPPRESS)
+    # Add general perf options
+    perf_arg_group = parser.add_argument_group("General perf capture options")
+    Perf.add_cli_arguments(perf_arg_group)
+
+    # Add Probe specific options for selected probes only
+    for probe in selected_factories:
+        arg_group = parser.add_argument_group(f"{probe.name()} capture options")
+        probe.add_cli_arguments(arg_group)
 
     return parser
 
 
-# instances without a level (CombinedMetricInstance) are uarch metrics (2)
-def get_level(instance: AnyMetricInstance, default_level=2):
-    return getattr(instance, "level", default_level)
+def capture_command_workload(probes: List[Probe], command: List[str]) -> None:
+    """
+    Run a command and capture the required telemetry data. The command is executed
+    repeatedly until all probes report that they have captured the data they need.
+
+    On each run:
+      1. Identify which TelemetryElement instances still require data (via need_capture).
+      2. Start capture on those probes, then launch the command process.
+      3. Wait for the command to complete.
+      4. Stop capture on each probe.
+
+    If the command is interrupted (e.g. with Ctrl+C), the interruption is communicated to the probes.
+
+    Args:
+        probes: List of probes responsible for capturing telemetry data.
+        command: The command to run, provided as a list of executable and arguments.
+    """
+    console = get_console()
+    run = 0
+    while need_capture := tuple(p for p in probes if p.need_capture()):
+        run += 1
+        running_probes = []
+        interrupted_capture = False
+        pid = None
+        with CommandWorkload(command) as workload:
+            try:
+                for probe in need_capture:
+                    probe.start_capture(run, workload.pid)
+                    running_probes.append(probe)
+                pid = workload.start().pop()
+                if run == 1:
+                    console.print(
+                        "Monitoring command: "
+                        + command[0].split("/" if sys.platform == "linux" else "\\")[-1]
+                        + ". Hit Ctrl-C to stop."
+                    )
+                console.print(f"Run {run}")
+                workload.wait()
+            except Exception as e:
+                interrupted_capture = True
+                raise e
+            finally:
+                for probe in running_probes:
+                    probe.stop_capture(run, pid, interrupted_capture)
 
 
-def write_csv(timed_metric_values: Iterable[Tuple[Optional[float], Iterable[MetricInstanceValue]]], filename: str):
-    with open(filename, "w") as f:  # pylint: disable=unspecified-encoding
-        writer = csv.writer(f)
-        writer.writerow(["time", "level", "stage", "group", "metric", "value", "units"])
-        for (time, metric_values) in timed_metric_values:
-            for (instance, value) in metric_values:
-                group = instance.group.title if instance.group else ""
-                writer.writerow([time, get_level(instance), instance.stage, group, instance.metric.title, value, instance.metric.units])
+def capture_systemwide_workload(
+    probes: List[Probe],
+) -> None:
+    """
+    Start system-wide telemetry capture until interrupted.
+
+    This function starts capture on all enabled probes and waits until
+    the user interrupts the process (e.g., with Ctrl+C). No specific workload is run.
+
+    Args:
+        probes: List of telemetry probes to activate.
+    """
+    running_probes = []
+    run = 1
+    with SystemwideWorkload() as workload:
+        try:
+            workload.start()
+            for probe in probes:
+                if probe.need_capture():
+                    probe.start_capture(run)
+                    running_probes.append(probe)
+            if len(running_probes) == 0:
+                return
+            console = get_console()
+            console.print(
+                "Starting system-wide profiling. Hit Ctrl-C to stop. (See --help for usage information.)"
+            )
+            workload.wait()
+        finally:
+            for probe in running_probes:
+                probe.stop_capture(run=1)
 
 
-# pylint: disable=too-many-branches,too-many-statements,too-many-locals
-def main(args=None):
-    parser = get_arg_parser()
-    args = parser.parse_args(args)
+def capture_pid_workload(probes: List[Probe], pids: Set[int]) -> None:
+    """
+    Monitor a set of PIDs and capture telemetry data until all processes exit or the user interrupts.
 
-    logging.basicConfig(level=args.loglevel)
+    Starts capture on all enabled probes and monitors the given PIDs.
+    Capture stops when either all PIDs have exited or the user interrupts with Ctrl+C.
 
-    if args.list_cpus:
-        print("\n".join(MetricData.list_cpus()))
-        sys.exit(0)
+    Args:
+        probes: List of telemetry probes to activate.
+        pids: Set of process IDs to monitor.
+    """
+
+    running_probes = []
+    run = 1
+    interrupted = False
+    unique_pids = set()
+    with PidWorkload(pids) as workload:
+        try:
+            unique_pids = workload.start()
+            for probe in probes:
+                if probe.need_capture():
+                    probe.start_capture(run, unique_pids)
+                    running_probes.append(probe)
+            if len(running_probes) == 0:
+                return
+            console = get_console()
+            console.print(
+                "Monitoring PID"
+                + ("s" if len(unique_pids) >= 2 else "")
+                + ": "
+                + ", ".join(map(str, sorted(unique_pids)))
+                + ". Hit Ctrl-C to stop."
+            )
+            while unique_pids:
+                pid = workload.wait()
+                assert pid is not None
+                for probe in running_probes:
+                    probe.stop_capture(run, pid)
+                unique_pids.discard(pid)
+        except Exception as e:
+            interrupted = True
+            raise e
+        finally:
+            for pid in unique_pids:
+                for probe in running_probes:
+                    probe.stop_capture(run, pid, interrupted)
+
+
+def main(_args: Optional[Sequence[str]] = None) -> None:  # pylint: disable=too-many-branches
+    console = get_console()
+
+    # Check for required perf privileges before doing anything
+    if not Perf.have_perf_privilege():
+        print(
+            "Error: Insufficient privilege. This tool requires either perf_event_paranoid=-1, CAP_PERFMON, or CAP_SYS_ADMIN.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    # Get available probe types on the system
+    available_factories = tuple(pt for pt in PROBE_FACTORY if pt.is_available())
+    canonical_probe_names = [pf.name() for pf in available_factories]
+    default_probe_names = ["CPU"]
+
+    selected_factories = get_selected_factories_from_args(
+        available_factories, canonical_probe_names, default_probe_names, _args, console
+    )
+
+    # Build full parser with only selected probe factories
+    parser = build_arg_parser(selected_factories, canonical_probe_names, default_probe_names)
+    args = parser.parse_args(_args)
+
+    logging.basicConfig(format=LOG_FORMAT, level=args.loglevel)
 
     # Handle mutually exclusive arguments
     if args.command and args.pids:
         parser.error("Cannot specify a command and a PID")
-    if len([x for x in [args.metric_groups, args.level, args.node] if x]) > 1:
-        parser.error("Only one metric group or topdown metric can be specified.")
-    if args.interval and not args.csv:
-        parser.error("Interval mode must be used with CSV output.")
-    if sys.platform != "linux":
-        if args.command and not args.core:
-            parser.error("Specify process spawn core via -C")
 
-    # Get CPU metric data
-    cpu = args.cpu
-    if not cpu:
-        cpu = cpu_mapping.get_cpu(perf_path=args.perf_path)
-        if not cpu:
-            print("Could not detect CPU. Specify via --cpu", file=sys.stderr)
-            sys.exit(1)
+    # Handle Perf specific arguments
+    Perf.process_cli_arguments(args)
 
+    # Variable to check if we proceed with real capture
+    capture_data = True
+
+    # Handle Probes global arguments
+
+    factory = None
+    # FIXME: Split between printing static information and creating instances
     try:
-        metric_data = MetricData.load_from_file(cpu) if os.path.isfile(cpu) else MetricData.get_data_for_cpu(cpu)
-    except (ValueError, FileNotFoundError):
-        parser.error(f'No data for CPU "{cpu}"')
-    if args.list_groups:
-        for name, group in metric_data.groups.items():
-            if args.stages and metric_data.topdown.get_stage(name) not in args.stages:
-                continue
-            print(f"{name} ({group.title})")
-            if args.descriptions:
-                print(" " * INDENT_LEVEL + group.description)
-        sys.exit(0)
-    elif args.list_metrics:
-        metrics = metric_data.all_metrics(args.stages)
-        print_nested_metrics(metrics, args.stages, args.descriptions, args.show_sample_events)
-        sys.exit(0)
-
-    if args.metric_groups:
-        metric_instances = []
-        for group_name in args.metric_groups:
-            if metric_data.find_group(group_name):
-                metric_instances += metric_data.metrics_for_group(group_name)
-            else:
-                suggestion = metric_data.get_close_group_match(group_name)
-                suggestion = f' Did you mean "{suggestion}"?' if suggestion else ""
-                parser.error(f'"{group_name}" is not a valid group.{suggestion}')
-    elif args.level:
-        metric_instances = metric_data.metrics_up_to_level(args.level)
-    elif args.node:
-        metric_instances = metric_instances = metric_data.metrics_descended_from(args.node)
-        if not metric_instances:
-            suggestion = metric_data.get_close_metric_match(args.node)
-            suggestion = f' Did you mean {suggestion}?' if suggestion else ""
-            parser.error(f'"{args.node}" is not a valid metric.{suggestion}')
-    else:
-        metric_instances = metric_data.all_metrics(args.stages)
-
-    if not metric_instances:
-        print("No metrics to collect.", file=sys.stderr)
+        for factory in selected_factories:
+            # Probes detects if user wants to just query information, like listing metrics
+            capture_data &= factory.process_cli_arguments(args)
+    except Exception as e:  # pylint: disable=broad-exception-caught
+        if factory:
+            logging.warning("Failed processing of CLI arguments for %s", factory.name())
+        console.print(e)
+        console.print_exception()
         sys.exit(1)
 
+    # Create probes for capture or querying information
+    probes: List[Probe] = []
     try:
-        perf_options = PerfOptions.from_args(args)
-        stat_data = collect_events(metric_instances, perf_options) if not args.dummy_data else {}
-    except GroupScheduleError as e:
-        print(f'The "{e.group.title}" group contains {len(e.events)} unique events, but only {min(e.available_events, get_pmu_counters(cpu, args.perf_path))} can be collected at once.\n\nChoose different groups/metrics or avoid collecting by group.', file=sys.stderr)
+        for factory in selected_factories:
+            probes.extend(factory.create(args, capture_data))
+    except Exception as e:  # pylint: disable=broad-exception-caught
+        if factory:
+            logging.warning("Failed creation of the probe: %s", factory.name())
+        console.print(e)
+        console.print_exception()
         sys.exit(1)
-    except MetricScheduleError as e:
-        print(f'The "{e.metric.name}" metric contains {len(e.events)} unique events, but only {min(e.available_events, get_pmu_counters(cpu, args.perf_path))} can be collected at once.\n\nChoose different metrics or avoid collecting by metric.', file=sys.stderr)
-        sys.exit(1)
-    except subprocess.CalledProcessError as e:
-        print(f'"{format_command(e.cmd)}" finished with exit code {e.returncode}.', file=sys.stderr)
-        sys.exit(1)
-    except UncountedEventsError as e:
-        print(("The following events could not be counted:\n  %s\n\n"
-               "This can be caused by insufficient time to collect information on all events.\n" % "\n  ".join(e.uncounted_events)), file=sys.stderr)
-        if perf_options.interval:
-            print("Try extending the interval period, or reducing the number of collected events.", file=sys.stderr)
-        elif perf_options.command:
-            print("Try running a longer running program, or reducing the number of collected events.", file=sys.stderr)
+
+    # Capture data depending on requested type
+    try:
+        if args.command:
+            capture_command_workload(probes, args.command)
+        elif args.pids:
+            capture_pid_workload(probes, args.pids)
         else:
-            print("Try collecting more output, or reducing the number of events collected.", file=sys.stderr)
+            capture_systemwide_workload(probes)
+    except (InterruptedError,) as e:
+        console.print(e)
+    except Exception as e:  # pylint: disable=broad-exception-caught
+        console.print(e)
+        console.print_exception()
         sys.exit(1)
-    except ZeroCyclesError:
-        print(f"A cycle count of zero was detected while collecting events. This likely indicates an issue with Linux Perf's ability to correctly count PMU events.\n\n"
-              f"This may be related to known issues with multiplexing in a virtualised environment.\n\n"
-              f"You may be able to work-around this by avoiding multiplexing. e.g. by specifying --max-events={CPU_PMU_COUNTERS}.", file=sys.stderr)
-        sys.exit(1)
 
-    if args.dummy_data:
-        metric_values = [MetricInstanceValue(mi) for mi in metric_instances]
-        timed_metric_values = [(None, metric_values)]
-    else:
-        timed_metric_values = []
-        # pylint: disable=possibly-used-before-assignment
-        for (time, event_counts) in stat_data.items():
-            metric_values = calculate_metrics(event_counts, metric_instances)
-            logging.debug("\n".join(f"{v.metric_instance.group.name}/{v.metric_instance.metric.name} = {v.value}" for v in metric_values))
-
-            timed_metric_values.append((time, metric_values))
-
-    if args.interval:
-        print(f'See "{args.csv}" for interval data.')
-    else:
-        print_nested_metrics(metric_values, args.stages, args.descriptions, args.show_sample_events)
-
-    if args.csv:
-        write_csv(timed_metric_values, args.csv)
+    # Print result for each probe
+    for probe in probes:
+        probe.output()
 
 
 if __name__ == "__main__":

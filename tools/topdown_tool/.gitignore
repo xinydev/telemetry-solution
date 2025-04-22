@@ -2,7 +2,9 @@
 /.coverage
 /.vscode
 /.cache
-/perf.stat.txt
+/perf-cli-*
+/perf.stat.*
+*.csv
 /pytest.xml
 /wperf.json
 *.pyc

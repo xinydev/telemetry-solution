@@ -1,0 +1,8 @@
+                CPU TestCPU groups                 
+┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Key                ┃ Group                      ┃
+┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ stage2_group1      │ Stage2 - Group1 - title    │
+│ stage2_group2      │ Stage2 Group2 - title      │
+│ freestanding_group │ Freestanding Group - title │
+└────────────────────┴────────────────────────────┘

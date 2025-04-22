@@ -7,7 +7,9 @@
 import sys
 from argparse import ArgumentParser
 from csv import reader
-from os import remove
+from glob import glob
+from os import remove, rename
+from os.path import basename, join
 from pathlib import Path
 from statistics import mean
 from subprocess import DEVNULL, PIPE, CalledProcessError, run
@@ -96,18 +98,21 @@ def main() -> None:
         dataset_path = Path()
 
     # For each workload collect data with topdown-tool and save it to CSV
+    cpu_name = None
     for workload in args.workload:
         for n in range(args.run):
             cmd: List[Union[Path, str]] = [
                 topdowntool_path,
                 "-v",
-                "--csv",
-                dataset_path.joinpath(f"dataset_{workload}_cpu{args.core}_run{n}.csv"),
+                "--core",
+                str(args.core),
+                "--cpu-csv",
+                dataset_path,
             ]
             if args.cpu is not None:
                 cmd.extend(["--cpu", args.cpu])
             if not args.multiplex and pmus_per_core[args.core] is not None:
-                cmd.extend(["--max-events", str(pmus_per_core[args.core])])
+                cmd.extend(["--cpu-max-events", str(pmus_per_core[args.core])])
             cmd.extend(
                 [
                     "taskset",
@@ -124,7 +129,16 @@ def main() -> None:
             for line in proc.stderr.splitlines():
                 if 'Running "' in line:
                     print(line.replace("INFO:root:Running", "Completed"))
-    remove("perf.stat.txt")
+            if cpu_name is None:
+                cpu_name = basename(
+                    glob(join(dataset_path, "perf.stat.cpu.*.txt"))[0]
+                ).split(".")[3]
+            rename(
+                join(dataset_path, f"{cpu_name}_core{args.core}.csv"),
+                join(dataset_path, f"dataset_{workload}_cpu{args.core}_run{n}.csv"),
+            )
+    remove(f"perf.stat.cpu.{cpu_name}.txt")
+    remove(f"{cpu_name}_aggregated.csv")
 
     # Process CSV metric data to generate charts
     results: Dict[str, Dict[str, Dict[str, Dict[str, List[float]]]]] = {}
@@ -137,12 +151,12 @@ def main() -> None:
                 csv_reader = reader(csv_file)
                 next(csv_reader)
                 for row in csv_reader:
-                    group = row[3]
-                    unit = row[6]
-                    metric = row[4]
+                    group = row[4]
+                    unit = row[8]
+                    metric = row[5]
                     results.setdefault(group, {}).setdefault(unit, {}).setdefault(
                         workload, {}
-                    ).setdefault(metric, []).append(float(row[5]))
+                    ).setdefault(metric, []).append(float(row[6]))
 
     # Generate charts from CSV data
     if args.output is not None:
