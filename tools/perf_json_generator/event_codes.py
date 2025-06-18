@@ -27,8 +27,11 @@ def is_common(code):
     if code >= 0x8128 and code <= 0x81FF:
         return True
 
-    # The Arm ARM calls 0x8200-0xC0BF reserved, but defines events up to 0x82A3
-    if code >= 0x8200 and code <= 0x82A3:
+    # The Arm ARM (L.a) defines common events in the range 0x8200-0x8494. It
+    # also defines 0x8200-0xC0BF as "reserved" in "Table D14-2 Allocation of
+    # the PMU event number space" but we can assume actual event definitions
+    # override this.
+    if code >= 0x8200 and code <= 0x8494:
         return True
 
     return False
