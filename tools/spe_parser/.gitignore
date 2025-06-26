@@ -12,5 +12,4 @@ __pycache__/
 .idea/
 .vscode/
 
-# Automatically downloaded files during test
-tests/testdata/
+!tests/testdata/*csv

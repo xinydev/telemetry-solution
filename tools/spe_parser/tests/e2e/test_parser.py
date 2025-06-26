@@ -3,24 +3,18 @@
 # Copyright (C) Arm Ltd. 2023
 
 import csv
-import json
 import os
 from typing import List
 from unittest import TestCase, main
 
 import pandas as pd
-from spe_parser.testutils import PARSER_ROOT, TESTDATA, cd, download_file, run
+from spe_parser.testutils import PARSER_ROOT, TESTDATA, cd, run
 
 
 class TestParser(TestCase):
     def setUp(self) -> None:
         with cd(PARSER_ROOT):
             run("pip install .")
-        with cd(TESTDATA):
-            with open("data.json") as f:
-                file_metas = json.load(f)
-                for meta in file_metas:
-                    download_file(meta["url"], meta["name"], meta["md5"])
         return super().setUp()
 
     def tearDown(self) -> None:

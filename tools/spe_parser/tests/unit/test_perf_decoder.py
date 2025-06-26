@@ -3,11 +3,10 @@
 # Copyright (C) Arm Ltd. 2023
 
 
-import json
 from unittest import TestCase
 
 from spe_parser.perf_decoder import get_mmap_records, get_spe_records_regions
-from spe_parser.testutils import TESTDATA, cd, download_file
+from spe_parser.testutils import TESTDATA, cd
 
 
 def get_spe_regions_from_raw(path: str) -> int:
@@ -20,16 +19,6 @@ def get_spe_regions_from_raw(path: str) -> int:
 
 
 class TestPerfDecoder(TestCase):
-    def setUp(self) -> None:
-        # download test data
-        with cd(TESTDATA):
-            with open("data.json") as f:
-                file_metas = json.load(f)
-                for meta in file_metas:
-                    download_file(meta["url"], meta["name"], meta["md5"])
-
-        return super().setUp()
-
     def tearDown(self) -> None:
         return super().tearDown()
 

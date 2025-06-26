@@ -1,5 +1,5 @@
 files: '^tools/spe_parser/'
-exclude: '^tools/spe_parser/LICENSES/'
+exclude: '^tools/spe_parser/LICENSES/|^tools/spe_parser/tests/testdata/'
 repos:
   - repo: 'https://github.com/pre-commit/pre-commit-hooks'
     rev: v4.6.0

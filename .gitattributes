@@ -1,0 +1,7 @@
+tools/spe_parser/tests/testdata/perf.data filter=lfs diff=lfs merge=lfs -text
+tools/spe_parser/tests/testdata/perf.raw filter=lfs diff=lfs merge=lfs -text
+tools/spe_parser/tests/testdata/spe-b1-ts0.data filter=lfs diff=lfs merge=lfs -text
+tools/spe_parser/tests/testdata/spe-b1-ts1.data filter=lfs diff=lfs merge=lfs -text
+tools/spe_parser/tests/testdata/spe-br.parquet filter=lfs diff=lfs merge=lfs -text
+tools/spe_parser/tests/testdata/spe-ldst.parquet filter=lfs diff=lfs merge=lfs -text
+tools/spe_parser/tests/testdata/spe-other.parquet filter=lfs diff=lfs merge=lfs -text

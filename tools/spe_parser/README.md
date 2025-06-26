@@ -126,3 +126,5 @@ For now, please refrain from using pre-commit to install the .pre-commit-config.
 ```bash
 make lint
 ```
+
+Test data files are located under the spe_parser/tests/testdata/ directory. Some of them are binary files that are stored using git-lfs; working with them requires installing git-lfs (if not yet done so) by issuing `git lfs install`. Adding a new file is done by `git lfs track <file>`, then `git add` both this file and the resulting change in .gitattributes and then `git commit`. Updating a file is similar to updating regular git files: modify, then `git add` followed by `git commit`.
