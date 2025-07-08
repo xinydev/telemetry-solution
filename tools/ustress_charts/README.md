@@ -17,16 +17,10 @@ source .venv/bin/activate
 pip install matplotlib
 ```
 
-If PMU multiplexing is disabled, then a C compiler is required to compile and run a PMU detection program.
+To generate your first charts using `ustress-charts.py`, ensure that perf monitoring is possible (this can be achieved by setting `echo -1 >/proc/sys/kernel/perf_event_paranoid` as root). Then use the following command:
 
 ```sh
-make all
-```
-
-To generate your first charts using `ustress-charts.py`, ensure that perf monitoring is possible (this can be achieved by setting `echo -1 >/proc/sys/kernel/perf_event_paranoid` as root) and compile executables required using make. Then use the following command:
-
-```sh
-./ustress-charts.py --multiplex --workload branch_direct_workload branch_indirect_workload
+./ustress-charts.py --workload branch_direct_workload branch_indirect_workload
 ```
 
 Collected data will be saved to `dataset_branch_direct_workload_cpu0_run0.csv` and `dataset_branch_indirect_workload_cpu0_run0.csv`.
@@ -35,7 +29,7 @@ Charts will be saved to `*.png` files for each metric group with the same measur
 
 ## Going further
 
-`ustress-charts.py` includes options to adjust the capture such as setting the CPU number on which a worload must run, allowing/disallowing PMU multiplexing, repeating running of worloads given number of times.
+`ustress-charts.py` includes options to adjust the capture such as setting the CPU number on which a worload must run, allowing/disallowing PMU multiplexing, selecting the collection mode, selecting the PMU grouping mode, repeating running of worloads given number of times.
 
 Invoke the script with the `--help` option to view additional options.
 

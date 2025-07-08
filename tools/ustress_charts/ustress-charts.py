@@ -4,6 +4,7 @@
 #
 # Copyright (C) Arm Ltd. 2024
 
+import shutil
 import sys
 from argparse import ArgumentParser
 from csv import reader
@@ -53,43 +54,19 @@ def main() -> None:
         "-r", "--run", type=int, default=1, help="repeat run of each workload"
     )
     parser.add_argument(
-        "-m", "--multiplex", action="store_true", help="Allow PMU multiplexing"
+        "--no-multiplex", action="store_true", help="Disallow PMU multiplexing"
     )
+    parser.add_argument(
+        "--stages", type=str, help='Control which stages to display, separated by a comma. e.g. "topdown,uarch" or "1,2" or "all"'
+    )
+    parser.add_argument(
+        "--collect-by", type=str, help='When multiplexing, collect events grouped by "none", "metric" (default), or "group". This can avoid comparing data collected during different time periods.'
+    )
+    
     parser.add_argument("-o", "--output", help="Output directory")
     args = parser.parse_args()
 
     script_directory_path = Path(__file__).parent.absolute()
-
-    if not args.multiplex:
-        pmu_detect_path = script_directory_path.joinpath("pmu_available_per_core")
-        # Compile PMU detection program, if executable not found.
-        if not pmu_detect_path.exists():
-            try:
-                run(["make", "-C", script_directory_path], check=True)
-            except CalledProcessError:
-                print(
-                    'Could not run "make" to compile PMU detection program',
-                    file=sys.stderr,
-                )
-                sys.exit(1)
-        pmus_per_core: List[Optional[int]] = []
-        try:
-            proc = run(pmu_detect_path, stdout=PIPE, check=True, text=True)
-        except CalledProcessError:
-            print(
-                'Could not run "pmu_available_per_core" to detect number of PMUs',
-                file=sys.stderr,
-            )
-            sys.exit(1)
-        for line in proc.stdout.splitlines():
-            pmu_count = line.split()[2]
-            pmus_per_core.append(int(pmu_count) if pmu_count.isdigit() else None)
-
-    topdowntool_path = (
-        script_directory_path.parent.joinpath("topdown_tool")
-        .joinpath("topdown-tool")
-        .absolute()
-    )
     ustress_path = script_directory_path.parent.joinpath("ustress").absolute()
 
     if args.output is not None:
@@ -102,7 +79,7 @@ def main() -> None:
     for workload in args.workload:
         for n in range(args.run):
             cmd: List[Union[Path, str]] = [
-                topdowntool_path,
+                "topdown-tool",
                 "-v",
                 "--core",
                 str(args.core),
@@ -111,8 +88,12 @@ def main() -> None:
             ]
             if args.cpu is not None:
                 cmd.extend(["--cpu", args.cpu])
-            if not args.multiplex and pmus_per_core[args.core] is not None:
-                cmd.extend(["--cpu-max-events", str(pmus_per_core[args.core])])
+            if args.no_multiplex:
+                cmd.append("--cpu-no-multiplex")
+            if args.stages:
+                cmd.extend(["--cpu-stages", args.stages])
+            if args.collect_by:
+                cmd.extend(["--cpu-collect-by", args.collect_by])
             cmd.extend(
                 [
                     "taskset",
@@ -124,21 +105,30 @@ def main() -> None:
             try:
                 proc = run(cmd, stdout=DEVNULL, stderr=PIPE, check=True, text=True)
             except CalledProcessError:
-                print(f"Could not run {workload}", file=sys.stderr)
+                print(f"Could not run {workload} with {cmd}", file=sys.stderr)
                 sys.exit(1)
             for line in proc.stderr.splitlines():
                 if 'Running "' in line:
                     print(line.replace("INFO:root:Running", "Completed"))
             if cpu_name is None:
                 cpu_name = basename(
-                    glob(join(dataset_path, "perf.stat.cpu.*.txt"))[0]
+                    glob("perf.stat.cpu.*.*.txt-*")[0]
                 ).split(".")[3]
+            for perf_file in glob("perf.stat.cpu.*.*.txt-*"):
+                slice = basename(perf_file).split("-")[-1]
+                shutil.copyfile(
+                    perf_file,
+                    join(dataset_path, f"perf_{workload}_cpu{args.core}_run{n}.{slice}.txt")
+                )
             rename(
-                join(dataset_path, f"{cpu_name}_core{args.core}.csv"),
+                join(dataset_path, f"core_{args.core}.csv"),
                 join(dataset_path, f"dataset_{workload}_cpu{args.core}_run{n}.csv"),
             )
-    remove(f"perf.stat.cpu.{cpu_name}.txt")
-    remove(f"{cpu_name}_aggregated.csv")
+
+    for perf_file in glob("perf.stat.cpu.*.*.txt-*"):
+        remove(perf_file)
+    for perf_cli_file in glob("perf-cli-*"):
+        remove(perf_cli_file)
 
     # Process CSV metric data to generate charts
     results: Dict[str, Dict[str, Dict[str, Dict[str, List[float]]]]] = {}
@@ -151,12 +141,12 @@ def main() -> None:
                 csv_reader = reader(csv_file)
                 next(csv_reader)
                 for row in csv_reader:
-                    group = row[4]
-                    unit = row[8]
-                    metric = row[5]
+                    group = row[1]
+                    unit = row[6]
+                    metric = row[4]
                     results.setdefault(group, {}).setdefault(unit, {}).setdefault(
                         workload, {}
-                    ).setdefault(metric, []).append(float(row[6]))
+                    ).setdefault(metric, []).append(float(row[5]))
 
     # Generate charts from CSV data
     if args.output is not None:
