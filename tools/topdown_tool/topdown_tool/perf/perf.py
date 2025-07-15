@@ -40,7 +40,7 @@ from typing import (
     Set,
     Tuple,
     Sequence,
-    TypeVar,
+    TypeVar
 )
 from dataclasses import dataclass
 
@@ -136,6 +136,7 @@ class Perf:
     _perf_args: Optional[str] = None
     _interval: Optional[int] = None
     _wperf_test_json: Optional[Dict] = None
+    _wperf_cpuinfo_cache: Optional[Dict[int, int]] = None
 
     @staticmethod
     def have_perf_privilege() -> bool:
@@ -584,14 +585,46 @@ class Perf:
         return Perf._wperf_test_json
 
     @staticmethod
-    def get_midr_value_windows() -> int:
-        """Retrieves the MIDR value on Windows.
+    def _wperf_cpuinfo() -> Dict[int, int]:
+        """
+        Lazy-load and parse `wperf cpuinfo` to extract MIDR_EL1 per core.
+        Returns a dict mapping core_id -> MIDR (int).
+        """
+        if Perf._wperf_cpuinfo_cache is None:
+            result = run([Perf._perf_path, "cpuinfo"], stdout=PIPE, check=True, text=True)
+
+            midr_map = {}
+            for line in result.stdout.splitlines():
+                line = line.strip()
+                if not line or line.startswith("Core") or line.startswith("===="):
+                    continue
+                parts = line.split()
+                if len(parts) >= 6:
+                    core_id = int(parts[0])
+                    midr = int(parts[-1], 16)  # MIDR_EL1 is the last column
+                    midr_map[core_id] = midr
+            Perf._wperf_cpuinfo_cache = midr_map
+
+        return Perf._wperf_cpuinfo_cache
+
+    @staticmethod
+    def get_midr_value_windows(core: int) -> int:
+        """
+        Retrieves the MIDR_EL1 for a given core using `wperf cpuinfo`.
+
+        Args:
+            core_id (int): The CPU core number.
 
         Returns:
-            The MIDR value as an integer.
+            int: The MIDR value for the core.
+
+        Raises:
+            KeyError: If the core's MIDR is not found.
         """
-        # pylint: disable=unsubscriptable-object
-        return int(Perf._wperf_test()["PMU_CTL_QUERY_CORE_CFG [0][midr_value]"], 0)
+        cpuinfo: Dict[int, int] = Perf._wperf_cpuinfo()
+        if core not in cpuinfo:  # pylint: disable=unsupported-membership-test, unsubscriptable-object
+            raise KeyError(f"No MIDR entry found for core {core}")
+        return cpuinfo[core]  # pylint: disable=unsubscriptable-object
 
     @staticmethod
     def _get_pmu_counters_linux(core: int) -> int:

@@ -85,7 +85,7 @@ class CPUDetect:
             with open(CPUDetect.MIDR_PATH.format(core), encoding="utf-8") as f:
                 midr = int(f.readline(), 16)
         elif sys.platform == "win32":
-            midr = Perf.get_midr_value_windows()
+            midr = Perf.get_midr_value_windows(core)
         else:
             raise RuntimeError("MIDR only available on Linux and Windows platforms")
         return midr
