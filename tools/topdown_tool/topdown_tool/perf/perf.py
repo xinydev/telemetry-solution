@@ -424,7 +424,15 @@ class Perf:
                     # Sanity check, all the time should be equal and the name must match
                     for idx, (event_name, _value, t) in enumerate(values):
                         assert t == base_time
-                        assert event_name == event_group[idx].perf_name()
+                        if sys.platform == "linux":
+                            assert event_name == event_group[idx].perf_name()
+                        elif sys.platform == "win32":
+                            # Compare numeric values: parsed "0x22" vs expected "r22"
+                            parsed_code = int(event_name, 0)
+                            expected_code = int(event_group[idx].perf_name()[1:], 16)  # strip 'r'
+                            assert parsed_code == expected_code, (
+                                f"Windows event mismatch: parsed='{event_name}', expected='{event_group[idx].perf_name()}'"
+                            )
 
                     records[location].setdefault(base_time, PerfResults())
                     assert records[location][base_time].get(tuple(event_group)) is None
@@ -583,7 +591,7 @@ class Perf:
             The MIDR value as an integer.
         """
         # pylint: disable=unsubscriptable-object
-        return int(Perf._wperf_test()["PMU_CTL_QUERY_HW_CFG [midr_value]"], 0)
+        return int(Perf._wperf_test()["PMU_CTL_QUERY_CORE_CFG [0][midr_value]"], 0)
 
     @staticmethod
     def _get_pmu_counters_linux(core: int) -> int:
