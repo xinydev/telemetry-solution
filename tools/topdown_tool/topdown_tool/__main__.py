@@ -25,7 +25,7 @@ from rich import get_console
 import rich.traceback
 from rich.console import Console
 from topdown_tool.probe.probe import load_probe_factories
-from topdown_tool.perf import Perf
+from topdown_tool.perf import perf_factory
 from topdown_tool.probe import Probe, ProbeFactory
 from topdown_tool.workload import CommandWorkload, PidWorkload, SystemwideWorkload
 
@@ -171,7 +171,7 @@ def build_arg_parser(
 
     # Add general perf options
     perf_arg_group = parser.add_argument_group("General perf capture options")
-    Perf.add_cli_arguments(perf_arg_group)
+    perf_factory.add_cli_arguments(perf_arg_group)
 
     # Add Probe specific options for selected probes only
     for probe in selected_factories:
@@ -308,11 +308,14 @@ def capture_pid_workload(probes: List[Probe], pids: Set[int]) -> None:
                     probe.stop_capture(run, pid, interrupted)
 
 
-def main(_args: Optional[Sequence[str]] = None) -> None:  # pylint: disable=too-many-branches
+# pylint: disable=too-many-branches
+def main(
+    _args: Optional[Sequence[str]] = None,
+) -> None:
     console = get_console()
 
     # Check for required perf privileges before doing anything
-    if not Perf.have_perf_privilege():
+    if not perf_factory.have_perf_privilege():
         print(
             "Error: Insufficient privilege. This tool requires either perf_event_paranoid=-1, CAP_PERFMON, or CAP_SYS_ADMIN.",
             file=sys.stderr,
@@ -339,7 +342,7 @@ def main(_args: Optional[Sequence[str]] = None) -> None:  # pylint: disable=too-
         parser.error("Cannot specify a command and a PID")
 
     # Handle Perf specific arguments
-    Perf.process_cli_arguments(args)
+    perf_factory.process_cli_arguments(args)
 
     # Variable to check if we proceed with real capture
     capture_data = True

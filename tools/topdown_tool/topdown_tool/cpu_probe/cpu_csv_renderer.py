@@ -13,7 +13,7 @@ from topdown_tool.cpu_probe.cpu_telemetry_database import (
     TopdownMethodology,
     GroupLike,
 )
-from topdown_tool.perf.perf import Cpu, PerfRecordLocation
+from topdown_tool.perf import Cpu, PerfRecordLocation
 from topdown_tool.common import range_encode
 
 

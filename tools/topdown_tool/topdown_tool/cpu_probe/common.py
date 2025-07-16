@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from typing import Any, List, Optional, Tuple
 
 from topdown_tool.perf.event_scheduler import CollectBy
-from topdown_tool.perf.perf import Cpu, PerfRecordLocation
+from topdown_tool.perf import Cpu, PerfRecordLocation
 
 UNIT_REMAPPINGS = {"MPKI": "misses per 1,000 instructions"}
 

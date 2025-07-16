@@ -5,7 +5,7 @@ from typing import Tuple
 
 from topdown_tool.cpu_probe.common import CpuAggregate
 from topdown_tool.cpu_probe.cpu_probe import CpuProbe, EventRecords, EventTimedResults
-from topdown_tool.perf.perf import Cpu, Uncore
+from topdown_tool.perf import Cpu, Uncore
 from topdown_tool.cpu_probe.cpu_telemetry_database import Event
 
 

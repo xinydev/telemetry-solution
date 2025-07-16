@@ -16,7 +16,7 @@ from topdown_tool.cpu_probe.cpu_telemetry_database import (
     TopdownMethodology,
 )
 from topdown_tool.layout.layout import SplitTable
-from topdown_tool.perf.perf import PerfRecordLocation, Cpu
+from topdown_tool.perf import PerfRecordLocation, Cpu
 
 
 RawComputedGroups = Dict[

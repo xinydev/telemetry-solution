@@ -46,7 +46,7 @@ from topdown_tool.cpu_probe.common import (
 from topdown_tool.cpu_probe.cpu_model import TelemetrySpecification
 from topdown_tool.cpu_probe.cpu_probe import CpuProbe
 from topdown_tool.perf.event_scheduler import CollectBy
-from topdown_tool.perf.perf import Perf
+from topdown_tool.perf import perf_factory, PerfFactory
 import topdown_tool.probe as Base
 
 
@@ -85,7 +85,7 @@ class CPUDetect:
             with open(CPUDetect.MIDR_PATH.format(core), encoding="utf-8") as f:
                 midr = int(f.readline(), 16)
         elif sys.platform == "win32":
-            midr = Perf.get_midr_value_windows(core)
+            midr = perf_factory.get_midr_value(core)
         else:
             raise RuntimeError("MIDR only available on Linux and Windows platforms")
         return midr
@@ -471,17 +471,21 @@ class CpuProbeFactory(Base.ProbeFactory):
         self,
         args: argparse.Namespace,
         capture_data: bool = True,
-        perf_class: Type[Perf] = Perf,
+        perf_factory_instance: "PerfFactory" = perf_factory,
         cpu_detect: Type[CPUDetect] = CPUDetect,
     ) -> Tuple["CpuProbe", ...]:
         """Create CpuProbe instances based on CLI configuration and detected CPUs.
+
+        This method generates a CpuProbe per unique MIDR type found across selected cores.
+        Each probe is initialized with its corresponding telemetry specification and receives
+        a shared PerfFactory instance, which constructs platform-specific Perf implementations
+        internally.
 
         Args:
             args (argparse.Namespace): The parsed command-line arguments.
             capture_data (bool, optional): Flag indicating whether telemetry capture should be performed.
                 Defaults to True.
-            perf_class (Type[Perf], optional): The class responsible for performance event capture.
-                Defaults to Perf.
+            perf_factory_instance (PerfFactory): The factory used to create Perf instances.
             cpu_detect (Type[CPUDetect], optional): The CPU detection utility class.
                 Defaults to CPUDetect.
 
@@ -499,12 +503,22 @@ class CpuProbeFactory(Base.ProbeFactory):
                 spec = unwrap(self._cpu_descriptions[cpu_id].content)
 
             if spec is not None:
-                cpu_probes.append(CpuProbe(self._conf, spec, locations, capture_data, perf_class))
+                cpu_probes.append(
+                    CpuProbe(self._conf, spec, locations, capture_data, perf_factory_instance)
+                )
 
         # Create additional CpuProbe instances for SME elements if specified.
         if args.sme is not None:
             for cme in args.sme:
                 cme_desc = TelemetrySpecification.load_from_json_file(cme[0])
-                cpu_probes.append(CpuProbe(self._conf, cme_desc, cme[1], capture_data, perf_class))
+                cpu_probes.append(
+                    CpuProbe(
+                        self._conf,
+                        cme_desc,
+                        cme[1],
+                        capture_data,
+                        perf_factory_instance,
+                    )
+                )
 
         return tuple(cpu_probes)

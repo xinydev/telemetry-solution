@@ -4,9 +4,10 @@
 """
 This module implements the CpuProbe class, which is responsible for capturing and analyzing CPU
 performance metrics. CpuProbe interacts with a TelemetryDatabase to retrieve events, metrics, and groups,
-and uses a Perf instance to record hardware performance events. The module integrates CPU-specific profiling
-logic into the larger telemetry/profiling system, supporting use cases such as system-wide performance data
-capture and detailed metric computation via defined formulas.
+It leverages a PerfFactory to construct concrete Perf instances for recording hardware counters,
+automatically selecting the appropriate backend (e.g., LinuxPerf or WindowsPerf).
+The module integrates CPU-specific profiling logic into the larger telemetry/profiling system,
+supporting use cases such as system-wide performance data capture and detailed metric computation via defined formulas.
 """
 
 import re
@@ -18,7 +19,6 @@ from typing import (
     Sequence,
     Set,
     Tuple,
-    Type,
     Union,
     cast,
 )
@@ -43,9 +43,10 @@ from topdown_tool.cpu_probe.cpu_telemetry_database import (
     TelemetryDatabase,
     TopdownMethodology,
 )
-from topdown_tool.perf.perf import Cpu, PerfRecordLocation
+from topdown_tool.perf import Cpu, PerfRecordLocation
 import topdown_tool.probe as Base
-from topdown_tool.perf import Perf
+from topdown_tool.perf.perf import Perf
+from topdown_tool.perf import perf_factory, PerfFactory
 from topdown_tool.common import simple_maths
 from topdown_tool.cpu_probe.cpu_model import TelemetrySpecification
 
@@ -83,7 +84,7 @@ class CpuProbe(Base.Probe):
         spec: TelemetrySpecification,
         core_indices: List[int],
         capture_data: bool,
-        perf_class: Type[Perf],
+        perf_factory_instance: "PerfFactory" = perf_factory,
     ):
         """Initializes a CpuProbe instance.
 
@@ -92,20 +93,19 @@ class CpuProbe(Base.Probe):
             spec: Telemetry specification containing events and metric definitions.
             core_indices: List of CPU cores to profile.
             capture_data: Flag indicating whether to capture performance data.
-            perf_class: Perf class used to instantiate recording routines.
+            perf_factory_instance: Factory used to instantiate the appropriate Perf implementation.
 
         Usage Example:
-            probe = CpuProbe(conf, spec, [0, 1], True, Perf)
+            probe = CpuProbe(conf, spec, [0, 1], True, perf_factory)
         """
         super().__init__()
 
         self._conf = conf
         self._product_name = spec.product_configuration.product_name
         self._cores = sorted(core_indices)
-        self._max_events = perf_class.get_pmu_counters(self._cores[0])
-
+        self._max_events = perf_factory_instance.get_pmu_counters(self._cores[0])
+        self._perf_factory = perf_factory_instance
         self._pid: Set[int] = set()
-        self._perf_class: Type[Perf] = perf_class
         self._perf_instance: Optional[Perf] = None
         self._capture_data: bool = capture_data
 
@@ -256,10 +256,10 @@ class CpuProbe(Base.Probe):
 
         product_name = normalize_str(self._product_name).replace(" ", "_")
         filename: str = f"perf.stat.cpu.{product_name}.{index}.txt"
-        self._perf_instance = self._perf_class(
+        self._perf_instance = self._perf_factory.create(
             list(schedule_unit),
             filename,
-            set(self._cores),
+            self._cores,
         )
         self._perf_instance.start()
 
@@ -398,7 +398,10 @@ class CpuProbe(Base.Probe):
 
     @staticmethod
     def _compute_metric(
-        scheduler: EventScheduler, perf_result: EventResults, grp: GroupLike, metric: Metric
+        scheduler: EventScheduler,
+        perf_result: EventResults,
+        grp: GroupLike,
+        metric: Metric,
     ) -> Optional[float]:
         pattern = re.compile(r"[a-zA-Z_]\w*")
         values = scheduler.retrieve_event_results(
@@ -443,7 +446,10 @@ class CpuProbe(Base.Probe):
 
         if self._conf.cpu_dump_events is not None:
             self._csv_renderer.dump_events(
-                self._event_records, self._db, self._product_name, self._conf.cpu_dump_events
+                self._event_records,
+                self._db,
+                self._product_name,
+                self._conf.cpu_dump_events,
             )
         elif self._conf.csv:
             self._csv_renderer.render_metric_groups(

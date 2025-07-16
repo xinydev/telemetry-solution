@@ -1,3 +1,22 @@
-from topdown_tool.perf.perf import Perf, PerfEvent, PerfEventCount
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2025 Arm Limited
 
-__all__ = ["Perf", "PerfEvent", "PerfEventCount"]
+from topdown_tool.perf.perf import (
+    PerfEvent,
+    PerfEventCount,
+    Cpu,
+    PerfRecordLocation,
+    Uncore,
+)
+from topdown_tool.perf.perf_factory import PerfFactory
+
+__all__ = [
+    "PerfEvent",
+    "PerfEventCount",
+    "PerfFactory",
+    "Cpu",
+    "Uncore",
+    "PerfRecordLocation",
+]
+
+perf_factory = PerfFactory()

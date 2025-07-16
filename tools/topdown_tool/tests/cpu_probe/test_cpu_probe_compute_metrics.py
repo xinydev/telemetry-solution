@@ -6,7 +6,7 @@ from typing import Dict, Tuple, Optional
 from topdown_tool.cpu_probe.cpu_probe import CpuProbe
 from topdown_tool.perf.event_scheduler import EventScheduler, CollectBy
 from topdown_tool.cpu_probe.cpu_telemetry_database import Event, Metric, Group
-from topdown_tool.perf.perf import Cpu
+from topdown_tool.perf import Cpu
 
 
 def test_compute_metrics_none_mode_all_defined() -> None:

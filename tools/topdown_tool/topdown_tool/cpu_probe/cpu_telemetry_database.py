@@ -33,7 +33,7 @@ from topdown_tool.cpu_probe.cpu_model import (
     TelemetrySpecification,
     TopdownMethodology as TopdownMethodologyModel,
 )
-from topdown_tool.perf.perf import PerfEvent
+from topdown_tool.perf import PerfEvent
 
 
 # Note: We can't use `order=True` otherwise python's type system scream at us.

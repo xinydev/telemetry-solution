@@ -8,7 +8,7 @@ from typing import Any, Dict, Generic, TypeVar
 from topdown_tool.cpu_probe.cpu_probe import CpuProbe
 from topdown_tool.cpu_probe.common import CpuAggregate, CpuProbeConfiguration
 from topdown_tool.perf.event_scheduler import CollectBy, EventScheduler
-from topdown_tool.perf.perf import Cpu
+from topdown_tool.perf import Cpu, PerfFactory
 from topdown_tool.cpu_probe.cpu_telemetry_database import Event, TelemetryDatabase
 from topdown_tool.cpu_probe.common import COMBINED_STAGES
 
@@ -18,8 +18,10 @@ def make_event(name, code=None):
 
 
 class DummyFakePerf:
-    @staticmethod
-    def get_pmu_counters(core):
+    def __init__(self, *a, **k):
+        pass
+
+    def get_pmu_counters(self, core):
         return 4  # match fixture expects 4
 
 
@@ -47,7 +49,10 @@ def metrics_fixture_with_timestamp(test_telemetry_db):
                 test_telemetry_db.metrics["root_metric1"].events: (111.0,),
                 test_telemetry_db.metrics["root_metric2"].events: (1101.0, 1102.0),
                 test_telemetry_db.metrics["shared_metric1"].events: (13.0, 19.0, 16.0),
-                test_telemetry_db.metrics["stage_2_group2_metric1"].events: (17.0, 12.0),
+                test_telemetry_db.metrics["stage_2_group2_metric1"].events: (
+                    17.0,
+                    12.0,
+                ),
                 test_telemetry_db.metrics["shared_metric2"].events: (15.0, 18.0),
             },
         },
@@ -63,7 +68,10 @@ def metrics_fixture_with_timestamp(test_telemetry_db):
                 test_telemetry_db.metrics["root_metric1"].events: (111.0,),
                 test_telemetry_db.metrics["root_metric2"].events: (1101.0, 1102.0),
                 test_telemetry_db.metrics["shared_metric1"].events: (13.0, 19.0, 16.0),
-                test_telemetry_db.metrics["stage_2_group2_metric1"].events: (17.0, 12.0),
+                test_telemetry_db.metrics["stage_2_group2_metric1"].events: (
+                    17.0,
+                    12.0,
+                ),
                 test_telemetry_db.metrics["shared_metric2"].events: (15.0, 18.0),
             },
         },
@@ -79,7 +87,10 @@ def metrics_fixture_with_timestamp(test_telemetry_db):
                 test_telemetry_db.metrics["root_metric1"].events: (111.0,),
                 test_telemetry_db.metrics["root_metric2"].events: (1101.0, 1102.0),
                 test_telemetry_db.metrics["shared_metric1"].events: (13.0, 19.0, 16.0),
-                test_telemetry_db.metrics["stage_2_group2_metric1"].events: (17.0, 12.0),
+                test_telemetry_db.metrics["stage_2_group2_metric1"].events: (
+                    17.0,
+                    12.0,
+                ),
                 test_telemetry_db.metrics["shared_metric2"].events: (15.0, 18.0),
             },
         },
@@ -270,7 +281,13 @@ def build_fixtures_case_three_cpu_no_time():
         cpu2: {
             None: {
                 group1: (5.0,),
-                group2: (11.0, 12.0, 13.0, 14.0, None),  # Only one None in group2 (last value)
+                group2: (
+                    11.0,
+                    12.0,
+                    13.0,
+                    14.0,
+                    None,
+                ),  # Only one None in group2 (last value)
                 group3: (15.0, 22.0, 23.0),
             }
         },
@@ -450,7 +467,10 @@ def test_update_aggregate(monkeypatch, fixture_builder):
             4.0 + 1.0 - 2.0,
         ),  # shared_metric1: formula is "evt 3 + evt12 - evt7" - events are sorted in alphabetical order
         ((None, 2.0, 3.0), None),  # If any value is None, result is None
-        ((1.0, 2.0, "bad"), None),  # If the formula fails because of a non-float, returns None
+        (
+            (1.0, 2.0, "bad"),
+            None,
+        ),  # If the formula fails because of a non-float, returns None
     ],
 )
 def test_compute_metric_with_shared_metric1(
@@ -485,7 +505,8 @@ def test_compute_metric_with_shared_metric1(
 
 
 @pytest.mark.parametrize(
-    "fixture_name", ["metrics_fixture_with_timestamp", "metrics_fixture_without_timestamp"]
+    "fixture_name",
+    ["metrics_fixture_with_timestamp", "metrics_fixture_without_timestamp"],
 )
 def test_compute_metrics_explicit_cases(test_telemetry_db, mocker, request, fixture_name):
     # Load the explicit fixture
@@ -510,7 +531,10 @@ def test_compute_metrics_explicit_cases(test_telemetry_db, mocker, request, fixt
     "conf_overrides, expect_groups",
     [
         # Simulate event dump mode (passing some non-None value for cpu_dump_events)
-        ({"cpu_dump_events": True}, lambda db: [g.name for g in db.get_all_events_groups(4)]),
+        (
+            {"cpu_dump_events": True},
+            lambda db: [g.name for g in db.get_all_events_groups(4)],
+        ),
         # Pick a real metric group if available in DB fixture
         ({"metric_group": ["stage1_left_group"]}, lambda db: ["stage1_left_group"]),
         # Pick node present in DB
@@ -523,7 +547,10 @@ def test_compute_metrics_explicit_cases(test_telemetry_db, mocker, request, fixt
         # Test stages 2 only
         ({"stages": [2]}, lambda db: [g.name for g in db.topdown.stage_2_groups]),
         # Default: all stages
-        ({}, lambda db: [g.name for g in db.topdown.stage_1_groups + db.topdown.stage_2_groups]),
+        (
+            {},
+            lambda db: [g.name for g in db.topdown.stage_1_groups + db.topdown.stage_2_groups],
+        ),
     ],
 )
 def test_build_capture_groups_variants(test_telemetry_db, conf_overrides, expect_groups):
@@ -549,13 +576,14 @@ def test_cpuprobe_constructor_initializes_state_correctly(test_telemetry_spec):
     conf = CpuProbeConfiguration()
     conf.metric_group = ["topdown_root_group"]  # simple real group from fixture
     cores = [2, 0, 1]
-
+    fake_factory = PerfFactory()
+    fake_factory._impl_class = DummyFakePerf
     probe = CpuProbe(
         conf,
         test_telemetry_spec,
         core_indices=cores,
         capture_data=True,
-        perf_class=DummyFakePerf,
+        perf_factory_instance=fake_factory,
     )
 
     # Assert forwarding and initializations
@@ -595,8 +623,7 @@ class FakePerfSimple:
         # Pop (in use order)
         return FakePerfSimple.results_queue.pop(0)
 
-    @staticmethod
-    def get_pmu_counters(core):
+    def get_pmu_counters(self, core):
         return 5
 
 
@@ -668,9 +695,12 @@ def test_cpuprobe_e2e_two_groups_two_cores(monkeypatch, test_telemetry_spec, tes
     monkeypatch.setattr("topdown_tool.cpu_probe.cpu_probe.EventScheduler", FakeSchedulerSimple)
 
     monkeypatch.setattr("topdown_tool.cpu_probe.cpu_probe.Perf", FakePerfSimple)
-
+    factory = PerfFactory()
+    factory._impl_class = FakePerfSimple
     # Construct probe
-    probe = CpuProbe(conf, spec, core_indices=cores, capture_data=True, perf_class=FakePerfSimple)
+    probe = CpuProbe(
+        conf, spec, core_indices=cores, capture_data=True, perf_factory_instance=factory
+    )
 
     # Extract all the components. We want to use the same DB as the CpuProbe
     db = probe._db
@@ -819,7 +849,14 @@ def dummy_probe(mocker, test_telemetry_db):
         (True, False, False, True, False, [1]),
         (False, False, True, False, False, [2]),
         (True, True, True, True, True, [1, 2]),
-        (False, False, False, False, False, []),  # none active, no stages (nothing called)
+        (
+            False,
+            False,
+            False,
+            False,
+            False,
+            [],
+        ),  # none active, no stages (nothing called)
     ],
 )
 def test_list_modes(

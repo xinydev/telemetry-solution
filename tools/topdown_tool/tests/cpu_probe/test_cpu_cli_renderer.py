@@ -10,7 +10,7 @@ from topdown_tool.cpu_probe.cpu_cli_renderer import CpuCliRenderer
 from tests.cpu_probe.helpers import get_fixture_path, compare_reference
 
 from topdown_tool.cpu_probe.common import CpuAggregate
-from topdown_tool.perf.perf import Cpu
+from topdown_tool.perf import Cpu
 
 
 # ------------------------
@@ -237,7 +237,13 @@ def render_metric_groups_stages_all(render_metric_groups_stages_fixture, test_te
 )
 @pytest.mark.parametrize("desc", [False, True])
 def test_render_metric_groups_stages_reference(
-    fixture_name, stages_label, desc, cli_renderer, output_buf, regen_reference_mode, request
+    fixture_name,
+    stages_label,
+    desc,
+    cli_renderer,
+    output_buf,
+    regen_reference_mode,
+    request,
 ):
     # Get (computed, capture_groups)
     computed, capture_groups = request.getfixturevalue(fixture_name)
@@ -247,7 +253,9 @@ def test_render_metric_groups_stages_reference(
     output = output_buf.getvalue()
 
     reference_path = get_fixture_path(
-        "cpu_cli_renderer", "render_metric_groups_stages", f"stage_{stages_label}_desc_{desc}.txt"
+        "cpu_cli_renderer",
+        "render_metric_groups_stages",
+        f"stage_{stages_label}_desc_{desc}.txt",
     )
     compare_reference(output, reference_path, regen_reference_mode)
 

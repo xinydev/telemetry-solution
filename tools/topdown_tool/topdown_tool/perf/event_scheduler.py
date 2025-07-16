@@ -56,7 +56,7 @@ from typing import (
     TypeVar,
     Generic,
 )
-from topdown_tool.perf.perf import PerfEvent
+from topdown_tool.perf import PerfEvent
 
 
 E = TypeVar("E", bound=PerfEvent)

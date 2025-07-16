@@ -192,7 +192,9 @@ def load_probe_factories() -> Sequence[ProbeFactory]:
                 factory_classes.append(factory_cls())
             else:
                 logging.warning(
-                    "Class listed in %s %s do not inherit from ProbeFactory", ep.name, factory_cls
+                    "Class listed in %s %s do not inherit from ProbeFactory",
+                    ep.name,
+                    factory_cls,
                 )
         except Exception as e:  # pylint: disable=broad-exception-caught
             # handle mis-configured plugins gracefully

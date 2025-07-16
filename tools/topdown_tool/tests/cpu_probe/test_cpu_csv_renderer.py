@@ -7,7 +7,7 @@ import pytest
 
 from topdown_tool.cpu_probe.cpu_csv_renderer import CpuCsvRenderer
 from topdown_tool.cpu_probe.cpu_telemetry_database import GroupView
-from topdown_tool.perf.perf import Cpu
+from topdown_tool.perf import Cpu
 from topdown_tool.cpu_probe.common import CpuAggregate
 from topdown_tool.common import range_encode
 

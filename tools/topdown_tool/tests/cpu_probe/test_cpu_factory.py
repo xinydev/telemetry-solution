@@ -8,6 +8,11 @@ import pytest
 from types import SimpleNamespace
 
 from topdown_tool.cpu_probe.cpu_factory import CpuProbeFactory, ArgsError
+from topdown_tool.cpu_probe.common import DEFAULT_ALL_STAGES
+from topdown_tool.perf.event_scheduler import CollectBy
+from topdown_tool.perf.linux_perf import LinuxPerf
+from topdown_tool.perf.windows_perf import WindowsPerf
+from topdown_tool.perf import perf_factory as global_perf_factory
 
 # --- Fixtures ---
 
@@ -402,18 +407,61 @@ def test_complex_probe_creation(monkeypatch, tmp_path):
     # Expect 4 probes: little_core (cores: 0,2,3,4), mid_core (core: 5), big_core (core: 8), and SME probe (cores: 0-5).
     assert len(probes) == 4
     little = next(
-        (c for c in calls if c["spec"].product_configuration.product_name == "little_core"), None
+        (c for c in calls if c["spec"].product_configuration.product_name == "little_core"),
+        None,
     )
     mid = next(
-        (c for c in calls if c["spec"].product_configuration.product_name == "mid_core"), None
+        (c for c in calls if c["spec"].product_configuration.product_name == "mid_core"),
+        None,
     )
     big = next(
-        (c for c in calls if c["spec"].product_configuration.product_name == "big_core"), None
+        (c for c in calls if c["spec"].product_configuration.product_name == "big_core"),
+        None,
     )
     sme = next(
-        (c for c in calls if c["spec"].product_configuration.product_name == "sme_probe"), None
+        (c for c in calls if c["spec"].product_configuration.product_name == "sme_probe"),
+        None,
     )
     assert little is not None and sorted(little["cores"]) == [0, 2, 3, 4]
     assert mid is not None and mid["cores"] == [5]
     assert big is not None and big["cores"] == [8]
     assert sme is not None and sme["cores"] == list(range(0, 6))
+
+
+def test_perf_factory_integration(monkeypatch, tmp_metrics_dir, fake_cpu_midr, base_args):
+    base_args.perf_path = "/custom/perf"
+    base_args.perf_args = "--custom-flag"
+    base_args.interval = 500
+    base_args.cpu_csv = "out/"
+    base_args.cpu_dump_events = None
+    base_args.cpu_stages = DEFAULT_ALL_STAGES
+    base_args.cpu_collect_by = CollectBy.METRIC
+
+    factory = CpuProbeFactory()
+    monkeypatch.setattr(CpuProbeFactory, "METRICS_DIR", tmp_metrics_dir)
+
+    global_perf_factory.process_cli_arguments(base_args)
+
+    # Patch get_pmu_counters to avoid subprocess
+    monkeypatch.setattr(LinuxPerf, "get_pmu_counters", staticmethod(lambda core, path: 6))
+    monkeypatch.setattr(WindowsPerf, "get_pmu_counters", staticmethod(lambda core, path: 6))
+
+    result = factory.process_cli_arguments(base_args, cpu_detect=FakeCPUDetect)
+    assert result is True
+
+    # Capture the Perf args passed into CpuProbe
+    captured = {}
+
+    def fake_CpuProbe(conf, spec, cores, capture_data, perf_factory_instance):
+        captured["perf_path"] = perf_factory_instance._perf_path
+        captured["perf_args"] = perf_factory_instance._perf_args
+        captured["interval"] = perf_factory_instance._interval
+        return SimpleNamespace()  # dummy CpuProbe
+
+    monkeypatch.setattr("topdown_tool.cpu_probe.cpu_factory.CpuProbe", fake_CpuProbe)
+
+    probes = factory.create(base_args)
+    assert len(probes) == 1
+    assert captured["perf_path"] == "/custom/perf"
+    assert captured["perf_args"] == "--custom-flag"
+    assert captured["interval"] == 500
