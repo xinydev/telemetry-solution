@@ -10,9 +10,10 @@ It ensures that all telemetry configuration data conforms to expected type and r
 
 from pathlib import Path
 import json
+import os
 from typing import Annotated, Any, Dict, Tuple, Union
+import jsonschema
 from pydantic import BaseModel, Field, StringConstraints, model_validator
-
 
 # Reusable type for hexadecimal strings like "0x1A2B"
 HexStr = Annotated[str, StringConstraints(pattern=r"^0x[0-9A-Fa-f]+$")]
@@ -51,18 +52,16 @@ class Event(BaseModel):
         code (HexStr): Event code in hexadecimal.
         title (str): Short title of the event.
         description (str): Detailed description.
-        common (bool): Indicates if the event is common.
-        architectural (bool): Flag for architectural event.
-        impdef (bool): Flag for implementation-defined event.
+        architecture_defined (bool): Flag for architecture-defined event.
+        product_defined (bool): Flag for product-defined event.
         accesses (Tuple[str, ...]): List of access types (e.g. read, write).
     """
 
     code: HexStr = Field(..., description="Event code, as a hex string")
     title: str = Field(..., description="Short title of the event")
     description: str = Field(..., description="Detailed description")
-    common: bool = Field(..., description="Is this a common event?")
-    architectural: bool = Field(..., description="Is this an architectural event?")
-    impdef: bool = Field(..., description="Is this an implementation-defined event?")
+    architecture_defined: bool = Field(..., description="Is this an architecture-defined event?")
+    product_defined: bool = Field(..., description="Is this an product-defined event?")
     accesses: Tuple[str, ...] = Field(..., description="List of access types (e.g., read, write)")
 
 
@@ -221,7 +220,7 @@ class TelemetrySpecification(BaseModel):
 
     @staticmethod
     def load_from_json_file(
-        path: Union[str, Path], encoding: str = "utf-8"
+        path: Union[str, Path], schema_dir: Union[str, Path], encoding: str = "utf-8"
     ) -> "TelemetrySpecification":
         """Loads a TelemetrySpecification from a JSON file.
 
@@ -237,6 +236,15 @@ class TelemetrySpecification(BaseModel):
         """
         with open(path, encoding=encoding) as f:
             data = json.load(f)
+            if "$schema" in data:
+                with open(os.path.join(schema_dir, data["$schema"]), encoding="utf-8") as schema_file:
+                    schema = json.load(schema_file)
+
+                try:
+                    jsonschema.validate(instance=data, schema=schema)
+                except jsonschema.exceptions.ValidationError as e:
+                    raise ValueError(f"Failed to load TelemetrySpecification from JSON: {e}") from e
+
             try:
                 result = TelemetrySpecification.model_validate(data)
             except Exception as e:
@@ -370,12 +378,13 @@ if __name__ == "__main__":
     import sys
     from rich.console import Console
 
-    if len(sys.argv) != 2:
-        sys.stderr.write(f"Usage: {sys.argv[0]} path_to_json_file\n")
+    if len(sys.argv) != 3:
+        sys.stderr.write(f"Usage: {sys.argv[0]} path_to_json_file path_to_schemas_dir\n")
         sys.exit(1)
     json_path = sys.argv[1]
+    schemas_dir = sys.argv[2]
     try:
-        spec = TelemetrySpecification.load_from_json_file(json_path)
+        spec = TelemetrySpecification.load_from_json_file(json_path, schemas_dir)
         print(f"Valid TelemetrySpecification loaded from {json_path}.")
         sys.exit(0)
     except Exception as e:  # pylint: disable=broad-exception-caught

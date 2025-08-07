@@ -1,29 +1,29 @@
 {
     "0x41d0c": {
-        "name": "neoverse-n1"
+        "name": "neoverse_n1_r4p1_pmu"
     },
     "0x41d49": {
-        "name": "neoverse-n2"
+        "name": "neoverse_n2_r0p2_pmu"
     },
     "0x410fd493": {
-        "name": "neoverse-n2-r0p3"
+        "name": "neoverse_n2_r0p3_pmu"
     },
     "0x6dd49": {
-        "name": "neoverse-n2"
+        "name": "neoverse_n2_r0p2_pmu"
     },
     "0x6d0fd493": {
-        "name": "neoverse-n2-r0p3"
+        "name": "neoverse_n2_r0p3_pmu"
     },
     "0x41d8e": {
-        "name": "neoverse-n3"
+        "name": "neoverse_n3_r0p0_pmu"
     },
     "0x41d40": {
-        "name": "neoverse-v1"
+        "name": "neoverse_v1_r1p2_pmu"
     },
     "0x41d4f": {
-        "name": "neoverse-v2"
+        "name": "neoverse_v2_r0p0_pmu"
     },
     "0x41d83": {
-        "name": "neoverse-v3"
+        "name": "neoverse_v3_r0p0_pmu"
     }
 }

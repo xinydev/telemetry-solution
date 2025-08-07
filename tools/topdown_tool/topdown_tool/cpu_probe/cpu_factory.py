@@ -152,6 +152,7 @@ class CpuProbeFactory(Base.ProbeFactory):
     """
 
     METRICS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "metrics")
+    SCHEMAS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "schemas")
 
     @dataclass
     class _CpuDescription:
@@ -404,7 +405,7 @@ class CpuProbeFactory(Base.ProbeFactory):
         # If the user provided CPU JSON files via CLI, override defaults.
         if args.cpu is not None:
             for cpu_file in args.cpu:
-                cpu_desc = TelemetrySpecification.load_from_json_file(cpu_file)
+                cpu_desc = TelemetrySpecification.load_from_json_file(cpu_file, self.SCHEMAS_DIR)
                 implementer = int(cpu_desc.product_configuration.implementer, 16)
                 variant = cpu_desc.product_configuration.major_revision
                 architecture = 0xF
@@ -435,7 +436,7 @@ class CpuProbeFactory(Base.ProbeFactory):
                     "(skipping capture)",
                 )
             if desc is not None and not desc.content:
-                desc.content = TelemetrySpecification.load_from_json_file(desc.path)
+                desc.content = TelemetrySpecification.load_from_json_file(desc.path, self.SCHEMAS_DIR)
 
         self._cpu_descriptions = cpu_descriptions
 
@@ -510,7 +511,7 @@ class CpuProbeFactory(Base.ProbeFactory):
         # Create additional CpuProbe instances for SME elements if specified.
         if args.sme is not None:
             for cme in args.sme:
-                cme_desc = TelemetrySpecification.load_from_json_file(cme[0])
+                cme_desc = TelemetrySpecification.load_from_json_file(cme[0], self.SCHEMAS_DIR)
                 cpu_probes.append(
                     CpuProbe(
                         self._conf,

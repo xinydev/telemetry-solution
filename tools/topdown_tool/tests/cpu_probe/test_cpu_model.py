@@ -29,8 +29,8 @@ def valid_document():
                 "title": "Event 1",
                 "description": "First event",
                 "common": True,
-                "architectural": False,
-                "impdef": False,
+                "architecture_defined": False,
+                "product_defined": False,
                 "accesses": ["read", "execute"],
             }
         },

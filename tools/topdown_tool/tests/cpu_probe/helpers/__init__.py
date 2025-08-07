@@ -5,14 +5,23 @@ import os
 import difflib
 
 
-def get_fixture_path(*paths):
+def get_fixture_dir():
     """
-    Compute the absolute path to a fixture file, relative to the cpu_probe/fixtures directory.
+    Return the absolute path of the cpu_probe/fixtures directory.
     """
     # The fixtures directory is cpu_probe/fixtures relative to this helper.py file
     helper_dir = os.path.abspath(os.path.dirname(__file__))
     cpu_probe_dir = os.path.dirname(helper_dir)
     fixtures_dir = os.path.join(cpu_probe_dir, "fixtures")
+    return fixtures_dir
+
+
+def get_fixture_path(*paths):
+    """
+    Compute the absolute path to a fixture file, relative to the cpu_probe/fixtures directory.
+    """
+    # The fixtures directory is cpu_probe/fixtures relative to this helper.py file
+    fixtures_dir = get_fixture_dir()
     return os.path.join(fixtures_dir, *paths)
 
 

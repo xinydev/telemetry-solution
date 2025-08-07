@@ -30,6 +30,7 @@ repos:
           - pydantic
           - pytest
           - pytest-mock
+          - jsonschema
         exclude: '^tools/topdown_tool/tests/'
   - repo: 'https://github.com/codespell-project/codespell'
     rev: v2.3.0

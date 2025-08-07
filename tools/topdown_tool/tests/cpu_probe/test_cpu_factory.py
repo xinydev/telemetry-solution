@@ -6,6 +6,7 @@ import json
 import os
 import pytest
 from types import SimpleNamespace
+import shutil
 
 from topdown_tool.cpu_probe.cpu_factory import CpuProbeFactory, ArgsError
 from topdown_tool.cpu_probe.common import DEFAULT_ALL_STAGES
@@ -13,6 +14,7 @@ from topdown_tool.perf.event_scheduler import CollectBy
 from topdown_tool.perf.linux_perf import LinuxPerf
 from topdown_tool.perf.windows_perf import WindowsPerf
 from topdown_tool.perf import perf_factory as global_perf_factory
+from tests.cpu_probe.helpers import get_fixture_path
 
 # --- Fixtures ---
 
@@ -47,8 +49,7 @@ class FakeCPUDetect:
         return (implementer << 12) | part_num
 
 
-@pytest.fixture
-def tmp_metrics_dir(tmp_path):
+def tmp_metrics_dir_common(tmp_path, add_schema_tag):
     # Create a temporary metrics directory with a mapping.json and one telemetry specification file.
     metrics_dir = tmp_path / "metrics"
     metrics_dir.mkdir()
@@ -66,11 +67,33 @@ def tmp_metrics_dir(tmp_path):
         description="Test spec for neoverse-n3",
         num_slots=5,
         num_bus_slots=0,
+        add_schema_tag=add_schema_tag
     )
     spec_path = metrics_dir / "neoverse-n3.json"
     spec_path.write_text(json.dumps(spec))
 
     return str(metrics_dir)
+
+
+@pytest.fixture
+def tmp_metrics_dir(tmp_path):
+    return tmp_metrics_dir_common(tmp_path, True)
+
+
+@pytest.fixture
+def tmp_metrics_dir_no_schema(tmp_path):
+    return tmp_metrics_dir_common(tmp_path, False)
+
+
+@pytest.fixture
+def tmp_schemas_dir(tmp_path):
+    # Create a temporary metrics directory with a mapping.json and one telemetry specification file.
+    schemas_dir = tmp_path / "schemas"
+    schemas_dir.mkdir()
+
+    shutil.copy(get_fixture_path("v1.0.schema.json"), schemas_dir)
+
+    return str(schemas_dir)
 
 
 @pytest.fixture
@@ -113,8 +136,9 @@ def generate_fake_spec(
     spec_type="PMU_Specification",
     timestamp="dummy",
     description="Test spec",
+    add_schema_tag=True
 ):
-    return {
+    ret = {
         "_type": spec_type,
         "document": {
             "timestamp": timestamp,
@@ -147,6 +171,10 @@ def generate_fake_spec(
             }
         },
     }
+    if add_schema_tag:
+        ret["$schema"] = "v1.0.schema.json"
+
+    return ret
 
 
 # --- Tests ---
@@ -162,9 +190,11 @@ def test_is_available_method():
     assert factory.is_available() is True
 
 
-def test_process_cli_arguments_nominal(tmp_metrics_dir, base_args, monkeypatch, fake_cpu_midr):
+@pytest.mark.parametrize("metrics_fixture_dir", ["tmp_metrics_dir", "tmp_metrics_dir_no_schema"])
+def test_process_cli_arguments_nominal(request, metrics_fixture_dir, tmp_schemas_dir, base_args, monkeypatch, fake_cpu_midr):
     # Point METRICS_DIR to our temp directory
-    monkeypatch.setattr(CpuProbeFactory, "METRICS_DIR", tmp_metrics_dir)
+    monkeypatch.setattr(CpuProbeFactory, "METRICS_DIR", request.getfixturevalue(metrics_fixture_dir))
+    monkeypatch.setattr(CpuProbeFactory, "SCHEMAS_DIR", tmp_schemas_dir)
 
     # Set controlled core list: use cores [0,1]
     base_args.core = [0, 1]
@@ -196,14 +226,16 @@ def test_process_cli_arguments_missing_csv_raises(tmp_metrics_dir, base_args, mo
     base_args.events_csv = None
     base_args.interval = 1
     monkeypatch.setattr(CpuProbeFactory, "METRICS_DIR", tmp_metrics_dir)
+    monkeypatch.setattr(CpuProbeFactory, "SCHEMAS_DIR", tmp_schemas_dir)
     factory = CpuProbeFactory()
     with pytest.raises(ArgsError):
         factory.process_cli_arguments(base_args, cpu_detect=FakeCPUDetect)
 
 
-def test_create_method(monkeypatch, tmp_metrics_dir, base_args):
+def test_create_method(monkeypatch, tmp_metrics_dir, tmp_schemas_dir, base_args):
     # Patch METRICS_DIR to use our temporary metrics folder.
     monkeypatch.setattr(CpuProbeFactory, "METRICS_DIR", tmp_metrics_dir)
+    monkeypatch.setattr(CpuProbeFactory, "SCHEMAS_DIR", tmp_schemas_dir)
 
     # Prepare args
     base_args.core = [0]
@@ -316,7 +348,7 @@ class FakeHeteroDetect:
         return midr  # identity mapping
 
 
-def fake_load_from_json_file(path):
+def fake_load_from_json_file(path, schema):
     # Return a fake spec-like object with a 'product_configuration' attribute.
     spec = SimpleNamespace()
     pc = SimpleNamespace()
@@ -348,8 +380,12 @@ def test_complex_probe_creation(monkeypatch, tmp_path):
     for name in ["little_core", "mid_core", "big_core"]:
         (metrics_dir / f"{name}.json").write_text("{}")  # dummy content
 
+    schemas_dir = tmp_path / "schemas"
+    schemas_dir.mkdir()
+
     # Patch METRICS_DIR and TelemetrySpecification.load_from_json_file.
     monkeypatch.setattr(CpuProbeFactory, "METRICS_DIR", str(metrics_dir))
+    monkeypatch.setattr(CpuProbeFactory, "SCHEMAS_DIR", str(schemas_dir))
     monkeypatch.setattr(
         "topdown_tool.cpu_probe.cpu_model.TelemetrySpecification.load_from_json_file",
         fake_load_from_json_file,
@@ -428,7 +464,7 @@ def test_complex_probe_creation(monkeypatch, tmp_path):
     assert sme is not None and sme["cores"] == list(range(0, 6))
 
 
-def test_perf_factory_integration(monkeypatch, tmp_metrics_dir, fake_cpu_midr, base_args):
+def test_perf_factory_integration(monkeypatch, tmp_metrics_dir, tmp_schemas_dir, fake_cpu_midr, base_args):
     base_args.perf_path = "/custom/perf"
     base_args.perf_args = "--custom-flag"
     base_args.interval = 500
@@ -439,6 +475,7 @@ def test_perf_factory_integration(monkeypatch, tmp_metrics_dir, fake_cpu_midr, b
 
     factory = CpuProbeFactory()
     monkeypatch.setattr(CpuProbeFactory, "METRICS_DIR", tmp_metrics_dir)
+    monkeypatch.setattr(CpuProbeFactory, "SCHEMAS_DIR", tmp_schemas_dir)
 
     global_perf_factory.process_cli_arguments(base_args)
 

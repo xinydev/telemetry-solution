@@ -26,7 +26,7 @@ classifiers = [
   "Operating System :: POSIX :: Linux",
   "Programming Language :: Python :: 3"
 ]
-dependencies = ["rich", "pydantic"]
+dependencies = ["rich", "pydantic", "jsonschema"]
 
 [project.optional-dependencies]
 test = ["pytest", "tox", "pytest-mock"]
@@ -44,7 +44,8 @@ cpu_probe_factory = "topdown_tool.cpu_probe.cpu_factory:CpuProbeFactory"
 [tool.hatch.build]
 include = [
   "topdown_tool/**/*.py",
-  "topdown_tool/cpu_probe/metrics/*.json"
+  "topdown_tool/cpu_probe/metrics/*.json",
+  "topdown_tool/cpu_probe/schemas/*.json"
 ]
 
 [tool.mypy]

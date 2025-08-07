@@ -1,6 +1,12 @@
 {
+    "$schema": "v1.0.schema.json",
     "document": {
-        "info": "Test document"
+        "timestamp": "06 Aug 09:01:15 2025",
+        "copyright": "Copyright 2022-2025 Arm Ltd.",
+        "confidential": false,
+        "quality": "Release",
+        "license": "Apache-2.0",
+        "description": "Test document"
     },
     "product_configuration": {
         "product_name": "TestCPU",
@@ -18,109 +24,97 @@
             "code": "0x1",
             "title": "Event 1",
             "description": "Event 1 description",
-            "common": true,
-            "architectural": true,
-            "impdef": false,
-            "accesses": ["read"]
+            "architecture_defined": true,
+            "product_defined": false,
+            "accesses": ["PMU", "ETE"]
         },
         "evt2": {
             "code": "0x2",
             "title": "Event 2",
             "description": "Event 2 description",
-            "common": true,
-            "architectural": true,
-            "impdef": false,
-            "accesses": ["write"]
+            "architecture_defined": true,
+            "product_defined": false,
+            "accesses": ["PMU", "ETE"]
         },
         "evt3": {
             "code": "0x3",
             "title": "Event 3",
             "description": "Event 3 description",
-            "common": true,
-            "architectural": false,
-            "impdef": true,
-            "accesses": ["read"]
+            "architecture_defined": false,
+            "product_defined": true,
+            "accesses": ["PMU", "ETE"]
         },
         "evt4": {
             "code": "0x4",
             "title": "Event 4",
             "description": "Event 4 description",
-            "common": false,
-            "architectural": false,
-            "impdef": false,
-            "accesses": ["write"]
+            "architecture_defined": false,
+            "product_defined": false,
+            "accesses": ["PMU", "ETE"]
         },
         "evt5": {
             "code": "0x5",
             "title": "Event 5",
             "description": "Event 5 description",
-            "common": false,
-            "architectural": true,
-            "impdef": true,
-            "accesses": ["read"]
+            "architecture_defined": false,
+            "product_defined": true,
+            "accesses": ["PMU", "ETE"]
         },
         "evt6": {
             "code": "0x6",
             "title": "Event 6",
             "description": "Event 6 description",
-            "common": true,
-            "architectural": false,
-            "impdef": true,
-            "accesses": ["write"]
+            "architecture_defined": false,
+            "product_defined": true,
+            "accesses": ["PMU", "ETE"]
         },
         "evt7": {
             "code": "0x7",
             "title": "Event 7",
             "description": "Event 7 description",
-            "common": false,
-            "architectural": false,
-            "impdef": false,
-            "accesses": ["read"]
+            "architecture_defined": false,
+            "product_defined": false,
+            "accesses": ["PMU", "ETE"]
         },
         "evt8": {
             "code": "0x8",
             "title": "Event 8",
             "description": "Event 8 description",
-            "common": false,
-            "architectural": false,
-            "impdef": false,
-            "accesses": ["read"]
+            "architecture_defined": false,
+            "product_defined": false,
+            "accesses": ["PMU", "ETE"]
         },
         "evt9": {
             "code": "0x9",
             "title": "Event 9",
             "description": "Event 9 description",
-            "common": false,
-            "architectural": false,
-            "impdef": false,
-            "accesses": ["read"]
+            "architecture_defined": false,
+            "product_defined": false,
+            "accesses": ["PMU", "ETE"]
         },
         "evt10": {
             "code": "0xA",
             "title": "Event 10",
             "description": "Event 10 description",
-            "common": false,
-            "architectural": false,
-            "impdef": false,
-            "accesses": ["read"]
+            "architecture_defined": false,
+            "product_defined": false,
+            "accesses": ["PMU", "ETE"]
         },
         "evt11": {
             "code": "0xB",
             "title": "Event 11",
             "description": "Event 11 description",
-            "common": false,
-            "architectural": false,
-            "impdef": false,
-            "accesses": ["read"]
+            "architecture_defined": false,
+            "product_defined": false,
+            "accesses": ["PMU", "ETE"]
         },
         "evt12": {
             "code": "0xC",
             "title": "Event 12",
             "description": "Event 12 description",
-            "common": false,
-            "architectural": false,
-            "impdef": false,
-            "accesses": ["read"]
+            "architecture_defined": false,
+            "product_defined": false,
+            "accesses": ["PMU", "ETE"]
         }
     },
     "metrics": {
@@ -299,19 +293,19 @@
                         "name": "root_metric1",
                         "group": "topdown_root_group",
                         "next_items": ["stage1_left_lv1_metric"],
-                        "sample_events": [""]
+                        "sample_events": ["evt1"]
                     },
                     {
                         "name": "root_metric2",
                         "group": "topdown_root_group",
                         "next_items": ["stage1_right_lv1_metric"],
-                        "sample_events": [""]
+                        "sample_events": ["evt2"]
                     },
                     {
                         "name": "shared_metric1",
                         "group": "topdown_root_group",
                         "next_items": ["stage2_group1"],
-                        "sample_events": [""]
+                        "sample_events": ["evt1"]
                     },
                     {
                         "name": "stage1_left_lv1_metric",
@@ -320,25 +314,25 @@
                             "stage1_left_lv2_left_metric",
                             "stage1_left_lv2_right_metric"
                         ],
-                        "sample_events": [""]
+                        "sample_events": ["evt4"]
                     },
                     {
                         "name": "stage1_left_lv2_left_metric",
                         "group": "stage1_left_group",
                         "next_items": ["stage2_group2"],
-                        "sample_events": [""]
+                        "sample_events": ["evt5"]
                     },
                     {
                         "name": "stage1_left_lv2_right_metric",
                         "group": "stage1_left_group",
                         "next_items": ["stage2_group1", "stage2_group2"],
-                        "sample_events": [""]
+                        "sample_events": ["evt4"]
                     },
                     {
                         "name": "stage1_right_lv1_metric",
                         "group": "stage1_right_group",
                         "next_items": ["stage2_group1"],
-                        "sample_events": [""]
+                        "sample_events": ["evt6"]
                     }
                 ]
             }

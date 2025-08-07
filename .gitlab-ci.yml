@@ -181,7 +181,7 @@ perf-json-generator:
       pushd linux
       git sparse-checkout add tools/perf
       popd
-      find $WORKSPACE/data/* -name '*.json' | xargs -I '{}' ./generate.py linux/tools/perf --telemetry-files '{}'
+      find $WORKSPACE/data/* -name '*.json' | grep -v schema | xargs -I '{}' ./generate.py linux/tools/perf --telemetry-files '{}'
       pushd linux
       git diff --name-only > changed_files.txt
       git ls-files --others --exclude-standard >> changed_files.txt
