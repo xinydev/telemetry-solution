@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# Copyright 2022-2025 Arm Limited
+# Copyright 2025 Arm Limited
 
 from time import sleep
 from typing import Set

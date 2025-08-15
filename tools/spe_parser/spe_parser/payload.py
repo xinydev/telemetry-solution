@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-#
-# Copyright (C) Arm Ltd. 2023
+# Copyright 2023-2025 Arm Limited
 
 from enum import Enum
 from typing import Dict, List

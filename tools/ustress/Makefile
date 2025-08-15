@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# Copyright (C) Arm Ltd. 2022-2024
+# Copyright 2022-2025 Arm Limited
 
 HEADERS = $(wildcard *.h)
 SOURCES = $(wildcard *.c)
