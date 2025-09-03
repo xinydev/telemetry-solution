@@ -2,6 +2,8 @@
 # Copyright 2025 Arm Limited
 
 import sys
+import os
+from types import SimpleNamespace
 from topdown_tool.perf.perf_factory import PerfFactory
 
 
@@ -65,3 +67,54 @@ def test_get_pmu_and_midr_dispatch(monkeypatch):
     factory.get_midr_value(1)
     assert called_args["pmu"][1] == "/bin/fakeperf"
     assert called_args["midr"][1] == "/bin/fakeperf"
+
+
+def test_perf_command_valid():
+    factory = PerfFactory()
+
+    args = SimpleNamespace()
+    args.perf_path = "true"
+    args.perf_args = ""
+    args.interval = 0
+
+    factory.process_cli_arguments(args)
+
+    assert (factory.is_perf_runnable())
+
+
+def test_perf_command_nonexisting(tmp_path):
+    factory = PerfFactory()
+
+    command = f"{tmp_path}/testperf"
+
+    assert (not os.path.exists(command))
+
+    args = SimpleNamespace()
+    args.perf_path = command
+    args.perf_args = ""
+    args.interval = 0
+
+    factory.process_cli_arguments(args)
+
+    assert (not factory.is_perf_runnable())
+
+
+def test_perf_command_permissionerror(tmp_path):
+    factory = PerfFactory()
+
+    command = f"{tmp_path}/testperf"
+
+    with open(command, "w") as f:
+        f.write("test content")
+
+    assert (os.path.exists(command))
+    assert (not os.access(command, os.X_OK))
+
+    args = SimpleNamespace()
+    args.perf_path = command
+    args.perf_args = ""
+    args.interval = 0
+
+    factory.process_cli_arguments(args)
+
+    assert (not factory.is_perf_runnable())

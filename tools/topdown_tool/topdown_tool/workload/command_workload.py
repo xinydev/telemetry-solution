@@ -2,6 +2,7 @@ import ctypes
 import os
 import signal
 import sys
+import shutil
 from types import TracebackType
 from typing import List, Optional, Set, Type
 
@@ -28,6 +29,9 @@ class CommandWorkload(Workload):
 
         self.pid: int = -1
 
+        if shutil.which(command[0]) is None:
+            self.finished = True
+            raise OSError(f"Command {command[0]} cannot be executed. Please check that the file exists in PATH and you have the necessary rights to run it.")
         # Prepare command for running
         if sys.platform == "linux":
             self.pid = os.fork()

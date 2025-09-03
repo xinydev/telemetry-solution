@@ -49,7 +49,7 @@ class FakeCPUDetect:
         return (implementer << 12) | part_num
 
 
-def tmp_metrics_dir_common(tmp_path, add_schema_tag):
+def tmp_metrics_dir_common(tmp_path, schema_tag, create_spec_file=True, generate_invalid_tag=False):
     # Create a temporary metrics directory with a mapping.json and one telemetry specification file.
     metrics_dir = tmp_path / "metrics"
     metrics_dir.mkdir()
@@ -57,6 +57,9 @@ def tmp_metrics_dir_common(tmp_path, add_schema_tag):
     mapping = {"0x41d8e": {"name": "neoverse-n3"}}
     mapping_path = metrics_dir / "mapping.json"
     mapping_path.write_text(json.dumps(mapping))
+
+    if not create_spec_file:
+        return str(metrics_dir)
 
     # Use the generator function instead of hard-coded spec.
     spec = generate_fake_spec(
@@ -67,7 +70,8 @@ def tmp_metrics_dir_common(tmp_path, add_schema_tag):
         description="Test spec for neoverse-n3",
         num_slots=5,
         num_bus_slots=0,
-        add_schema_tag=add_schema_tag
+        schema_tag=schema_tag,
+        generate_invalid_tag=generate_invalid_tag
     )
     spec_path = metrics_dir / "neoverse-n3.json"
     spec_path.write_text(json.dumps(spec))
@@ -77,23 +81,52 @@ def tmp_metrics_dir_common(tmp_path, add_schema_tag):
 
 @pytest.fixture
 def tmp_metrics_dir(tmp_path):
-    return tmp_metrics_dir_common(tmp_path, True)
+    return tmp_metrics_dir_common(tmp_path, schema_tag="v1.0.schema.json")
 
 
 @pytest.fixture
 def tmp_metrics_dir_no_schema(tmp_path):
-    return tmp_metrics_dir_common(tmp_path, False)
+    return tmp_metrics_dir_common(tmp_path, schema_tag=None)
 
 
 @pytest.fixture
-def tmp_schemas_dir(tmp_path):
+def tmp_metrics_dir_spec_references_invalid_schema(tmp_path):
+    return tmp_metrics_dir_common(tmp_path, schema_tag="v1.0.schema-invalid.json")
+
+
+@pytest.fixture
+def tmp_metrics_dir_spec_references_nonexistent_schema(tmp_path):
+    return tmp_metrics_dir_common(tmp_path, schema_tag="v1.0.schema-nonexistent.json")
+
+
+@pytest.fixture
+def tmp_metrics_dir_nonexisting_spec(tmp_path):
+    return tmp_metrics_dir_common(tmp_path, schema_tag="v1.0.schema.json", create_spec_file=False)
+
+
+@pytest.fixture
+def tmp_metrics_dir_invalid_spec(tmp_path):
+    return tmp_metrics_dir_common(tmp_path, schema_tag="v1.0.schema.json", generate_invalid_tag=True)
+
+
+def tmp_schemas_dir_common(tmp_path, file_name="v1.0.schema.json"):
     # Create a temporary metrics directory with a mapping.json and one telemetry specification file.
     schemas_dir = tmp_path / "schemas"
     schemas_dir.mkdir()
 
-    shutil.copy(get_fixture_path("v1.0.schema.json"), schemas_dir)
+    shutil.copy(get_fixture_path(file_name), schemas_dir)
 
     return str(schemas_dir)
+
+
+@pytest.fixture
+def tmp_schemas_dir(tmp_path):
+    return tmp_schemas_dir_common(tmp_path)
+
+
+@pytest.fixture
+def tmp_schemas_dir_invalid_schema(tmp_path):
+    return tmp_schemas_dir_common(tmp_path, "v1.0.schema-invalid.json")
 
 
 @pytest.fixture
@@ -136,7 +169,8 @@ def generate_fake_spec(
     spec_type="PMU_Specification",
     timestamp="dummy",
     description="Test spec",
-    add_schema_tag=True
+    schema_tag=None,
+    generate_invalid_tag=False,
 ):
     ret = {
         "_type": spec_type,
@@ -171,8 +205,11 @@ def generate_fake_spec(
             }
         },
     }
-    if add_schema_tag:
-        ret["$schema"] = "v1.0.schema.json"
+    if schema_tag:
+        ret["$schema"] = schema_tag
+
+    if generate_invalid_tag:
+        ret["additional_tag"] = "additional_value"
 
     return ret
 
@@ -218,6 +255,38 @@ def test_process_cli_arguments_nominal(request, metrics_fixture_dir, tmp_schemas
     # Content should be loaded from the spec file.
     assert desc.content is not None
     assert desc.content.product_configuration.product_name == "neoverse-n3"
+
+
+def test_process_cli_arguments_spec_references_invalid_schema_raises(tmp_metrics_dir_spec_references_invalid_schema, tmp_schemas_dir_invalid_schema, base_args, monkeypatch):
+    monkeypatch.setattr(CpuProbeFactory, "METRICS_DIR", tmp_metrics_dir_spec_references_invalid_schema)
+    monkeypatch.setattr(CpuProbeFactory, "SCHEMAS_DIR", tmp_schemas_dir_invalid_schema)
+    factory = CpuProbeFactory()
+    with pytest.raises(ValueError):
+        factory.process_cli_arguments(base_args, cpu_detect=FakeCPUDetect)
+
+
+def test_process_cli_arguments_spec_references_nonexistent_schema_raises(tmp_metrics_dir_spec_references_nonexistent_schema, tmp_schemas_dir, base_args, monkeypatch):
+    monkeypatch.setattr(CpuProbeFactory, "METRICS_DIR", tmp_metrics_dir_spec_references_nonexistent_schema)
+    monkeypatch.setattr(CpuProbeFactory, "SCHEMAS_DIR", tmp_schemas_dir)
+    factory = CpuProbeFactory()
+    with pytest.raises(FileNotFoundError):
+        factory.process_cli_arguments(base_args, cpu_detect=FakeCPUDetect)
+
+
+def test_process_cli_arguments_nonexisting_spec_raises(tmp_metrics_dir_nonexisting_spec, tmp_schemas_dir, base_args, monkeypatch):
+    monkeypatch.setattr(CpuProbeFactory, "METRICS_DIR", tmp_metrics_dir_nonexisting_spec)
+    monkeypatch.setattr(CpuProbeFactory, "SCHEMAS_DIR", tmp_schemas_dir)
+    factory = CpuProbeFactory()
+    with pytest.raises(FileNotFoundError):
+        factory.process_cli_arguments(base_args, cpu_detect=FakeCPUDetect)
+
+
+def test_process_cli_arguments_invalid_spec_schema_validation_raises(tmp_metrics_dir_invalid_spec, tmp_schemas_dir, base_args, monkeypatch):
+    monkeypatch.setattr(CpuProbeFactory, "METRICS_DIR", tmp_metrics_dir_invalid_spec)
+    monkeypatch.setattr(CpuProbeFactory, "SCHEMAS_DIR", tmp_schemas_dir)
+    factory = CpuProbeFactory()
+    with pytest.raises(ValueError):
+        factory.process_cli_arguments(base_args, cpu_detect=FakeCPUDetect)
 
 
 def test_process_cli_arguments_missing_csv_raises(tmp_metrics_dir, base_args, monkeypatch):

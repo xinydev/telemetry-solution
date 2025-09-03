@@ -9,6 +9,7 @@ and manages CLI options for customizing perf execution (e.g. binary path, argume
 """
 
 import sys
+import shutil
 from typing import Type, Optional, Sequence
 import argparse
 
@@ -74,6 +75,24 @@ class PerfFactory:
         """
         return self._impl_class.have_perf_privilege()
 
+    def get_effective_perf_path(self) -> str:
+        """
+        Get the path to the perf executable that will be used.
+
+        Returns:
+            The path to the perf executable, or the default ("perf" or "wperf") if not set.
+        """
+        return self._perf_path or ("perf" if sys.platform == "linux" else "wperf")
+
+    def is_perf_runnable(self) -> bool:
+        """
+        Check whether the perf tool is runnable on this system.
+
+        Returns:
+            True if the perf tool can be executed; otherwise False.
+        """
+        return shutil.which(self.get_effective_perf_path()) is not None
+
     def get_pmu_counters(self, core: int) -> int:
         """
         Return the number of PMU counters available on a specific core.
@@ -85,7 +104,7 @@ class PerfFactory:
             Number of available performance monitoring counters on the given core.
         """
         return self._impl_class.get_pmu_counters(
-            core, self._perf_path or ("perf" if sys.platform == "linux" else "wperf")
+            core, self.get_effective_perf_path()
         )
 
     def get_midr_value(self, core: int) -> int:
@@ -99,7 +118,7 @@ class PerfFactory:
             MIDR_EL1 register value as an integer.
         """
         return self._impl_class.get_midr_value(
-            core, self._perf_path or ("perf" if sys.platform == "linux" else "wperf")
+            core, self.get_effective_perf_path()
         )
 
     def add_cli_arguments(self, group: argparse._ArgumentGroup) -> None:

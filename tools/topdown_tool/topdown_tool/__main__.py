@@ -344,23 +344,37 @@ def main(
     # Handle Perf specific arguments
     perf_factory.process_cli_arguments(args)
 
+    if not perf_factory.is_perf_runnable():
+        console.print(f"Error: The perf tool at {perf_factory.get_effective_perf_path()} is not runnable. Please check that the file exists and you have the necessary rights to run it.")
+        sys.exit(1)
+
     # Variable to check if we proceed with real capture
     capture_data = True
 
     # Handle Probes global arguments
 
     factory = None
+
+    def get_warning_text(factory: ProbeFactory | None) -> str:
+        return f"Failed processing of CLI arguments for {factory.name()}" if factory else ""
+
+    def handle_exception(exception: Exception, log_warning_str: str, print_additional_error_str: bool) -> None:
+        if log_warning_str:
+            logging.warning(log_warning_str)
+
+        console.print(f"Internal error: {exception}\nPlease submit a bug report at https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/issues." if print_additional_error_str else str(exception))
+        console.print_exception()
+        sys.exit(1)
+
     # FIXME: Split between printing static information and creating instances
     try:
         for factory in selected_factories:
             # Probes detects if user wants to just query information, like listing metrics
             capture_data &= factory.process_cli_arguments(args)
+    except (FileNotFoundError, PermissionError, ValueError) as e:
+        handle_exception(exception=e, log_warning_str=get_warning_text(factory), print_additional_error_str=False)
     except Exception as e:  # pylint: disable=broad-exception-caught
-        if factory:
-            logging.warning("Failed processing of CLI arguments for %s", factory.name())
-        console.print(e)
-        console.print_exception()
-        sys.exit(1)
+        handle_exception(exception=e, log_warning_str=get_warning_text(factory), print_additional_error_str=True)
 
     # Create probes for capture or querying information
     probes: List[Probe] = []
@@ -368,11 +382,7 @@ def main(
         for factory in selected_factories:
             probes.extend(factory.create(args, capture_data))
     except Exception as e:  # pylint: disable=broad-exception-caught
-        if factory:
-            logging.warning("Failed creation of the probe: %s", factory.name())
-        console.print(e)
-        console.print_exception()
-        sys.exit(1)
+        handle_exception(exception=e, log_warning_str=get_warning_text(factory), print_additional_error_str=True)
 
     # Capture data depending on requested type
     try:
@@ -384,10 +394,10 @@ def main(
             capture_systemwide_workload(probes)
     except (InterruptedError,) as e:
         console.print(e)
+    except (OSError) as e:
+        handle_exception(exception=e, log_warning_str="", print_additional_error_str=False)
     except Exception as e:  # pylint: disable=broad-exception-caught
-        console.print(e)
-        console.print_exception()
-        sys.exit(1)
+        handle_exception(exception=e, log_warning_str="", print_additional_error_str=True)
 
     # Print result for each probe
     for probe in probes:
