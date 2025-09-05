@@ -167,6 +167,11 @@ def build_arg_parser(
         const=logging.DEBUG,
         help="Enable debug output",
     )
+    logging_group.add_argument(
+        "--detailed-exceptions",
+        action="store_true",
+        help="Enable detailed exception traceback output",
+    )
     output_group.add_argument("--events-csv", help="Output directory for events CSV data")
 
     # Add general perf options
@@ -308,7 +313,7 @@ def capture_pid_workload(probes: List[Probe], pids: Set[int]) -> None:
                     probe.stop_capture(run, pid, interrupted)
 
 
-# pylint: disable=too-many-branches
+# pylint: disable=too-many-branches, too-many-statements
 def main(
     _args: Optional[Sequence[str]] = None,
 ) -> None:
@@ -362,8 +367,9 @@ def main(
         if log_warning_str:
             logging.warning(log_warning_str)
 
-        console.print(f"Internal error: {exception}\nPlease submit a bug report at https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/issues." if print_additional_error_str else str(exception))
-        console.print_exception()
+        console.print(f"Internal error: {exception}\nPlease submit a bug report at https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/issues with command line extended by the --detailed-exceptions option." if print_additional_error_str else str(exception))
+        if args.detailed_exceptions:
+            console.print_exception()
         sys.exit(1)
 
     # FIXME: Split between printing static information and creating instances
