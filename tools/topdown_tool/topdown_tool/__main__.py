@@ -157,13 +157,13 @@ def extend_arg_parser(
         "--probe",
         action="append",
         metavar="NAME[,NAME...]",
-        help=f"Select probes to enable (default: {', '.join(default_probe_names)}). NAME is one of: {', '.join(canonical_probe_names)}",
+        help=f"Select IPs to profile (default: {', '.join(default_probe_names)}). List the probes supported with --probe-list",
     )
     parser.add_argument(
         "command",
         default=[],
         nargs=argparse.REMAINDER,
-        help='Command to analyse. Subsequent arguments are passed as program arguments. e.g. "sleep 10"',
+        help='Workload to profile. Provide the workload execution command with subsequent arguments passed as program arguments. e.g. "sleep 10"',
     )
 
     # Extract pids from the --pid argument

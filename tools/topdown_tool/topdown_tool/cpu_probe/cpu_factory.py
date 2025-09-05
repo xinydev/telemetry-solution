@@ -237,7 +237,7 @@ class CpuProbeFactory(Base.ProbeFactory):
         argument_group.add_argument(
             "--cpu",
             action="append",
-            help="CPU information file name. CPU name is auto-detected, if this option is not provided.",
+            help="CPU telemetry specification JSON file name. CPU specification is automatically retrieved, if this option is not provided.",
         )
         argument_group.add_argument(
             "--core",
@@ -249,30 +249,30 @@ class CpuProbeFactory(Base.ProbeFactory):
             "--sme",
             action="append",
             type=self._decode_sme_arg,
-            help="Specify a SME JSON file and cores to which it applies. Format: cme_data.json:0,2-3.",
+            help="Provide an SME telemetry specification and specify which cores from the CPU cluster it applies to. e.g. sme_spec.json:0,2-3",
         )
         argument_group.add_argument(
-            "--cpu-list", action="store_true", help="List available CPUs and exit"
+            "--cpu-list", action="store_true", help="List available CPUs on the system"
         )
         argument_group.add_argument(
             "--cpu-list-groups",
             action="store_true",
-            help="List available CPU metric groups and exit",
+            help="List supported CPU metric groups by the telemetry specification",
         )
         argument_group.add_argument(
             "--cpu-list-metrics",
             action="store_true",
-            help="List available CPU metrics and exit",
+            help="List supported CPU metrics by the telemetry specification",
         )
         argument_group.add_argument(
             "--cpu-list-events",
             action="store_true",
-            help="List available CPU events and exit",
+            help="List supported CPU events by the telemetry specification",
         )
         argument_group.add_argument(
             "--cpu-no-multiplex",
             action="store_true",
-            help="Don't use CPU PMU multiplexing.",
+            help="Disable CPU multiplexing",
         )
         argument_group.add_argument(
             "--cpu-collect-by",
@@ -280,18 +280,18 @@ class CpuProbeFactory(Base.ProbeFactory):
             type=CollectBy.from_string,
             choices=list(CollectBy),
             default=CollectBy.METRIC,
-            help='When multiplexing, collect events grouped by "none", "metric" (default), or "group". This can avoid comparing data collected during different time periods.',
+            help='If multiplexing is enabled, collect events grouped by "none", "metric" (default), or "group".',
         )
         argument_group.add_argument(
             "--cpu-metric-group",
             "-m",
             type=lambda x: x.split(","),
-            help="Comma separated list of metric groups to collect. See --cpu-list-groups for available groups",
+            help="List of metric groups to collect. Provided as a comma-separated list. See --cpu-list-groups for available groups.",
         )
         argument_group.add_argument(
             "--cpu-node",
             "-n",
-            help='Name of topdown node and its descendants (e.g. "frontend_bound"). See --cpu-list-metrics for available nodes',
+            help='Collect metrics on a specific methodology node provided (e.g. "frontend_bound"). See --cpu-list-metrics for available nodes',
         )
         argument_group.add_argument(
             "--cpu-level", "-l", type=int, choices=[1, 2], help=argparse.SUPPRESS
@@ -301,24 +301,24 @@ class CpuProbeFactory(Base.ProbeFactory):
             "-s",
             action=_ProcessStageArgs,
             default=DEFAULT_ALL_STAGES,
-            help='Control which stages to display, separated by a comma. e.g. "topdown,uarch" or "1,2" or "all". "combined" can be used to display topdown metrics as a tree.',
+            help='Specify methodology stage to collect, separated by a comma. e.g. "topdown,uarch" or "1,2" or "all". "combined" can be used to collect topdown metrics as a tree.',
         )
         argument_group.add_argument(
             "--cpu-descriptions",
             "-d",
             action="store_true",
-            help="Show group/metric descriptions",
+            help="Include descriptions of the metric group or metric as per telemetry specification when metrics or groups are listed using --cpu-list-metrics or --cpu-list-groups.",
         )
         argument_group.add_argument(
             "--cpu-show-sample-events",
             action="store_true",
-            help="Show sample events for metrics",
+            help="Include sample events for metrics as per telemetry specification when metrics are listed using --cpu-list-metrics.",
         )
         argument_group.add_argument(
-            "--cpu-generate-metrics-csv", action="store_true", help="Save CSV metric data"
+            "--cpu-generate-metrics-csv", action="store_true", help="Save metrics computed in the CSV format"
         )
         argument_group.add_argument(
-            "--cpu-generate-events-csv", action="store_true", help="Save CSV event data"
+            "--cpu-generate-events-csv", action="store_true", help="Save events recorded in the CSV format"
         )
         argument_group.add_argument("--cpu-dump-events", help=argparse.SUPPRESS)
 
