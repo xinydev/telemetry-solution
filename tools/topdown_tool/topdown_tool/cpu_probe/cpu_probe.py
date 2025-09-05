@@ -12,6 +12,7 @@ supporting use cases such as system-wide performance data capture and detailed m
 
 import re
 from os.path import join
+import logging
 from typing import (
     Any,
     Dict,
@@ -25,7 +26,7 @@ from typing import (
 )
 
 from rich import get_console
-from topdown_tool.common import normalize_str
+from topdown_tool.common import normalize_str, range_encode
 from topdown_tool.cpu_probe.common import (
     COMBINED_STAGES,
     DEFAULT_ALL_STAGES,
@@ -50,6 +51,8 @@ from topdown_tool.perf.perf import Perf
 from topdown_tool.perf import perf_factory, PerfFactory
 from topdown_tool.common import simple_maths
 from topdown_tool.cpu_probe.cpu_model import TelemetrySpecification
+
+logger = logging.getLogger(__name__)
 
 # Each tuple of Event(s) is uniquely mapped to a tuple of captured float values.
 EventResults = Dict[Tuple[Event, ...], Tuple[Optional[float], ...]]
@@ -125,7 +128,23 @@ class CpuProbe(Base.Probe):
             conf=self._conf,
             db=self._db,
             max_events=self._max_events,
+            cores=self._cores,
         )
+
+        # If no valid groups/node for this CPU, skip capture for this probe
+        if not self._capture_groups and (self._conf.metric_group or self._conf.node):
+            if self._conf.metric_group:
+                cpu_prefix = f'CPU "{self._product_name}"'
+                cores_label = range_encode(self._cores)
+                if cores_label:
+                    cpu_prefix = f"{cpu_prefix} cores [{cores_label}]"
+                logger.warning(
+                    "%s: no valid metric groups from --cpu-metric-group. Skipping capture for this CPU.",
+                    cpu_prefix,
+                )
+            # When node is invalid, a warning is already emitted in _build_capture_groups
+            self._capture_data = False
+            return
 
         # Create the scheduler based on the capture group
         self._event_scheduler = EventScheduler[Event](
@@ -149,24 +168,65 @@ class CpuProbe(Base.Probe):
         # Declare the computed metrics
         self.computed_metrics: ComputedMetrics = {}
 
+    # pylint: disable=too-many-locals,too-many-branches,too-many-statements
     @staticmethod
     def _build_capture_groups(
         conf: CpuProbeConfiguration,
         db: TelemetryDatabase,
         max_events: int,
+        cores: Optional[Sequence[int]],
     ) -> List[GroupLike]:
         capture_groups: List[GroupLike] = []
 
         if conf.cpu_dump_events is not None:
             capture_groups = list(db.get_all_events_groups(max_events))
         elif conf.metric_group:
-            capture_groups = list(db.get_groups(conf.metric_group))
+            found: List[GroupLike] = []
+            missing: List[Tuple[str, Optional[str]]] = []
+            for name in conf.metric_group:
+                grp = db.find_group(name)
+                if grp is not None:
+                    found.append(grp)
+                else:
+                    missing.append((name, db.get_close_group_match(name)))
+            if missing:
+                cpu_prefix = f'CPU "{db.product_name}"'
+                cores_label = range_encode(cores or [])
+                if cores_label:
+                    cpu_prefix = f"{cpu_prefix} cores [{cores_label}]"
+                # Aggregate unknown names, include suggestions when available
+                parts = [
+                    f'"{name}" (did you mean "{sug}"?)' if sug else f'"{name}"'
+                    for name, sug in missing
+                ]
+                logger.warning(
+                    "%s: ignoring unknown --cpu-metric-group values: %s",
+                    cpu_prefix,
+                    ", ".join(parts),
+                )
+            capture_groups = found
         elif conf.node:
             node = db.topdown.find_node(conf.node)
             if node is None:
+                cpu_prefix = f'CPU "{db.product_name}"'
+                cores_label = range_encode(cores or [])
+                if cores_label:
+                    cpu_prefix = f"{cpu_prefix} cores [{cores_label}]"
                 suggestion = db.get_close_metric_match(conf.node)
-                suggestion = f' Did you mean "{suggestion}"?' if suggestion else ""
-                raise RuntimeError(f'"{conf.node}" is not a valid metric.{suggestion}')
+                if suggestion:
+                    logger.warning(
+                        '%s: node "%s" not found. Did you mean "%s"? Skipping capture for this CPU.',
+                        cpu_prefix,
+                        conf.node,
+                        suggestion,
+                    )
+                else:
+                    logger.warning(
+                        '%s: node "%s" not found. Skipping capture for this CPU.',
+                        cpu_prefix,
+                        conf.node,
+                    )
+                return []
 
             def collect_metrics_and_groups(
                 node: TopdownMethodology.Node,

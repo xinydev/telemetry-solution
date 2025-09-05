@@ -316,7 +316,7 @@ class CpuProbeFactory(Base.ProbeFactory):
             "--cpu-metric-group",
             "-m",
             type=lambda x: x.split(","),
-            help="List of metric groups to collect. Provided as a comma-separated list. See --cpu-list-groups for available groups.",
+            help="List of metric groups to collect (provided as a comma-separated list). Unknown group names are ignored for CPUs whose spec doesn't define them. See --cpu-list-groups for available groups.",
         )
         capture_group.add_argument(
             "--cpu-node",

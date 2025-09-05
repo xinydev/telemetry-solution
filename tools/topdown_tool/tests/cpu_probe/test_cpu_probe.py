@@ -673,7 +673,7 @@ def test_build_capture_groups_variants(test_telemetry_db, conf_overrides, expect
         setattr(base_conf, k, v)
 
     # Assume max_events=4 for test
-    capture_groups = CpuProbe._build_capture_groups(base_conf, db, 4)
+    capture_groups = CpuProbe._build_capture_groups(base_conf, db, 4, cores=[0])
     group_names = [g.name for g in capture_groups]
     expected_names = expect_groups(db)
     # Sets allow different orderings in the DB, but more precise matching can be used if necessary
@@ -1183,3 +1183,79 @@ def test_output_render_routes(dummy_probe, use_combined, use_node):
     else:
         dummy_probe._cli_renderer.render_metric_groups_stages.assert_called_once()
         dummy_probe._cli_renderer.render_metrics_tree.assert_not_called()
+
+
+def test_build_capture_groups_ignores_invalid_groups_and_logs(test_telemetry_db, caplog):
+    """
+    When a mix of valid/invalid groups is provided, only valid groups are returned and a single
+    aggregated WARNING is logged mentioning the unknown names.
+    """
+    conf = CpuProbeConfiguration()
+    conf.metric_group = ["stage1_left_group", "NON_EXISTENT_GROUP"]
+
+    result = CpuProbe._build_capture_groups(conf, test_telemetry_db, 4, cores=[0])
+    names = [g.name for g in result]
+    assert "stage1_left_group" in names
+    assert "NON_EXISTENT_GROUP" not in names
+
+    # Ensure a single aggregated warning mentioning unknown groups is emitted
+    assert any(
+        "ignoring unknown --cpu-metric-group values" in msg and "NON_EXISTENT_GROUP" in msg
+        for msg in caplog.messages
+    )
+
+
+def test_probe_skips_when_all_groups_invalid(test_telemetry_spec, caplog):
+    """
+    If all requested groups are invalid for a probe's CPU spec, the probe skips capture and logs warnings.
+    """
+    conf = CpuProbeConfiguration()
+    conf.metric_group = ["NON_EXISTENT_GROUP"]
+    cores = [0, 1]
+
+    # Use the same simple fake perf factory approach as other tests
+    factory = PerfFactory()
+    factory._impl_class = DummyFakePerf
+
+    # Build the probe; it should disable capture
+    probe = CpuProbe(
+        conf,
+        test_telemetry_spec,
+        core_indices=cores,
+        capture_data=True,
+        perf_factory_instance=factory,
+        base_csv_dir="fake_dir",
+    )
+
+    assert probe._capture_data is False
+    assert probe.need_capture() is False
+    # Both the aggregated unknown warning and the "skipping capture" warning should appear
+    assert any("ignoring unknown --cpu-metric-group values" in msg for msg in caplog.messages)
+    assert any("no valid metric groups from --cpu-metric-group" in msg for msg in caplog.messages)
+
+
+def test_probe_skips_when_node_invalid(test_telemetry_spec, caplog):
+    """
+    If a requested node is invalid for a probe's CPU spec, the probe skips capture and logs a warning.
+    """
+    conf = CpuProbeConfiguration()
+    conf.node = "NON_EXISTENT_NODE"
+    cores = [0, 1]
+
+    factory = PerfFactory()
+    factory._impl_class = DummyFakePerf
+
+    probe = CpuProbe(
+        conf,
+        test_telemetry_spec,
+        core_indices=cores,
+        capture_data=True,
+        perf_factory_instance=factory,
+        base_csv_dir="fake_dir",
+    )
+
+    assert probe._capture_data is False
+    assert probe.need_capture() is False
+    # Single warning about missing node and skipping capture should be present
+    assert any('node "NON_EXISTENT_NODE" not found' in msg for msg in caplog.messages)
+    assert any("Skipping capture for this CPU" in msg for msg in caplog.messages)
