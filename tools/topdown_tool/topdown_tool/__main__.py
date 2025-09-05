@@ -182,23 +182,15 @@ def extend_arg_parser(
         help="Comma separated list of process IDs to monitor.",
     )
     output_group = parser.add_argument_group("output options")
-    logging_group = output_group.add_mutually_exclusive_group()
-    logging_group.add_argument(
-        "--verbose",
-        "-v",
-        action="store_const",
+    output_group.add_argument(
+        "--log-level",
         dest="loglevel",
-        const=logging.INFO,
-        help="Enable verbose output",
+        type=parse_log_level,
+        default=logging.WARNING,
+        metavar="LEVEL",
+        help="Set logging level (CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET). Default: WARNING",
     )
-    logging_group.add_argument(
-        "--debug",
-        action="store_const",
-        dest="loglevel",
-        const=logging.DEBUG,
-        help="Enable debug output",
-    )
-    logging_group.add_argument(
+    output_group.add_argument(
         "--detailed-exceptions",
         action="store_true",
         help="Enable detailed exception traceback output",
@@ -210,6 +202,30 @@ def extend_arg_parser(
         probe.add_cli_arguments(parser)
 
     return parser
+
+
+def parse_log_level(value: str) -> int:
+    """
+    Parse a case-insensitive logging level name into its numeric value.
+
+    Accepted values: CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET.
+    """
+    name = value.strip().upper()
+    mapping = {
+        "CRITICAL": logging.CRITICAL,
+        "ERROR": logging.ERROR,
+        "WARNING": logging.WARNING,
+        "INFO": logging.INFO,
+        "DEBUG": logging.DEBUG,
+        "NOTSET": logging.NOTSET,
+    }
+    if name in mapping:
+        return mapping[name]
+    raise argparse.ArgumentTypeError(
+        "Invalid log level: "
+        + value
+        + ". Choose from CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET"
+    )
 
 
 def print_available_probes_table(
