@@ -129,8 +129,7 @@ def create_base_arg_parser() -> argparse.ArgumentParser:
     )
 
     # Add general perf options
-    perf_arg_group = parser.add_argument_group("General perf capture options")
-    perf_factory.add_cli_arguments(perf_arg_group)
+    perf_factory.add_cli_arguments(parser)
 
     return parser
 
@@ -203,8 +202,7 @@ def extend_arg_parser(
 
     # Add Probe specific options for selected probes only
     for probe in selected_factories:
-        arg_group = parser.add_argument_group(f"{probe.name()} capture options")
-        probe.add_cli_arguments(arg_group)
+        probe.add_cli_arguments(parser)
 
     return parser
 

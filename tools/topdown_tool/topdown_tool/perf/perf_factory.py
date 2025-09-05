@@ -108,13 +108,14 @@ class PerfFactory:
         """
         return self._impl_class.get_midr_value(core)
 
-    def add_cli_arguments(self, group: argparse._ArgumentGroup) -> None:
+    def add_cli_arguments(self, parser: argparse.ArgumentParser) -> None:
         """
-        Add CLI arguments related to perf configuration to the provided argument group.
+        Add CLI arguments related to perf configuration by creating a dedicated group.
 
         Args:
-            group: The argparse argument group to which perf options should be added.
+            parser: The top-level argument parser to which the perf options group will be added.
         """
+        group = parser.add_argument_group("General perf capture options")
         group.add_argument("--perf-path", type=str, help="Path to perf executable")
         group.add_argument(
             "--perf-args",

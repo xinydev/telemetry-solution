@@ -124,11 +124,11 @@ class ProbeFactory(ABC):
         raise NotImplementedError("Use derived class")
 
     @abstractmethod
-    def add_cli_arguments(self, argument_group: argparse._ArgumentGroup) -> None:
-        """Register CLI arguments specific to the probe to the argument parser.
+    def add_cli_arguments(self, parser: argparse.ArgumentParser) -> None:
+        """Register CLI arguments specific to the probe on the top-level ArgumentParser.
 
         Args:
-            argument_group (argparse._ArgumentGroup): The parser group to register arguments to.
+            parser (argparse.ArgumentParser): The top-level parser to register the probe's argument group(s) to.
         """
         raise NotImplementedError("Use derived class")
 
