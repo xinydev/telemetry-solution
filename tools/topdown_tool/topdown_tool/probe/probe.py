@@ -162,6 +162,15 @@ class ProbeFactory(ABC):
         """
         raise NotImplementedError("Use derived class")
 
+    @abstractmethod
+    def get_description(self) -> str:
+        """Return a short, human-friendly description of this probe.
+
+        This description is used when listing probes via the global --probe-list option.
+        Keep it concise and static (no I/O or system probing).
+        """
+        raise NotImplementedError("Use derived class")
+
 
 def load_probe_factories() -> Sequence[ProbeFactory]:
     """Load ProbeFactory instances from registered entry points.

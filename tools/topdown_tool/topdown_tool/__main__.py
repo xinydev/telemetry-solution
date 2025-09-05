@@ -25,6 +25,7 @@ from typing import Iterable, List, Optional, Sequence, Set
 from rich import get_console
 import rich.traceback
 from rich.console import Console
+from rich.table import Table
 from topdown_tool.probe.probe import load_probe_factories
 from topdown_tool.perf import perf_factory
 from topdown_tool.probe import Probe, ProbeFactory
@@ -74,7 +75,7 @@ def get_selected_factories_from_args(
         "--probe",
         action="append",
         metavar="NAME[,NAME...]",
-        help=f"Select probes to enable (default: {', '.join(default_probe_names)}). NAME is one of: {', '.join(canonical_probe_names)}",
+        help=f"Select IPs to profile (default: {', '.join(default_probe_names)}). List the probes supported with --probe-list",
     )
     probe_args, _ = minimal_parser.parse_known_args(_args)
 
@@ -117,15 +118,7 @@ def create_base_arg_parser() -> argparse.ArgumentParser:
         argparse.ArgumentParser: App argument parser.
     """
     parser = argparse.ArgumentParser(
-        formatter_class=argparse.RawDescriptionHelpFormatter, add_help=False
-    )
-
-    parser.add_argument(
-        "-h",
-        "--help",
-        action="help",
-        default=argparse.SUPPRESS,
-        help="show this help message and exit",
+        formatter_class=argparse.RawDescriptionHelpFormatter, add_help=False, allow_abbrev=False
     )
 
     # Add general perf options
@@ -137,7 +130,6 @@ def create_base_arg_parser() -> argparse.ArgumentParser:
 def extend_arg_parser(
     parser: argparse.ArgumentParser,
     selected_factories: Iterable[ProbeFactory],
-    canonical_probe_names: Iterable[str],
     default_probe_names: Iterable[str],
 ) -> argparse.ArgumentParser:
     """
@@ -151,12 +143,25 @@ def extend_arg_parser(
     Returns:
         argparse.ArgumentParser: App argument parser.
     """
+    parser.add_argument(
+        "-h",
+        "--help",
+        action="help",
+        default=argparse.SUPPRESS,
+        help="Show this help message and exit",
+    )
+
     # Add --probe purely for help (so appears in usage synopsis)
     parser.add_argument(
         "--probe",
         action="append",
         metavar="NAME[,NAME...]",
         help=f"Select IPs to profile (default: {', '.join(default_probe_names)}). List the probes supported with --probe-list",
+    )
+    parser.add_argument(
+        "--probe-list",
+        action="store_true",
+        help="List probes present on this system.",
     )
     parser.add_argument(
         "command",
@@ -205,6 +210,17 @@ def extend_arg_parser(
         probe.add_cli_arguments(parser)
 
     return parser
+
+
+def print_available_probes_table(
+    available_factories: Sequence[ProbeFactory], console: Console
+) -> None:
+    table = Table(title="Available Probes")
+    table.add_column("Probe")
+    table.add_column("Description")
+    for pf in available_factories:
+        table.add_row(pf.name(), pf.get_description())
+    console.print(table)
 
 
 def capture_command_workload(probes: List[Probe], command: List[str]) -> None:
@@ -365,7 +381,19 @@ def main(
     args, _ = parser.parse_known_args(_args)
     perf_factory.process_cli_arguments(args)
 
-    # Check for required perf privileges before doing anything
+    # Get available probe types on the system
+    available_factories = tuple(pt for pt in PROBE_FACTORY if pt.is_available())
+
+    # Early handling of --probe-list (allow listing without perf privileges)
+    list_parser = argparse.ArgumentParser(add_help=False, allow_abbrev=False)
+    list_parser.add_argument("--probe-list", action="store_true")
+    early_args, _ = list_parser.parse_known_args(_args)
+    if early_args.probe_list:
+        print(f"early args are {early_args}")
+        print_available_probes_table(available_factories, console)
+        return
+
+    # Check for required perf privileges before doing anything else
     if not perf_factory.have_perf_privilege():
         print(
             "Error: Insufficient privilege. This tool requires either perf_event_paranoid=-1, CAP_PERFMON, or CAP_SYS_ADMIN.",
@@ -373,8 +401,6 @@ def main(
         )
         sys.exit(1)
 
-    # Get available probe types on the system
-    available_factories = tuple(pt for pt in PROBE_FACTORY if pt.is_available())
     canonical_probe_names = [pf.name() for pf in available_factories]
     default_probe_names = ["CPU"]
 
@@ -383,7 +409,7 @@ def main(
     )
 
     # Extend parser with only selected probe factories
-    extend_arg_parser(parser, selected_factories, canonical_probe_names, default_probe_names)
+    extend_arg_parser(parser, selected_factories, default_probe_names)
     args = parser.parse_args(_args)
 
     logging.basicConfig(format=LOG_FORMAT, level=args.loglevel)

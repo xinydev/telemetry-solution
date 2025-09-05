@@ -188,6 +188,10 @@ class CpuProbeFactory(Base.ProbeFactory):
         """
         return True
 
+    def get_description(self) -> str:
+        """Return a short description of the CPU probe."""
+        return "Collect Top-down CPU metrics; advanced options for specification inspection and targeted capture."
+
     @staticmethod
     def _decode_sme_arg(arg: str) -> Optional[Tuple[str, List[int]]]:
         """Decode the SME (Scallable Matrix Extension) argument from the command line.
