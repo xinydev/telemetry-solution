@@ -16,8 +16,9 @@ COMBINED_STAGES: List[int] = []
 
 @dataclass
 class CpuProbeConfiguration:
-    csv: Optional[str] = None  # Path to the csv
     cpu_dump_events: Optional[Any] = None
+    cpu_generate_metrics_csv: bool = False
+    cpu_generate_events_csv: bool = False
     cpu_list_groups: bool = False
     cpu_list_metrics: bool = False
     cpu_list_events: bool = False
@@ -29,7 +30,6 @@ class CpuProbeConfiguration:
     stages: List[int] = field(default_factory=DEFAULT_ALL_STAGES.copy)
     descriptions: bool = False
     show_sample_events: bool = False
-    events_csv: Optional[str] = None
     pid_tracking_applicable: bool = False
 
 

@@ -688,6 +688,7 @@ def test_cpuprobe_constructor_initializes_state_correctly(test_telemetry_spec):
         test_telemetry_spec,
         core_indices=cores,
         capture_data=True,
+        base_csv_dir=None,
         perf_factory_instance=fake_factory,
     )
 
@@ -804,7 +805,12 @@ def test_cpuprobe_e2e_two_groups_two_cores(monkeypatch, test_telemetry_spec, tes
     factory._impl_class = FakePerfSimple
     # Construct probe
     probe = CpuProbe(
-        conf, spec, core_indices=cores, capture_data=True, perf_factory_instance=factory
+        conf,
+        spec,
+        core_indices=cores,
+        capture_data=True,
+        base_csv_dir=None,
+        perf_factory_instance=factory,
     )
 
     # Extract all the components. We want to use the same DB as the CpuProbe
@@ -932,7 +938,12 @@ def test_cpuprobe_e2e_two_groups_pid_tracking(monkeypatch, test_telemetry_spec, 
     factory._impl_class = FakePerfSimple
     # Construct probe
     probe = CpuProbe(
-        conf, spec, core_indices=cores, capture_data=True, perf_factory_instance=factory
+        conf,
+        spec,
+        core_indices=cores,
+        capture_data=True,
+        perf_factory_instance=factory,
+        base_csv_dir="fake_dir",
     )
 
     # Extract all the components. We want to use the same DB as the CpuProbe
@@ -1021,6 +1032,7 @@ def dummy_probe(mocker, test_telemetry_db):
     probe._capture_groups = list(test_telemetry_db.groups.values())
     probe.computed_metrics = {"irrelevant": "dummy"}
     probe._event_records = {}
+    probe._base_csv_dir = "fake_dir"
     return probe
 
 
@@ -1084,27 +1096,61 @@ def test_list_modes(
         dummy_probe._cli_renderer.list_groups.assert_not_called()
 
 
-def test_output_csv_calls_csv_renderer(dummy_probe):
-    dummy_probe._conf.csv = "fake_dir"
+@pytest.mark.parametrize(
+    "gen_metrics_csv, gen_events_csv",
+    [
+        (True, False),
+        (False, True),
+        (True, True),
+        (False, False),
+    ],
+)
+def test_output_csv_calls_csv_renderer(dummy_probe, gen_metrics_csv, gen_events_csv):
+    dummy_probe._conf.cpu_dump_events = None
+    dummy_probe._conf.cpu_generate_metrics_csv = gen_metrics_csv
+    dummy_probe._conf.cpu_generate_events_csv = gen_events_csv
+
     dummy_probe.output()
-    dummy_probe._csv_renderer.render_metric_groups.assert_called_once()
-    args, kwargs = dummy_probe._csv_renderer.render_metric_groups.call_args
-    # input validation of arguments
-    assert args[0] == dummy_probe.computed_metrics
-    assert args[1] == dummy_probe._capture_groups
-    assert args[2] == dummy_probe._db
-    assert args[3] == dummy_probe._conf.csv
+
+    # Assert metrics CSV rendering
+    if gen_metrics_csv:
+        dummy_probe._csv_renderer.render_metric_groups.assert_called_once()
+        args, _ = dummy_probe._csv_renderer.render_metric_groups.call_args
+        # input validation of arguments
+        assert args[0] == dummy_probe.computed_metrics
+        assert args[1] == dummy_probe._capture_groups
+        assert args[2] == dummy_probe._db
+        assert args[3] == dummy_probe._base_csv_dir + "/cpu"
+    else:
+        dummy_probe._csv_renderer.render_metric_groups.assert_not_called()
+
+    # Assert event CSV rendering
+    if gen_events_csv:
+        dummy_probe._csv_renderer.dump_events.assert_called_once()
+        args, _ = dummy_probe._csv_renderer.dump_events.call_args
+        # input validation of arguments
+        assert args[0] == dummy_probe._event_records
+        assert args[1] == dummy_probe._db
+        assert args[2] == dummy_probe._product_name
+        assert args[3] == dummy_probe._base_csv_dir + "/cpu"
+    else:
+        dummy_probe._csv_renderer.dump_events.assert_not_called()
 
 
-def test_output_cpu_dump_events(dummy_probe):
-    dummy_probe._conf.cpu_dump_events = "dump_dir"
+@pytest.mark.parametrize("gen_metrics_csv", [False, True])
+def test_output_cpu_dump_events(dummy_probe, gen_metrics_csv):
+    dummy_probe._conf.cpu_dump_events = True
+    dummy_probe._conf.cpu_generate_metrics_csv = gen_metrics_csv
+
     dummy_probe.output()
+
     dummy_probe._csv_renderer.dump_events.assert_called_once()
-    args, kwargs = dummy_probe._csv_renderer.dump_events.call_args
+    dummy_probe._csv_renderer.render_metric_groups.assert_not_called()
+    args, _ = dummy_probe._csv_renderer.dump_events.call_args
     assert args[0] == dummy_probe._event_records
     assert args[1] == dummy_probe._db
     assert args[2] == dummy_probe._product_name
-    assert args[3] == dummy_probe._conf.cpu_dump_events
+    assert args[3] == dummy_probe._base_csv_dir + "/cpu"
 
 
 @pytest.mark.parametrize("use_combined, use_node", [(True, False), (False, True), (False, False)])
@@ -1112,7 +1158,6 @@ def test_output_render_routes(dummy_probe, use_combined, use_node):
     dummy_probe._conf.cpu_list_events = False
     dummy_probe._conf.cpu_list_metrics = False
     dummy_probe._conf.cpu_list_groups = False
-    dummy_probe._conf.csv = None
     dummy_probe._conf.cpu_dump_events = None
     dummy_probe._conf.stages = COMBINED_STAGES if use_combined else [1, 2]
     dummy_probe._conf.node = "frontend_stalled_cycles" if use_node else None

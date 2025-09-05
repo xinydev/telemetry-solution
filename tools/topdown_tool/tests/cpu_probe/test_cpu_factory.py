@@ -150,11 +150,10 @@ def base_args():
     ns.cpu_stages = "all"
     ns.cpu_descriptions = False
     ns.cpu_show_sample_events = False
-    ns.cpu_csv = "dummy.csv"
-    ns.events_csv = None
-    # For process_cli_arguments error test, add interval attribute
-    ns.interval = 1
-    # Private arguments
+    ns.csv_output_path = None
+    ns.cpu_generate_metrics_csv = False
+    ns.cpu_generate_events_csv = False
+    ns.interval = None
     ns.cpu_dump_events = None
     return ns
 
@@ -311,15 +310,69 @@ def test_process_cli_arguments_invalid_spec_schema_validation_raises(
 
 
 def test_process_cli_arguments_missing_csv_raises(tmp_metrics_dir, base_args, monkeypatch):
-    # Remove cpu_csv and cpu_dump_events and provide interval to trigger error.
-    base_args.cpu_csv = None
-    base_args.events_csv = None
+    # Remove csv_output_path and provide interval to trigger error.
+    base_args.csv_output_path = None
     base_args.interval = 1
     monkeypatch.setattr(CpuProbeFactory, "METRICS_DIR", tmp_metrics_dir)
     monkeypatch.setattr(CpuProbeFactory, "SCHEMAS_DIR", tmp_schemas_dir)
     factory = CpuProbeFactory()
     with pytest.raises(ArgsError):
         factory.process_cli_arguments(base_args, cpu_detect=FakeCPUDetect)
+
+
+@pytest.mark.parametrize(
+    "flag_overrides",
+    [
+        {"cpu_dump_events": True},
+        {"cpu_generate_metrics_csv": True},
+        {"cpu_generate_events_csv": True},
+        {"cpu_generate_metrics_csv": True, "cpu_generate_events_csv": True},
+    ],
+)
+def test_process_cli_arguments_requires_csv_output_path_for_csv_flags(base_args, flag_overrides):
+    # No csv_output_path provided; any CSV-related flag must fail early
+    for k, v in flag_overrides.items():
+        setattr(base_args, k, v)
+    factory = CpuProbeFactory()
+    with pytest.raises(ArgsError):
+        factory.process_cli_arguments(base_args, cpu_detect=FakeCPUDetect)
+
+
+def test_process_cli_arguments_interval_requires_metrics_csv(base_args):
+    base_args.interval = 1
+    # metrics CSV not enabled -> should fail
+    factory = CpuProbeFactory()
+    with pytest.raises(ArgsError):
+        factory.process_cli_arguments(base_args, cpu_detect=FakeCPUDetect)
+
+
+def test_process_cli_arguments_valid_csv_combinations(
+    tmp_metrics_dir, tmp_schemas_dir, base_args, monkeypatch
+):
+    # Case A: metrics CSV with interval and path
+    monkeypatch.setattr(CpuProbeFactory, "METRICS_DIR", tmp_metrics_dir)
+    monkeypatch.setattr(CpuProbeFactory, "SCHEMAS_DIR", tmp_schemas_dir)
+    base_args_a = argparse.Namespace(**vars(base_args))
+    base_args_a.cpu_generate_metrics_csv = True
+    base_args_a.csv_output_path = "out"
+    base_args_a.interval = 1
+    base_args_a.core = [0]
+    factory = CpuProbeFactory()
+    assert factory.process_cli_arguments(base_args_a, cpu_detect=FakeCPUDetect) in (True, False)
+
+    # Case B: events CSV with path (no interval required)
+    base_args_b = argparse.Namespace(**vars(base_args))
+    base_args_b.cpu_generate_events_csv = True
+    base_args_b.csv_output_path = "out"
+    base_args_b.core = [0]
+    assert factory.process_cli_arguments(base_args_b, cpu_detect=FakeCPUDetect) in (True, False)
+
+    # Case C: dump events with path
+    base_args_c = argparse.Namespace(**vars(base_args))
+    base_args_c.cpu_dump_events = True
+    base_args_c.csv_output_path = "out"
+    base_args_c.core = [0]
+    assert factory.process_cli_arguments(base_args_c, cpu_detect=FakeCPUDetect) in (True, False)
 
 
 def test_create_method(monkeypatch, tmp_metrics_dir, tmp_schemas_dir, base_args):
@@ -330,7 +383,8 @@ def test_create_method(monkeypatch, tmp_metrics_dir, tmp_schemas_dir, base_args)
     # Prepare args
     base_args.core = [0]
     base_args.interval = 1
-    base_args.cpu_csv = "dummy.csv"
+    base_args.csv_output_path = "dummy"
+    base_args.cpu_generate_metrics_csv = True
 
     # NEW: Use the generator to create a dummy SME telemetry spec.
     sme_spec = generate_fake_spec(
@@ -354,7 +408,7 @@ def test_create_method(monkeypatch, tmp_metrics_dir, tmp_schemas_dir, base_args)
     # Prepare a list to record CpuProbe constructor calls.
     calls = []
 
-    def fake_CpuProbe(conf, spec, cores, capture_data, perf_class):
+    def fake_CpuProbe(conf, spec, cores, capture_data, base_csv_dir, perf_class):
         calls.append(
             {
                 "conf": conf,
@@ -498,8 +552,9 @@ def test_complex_probe_creation(monkeypatch, tmp_path):
     base_args.cpu_stages = "all"
     base_args.cpu_descriptions = False
     base_args.cpu_show_sample_events = False
-    base_args.cpu_csv = "dummy.csv"
-    base_args.events_csv = None
+    base_args.csv_output_path = "dummy"
+    base_args.cpu_generate_metrics_csv = True
+    base_args.cpu_generate_events_csv = False
     base_args.interval = 1
     base_args.cpu_dump_events = None
 
@@ -523,7 +578,7 @@ def test_complex_probe_creation(monkeypatch, tmp_path):
     # Patch CpuProbe to capture creation calls.
     calls = []
 
-    def fake_CpuProbe(conf, spec, cores, capture_data, perf_class):
+    def fake_CpuProbe(conf, spec, cores, capture_data, base_csv_dir, perf_class):
         calls.append({"spec": spec, "cores": cores})
         return object()
 
@@ -560,8 +615,9 @@ def test_perf_factory_integration(
     base_args.perf_path = "/custom/perf"
     base_args.perf_args = "--custom-flag"
     base_args.interval = 500
-    base_args.cpu_csv = "out/"
     base_args.cpu_dump_events = None
+    base_args.csv_output_path = "out/"
+    base_args.cpu_generate_metrics_csv = True
     base_args.cpu_stages = DEFAULT_ALL_STAGES
     base_args.cpu_collect_by = CollectBy.METRIC
 
@@ -581,7 +637,7 @@ def test_perf_factory_integration(
     # Capture the Perf args passed into CpuProbe
     captured = {}
 
-    def fake_CpuProbe(conf, spec, cores, capture_data, perf_factory_instance):
+    def fake_CpuProbe(conf, spec, cores, capture_data, base_csv_dir, perf_factory_instance):
         captured["perf_path"] = perf_factory_instance._perf_path
         captured["perf_args"] = perf_factory_instance._perf_args
         captured["interval"] = perf_factory_instance._interval

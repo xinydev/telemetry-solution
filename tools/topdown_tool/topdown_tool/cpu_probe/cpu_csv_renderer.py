@@ -70,18 +70,19 @@ class CpuCsvRenderer:
         output_dir: str,
     ) -> None:
         # Ensure output directory exists.
-        os.makedirs(output_dir, exist_ok=True)
+        os.makedirs(output_dir, 0o755, True)
+        product_name = db.product_name.lower().replace(" ", "_").replace("-", "_")
 
         for loc, time_dict in computed_metrics.items():
             # Determine filename based on PerfRecordLocation type.
             if isinstance(loc, Cpu):
-                filename = f"core_{loc.id}.csv"
+                filename = f"{product_name}_core_{loc.id}_metrics.csv"
             elif isinstance(loc, CpuAggregate):
                 # Use range_encode to encode the aggregate CPU ids.
                 cpu_range = range_encode([cpu.id for cpu in loc.cpus])
-                filename = f"aggregate_({cpu_range}).csv"
+                filename = f"{product_name}_aggregate_({cpu_range})_metrics.csv"
             elif isinstance(loc, Uncore):
-                filename = "results.csv"
+                filename = f"{product_name}_metrics.csv"
             else:
                 continue
 
@@ -144,16 +145,16 @@ class CpuCsvRenderer:
         product_name: str,
         output_dir: str,
     ) -> None:
-        os.makedirs(output_dir, exist_ok=True)
+        os.makedirs(output_dir, 0o755, True)
         for loc, events_values_for_core in event_records.items():
             if isinstance(loc, Cpu):
-                core_id = f"{loc.id}"
-                filename = f"{product_name.lower().replace(' ', '_')}_core_{core_id}.csv"
+                core_id = f"core_{loc.id}"
+                filename = f"{product_name.lower().replace(' ', '_')}_{core_id}_events.csv"
             elif isinstance(loc, CpuAggregate):
                 core_id = f"aggregate_({range_encode([cpu.id for cpu in loc.cpus])})"
-                filename = f"{product_name.lower().replace(' ', '_')}_core_{core_id}.csv"
+                filename = f"{product_name.lower().replace(' ', '_')}_core_{core_id}_events.csv"
             elif isinstance(loc, Uncore):
-                filename = f"{product_name.lower().replace(' ', '_')}_results.csv"
+                filename = f"{product_name.lower().replace(' ', '_')}_events.csv"
             else:
                 continue
 

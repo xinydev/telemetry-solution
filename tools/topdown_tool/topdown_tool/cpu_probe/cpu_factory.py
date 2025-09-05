@@ -313,7 +313,12 @@ class CpuProbeFactory(Base.ProbeFactory):
             action="store_true",
             help="Show sample events for metrics",
         )
-        argument_group.add_argument("--cpu-csv", help="Output directory for metric CSV data")
+        argument_group.add_argument(
+            "--cpu-generate-metrics-csv", action="store_true", help="Save CSV metric data"
+        )
+        argument_group.add_argument(
+            "--cpu-generate-events-csv", action="store_true", help="Save CSV event data"
+        )
         argument_group.add_argument("--cpu-dump-events", help=argparse.SUPPRESS)
 
     def process_cli_arguments(
@@ -335,9 +340,17 @@ class CpuProbeFactory(Base.ProbeFactory):
             ArgsError: If required argument combinations are missing.
         """
         conf = self._conf
-        conf.csv = args.cpu_csv
         conf.cpu_dump_events = args.cpu_dump_events
-        if args.interval is not None and conf.csv is None and conf.cpu_dump_events is None:
+        conf.cpu_generate_metrics_csv = args.cpu_generate_metrics_csv
+        conf.cpu_generate_events_csv = args.cpu_generate_events_csv
+        require_csv_path_flags = [
+            conf.cpu_dump_events,
+            conf.cpu_generate_metrics_csv,
+            conf.cpu_generate_events_csv,
+        ]
+        if args.csv_output_path is None and any(require_csv_path_flags):
+            raise ArgsError("CSV output path must be specified with --csv-output-path")
+        if args.interval is not None and not conf.cpu_generate_metrics_csv:
             raise ArgsError("Must use interval option with CSV option")
         conf.cpu_list_groups = args.cpu_list_groups
         conf.cpu_list_metrics = args.cpu_list_metrics
@@ -350,7 +363,6 @@ class CpuProbeFactory(Base.ProbeFactory):
         conf.stages = args.cpu_stages
         conf.descriptions = args.cpu_descriptions
         conf.show_sample_events = args.cpu_show_sample_events
-        conf.events_csv = args.events_csv
 
         # Update CPU core mapping based on provided or default core list.
         self._update_midr_cpu_core_map(args, cpu_detect)
@@ -472,10 +484,12 @@ class CpuProbeFactory(Base.ProbeFactory):
             )
         get_console().print(table)
 
+    # pylint: disable=too-many-arguments, too-many-positional-arguments
     def create(
         self,
         args: argparse.Namespace,
         capture_data: bool = True,
+        base_csv_dir: Optional[str] = None,
         perf_factory_instance: "PerfFactory" = perf_factory,
         cpu_detect: Type[CPUDetect] = CPUDetect,
     ) -> Tuple["CpuProbe", ...]:
@@ -509,7 +523,14 @@ class CpuProbeFactory(Base.ProbeFactory):
 
             if spec is not None:
                 cpu_probes.append(
-                    CpuProbe(self._conf, spec, locations, capture_data, perf_factory_instance)
+                    CpuProbe(
+                        self._conf,
+                        spec,
+                        locations,
+                        capture_data,
+                        base_csv_dir,
+                        perf_factory_instance,
+                    )
                 )
 
         # Create additional CpuProbe instances for SME elements if specified.
@@ -522,6 +543,7 @@ class CpuProbeFactory(Base.ProbeFactory):
                         cme_desc,
                         cme[1],
                         capture_data,
+                        base_csv_dir,
                         perf_factory_instance,
                     )
                 )

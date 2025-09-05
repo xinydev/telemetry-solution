@@ -19,6 +19,7 @@ if __name__ == "__main__" and not __package__:
 import argparse
 import logging
 
+from datetime import datetime
 from typing import Iterable, List, Optional, Sequence, Set
 
 from rich import get_console
@@ -172,7 +173,7 @@ def build_arg_parser(
         action="store_true",
         help="Enable detailed exception traceback output",
     )
-    output_group.add_argument("--events-csv", help="Output directory for events CSV data")
+    output_group.add_argument("--csv-output-path", help="Output directory for CSV data")
 
     # Add general perf options
     perf_arg_group = parser.add_argument_group("General perf capture options")
@@ -313,10 +314,12 @@ def capture_pid_workload(probes: List[Probe], pids: Set[int]) -> None:
                     probe.stop_capture(run, pid, interrupted)
 
 
-# pylint: disable=too-many-branches, too-many-statements
+# pylint: disable=too-many-branches, too-many-statements, too-many-locals
 def main(
     _args: Optional[Sequence[str]] = None,
 ) -> None:
+    topdown_tool_start_time = datetime.now()
+
     console = get_console()
 
     # Check for required perf privileges before doing anything
@@ -394,11 +397,22 @@ def main(
             exception=e, log_warning_str=get_warning_text(factory), print_additional_error_str=True
         )
 
+    # Create directory for CSV output if needed
+    base_csv_dir: Optional[str] = None
+    if args.csv_output_path is not None:
+        base_csv_dir = os.path.join(
+            args.csv_output_path, topdown_tool_start_time.strftime("%Y_%m_%d_%H_%M_%S")
+        )
+        try:
+            os.makedirs(base_csv_dir, 0o755, True)
+        except Exception:  # pylint: disable=broad-exception-caught
+            console.print(f"Failed to create base CSV path {base_csv_dir}")
+
     # Create probes for capture or querying information
     probes: List[Probe] = []
     try:
         for factory in selected_factories:
-            probes.extend(factory.create(args, capture_data))
+            probes.extend(factory.create(args, capture_data, base_csv_dir))
     except Exception as e:  # pylint: disable=broad-exception-caught
         handle_exception(
             exception=e, log_warning_str=get_warning_text(factory), print_additional_error_str=True

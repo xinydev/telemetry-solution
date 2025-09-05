@@ -53,7 +53,8 @@ def test_write_csv_without_aggregate(tmp_path, db, cpu_csv_renderer, regen_refer
     out_dir.mkdir()
     cpu_csv_renderer.render_metric_groups(computed_metrics, capture_groups, db, str(out_dir))
 
-    out_path = out_dir / "core_0.csv"
+    out_path = out_dir / "testcpu_core_0_metrics.csv"
+
     actual_csv = read_file_str(out_path)
     reference_path = get_fixture_path("cpu_csv_renderer", "write_csv_without_aggregate.csv")
     compare_reference(actual_csv, reference_path, regen_reference_mode)
@@ -77,7 +78,7 @@ def test_write_csv_with_core_and_aggregate(tmp_path, db, cpu_csv_renderer, regen
     cpu_csv_renderer.render_metric_groups(computed_metrics, capture_groups, db, str(out_dir))
 
     # Check core file
-    path_core = out_dir / "core_0.csv"
+    path_core = out_dir / "testcpu_core_0_metrics.csv"
     actual_core = read_file_str(path_core)
     reference_core = get_fixture_path(
         "cpu_csv_renderer", "write_csv_with_core_and_aggregate_core_0.csv"
@@ -85,11 +86,11 @@ def test_write_csv_with_core_and_aggregate(tmp_path, db, cpu_csv_renderer, regen
     compare_reference(actual_core, reference_core, regen_reference_mode)
 
     # Check aggregate file (ids 0,1)
-    agg_filename = f"aggregate_({range_encode([0, 1])}).csv"
+    agg_filename = f"testcpu_aggregate_({range_encode([0, 1])})_metrics.csv"
     path_agg = out_dir / agg_filename
     actual_agg = read_file_str(path_agg)
     reference_agg = get_fixture_path(
-        "cpu_csv_renderer", f"write_csv_with_core_and_aggregate_{agg_filename}"
+        "cpu_csv_renderer", "write_csv_with_core_and_aggregate_aggregate_(0-1).csv"
     )
     compare_reference(actual_agg, reference_agg, regen_reference_mode)
 
@@ -113,7 +114,7 @@ def test_write_csv_with_intervals(tmp_path, db, cpu_csv_renderer, regen_referenc
     out_dir.mkdir()
     cpu_csv_renderer.render_metric_groups(computed_metrics, capture_groups, db, str(out_dir))
 
-    path = out_dir / "core_0.csv"
+    path = out_dir / "testcpu_core_0_metrics.csv"
     actual_csv = read_file_str(path)
     reference_path = get_fixture_path("cpu_csv_renderer", "write_csv_with_intervals.csv")
     compare_reference(actual_csv, reference_path, regen_reference_mode)
@@ -133,7 +134,7 @@ def test_deep_topdown_tree_levels(tmp_path, db, cpu_csv_renderer, regen_referenc
     out_dir.mkdir()
     cpu_csv_renderer.render_metric_groups(computed_metrics, capture_groups, db, str(out_dir))
 
-    path = out_dir / "core_0.csv"
+    path = out_dir / "testcpu_core_0_metrics.csv"
     actual_csv = read_file_str(path)
     reference_path = get_fixture_path("cpu_csv_renderer", "deep_topdown_tree_levels.csv")
     compare_reference(actual_csv, reference_path, regen_reference_mode)
@@ -153,7 +154,7 @@ def test_metrics_in_multiple_groups(tmp_path, db, cpu_csv_renderer, regen_refere
     out_dir.mkdir()
     cpu_csv_renderer.render_metric_groups(computed_metrics, capture_groups, db, str(out_dir))
 
-    path = out_dir / "core_0.csv"
+    path = out_dir / "testcpu_core_0_metrics.csv"
     actual_csv = read_file_str(path)
     reference_path = get_fixture_path("cpu_csv_renderer", "metrics_in_multiple_groups.csv")
     compare_reference(actual_csv, reference_path, regen_reference_mode)
@@ -172,7 +173,7 @@ def test_groups_outside_stage1_and_stage2(tmp_path, db, cpu_csv_renderer, regen_
     out_dir.mkdir()
     cpu_csv_renderer.render_metric_groups(computed_metrics, capture_groups, db, str(out_dir))
 
-    path = out_dir / "core_0.csv"
+    path = out_dir / "testcpu_core_0_metrics.csv"
     actual_csv = read_file_str(path)
     reference_path = get_fixture_path("cpu_csv_renderer", "groups_outside_stage1_and_stage2.csv")
     compare_reference(actual_csv, reference_path, regen_reference_mode)
@@ -191,7 +192,7 @@ def test_missing_values(tmp_path, db, cpu_csv_renderer, regen_reference_mode):
     out_dir.mkdir()
     cpu_csv_renderer.render_metric_groups(computed_metrics, capture_groups, db, str(out_dir))
 
-    path = out_dir / "core_0.csv"
+    path = out_dir / "testcpu_core_0_metrics.csv"
     actual_csv = read_file_str(path)
     reference_path = get_fixture_path("cpu_csv_renderer", "missing_values.csv")
     compare_reference(actual_csv, reference_path, regen_reference_mode)
@@ -211,7 +212,7 @@ def test_groupview_handling(tmp_path, db, cpu_csv_renderer, regen_reference_mode
     out_dir.mkdir()
     cpu_csv_renderer.render_metric_groups(computed_metrics, capture_groups, db, str(out_dir))
 
-    path = out_dir / "core_0.csv"
+    path = out_dir / "testcpu_core_0_metrics.csv"
     actual_csv = read_file_str(path)
     reference_path = get_fixture_path("cpu_csv_renderer", "groupview_handling.csv")
     compare_reference(actual_csv, reference_path, regen_reference_mode)
@@ -230,7 +231,7 @@ def test_write_csv_pid_tracking(tmp_path, db, cpu_csv_renderer, regen_reference_
     out_dir.mkdir()
     cpu_csv_renderer.render_metric_groups(computed_metrics, capture_groups, db, str(out_dir))
 
-    out_path = out_dir / "results.csv"
+    out_path = out_dir / f"{db.product_name.lower()}_metrics.csv"
     actual_csv = read_file_str(out_path)
     reference_path = get_fixture_path("cpu_csv_renderer_pid_tracking", "write_csv.csv")
     compare_reference(actual_csv, reference_path, regen_reference_mode)
@@ -257,7 +258,7 @@ def test_write_csv_with_intervals_pid_tracking(
     out_dir.mkdir()
     cpu_csv_renderer.render_metric_groups(computed_metrics, capture_groups, db, str(out_dir))
 
-    path = out_dir / "results.csv"
+    path = out_dir / f"{db.product_name.lower()}_metrics.csv"
     actual_csv = read_file_str(path)
     reference_path = get_fixture_path(
         "cpu_csv_renderer_pid_tracking", "write_csv_with_intervals.csv"
@@ -281,7 +282,7 @@ def test_deep_topdown_tree_levels_pid_tracking(
     out_dir.mkdir()
     cpu_csv_renderer.render_metric_groups(computed_metrics, capture_groups, db, str(out_dir))
 
-    path = out_dir / "results.csv"
+    path = out_dir / f"{db.product_name.lower()}_metrics.csv"
     actual_csv = read_file_str(path)
     reference_path = get_fixture_path(
         "cpu_csv_renderer_pid_tracking", "deep_topdown_tree_levels.csv"
@@ -305,7 +306,7 @@ def test_metrics_in_multiple_groups_pid_tracking(
     out_dir.mkdir()
     cpu_csv_renderer.render_metric_groups(computed_metrics, capture_groups, db, str(out_dir))
 
-    path = out_dir / "results.csv"
+    path = out_dir / f"{db.product_name.lower()}_metrics.csv"
     actual_csv = read_file_str(path)
     reference_path = get_fixture_path(
         "cpu_csv_renderer_pid_tracking", "metrics_in_multiple_groups.csv"
@@ -328,7 +329,7 @@ def test_groups_outside_stage1_and_stage2_pid_tracking(
     out_dir.mkdir()
     cpu_csv_renderer.render_metric_groups(computed_metrics, capture_groups, db, str(out_dir))
 
-    path = out_dir / "results.csv"
+    path = out_dir / f"{db.product_name.lower()}_metrics.csv"
     actual_csv = read_file_str(path)
     reference_path = get_fixture_path(
         "cpu_csv_renderer_pid_tracking", "groups_outside_stage1_and_stage2.csv"
@@ -349,7 +350,7 @@ def test_missing_values_pid_tracking(tmp_path, db, cpu_csv_renderer, regen_refer
     out_dir.mkdir()
     cpu_csv_renderer.render_metric_groups(computed_metrics, capture_groups, db, str(out_dir))
 
-    path = out_dir / "results.csv"
+    path = out_dir / f"{db.product_name.lower()}_metrics.csv"
     actual_csv = read_file_str(path)
     reference_path = get_fixture_path("cpu_csv_renderer_pid_tracking", "missing_values.csv")
     compare_reference(actual_csv, reference_path, regen_reference_mode)
@@ -369,7 +370,7 @@ def test_groupview_handling_pid_tracking(tmp_path, db, cpu_csv_renderer, regen_r
     out_dir.mkdir()
     cpu_csv_renderer.render_metric_groups(computed_metrics, capture_groups, db, str(out_dir))
 
-    path = out_dir / "results.csv"
+    path = out_dir / f"{db.product_name.lower()}_metrics.csv"
     actual_csv = read_file_str(path)
     reference_path = get_fixture_path("cpu_csv_renderer_pid_tracking", "groupview_handling.csv")
     compare_reference(actual_csv, reference_path, regen_reference_mode)

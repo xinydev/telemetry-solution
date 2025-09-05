@@ -148,7 +148,9 @@ class ProbeFactory(ABC):
         raise NotImplementedError("Use derived class")
 
     @abstractmethod
-    def create(self, args: argparse.Namespace, capture_data: bool) -> Tuple["Probe", ...]:
+    def create(
+        self, args: argparse.Namespace, capture_data: bool, base_csv_dir: Optional[str]
+    ) -> Tuple["Probe", ...]:
         """Create probe instance(s) based on the CLI arguments and capture flag.
 
         Args:

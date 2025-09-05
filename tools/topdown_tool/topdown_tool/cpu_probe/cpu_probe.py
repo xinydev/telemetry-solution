@@ -11,6 +11,7 @@ supporting use cases such as system-wide performance data capture and detailed m
 """
 
 import re
+from os.path import join
 from typing import (
     Any,
     Dict,
@@ -84,6 +85,7 @@ class CpuProbe(Base.Probe):
         spec: TelemetrySpecification,
         core_indices: List[int],
         capture_data: bool,
+        base_csv_dir: Optional[str],
         perf_factory_instance: "PerfFactory" = perf_factory,
     ):
         """Initializes a CpuProbe instance.
@@ -109,6 +111,7 @@ class CpuProbe(Base.Probe):
         self._pid_tracking: bool = False
         self._perf_instance: Optional[Perf] = None
         self._capture_data: bool = capture_data
+        self._base_csv_dir: Optional[str] = base_csv_dir
 
         self._db: TelemetryDatabase = TelemetryDatabase(spec)
 
@@ -446,18 +449,26 @@ class CpuProbe(Base.Probe):
         if not self._capture_data:
             return
 
-        if self._conf.cpu_dump_events is not None:
+        if self._conf.cpu_generate_events_csv or self._conf.cpu_dump_events:
+            assert self._base_csv_dir is not None
             self._csv_renderer.dump_events(
-                self._event_records,
-                self._db,
-                self._product_name,
-                self._conf.cpu_dump_events,
+                self._event_records, self._db, self._product_name, join(self._base_csv_dir, "cpu")
             )
-        elif self._conf.csv:
+
+        # Bail early if only the events had to be captured
+        if self._conf.cpu_dump_events:
+            return
+
+        if self._conf.cpu_generate_metrics_csv:
+            assert self._base_csv_dir is not None
             self._csv_renderer.render_metric_groups(
-                self.computed_metrics, self._capture_groups, self._db, self._conf.csv
+                self.computed_metrics,
+                self._capture_groups,
+                self._db,
+                join(self._base_csv_dir, "cpu"),
             )
-        elif self._conf.stages is COMBINED_STAGES or self._conf.node is not None:
+
+        if self._conf.stages is COMBINED_STAGES or self._conf.node is not None:
             self._cli_renderer.render_metrics_tree(
                 self.computed_metrics,
                 self._conf.descriptions,
