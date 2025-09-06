@@ -359,6 +359,8 @@ class CpuProbeFactory(Base.ProbeFactory):
         # List detected CPUs if the --cpu-list argument was specified.
         self._list_cpus(args, cpu_detect)  # Kind of hacky to have it here.
 
+        conf.pid_tracking_applicable = len(self._midr_core_map) == 1 and args.core is None
+
         return not (
             args.cpu_list or args.cpu_list_groups or args.cpu_list_metrics or args.cpu_list_events
         )

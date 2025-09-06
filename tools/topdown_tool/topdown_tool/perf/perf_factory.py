@@ -41,6 +41,7 @@ class PerfFactory:
         events_groups: Sequence[PerfEventGroup],
         output_filename: str,
         cores: Optional[Sequence[int]] = None,
+        pid: Optional[int] = None,
     ) -> Perf:
         """
         Create a Perf instance using the resolved platform-specific class.
@@ -49,6 +50,7 @@ class PerfFactory:
             events_groups: Sequence of grouped performance events to monitor.
             output_filename: Base output file path for perf statistics.
             cores: Optional list of CPU core indices to record data on.
+            pid: Optional process id to measure.
 
         Returns:
             A fully initialized Perf object (LinuxPerf or WindowsPerf).
@@ -57,6 +59,7 @@ class PerfFactory:
             events_groups,
             output_filename,
             cores,
+            pid,
             perf_path=self._perf_path,
             perf_args=self._perf_args,
             interval=self._interval,

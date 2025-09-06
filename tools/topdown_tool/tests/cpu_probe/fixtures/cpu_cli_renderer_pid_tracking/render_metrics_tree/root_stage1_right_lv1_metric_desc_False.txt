@@ -1,0 +1,16 @@
+CPU TestCPU topdown
+└── Topdown metrics
+    └── Stage1 - right branch - level 1 metric - title (stage1_right_lv1_metric)
+        ├── ┏━━━━━━━━━┳━━━━━━┓
+        │   ┃ Value   ┃ Unit ┃
+        │   ┡━━━━━━━━━╇━━━━━━┩
+        │   │ 621.000 │ u7   │
+        │   └─────────┴──────┘
+        └── Stage2 - Group1 - title (stage2_group1)
+            └── ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┓
+                ┃ Metric                            ┃ Value   ┃ Unit ┃
+                ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━┩
+                │ Shared Metric 1 - title           │ 633.000 │ u6   │
+                │ Stage2 - Group1 - Metric1 - title │ 631.000 │ u8   │
+                │ Stage2 - Group1 - Metric2 - title │ 632.000 │ u4   │
+                └───────────────────────────────────┴─────────┴──────┘

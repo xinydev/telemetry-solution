@@ -8,7 +8,7 @@ from typing import Any, Dict, Generic, TypeVar
 from topdown_tool.cpu_probe.cpu_probe import CpuProbe
 from topdown_tool.cpu_probe.common import CpuAggregate, CpuProbeConfiguration
 from topdown_tool.perf.event_scheduler import CollectBy, EventScheduler
-from topdown_tool.perf import Cpu, PerfFactory
+from topdown_tool.perf import Cpu, PerfFactory, Uncore
 from topdown_tool.cpu_probe.cpu_telemetry_database import Event, TelemetryDatabase
 from topdown_tool.cpu_probe.common import COMBINED_STAGES
 
@@ -181,6 +181,67 @@ def metrics_fixture_with_timestamp(test_telemetry_db):
 
 
 @pytest.fixture
+def metrics_fixture_with_timestamp_pid_tracking(test_telemetry_db):
+    groupA = test_telemetry_db.groups["topdown_root_group"]
+    groupB = test_telemetry_db.groups["stage2_group2"]
+    uncore = Uncore()
+    timestamp1 = 123.0
+    timestamp2 = 234.0
+
+    # Events as tuples of Event objects from db, not strings:
+    perf_records: Dict[Any, Any] = {
+        uncore: {
+            timestamp1: {
+                test_telemetry_db.metrics["root_metric1"].events: (12.0,),
+                test_telemetry_db.metrics["root_metric2"].events: (101.0, 102.0),
+                test_telemetry_db.metrics["shared_metric1"].events: (3.0, 9.0, 6.0),
+                test_telemetry_db.metrics["stage_2_group2_metric1"].events: (7.0, 2.0),
+                test_telemetry_db.metrics["shared_metric2"].events: (5.0, 8.0),
+            },
+            timestamp2: {
+                test_telemetry_db.metrics["root_metric1"].events: (111.0,),
+                test_telemetry_db.metrics["root_metric2"].events: (1101.0, 1102.0),
+                test_telemetry_db.metrics["shared_metric1"].events: (13.0, 19.0, 16.0),
+                test_telemetry_db.metrics["stage_2_group2_metric1"].events: (
+                    17.0,
+                    12.0,
+                ),
+                test_telemetry_db.metrics["shared_metric2"].events: (15.0, 18.0),
+            },
+        },
+    }
+
+    expected: Dict[Any, Any] = {
+        uncore: {
+            timestamp1: {
+                groupA: {
+                    test_telemetry_db.metrics["root_metric1"]: 12.0,
+                    test_telemetry_db.metrics["root_metric2"]: 101.0 + 102.0,
+                    test_telemetry_db.metrics["shared_metric1"]: 9.0 + 3.0 - 6.0,
+                },
+                groupB: {
+                    test_telemetry_db.metrics["stage_2_group2_metric1"]: 7.0 * 2.0,
+                    test_telemetry_db.metrics["shared_metric2"]: 5.0 + 8.0,
+                },
+            },
+            timestamp2: {
+                groupA: {
+                    test_telemetry_db.metrics["root_metric1"]: 111.0,
+                    test_telemetry_db.metrics["root_metric2"]: 1101.0 + 1102.0,
+                    test_telemetry_db.metrics["shared_metric1"]: 19.0 + 13.0 - 16.0,
+                },
+                groupB: {
+                    test_telemetry_db.metrics["stage_2_group2_metric1"]: 17.0 * 12.0,
+                    test_telemetry_db.metrics["shared_metric2"]: 15.0 + 18.0,
+                },
+            },
+        },
+    }
+
+    return {"groups": [groupA, groupB], "records": perf_records, "expected": expected}
+
+
+@pytest.fixture
 def metrics_fixture_without_timestamp(test_telemetry_db):
     groupA = test_telemetry_db.groups["topdown_root_group"]
     groupB = test_telemetry_db.groups["stage2_group2"]
@@ -202,6 +263,44 @@ def metrics_fixture_without_timestamp(test_telemetry_db):
     }
     expected = {
         cpuagg: {
+            None: {
+                groupA: {
+                    test_telemetry_db.metrics["root_metric1"]: 50.0,
+                    test_telemetry_db.metrics["root_metric2"]: 5.0 + 3.0,
+                    test_telemetry_db.metrics["shared_metric1"]: 13.0 + 8.0 - 1.0,
+                },
+                groupB: {
+                    test_telemetry_db.metrics["stage_2_group2_metric1"]: 4.0 * 9.0,
+                    test_telemetry_db.metrics["shared_metric2"]: None,
+                },
+            }
+        }
+    }
+    return {"groups": [groupA, groupB], "records": perf_records, "expected": expected}
+
+
+@pytest.fixture
+def metrics_fixture_without_timestamp_pid_tracking(test_telemetry_db):
+    groupA = test_telemetry_db.groups["topdown_root_group"]
+    groupB = test_telemetry_db.groups["stage2_group2"]
+    uncore = Uncore()
+    # Fixed test values, different from timestamp one
+    perf_records = {
+        uncore: {
+            None: {
+                test_telemetry_db.metrics["root_metric1"].events: (50.0,),
+                test_telemetry_db.metrics["root_metric2"].events: (5.0, 3.0),
+                test_telemetry_db.metrics["shared_metric1"].events: (8.0, 13.0, 1.0),
+                test_telemetry_db.metrics["stage_2_group2_metric1"].events: (4.0, 9.0),
+                test_telemetry_db.metrics["shared_metric2"].events: (
+                    None,
+                    10.0,
+                ),  # test None propagation
+            }
+        }
+    }
+    expected = {
+        uncore: {
             None: {
                 groupA: {
                     test_telemetry_db.metrics["root_metric1"]: 50.0,
@@ -435,6 +534,7 @@ def test_update_aggregate(monkeypatch, fixture_builder):
     probe = object.__new__(CpuProbe)
     probe._event_records = dict(event_records)  # Copy so we can insert below
     probe._cores = [cpu.id for cpu in event_records.keys()]
+    probe._pid_tracking = False
     Scheduler = types.SimpleNamespace
     probe._event_scheduler = Scheduler(optimized_event_groups=recorded_groups)
     # Act
@@ -506,7 +606,12 @@ def test_compute_metric_with_shared_metric1(
 
 @pytest.mark.parametrize(
     "fixture_name",
-    ["metrics_fixture_with_timestamp", "metrics_fixture_without_timestamp"],
+    [
+        "metrics_fixture_with_timestamp",
+        "metrics_fixture_with_timestamp_pid_tracking",
+        "metrics_fixture_without_timestamp",
+        "metrics_fixture_without_timestamp_pid_tracking",
+    ],
 )
 def test_compute_metrics_explicit_cases(test_telemetry_db, mocker, request, fixture_name):
     # Load the explicit fixture
@@ -802,6 +907,90 @@ def test_cpuprobe_e2e_two_groups_two_cores(monkeypatch, test_telemetry_spec, tes
                     gB.metrics[0]: 77.0,  # 7.0 + 70.0
                     gB.metrics[1]: 187.0,  # 17.0 + 170.0
                     gB.metrics[2]: 253.0,  # 23.0 + 230.0
+                },
+            },
+        },
+    }
+
+    # Compare complete structure
+    assert probe.computed_metrics == expected
+
+
+def test_cpuprobe_e2e_two_groups_pid_tracking(monkeypatch, test_telemetry_spec, test_telemetry_db):
+
+    spec = test_telemetry_spec
+    conf = CpuProbeConfiguration()
+    conf.metric_group = ["topdown_root_group", "freestanding_group"]
+    conf.collect_by = CollectBy.METRIC
+    conf.multiplex = False
+    cores = [0]
+
+    monkeypatch.setattr("topdown_tool.cpu_probe.cpu_probe.EventScheduler", FakeSchedulerSimple)
+
+    monkeypatch.setattr("topdown_tool.cpu_probe.cpu_probe.Perf", FakePerfSimple)
+    factory = PerfFactory()
+    factory._impl_class = FakePerfSimple
+    # Construct probe
+    probe = CpuProbe(
+        conf, spec, core_indices=cores, capture_data=True, perf_factory_instance=factory
+    )
+
+    # Extract all the components. We want to use the same DB as the CpuProbe
+    db = probe._db
+
+    gA = db.groups["topdown_root_group"]
+    gB = db.groups["freestanding_group"]
+    uncore = Uncore()
+
+    # Hardcode PerfSimple return for each run
+    # Chunk 1: topdown_root_group
+    # Chunk 2: freestanding_group
+    evt = db.events
+    FakePerfSimple.results_queue = [
+        # Chunk for gA
+        {
+            uncore: {
+                None: {
+                    (evt["evt1"],): (1.0,),
+                    (evt["evt2"], evt["evt3"]): (2.0, 3.0),
+                    (evt["evt12"], evt["evt3"], evt["evt7"]): (4.0, 5.0, 6.0),
+                }
+            },
+        },
+        # Chunk for gB
+        {
+            uncore: {
+                None: {
+                    (evt["evt10"],): (7.0,),
+                    (evt["evt10"], evt["evt11"]): (8.0, 9.0),
+                    (evt["evt8"], evt["evt9"]): (11.0, 12.0),
+                }
+            },
+        },
+    ]
+
+    # Step through capture for 2 groups/chunks
+    assert probe.need_capture()
+    probe.start_capture(run=1, pids=10)
+    probe.stop_capture(run=1, pid=10)
+    assert probe.need_capture()
+    probe.start_capture(run=2, pids=20)
+    probe.stop_capture(run=2, pid=20)
+    assert not probe.need_capture()
+
+    # Full expected structure, including aggregate (sums)
+    expected = {
+        uncore: {
+            None: {
+                gA: {
+                    gA.metrics[0]: 1.0,
+                    gA.metrics[1]: 5.0,
+                    gA.metrics[2]: 3.0,
+                },
+                gB: {
+                    gB.metrics[0]: 7.0,
+                    gB.metrics[1]: 17.0,
+                    gB.metrics[2]: 23.0,
                 },
             },
         },

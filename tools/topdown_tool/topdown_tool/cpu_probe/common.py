@@ -30,6 +30,7 @@ class CpuProbeConfiguration:
     descriptions: bool = False
     show_sample_events: bool = False
     events_csv: Optional[str] = None
+    pid_tracking_applicable: bool = False
 
 
 @dataclass(frozen=True, order=True)

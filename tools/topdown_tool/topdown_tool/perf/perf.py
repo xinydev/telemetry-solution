@@ -70,7 +70,7 @@ class PerfRecordLocation:
     """Base data class for a recording location (e.g. a CPU core or uncore component)."""
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, order=True)
 class Uncore(PerfRecordLocation):
     """Data class representing uncore performance monitoring units."""
 
@@ -118,6 +118,7 @@ class Perf(ABC):
         events_groups: Sequence[PerfEventGroup],
         output_filename: str,
         cores: Optional[Sequence[int]] = None,
+        pid: Optional[int] = None,
         *,
         perf_path: Optional[str] = None,
         perf_args: Optional[str] = None,

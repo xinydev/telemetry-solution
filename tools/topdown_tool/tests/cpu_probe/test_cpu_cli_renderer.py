@@ -10,7 +10,7 @@ from topdown_tool.cpu_probe.cpu_cli_renderer import CpuCliRenderer
 from tests.cpu_probe.helpers import get_fixture_path, compare_reference
 
 from topdown_tool.cpu_probe.common import CpuAggregate
-from topdown_tool.perf import Cpu
+from topdown_tool.perf import Cpu, Uncore
 
 
 # ------------------------
@@ -50,11 +50,11 @@ def output_buf(test_console):
 
 
 @pytest.fixture
-def render_metric_groups_stages_fixture(test_telemetry_db):
+def render_metric_groups_stages_fixture(test_telemetry_db, pid_tracking):
     """
     Master fixture for render_metric_groups_stages:
     - Includes all groups (stage1, stage2, general), all their metrics
-    - Aggregate and 4 CPUs (0, 2, 3, 4)
+    - Aggregate and 4 CPUs (0, 2, 3, 4) OR Uncore for PID tracking
     - Each value is uniquely identifiable for its (loc, group, metric)
     Returns (computed, all_capture_groups)
     """
@@ -89,19 +89,25 @@ def render_metric_groups_stages_fixture(test_telemetry_db):
     freestanding_metric1 = db.metrics["freestanding_metric1"]
     freestanding_metric2 = db.metrics["freestanding_metric2"]
 
-    # Prepare CpuAggregate and Cpu locations
-    agg = CpuAggregate((Cpu(0), Cpu(2), Cpu(3), Cpu(4)))
-    cpu0 = Cpu(0)
-    cpu2 = Cpu(2)
-    cpu3 = Cpu(3)
-    cpu4 = Cpu(4)
-    locations = [
-        (agg, "agg", 100),
-        (cpu0, "cpu0", 200),
-        (cpu2, "cpu2", 300),
-        (cpu3, "cpu3", 400),
-        (cpu4, "cpu4", 500),
-    ]
+    # Prepare CpuAggregate and Cpu locations OR Uncore if tracking PID
+    if not pid_tracking:
+        agg = CpuAggregate((Cpu(0), Cpu(2), Cpu(3), Cpu(4)))
+        cpu0 = Cpu(0)
+        cpu2 = Cpu(2)
+        cpu3 = Cpu(3)
+        cpu4 = Cpu(4)
+        locations = [
+            (agg, "agg", 100),
+            (cpu0, "cpu0", 200),
+            (cpu2, "cpu2", 300),
+            (cpu3, "cpu3", 400),
+            (cpu4, "cpu4", 500),
+        ]
+    else:
+        uncore = Uncore()
+        locations = [
+            (uncore, "uncore", 600),
+        ]
 
     # Helper for explicit value
     def v(base, n):
@@ -236,6 +242,7 @@ def render_metric_groups_stages_all(render_metric_groups_stages_fixture, test_te
     ],
 )
 @pytest.mark.parametrize("desc", [False, True])
+@pytest.mark.parametrize("pid_tracking", [False, True])
 def test_render_metric_groups_stages_reference(
     fixture_name,
     stages_label,
@@ -244,6 +251,7 @@ def test_render_metric_groups_stages_reference(
     output_buf,
     regen_reference_mode,
     request,
+    pid_tracking,
 ):
     # Get (computed, capture_groups)
     computed, capture_groups = request.getfixturevalue(fixture_name)
@@ -253,7 +261,7 @@ def test_render_metric_groups_stages_reference(
     output = output_buf.getvalue()
 
     reference_path = get_fixture_path(
-        "cpu_cli_renderer",
+        "cpu_cli_renderer" if not pid_tracking else "cpu_cli_renderer_pid_tracking",
         "render_metric_groups_stages",
         f"stage_{stages_label}_desc_{desc}.txt",
     )
@@ -323,6 +331,7 @@ def test_list_groups_permutations(desc, stages, cli_renderer, output_buf, regen_
         "stage1_right_lv1_metric",
     ],
 )
+@pytest.mark.parametrize("pid_tracking", [False, True])
 def test_render_metric_groups_tree_reference(
     render_metric_groups_stages_fixture,
     cli_renderer,
@@ -330,6 +339,7 @@ def test_render_metric_groups_tree_reference(
     regen_reference_mode,
     desc,
     root_node,
+    pid_tracking,
 ):
     computed, _capture_groups = render_metric_groups_stages_fixture
 
@@ -341,5 +351,9 @@ def test_render_metric_groups_tree_reference(
     output = output_buf.getvalue()
     rnode = root_node if root_node else "none"
     ref_name = f"root_{rnode}_desc_{desc}.txt"
-    reference_path = get_fixture_path("cpu_cli_renderer", "render_metrics_tree", ref_name)
+    reference_path = get_fixture_path(
+        "cpu_cli_renderer" if not pid_tracking else "cpu_cli_renderer_pid_tracking",
+        "render_metrics_tree",
+        ref_name,
+    )
     compare_reference(output, reference_path, regen_reference_mode)

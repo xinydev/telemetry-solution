@@ -106,6 +106,7 @@ class CpuProbe(Base.Probe):
         self._max_events = perf_factory_instance.get_pmu_counters(self._cores[0])
         self._perf_factory = perf_factory_instance
         self._pid: Set[int] = set()
+        self._pid_tracking: bool = False
         self._perf_instance: Optional[Perf] = None
         self._capture_data: bool = capture_data
 
@@ -251,6 +252,8 @@ class CpuProbe(Base.Probe):
         else:
             self._pid = set()
 
+        self._pid_tracking = self._conf.pid_tracking_applicable and len(self._pid) == 1
+
         index = self._capture_it.index()
         schedule_unit = next(self._capture_it)
 
@@ -259,7 +262,8 @@ class CpuProbe(Base.Probe):
         self._perf_instance = self._perf_factory.create(
             list(schedule_unit),
             filename,
-            self._cores,
+            self._cores if not self._pid_tracking else None,
+            next(iter(self._pid)) if self._pid_tracking else None,
         )
         self._perf_instance.start()
 
@@ -366,7 +370,7 @@ class CpuProbe(Base.Probe):
 
     def _update_aggregate(self) -> None:
         # Skip aggregation if only one core is present.
-        if len(self._cores) == 1:
+        if self._pid_tracking or len(self._cores) <= 1:
             return
         # Update the instance's event_records with the computed aggregate
         aggregate, aggregated_records = self._compute_aggregate(
@@ -383,8 +387,6 @@ class CpuProbe(Base.Probe):
         # Regex to match symbols (event names) in the formula
         output: ComputedMetrics = {}
         for loc, timed_results in records.items():
-            if isinstance(loc, Cpu) is False and isinstance(loc, CpuAggregate) is False:
-                continue
             output[loc] = {}
             for time, perf_result in timed_results.items():
                 output[loc][time] = {}

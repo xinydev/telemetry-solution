@@ -13,7 +13,7 @@ from topdown_tool.cpu_probe.cpu_telemetry_database import (
     TopdownMethodology,
     GroupLike,
 )
-from topdown_tool.perf import Cpu, PerfRecordLocation
+from topdown_tool.perf import Cpu, PerfRecordLocation, Uncore
 from topdown_tool.common import range_encode
 
 
@@ -80,6 +80,8 @@ class CpuCsvRenderer:
                 # Use range_encode to encode the aggregate CPU ids.
                 cpu_range = range_encode([cpu.id for cpu in loc.cpus])
                 filename = f"aggregate_({cpu_range}).csv"
+            elif isinstance(loc, Uncore):
+                filename = "results.csv"
             else:
                 continue
 
@@ -146,12 +148,15 @@ class CpuCsvRenderer:
         for loc, events_values_for_core in event_records.items():
             if isinstance(loc, Cpu):
                 core_id = f"{loc.id}"
+                filename = f"{product_name.lower().replace(' ', '_')}_core_{core_id}.csv"
             elif isinstance(loc, CpuAggregate):
                 core_id = f"aggregate_({range_encode([cpu.id for cpu in loc.cpus])})"
+                filename = f"{product_name.lower().replace(' ', '_')}_core_{core_id}.csv"
+            elif isinstance(loc, Uncore):
+                filename = f"{product_name.lower().replace(' ', '_')}_results.csv"
             else:
                 continue
 
-            filename = f"{product_name.lower().replace(' ', '_')}_core_{core_id}.csv"
             filepath = os.path.join(output_dir, filename)
             with open(filepath, "w", encoding="utf-8") as csv_file:
                 csv_writer = csv.writer(csv_file)

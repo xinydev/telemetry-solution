@@ -16,7 +16,7 @@ from topdown_tool.cpu_probe.cpu_telemetry_database import (
     TopdownMethodology,
 )
 from topdown_tool.layout.layout import SplitTable
-from topdown_tool.perf import PerfRecordLocation, Cpu
+from topdown_tool.perf import PerfRecordLocation, Cpu, Uncore
 
 
 RawComputedGroups = Dict[
@@ -29,8 +29,9 @@ RawComputedGroups = Dict[
 
 ComputedAggregateGroups = Dict[CpuAggregate, Dict[GroupLike, Dict[Metric, Union[float, None]]]]
 ComputedCpuGroups = Dict[Cpu, Dict[GroupLike, Dict[Metric, Union[float, None]]]]
+ComputedUncoreGroups = Dict[Uncore, Dict[GroupLike, Dict[Metric, Union[float, None]]]]
 
-T = TypeVar("T", ComputedAggregateGroups, ComputedCpuGroups)
+T = TypeVar("T", ComputedAggregateGroups, ComputedCpuGroups, ComputedUncoreGroups)
 
 
 def format_value(val: Optional[float], unit: str) -> str:
@@ -97,6 +98,7 @@ class ComputedGroups:
 
     aggregate: ComputedAggregateGroups
     cpu: ComputedCpuGroups
+    uncore: ComputedUncoreGroups
 
     @staticmethod
     def from_raw(raw: RawComputedGroups) -> "ComputedGroups":
@@ -111,14 +113,17 @@ class ComputedGroups:
         """
         aggregated_results: ComputedAggregateGroups = {}
         core_results: ComputedCpuGroups = {}
+        uncore_results: ComputedUncoreGroups = {}
         for loc, timed in raw.items():
             results = timed.get(None, {})
             if isinstance(loc, CpuAggregate):
                 aggregated_results[loc] = results
             elif isinstance(loc, Cpu):
                 core_results[loc] = results
+            elif isinstance(loc, Uncore):
+                uncore_results[loc] = results
 
-        return ComputedGroups(aggregated_results, core_results)
+        return ComputedGroups(aggregated_results, core_results, uncore_results)
 
 
 class MetricTableBuilder:
@@ -166,8 +171,11 @@ class MetricTableBuilder:
     def _get_cpu_headers(self) -> List[str]:
         return [f"#{cid.id}" for cid in sorted(self.results.cpu.keys())]
 
+    def _get_uncore_headers(self) -> List[str]:
+        return ["Value"] if self.results.uncore else []
+
     def _get_table_headers(self) -> List[str]:
-        return self._get_aggregated_headers() + self._get_cpu_headers()
+        return self._get_aggregated_headers() + self._get_cpu_headers() + self._get_uncore_headers()
 
     def _get_table_values(self, group: GroupLike, metric: Metric) -> List[str]:
         def lookup_value(group_dict: dict) -> Optional[float]:
@@ -182,7 +190,8 @@ class MetricTableBuilder:
 
         agg_vals = build_values(self.results.aggregate)
         cpu_vals = build_values(self.results.cpu)
-        return agg_vals + cpu_vals
+        uncore_vals = build_values(self.results.uncore)
+        return agg_vals + cpu_vals + uncore_vals
 
     def add_row(self, group: GroupLike, metric: Metric) -> None:
         """Add a table row for the specified group and metric.

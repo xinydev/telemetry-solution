@@ -1,0 +1,3 @@
+time,group,stage,level,metric,value,units
+4.0,topdown_root_group,1,1,shared_metric1,99,u6
+4.0,stage2_group1,2,,shared_metric1,99,u6

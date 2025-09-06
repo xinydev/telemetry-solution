@@ -1,0 +1,22 @@
+CPU TestCPU topdown
+└── Topdown metrics
+    └── Root Node - Metric 2 - title (root_metric2)
+        ├── ┏━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        │   ┃ Value   ┃ Unit ┃ Description                        ┃
+        │   ┡━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │   │ 602.000 │ u2   │ Root Node - Metric 2 - description │
+        │   └─────────┴──────┴────────────────────────────────────┘
+        └── Stage1 - right branch - level 1 metric - title (stage1_right_lv1_metric)
+            ├── ┏━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+            │   ┃ Value   ┃ Unit ┃ Description                                          ┃
+            │   ┡━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+            │   │ 621.000 │ u7   │ Stage1 - right branch - level 1 metric - description │
+            │   └─────────┴──────┴──────────────────────────────────────────────────────┘
+            └── Stage2 - Group1 - title (stage2_group1)
+                └── ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+                    ┃ Metric                            ┃ Value   ┃ Unit ┃ Description                             ┃
+                    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+                    │ Shared Metric 1 - title           │ 633.000 │ u6   │ Shared Metric 1 - description           │
+                    │ Stage2 - Group1 - Metric1 - title │ 631.000 │ u8   │ Stage2 - Group1 - Metric1 - description │
+                    │ Stage2 - Group1 - Metric2 - title │ 632.000 │ u4   │ Stage2 - Group1 - Metric2 - description │
+                    └───────────────────────────────────┴─────────┴──────┴─────────────────────────────────────────┘

@@ -105,6 +105,7 @@ class LinuxPerf(Perf):
             perf_path: str,
             perf_args: Optional[str],
             interval: Optional[int],
+            pid: Optional[int],
         ):
             self._perf_path = perf_path
             self._perf_args = perf_args
@@ -130,6 +131,10 @@ class LinuxPerf(Perf):
             # Add cores argument if needed
             if cores is not None:
                 self._cmd.extend(["--per-core", "-C", ",".join(map(str, cores))])
+
+            # Add pid argument if needed
+            if pid is not None:
+                self._cmd.extend(["-p", str(pid)])
 
             # Add interval argument if needed
             if self._interval is not None:
@@ -190,6 +195,7 @@ class LinuxPerf(Perf):
         events_groups: Sequence[PerfEventGroup],
         output_filename: str,
         cores: Optional[Sequence[int]] = None,
+        pid: Optional[int] = None,
         *,
         perf_path: Optional[str] = None,
         perf_args: Optional[str] = None,
@@ -215,6 +221,7 @@ class LinuxPerf(Perf):
         )
         self._output_filename = output_filename
         self._cores = tuple(sorted(cores)) if cores else None
+        self._pid = pid
         self._output_path = Path(output_filename).parent
         self._recorders: List[LinuxPerf._Recorder] = []
 
@@ -227,6 +234,7 @@ class LinuxPerf(Perf):
                 perf_path=self._perf_path,
                 perf_args=self._perf_args,
                 interval=self._interval,
+                pid=self._pid,
             )
             self._recorders.append(recorder)
 

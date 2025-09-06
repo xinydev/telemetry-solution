@@ -1,0 +1,47 @@
+CPU TestCPU metrics
+├── Stage 1 (Topdown metrics)
+│   ├── Topdown Root Group - title (topdown_root_group)
+│   │   └── ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┓
+│   │       ┃ Metric                       ┃ Value   ┃ Unit ┃
+│   │       ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━┩
+│   │       │ Root Node - Metric 1 - title │ 601.000 │ u1   │
+│   │       │ Root Node - Metric 2 - title │ 602.000 │ u2   │
+│   │       │ Shared Metric 1 - title      │ 603.000 │ u6   │
+│   │       └──────────────────────────────┴─────────┴──────┘
+│   ├── Stage1 - left branch group - title (stage1_left_group)
+│   │   └── ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┓
+│   │       ┃ Metric                                                           ┃ Value   ┃ Unit ┃
+│   │       ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━┩
+│   │       │ Stage1 - left branch - level 1 - metric 1 - title                │ 611.000 │ u3   │
+│   │       │ Stage1 - left branch - level 2 - left branch - metric 2 - title  │ 612.000 │ u3   │
+│   │       │ Stage1 - left branch - level 2 - right branch - metric 2 - title │ 613.000 │ u3   │
+│   │       └──────────────────────────────────────────────────────────────────┴─────────┴──────┘
+│   └── Stage1 - right branch group - title (stage1_right_group)
+│       └── ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┓
+│           ┃ Metric                                         ┃ Value   ┃ Unit ┃
+│           ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━┩
+│           │ Stage1 - right branch - level 1 metric - title │ 621.000 │ u7   │
+│           └────────────────────────────────────────────────┴─────────┴──────┘
+└── Stage 2 (uarch metrics)
+    ├── Stage2 - Group1 - title (stage2_group1)
+    │   ├── Follows
+    │   │   ├── Shared Metric 1 - title (shared_metric1)
+    │   │   ├── Stage1 - left branch - level 2 - right branch - metric 2 - title (stage1_left_lv2_right_metric)
+    │   │   └── Stage1 - right branch - level 1 metric - title (stage1_right_lv1_metric)
+    │   └── ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┓
+    │       ┃ Metric                            ┃ Value   ┃ Unit ┃
+    │       ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━┩
+    │       │ Shared Metric 1 - title           │ 633.000 │ u6   │
+    │       │ Stage2 - Group1 - Metric1 - title │ 631.000 │ u8   │
+    │       │ Stage2 - Group1 - Metric2 - title │ 632.000 │ u4   │
+    │       └───────────────────────────────────┴─────────┴──────┘
+    └── Stage2 Group2 - title (stage2_group2)
+        ├── Follows
+        │   ├── Stage1 - left branch - level 2 - left branch - metric 2 - title (stage1_left_lv2_left_metric)
+        │   └── Stage1 - left branch - level 2 - right branch - metric 2 - title (stage1_left_lv2_right_metric)
+        └── ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┓
+            ┃ Metric                            ┃ Value   ┃ Unit ┃
+            ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━┩
+            │ Shared Metric 2 - title           │ 642.000 │ u6   │
+            │ Stage2 - Group1 - Metric2 - title │ 641.000 │ u4   │
+            └───────────────────────────────────┴─────────┴──────┘

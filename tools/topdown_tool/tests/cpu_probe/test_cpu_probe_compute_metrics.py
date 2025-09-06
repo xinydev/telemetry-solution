@@ -1,17 +1,23 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2025 Arm Limited
 
-from typing import Dict, Tuple, Optional
+import pytest
+from typing import Dict, Tuple, Optional, Union
 
 from topdown_tool.cpu_probe.cpu_probe import CpuProbe
 from topdown_tool.perf.event_scheduler import EventScheduler, CollectBy
 from topdown_tool.cpu_probe.cpu_telemetry_database import Event, Metric, Group
-from topdown_tool.perf import Cpu
+from topdown_tool.perf import Cpu, Uncore
 
 
-def test_compute_metrics_none_mode_all_defined() -> None:
+@pytest.mark.parametrize("pid_tracking", [False, True])
+def test_compute_metrics_none_mode_all_defined(pid_tracking) -> None:
     # Setup fixture for CollectBy.NONE
-    cpu = Cpu(0)
+    cpu: Union[Cpu, Uncore]
+    if not pid_tracking:
+        cpu = Cpu(0)
+    else:
+        cpu = Uncore()
     time_key = None
 
     # Create events and metric with formula "A+B"
@@ -41,9 +47,14 @@ def test_compute_metrics_none_mode_all_defined() -> None:
     assert computed[cpu][time_key][g][m1] == 3
 
 
-def test_compute_metrics_none_mode_with_missing_value():
+@pytest.mark.parametrize("pid_tracking", [False, True])
+def test_compute_metrics_none_mode_with_missing_value(pid_tracking):
     # Setup fixture for CollectBy.NONE with missing value in one event
-    cpu = Cpu(1)
+    cpu: Union[Cpu, Uncore]
+    if not pid_tracking:
+        cpu = Cpu(1)
+    else:
+        cpu = Uncore()
     time_key = 0.0
     eA = Event(name="A", title="A", description="", code=1)
     eB = Event(name="B", title="B", description="", code=2)
@@ -67,9 +78,15 @@ def test_compute_metrics_none_mode_with_missing_value():
     assert computed[cpu][time_key][g][m1] is None
 
 
-def test_compute_metrics_metric_mode_all_defined():
+@pytest.mark.parametrize("pid_tracking", [False, True])
+def test_compute_metrics_metric_mode_all_defined(pid_tracking):
     # Setup fixture for CollectBy.METRIC
-    cpu = Cpu(0)
+    cpu: Union[Cpu, Uncore]
+    if not pid_tracking:
+        cpu = Cpu(0)
+    else:
+        cpu = Uncore()
+    time_key = None
     time_key = 1.0
     eA = Event(name="A", title="A", description="", code=1)
     eB = Event(name="B", title="B", description="", code=2)
@@ -93,9 +110,14 @@ def test_compute_metrics_metric_mode_all_defined():
     assert computed[cpu][time_key][g][m1] == 12
 
 
-def test_compute_metrics_group_mode_all_defined() -> None:
+@pytest.mark.parametrize("pid_tracking", [False, True])
+def test_compute_metrics_group_mode_all_defined(pid_tracking) -> None:
     # Setup fixture for CollectBy.GROUP
-    cpu = Cpu(0)
+    cpu: Union[Cpu, Uncore]
+    if not pid_tracking:
+        cpu = Cpu(0)
+    else:
+        cpu = Uncore()
     time_key = 2.0
     eA = Event(name="A", title="A", description="", code=1)
     eB = Event(name="B", title="B", description="", code=2)
