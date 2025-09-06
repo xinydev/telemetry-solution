@@ -79,7 +79,7 @@ def test_perf_command_valid():
 
     factory.process_cli_arguments(args)
 
-    assert (factory.is_perf_runnable())
+    assert factory.is_perf_runnable()
 
 
 def test_perf_command_nonexisting(tmp_path):
@@ -87,7 +87,7 @@ def test_perf_command_nonexisting(tmp_path):
 
     command = f"{tmp_path}/testperf"
 
-    assert (not os.path.exists(command))
+    assert not os.path.exists(command)
 
     args = SimpleNamespace()
     args.perf_path = command
@@ -96,7 +96,7 @@ def test_perf_command_nonexisting(tmp_path):
 
     factory.process_cli_arguments(args)
 
-    assert (not factory.is_perf_runnable())
+    assert not factory.is_perf_runnable()
 
 
 def test_perf_command_permissionerror(tmp_path):
@@ -107,8 +107,8 @@ def test_perf_command_permissionerror(tmp_path):
     with open(command, "w") as f:
         f.write("test content")
 
-    assert (os.path.exists(command))
-    assert (not os.access(command, os.X_OK))
+    assert os.path.exists(command)
+    assert not os.access(command, os.X_OK)
 
     args = SimpleNamespace()
     args.perf_path = command
@@ -117,4 +117,4 @@ def test_perf_command_permissionerror(tmp_path):
 
     factory.process_cli_arguments(args)
 
-    assert (not factory.is_perf_runnable())
+    assert not factory.is_perf_runnable()

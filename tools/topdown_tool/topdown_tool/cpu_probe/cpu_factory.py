@@ -438,7 +438,9 @@ class CpuProbeFactory(Base.ProbeFactory):
                     "(skipping capture)",
                 )
             if desc is not None and not desc.content:
-                desc.content = TelemetrySpecification.load_from_json_file(desc.path, self.SCHEMAS_DIR)
+                desc.content = TelemetrySpecification.load_from_json_file(
+                    desc.path, self.SCHEMAS_DIR
+                )
 
         self._cpu_descriptions = cpu_descriptions
 

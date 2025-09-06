@@ -37,6 +37,7 @@ class PerfFactory:
         self._perf_args: Optional[str] = None
         self._interval: Optional[int] = None
 
+    # pylint: disable=too-many-function-args
     def create(
         self,
         events_groups: Sequence[PerfEventGroup],
@@ -103,9 +104,7 @@ class PerfFactory:
         Returns:
             Number of available performance monitoring counters on the given core.
         """
-        return self._impl_class.get_pmu_counters(
-            core, self.get_effective_perf_path()
-        )
+        return self._impl_class.get_pmu_counters(core, self.get_effective_perf_path())
 
     def get_midr_value(self, core: int) -> int:
         """
@@ -117,9 +116,7 @@ class PerfFactory:
         Returns:
             MIDR_EL1 register value as an integer.
         """
-        return self._impl_class.get_midr_value(
-            core, self.get_effective_perf_path()
-        )
+        return self._impl_class.get_midr_value(core, self.get_effective_perf_path())
 
     def add_cli_arguments(self, group: argparse._ArgumentGroup) -> None:
         """

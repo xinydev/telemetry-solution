@@ -238,28 +238,38 @@ class TelemetrySpecification(BaseModel):
                 try:
                     data = json.load(f)
                 except json.JSONDecodeError as e:
-                    raise ValueError(f"JSON file {path} content is not valid. Please check the error at line {e.lineno}, column {e.colno}: {e.msg}") from e
+                    raise ValueError(
+                        f"JSON file {path} content is not valid. Please check the error at line {e.lineno}, column {e.colno}: {e.msg}"
+                    ) from e
                 if "$schema" in data:
                     schema_path = os.path.join(schema_dir, data["$schema"])
                     with open(schema_path, encoding="utf-8") as schema_file:
                         try:
                             schema = json.load(schema_file)
                         except json.JSONDecodeError as e:
-                            raise ValueError(f"Schema file {schema_path} content is not valid. Please check the error at line {e.lineno}, column {e.colno}: {e.msg}") from e
+                            raise ValueError(
+                                f"Schema file {schema_path} content is not valid. Please check the error at line {e.lineno}, column {e.colno}: {e.msg}"
+                            ) from e
 
                     try:
                         jsonschema.validate(instance=data, schema=schema)
                     except jsonschema.exceptions.ValidationError as e:
-                        raise ValueError(f"Schema validation failed for {path} with the following error: {e.message}\nPlease check the JSON file and the schema.") from e
+                        raise ValueError(
+                            f"Schema validation failed for {path} with the following error: {e.message}\nPlease check the JSON file and the schema."
+                        ) from e
 
                 try:
                     result = TelemetrySpecification.model_validate(data)
                 except Exception as e:
-                    raise ValueError(f"Schema validation failed for {path} with the following error: {e}\nPlease check the JSON file and the schema.") from e
+                    raise ValueError(
+                        f"Schema validation failed for {path} with the following error: {e}\nPlease check the JSON file and the schema."
+                    ) from e
 
                 return result
         except FileNotFoundError as e:
-            raise FileNotFoundError(f"File not found: {e.filename}. Please check that the file exists.") from e
+            raise FileNotFoundError(
+                f"File not found: {e.filename}. Please check that the file exists."
+            ) from e
 
     @model_validator(mode="after")
     def _validate_metrics_events(self) -> "TelemetrySpecification":

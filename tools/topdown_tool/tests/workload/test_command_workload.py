@@ -18,7 +18,7 @@ def test_command_valid():
 def test_command_nonexisting(tmp_path):
     command = [f"{tmp_path}/testperf"]
 
-    assert (not os.path.exists(command[0]))
+    assert not os.path.exists(command[0])
 
     with pytest.raises(OSError):
         with CommandWorkload(command) as workload:
@@ -31,8 +31,8 @@ def test_command_permissionerror(tmp_path):
     with open(command[0], "w") as f:
         f.write("test content")
 
-    assert (os.path.exists(command[0]))
-    assert (not os.access(command[0], os.X_OK))
+    assert os.path.exists(command[0])
+    assert not os.access(command[0], os.X_OK)
 
     with pytest.raises(OSError):
         with CommandWorkload(command) as workload:

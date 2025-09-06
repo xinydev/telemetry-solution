@@ -71,7 +71,7 @@ def tmp_metrics_dir_common(tmp_path, schema_tag, create_spec_file=True, generate
         num_slots=5,
         num_bus_slots=0,
         schema_tag=schema_tag,
-        generate_invalid_tag=generate_invalid_tag
+        generate_invalid_tag=generate_invalid_tag,
     )
     spec_path = metrics_dir / "neoverse-n3.json"
     spec_path.write_text(json.dumps(spec))
@@ -106,7 +106,9 @@ def tmp_metrics_dir_nonexisting_spec(tmp_path):
 
 @pytest.fixture
 def tmp_metrics_dir_invalid_spec(tmp_path):
-    return tmp_metrics_dir_common(tmp_path, schema_tag="v1.0.schema.json", generate_invalid_tag=True)
+    return tmp_metrics_dir_common(
+        tmp_path, schema_tag="v1.0.schema.json", generate_invalid_tag=True
+    )
 
 
 def tmp_schemas_dir_common(tmp_path, file_name="v1.0.schema.json"):
@@ -228,9 +230,13 @@ def test_is_available_method():
 
 
 @pytest.mark.parametrize("metrics_fixture_dir", ["tmp_metrics_dir", "tmp_metrics_dir_no_schema"])
-def test_process_cli_arguments_nominal(request, metrics_fixture_dir, tmp_schemas_dir, base_args, monkeypatch, fake_cpu_midr):
+def test_process_cli_arguments_nominal(
+    request, metrics_fixture_dir, tmp_schemas_dir, base_args, monkeypatch, fake_cpu_midr
+):
     # Point METRICS_DIR to our temp directory
-    monkeypatch.setattr(CpuProbeFactory, "METRICS_DIR", request.getfixturevalue(metrics_fixture_dir))
+    monkeypatch.setattr(
+        CpuProbeFactory, "METRICS_DIR", request.getfixturevalue(metrics_fixture_dir)
+    )
     monkeypatch.setattr(CpuProbeFactory, "SCHEMAS_DIR", tmp_schemas_dir)
 
     # Set controlled core list: use cores [0,1]
@@ -257,23 +263,36 @@ def test_process_cli_arguments_nominal(request, metrics_fixture_dir, tmp_schemas
     assert desc.content.product_configuration.product_name == "neoverse-n3"
 
 
-def test_process_cli_arguments_spec_references_invalid_schema_raises(tmp_metrics_dir_spec_references_invalid_schema, tmp_schemas_dir_invalid_schema, base_args, monkeypatch):
-    monkeypatch.setattr(CpuProbeFactory, "METRICS_DIR", tmp_metrics_dir_spec_references_invalid_schema)
+def test_process_cli_arguments_spec_references_invalid_schema_raises(
+    tmp_metrics_dir_spec_references_invalid_schema,
+    tmp_schemas_dir_invalid_schema,
+    base_args,
+    monkeypatch,
+):
+    monkeypatch.setattr(
+        CpuProbeFactory, "METRICS_DIR", tmp_metrics_dir_spec_references_invalid_schema
+    )
     monkeypatch.setattr(CpuProbeFactory, "SCHEMAS_DIR", tmp_schemas_dir_invalid_schema)
     factory = CpuProbeFactory()
     with pytest.raises(ValueError):
         factory.process_cli_arguments(base_args, cpu_detect=FakeCPUDetect)
 
 
-def test_process_cli_arguments_spec_references_nonexistent_schema_raises(tmp_metrics_dir_spec_references_nonexistent_schema, tmp_schemas_dir, base_args, monkeypatch):
-    monkeypatch.setattr(CpuProbeFactory, "METRICS_DIR", tmp_metrics_dir_spec_references_nonexistent_schema)
+def test_process_cli_arguments_spec_references_nonexistent_schema_raises(
+    tmp_metrics_dir_spec_references_nonexistent_schema, tmp_schemas_dir, base_args, monkeypatch
+):
+    monkeypatch.setattr(
+        CpuProbeFactory, "METRICS_DIR", tmp_metrics_dir_spec_references_nonexistent_schema
+    )
     monkeypatch.setattr(CpuProbeFactory, "SCHEMAS_DIR", tmp_schemas_dir)
     factory = CpuProbeFactory()
     with pytest.raises(FileNotFoundError):
         factory.process_cli_arguments(base_args, cpu_detect=FakeCPUDetect)
 
 
-def test_process_cli_arguments_nonexisting_spec_raises(tmp_metrics_dir_nonexisting_spec, tmp_schemas_dir, base_args, monkeypatch):
+def test_process_cli_arguments_nonexisting_spec_raises(
+    tmp_metrics_dir_nonexisting_spec, tmp_schemas_dir, base_args, monkeypatch
+):
     monkeypatch.setattr(CpuProbeFactory, "METRICS_DIR", tmp_metrics_dir_nonexisting_spec)
     monkeypatch.setattr(CpuProbeFactory, "SCHEMAS_DIR", tmp_schemas_dir)
     factory = CpuProbeFactory()
@@ -281,7 +300,9 @@ def test_process_cli_arguments_nonexisting_spec_raises(tmp_metrics_dir_nonexisti
         factory.process_cli_arguments(base_args, cpu_detect=FakeCPUDetect)
 
 
-def test_process_cli_arguments_invalid_spec_schema_validation_raises(tmp_metrics_dir_invalid_spec, tmp_schemas_dir, base_args, monkeypatch):
+def test_process_cli_arguments_invalid_spec_schema_validation_raises(
+    tmp_metrics_dir_invalid_spec, tmp_schemas_dir, base_args, monkeypatch
+):
     monkeypatch.setattr(CpuProbeFactory, "METRICS_DIR", tmp_metrics_dir_invalid_spec)
     monkeypatch.setattr(CpuProbeFactory, "SCHEMAS_DIR", tmp_schemas_dir)
     factory = CpuProbeFactory()
@@ -533,7 +554,9 @@ def test_complex_probe_creation(monkeypatch, tmp_path):
     assert sme is not None and sme["cores"] == list(range(0, 6))
 
 
-def test_perf_factory_integration(monkeypatch, tmp_metrics_dir, tmp_schemas_dir, fake_cpu_midr, base_args):
+def test_perf_factory_integration(
+    monkeypatch, tmp_metrics_dir, tmp_schemas_dir, fake_cpu_midr, base_args
+):
     base_args.perf_path = "/custom/perf"
     base_args.perf_args = "--custom-flag"
     base_args.interval = 500
