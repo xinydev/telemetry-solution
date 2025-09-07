@@ -21,7 +21,8 @@ class DummyFakePerf:
     def __init__(self, *a, **k):
         pass
 
-    def get_pmu_counters(self, core):
+    @classmethod
+    def get_pmu_counters(cls, core):
         return 4  # match fixture expects 4
 
 
@@ -729,7 +730,8 @@ class FakePerfSimple:
         # Pop (in use order)
         return FakePerfSimple.results_queue.pop(0)
 
-    def get_pmu_counters(self, core):
+    @classmethod
+    def get_pmu_counters(cls, core):
         return 5
 
 

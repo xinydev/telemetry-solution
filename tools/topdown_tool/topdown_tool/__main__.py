@@ -109,13 +109,40 @@ def get_selected_factories_from_args(
     return selected_factories
 
 
-def build_arg_parser(
+def create_base_arg_parser() -> argparse.ArgumentParser:
+    """
+    Build the application argument parser with perf arguments.
+
+    Returns:
+        argparse.ArgumentParser: App argument parser.
+    """
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter, add_help=False
+    )
+
+    parser.add_argument(
+        "-h",
+        "--help",
+        action="help",
+        default=argparse.SUPPRESS,
+        help="show this help message and exit",
+    )
+    
+    # Add general perf options
+    perf_arg_group = parser.add_argument_group("General perf capture options")
+    perf_factory.add_cli_arguments(perf_arg_group)
+
+    return parser
+
+
+def extend_arg_parser(
+    parser: argparse.ArgumentParser,
     selected_factories: Iterable[ProbeFactory],
     canonical_probe_names: Iterable[str],
     default_probe_names: Iterable[str],
 ) -> argparse.ArgumentParser:
     """
-    Build the application argument parser with global and selected probe-specific arguments.
+    Modify the application argument parser with global and selected probe-specific arguments.
 
     Args:
         selected_factories (Iterable[ProbeFactory]): Probe factories to add argument options from.
@@ -125,7 +152,6 @@ def build_arg_parser(
     Returns:
         argparse.ArgumentParser: App argument parser.
     """
-    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
     # Add --probe purely for help (so appears in usage synopsis)
     parser.add_argument(
         "--probe",
@@ -174,10 +200,6 @@ def build_arg_parser(
         help="Enable detailed exception traceback output",
     )
     output_group.add_argument("--csv-output-path", help="Output directory for CSV data")
-
-    # Add general perf options
-    perf_arg_group = parser.add_argument_group("General perf capture options")
-    perf_factory.add_cli_arguments(perf_arg_group)
 
     # Add Probe specific options for selected probes only
     for probe in selected_factories:
@@ -322,6 +344,13 @@ def main(
 
     console = get_console()
 
+    # Build parser with only perf initially
+    parser = create_base_arg_parser()
+
+    # Handle Perf specific arguments
+    args, _ = parser.parse_known_args(_args)
+    perf_factory.process_cli_arguments(args)
+
     # Check for required perf privileges before doing anything
     if not perf_factory.have_perf_privilege():
         print(
@@ -339,8 +368,8 @@ def main(
         available_factories, canonical_probe_names, default_probe_names, _args, console
     )
 
-    # Build full parser with only selected probe factories
-    parser = build_arg_parser(selected_factories, canonical_probe_names, default_probe_names)
+    # Extend parser with only selected probe factories
+    extend_arg_parser(parser, selected_factories, canonical_probe_names, default_probe_names)
     args = parser.parse_args(_args)
 
     logging.basicConfig(format=LOG_FORMAT, level=args.loglevel)

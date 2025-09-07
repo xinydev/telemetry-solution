@@ -81,6 +81,7 @@ class CPUDetect:
         Returns:
             int: The MIDR value as an integer.
         """
+        midr: int = 0
         if sys.platform == "linux":
             with open(CPUDetect.MIDR_PATH.format(core), encoding="utf-8") as f:
                 midr = int(f.readline(), 16)

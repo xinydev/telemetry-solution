@@ -62,7 +62,6 @@ class PerfFactory:
             output_filename,
             cores,
             pid,
-            perf_path=self._perf_path,
             perf_args=self._perf_args,
             interval=self._interval,
         )
@@ -104,7 +103,7 @@ class PerfFactory:
         Returns:
             Number of available performance monitoring counters on the given core.
         """
-        return self._impl_class.get_pmu_counters(core, self.get_effective_perf_path())
+        return self._impl_class.get_pmu_counters(core)
 
     def get_midr_value(self, core: int) -> int:
         """
@@ -116,7 +115,7 @@ class PerfFactory:
         Returns:
             MIDR_EL1 register value as an integer.
         """
-        return self._impl_class.get_midr_value(core, self.get_effective_perf_path())
+        return self._impl_class.get_midr_value(core)
 
     def add_cli_arguments(self, group: argparse._ArgumentGroup) -> None:
         """
@@ -149,3 +148,5 @@ class PerfFactory:
         self._perf_path = args.perf_path
         self._perf_args = args.perf_args
         self._interval = args.interval
+        if self._perf_path is not None:
+            self._impl_class.update_perf_path(self._perf_path)

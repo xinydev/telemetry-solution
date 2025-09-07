@@ -102,12 +102,10 @@ class LinuxPerf(Perf):
             cli_filename: Path,
             output_filename: str,
             cores: Optional[Sequence[int]],
-            perf_path: str,
             perf_args: Optional[str],
             interval: Optional[int],
             pid: Optional[int],
         ):
-            self._perf_path = perf_path
             self._perf_args = perf_args
             self._interval = interval
             self._events = events
@@ -117,7 +115,7 @@ class LinuxPerf(Perf):
             self._process: Optional[Popen] = None
 
             self._cmd = [
-                self._perf_path,
+                LinuxPerf._perf_path,
                 "stat",
                 "-x",
                 _PERF_SEPARATOR,
@@ -197,7 +195,6 @@ class LinuxPerf(Perf):
         cores: Optional[Sequence[int]] = None,
         pid: Optional[int] = None,
         *,
-        perf_path: Optional[str] = None,
         perf_args: Optional[str] = None,
         interval: Optional[int] = None,
     ):
@@ -208,11 +205,9 @@ class LinuxPerf(Perf):
             events_groups: A list of event groups (tuples of PerfEvent) to record.
             output_filename: Base filename for output results.
             cores: Optional list of core indices to record events on.
-            perf_path: Optional path override for the `perf` binary.
             perf_args: Additional user-provided command-line arguments for `perf`.
             interval: Optional sampling interval in milliseconds.
         """
-        self._perf_path = perf_path or "perf"
         self._perf_args = perf_args
         self._interval = interval
         self._events_groups = events_groups
@@ -231,7 +226,6 @@ class LinuxPerf(Perf):
                 cli_filename=self._output_path / f"perf-cli-{i}",
                 output_filename=f"{self._output_filename}-{i}",
                 cores=self._cores,
-                perf_path=self._perf_path,
                 perf_args=self._perf_args,
                 interval=self._interval,
                 pid=self._pid,
@@ -380,8 +374,8 @@ class LinuxPerf(Perf):
         assert name == event.perf_name()
         return PerfEventCount(event=event, value=value, time=time)
 
-    @staticmethod
-    def get_pmu_counters(core: int, perf_path: str = "perf") -> int:
+    @classmethod
+    def get_pmu_counters(cls, core: int) -> int:
         """
         Determine the number of concurrently measurable PMU counters on a given core.
 
@@ -389,7 +383,6 @@ class LinuxPerf(Perf):
 
         Args:
             core: The core to test.
-            perf_path: Path to the perf binary.
 
         Returns:
             The maximum number of hardware counters available on the given core.
@@ -397,7 +390,7 @@ class LinuxPerf(Perf):
 
         def check_pmu_availability(core: int, count: int) -> bool:
             cmdline = [
-                perf_path,
+                LinuxPerf._perf_path,
                 "stat",
                 "-e",
                 "{" + ",".join(["instructions:u"] * count) + "}",
@@ -405,8 +398,8 @@ class LinuxPerf(Perf):
                 str(core),
                 "-x",
                 "\\t",
-                "echo",
-                "0",
+                LinuxPerf._perf_path,
+                "-v",
             ]
             with Popen(cmdline, stdin=DEVNULL, stdout=DEVNULL, stderr=PIPE, text=True) as process:
                 stderr = process.communicate()[1]
@@ -426,8 +419,8 @@ class LinuxPerf(Perf):
                 pmu_max = pmu_attempt - 1
         return pmu_min
 
-    @staticmethod
-    def get_midr_value(core: int, perf_path: str = "perf") -> int:
+    @classmethod
+    def get_midr_value(cls, core: int) -> int:
         """
         Not supported on Linux. Always raises NotImplementedError.
 
@@ -443,3 +436,7 @@ class LinuxPerf(Perf):
         cmd_line = " ".join(shlex.quote(arg) for arg in cmd)
         with open(path, "w", encoding="utf-8") as f:
             f.write(cmd_line)
+
+    @classmethod
+    def update_perf_path(cls, perf_path: str) -> None:
+        cls._perf_path = perf_path

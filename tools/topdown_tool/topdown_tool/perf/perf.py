@@ -120,7 +120,6 @@ class Perf(ABC):
         cores: Optional[Sequence[int]] = None,
         pid: Optional[int] = None,
         *,
-        perf_path: Optional[str] = None,
         perf_args: Optional[str] = None,
         interval: Optional[int] = None,
     ) -> None: ...
@@ -139,15 +138,14 @@ class Perf(ABC):
     @abstractmethod
     def get_perf_result(self) -> PerfRecords: ...
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    def get_pmu_counters(core: int, perf_path: str) -> int:
+    def get_pmu_counters(cls, core: int) -> int:
         """
         Return the number of available PMU counters for a given core.
 
         Args:
             core: Core ID to query.
-            perf_path: Path to the perf or wperf binary to use.
 
         Returns:
             Number of available PMU counters.
@@ -157,15 +155,14 @@ class Perf(ABC):
     @abstractmethod
     def have_perf_privilege() -> bool: ...
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    def get_midr_value(core: int, perf_path: str) -> int:
+    def get_midr_value(cls, core: int) -> int:
         """
         Return the MIDR (Main ID Register) value for the given core.
 
         Args:
             core: Core ID to query.
-            perf_path: Path to the perf or wperf binary to use.
 
         Returns:
             MIDR value as an integer.
@@ -247,3 +244,7 @@ class Perf(ABC):
         """Ensure the output file is empty before perf starts writing."""
         with open(path, "w", encoding="utf-8"):
             pass
+
+    @classmethod
+    @abstractmethod
+    def update_perf_path(cls, perf_path: str) -> None: ...
