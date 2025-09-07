@@ -175,7 +175,7 @@ def load_probe_factories() -> Sequence[ProbeFactory]:
     """
     eps = importlib.metadata.entry_points()
 
-    entries: Tuple[EntryPoint, ...]
+    entries: Sequence[EntryPoint]
     factory_classes: List[ProbeFactory] = []
 
     # For Python 3.10+, use the `select` method
