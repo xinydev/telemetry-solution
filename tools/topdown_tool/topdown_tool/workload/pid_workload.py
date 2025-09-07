@@ -12,6 +12,7 @@ from typing import Dict, Optional, Set, Type
 
 from rich import get_console
 from topdown_tool.workload.workload import Workload
+from topdown_tool.common import win32
 
 
 class PidWorkload(Workload):
@@ -31,6 +32,8 @@ class PidWorkload(Workload):
     RELEVANT_STATUS_LENTGH = 42
 
     def __init__(self, pids: Set[int]) -> None:
+        self.pids: Set[int] = set()
+
         if sys.platform == "linux":
             self.inotify_pid = None
             self.inotify_pipe = None
@@ -97,6 +100,8 @@ class PidWorkload(Workload):
                 else:
                     console = get_console()
                     console.print(f"Process {pid} doesn't exist")
+        else:
+            raise RuntimeError("Invalid platform for PidWorkload")
 
     def __exit__(
         self,
@@ -110,8 +115,8 @@ class PidWorkload(Workload):
             self.procfs_directory_handles.clear()
             self.kill_inotifywait()
         elif sys.platform == "win32":
-            for handle in self.handles:
-                ctypes.windll.kernel32.CloseHandle(handle)
+            for handle in list(self.handles.keys()):
+                win32.close_handle(handle)
 
     def __del__(self) -> None:
         if sys.platform == "linux":
@@ -123,6 +128,7 @@ class PidWorkload(Workload):
         """
         return self.pids.copy()
 
+    # pylint: disable=too-many-branches,too-many-statements,too-many-locals, too-many-return-statements, try-except-raise
     def wait(self) -> Optional[int]:
         """
         Wait for a single process to complete
@@ -193,17 +199,39 @@ class PidWorkload(Workload):
             del self.procfs_directory_handles[child_pid]
             return child_pid
         if sys.platform == "win32":
-            infinite = 0xFFFFFFFF
-            handles = (ctypes.wintypes.HANDLE * len(self.handles))(*self.handles.keys())
-            index = ctypes.windll.kernel32.WaitForMultipleObjects(
-                len(handles), handles, False, infinite
-            )
-            handle = handles[index]
-            ctypes.windll.kernel32.CloseHandle(handle)
-            pid = self.handles[handle]
-            del self.handles[handle]
-            return pid
-        raise RuntimeError("Invalid platform")
+            # Poll with a short timeout so Python can run its SIGINT handler between polls.
+            if not self.handles:
+                return None
+
+            # Keep a stable list of raw HANDLE values for index math.
+            handle_list = list(self.handles.keys())
+
+            while handle_list:
+                try:
+                    status = win32.wait_for_multiple(handle_list, 200)  # 200 ms
+                    if status == win32.WAIT_TIMEOUT:
+                        # No process changed state; loop again to allow SIGINT processing.
+                        continue
+                    if status == win32.WAIT_FAILED:
+                        raise OSError("WaitForMultipleObjects failed")
+
+                    index = status - win32.WAIT_OBJECT_0
+                    if 0 <= index < len(handle_list):
+                        signaled = handle_list[index]
+                        try:
+                            win32.close_handle(signaled)
+                        finally:
+                            pid = self.handles.pop(signaled)
+                            # Rebuild list from remaining keys to keep indices correct
+                            handle_list = list(self.handles.keys())
+                        return pid
+
+                except InterruptedError:
+                    # Propagate user interrupt upward; do not kill monitored processes.
+                    raise
+
+            return None
+        return None
 
     def kill_inotifywait(self) -> None:
         """
