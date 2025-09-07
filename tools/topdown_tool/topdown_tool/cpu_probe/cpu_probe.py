@@ -421,10 +421,23 @@ class CpuProbe(Base.Probe):
         metric: Metric,
     ) -> Optional[float]:
         pattern = re.compile(r"[a-zA-Z_]\w*")
-        values = scheduler.retrieve_event_results(
-            perf_result, grp.metric_event_tuples(), metric.events
-        )
-        if any(v is None for v in values):
+        result_val: Optional[float] = None
+
+        # Try to retrieve the values for this metric; if the group never appeared
+        # (e.g., partial/interrupt), treat the metric as not computed.
+        # This might happen with windows perf if it returns partial result
+        try:
+            values = scheduler.retrieve_event_results(
+                perf_result, grp.metric_event_tuples(), metric.events
+            )
+        except KeyError:
+            values = None
+
+        if values is None:
+            # Group missing entirely → leave result_val as None
+            pass
+        elif any(v is None for v in values):
+            # Some required event didn’t produce a value → None
             result_val = None
         else:
             mapping = {ev.name: str(v) for ev, v in zip(metric.events, values)}
