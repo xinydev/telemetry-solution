@@ -127,7 +127,7 @@ def create_base_arg_parser() -> argparse.ArgumentParser:
         default=argparse.SUPPRESS,
         help="show this help message and exit",
     )
-    
+
     # Add general perf options
     perf_arg_group = parser.add_argument_group("General perf capture options")
     perf_factory.add_cli_arguments(perf_arg_group)
@@ -267,25 +267,36 @@ def capture_systemwide_workload(
     Args:
         probes: List of telemetry probes to activate.
     """
-    running_probes = []
+    running_probes: List[Probe] = []
     run = 1
+    interrupted = False
+
     with SystemwideWorkload() as workload:
         try:
             workload.start()
-            for probe in probes:
-                if probe.need_capture():
-                    probe.start_capture(run)
-                    running_probes.append(probe)
-            if len(running_probes) == 0:
+            for probe in (p for p in probes if p.need_capture()):
+                running_probes.append(probe)
+                probe.start_capture(run)
+
+            if not running_probes:
                 return
+
             console = get_console()
             console.print(
-                "Starting system-wide profiling. Hit Ctrl-C to stop. (See --help for usage information.)"
+                "Starting system-wide profiling. Hit Ctrl-C to stop. "
+                "(See --help for usage information.)"
             )
             workload.wait()
+
+        except InterruptedError:
+            interrupted = True
+            raise
         finally:
             for probe in running_probes:
-                probe.stop_capture(run=1)
+                try:
+                    probe.stop_capture(run, interrupted=interrupted)
+                except Exception:  # pylint: disable=broad-exception-caught
+                    logging.exception("Probe %r failed during stop_capture", probe)
 
 
 def capture_pid_workload(probes: List[Probe], pids: Set[int]) -> None:
@@ -300,7 +311,7 @@ def capture_pid_workload(probes: List[Probe], pids: Set[int]) -> None:
         pids: Set of process IDs to monitor.
     """
 
-    running_probes = []
+    running_probes: List[Probe] = []
     run = 1
     interrupted = False
     unique_pids = set()
@@ -333,7 +344,12 @@ def capture_pid_workload(probes: List[Probe], pids: Set[int]) -> None:
         finally:
             for pid in unique_pids:
                 for probe in running_probes:
-                    probe.stop_capture(run, pid, interrupted)
+                    try:
+                        probe.stop_capture(run, pid, interrupted)
+                    except Exception:  # pylint: disable=broad-exception-caught
+                        logging.exception(
+                            "Failed while stopping capture for probe %r (pid=%s)", probe, pid
+                        )
 
 
 # pylint: disable=too-many-branches, too-many-statements, too-many-locals
