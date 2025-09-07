@@ -187,38 +187,53 @@ class LinuxPerf(Perf):
             self._process.wait()
             self._process = None
 
-    # pylint: disable=too-many-arguments
     def __init__(
         self,
-        events_groups: Sequence[PerfEventGroup],
-        output_filename: str,
         cores: Optional[Sequence[int]] = None,
-        pid: Optional[int] = None,
         *,
         perf_args: Optional[str] = None,
         interval: Optional[int] = None,
     ):
         """
-        Initialize a LinuxPerf instance and prepare one or more Recorder objects.
+        Initialize a LinuxPerf instance.
 
         Args:
-            events_groups: A list of event groups (tuples of PerfEvent) to record.
-            output_filename: Base filename for output results.
             cores: Optional list of core indices to record events on.
             perf_args: Additional user-provided command-line arguments for `perf`.
             interval: Optional sampling interval in milliseconds.
         """
         self._perf_args = perf_args
         self._interval = interval
-        self._events_groups = events_groups
-        self._flat_events: List[PerfEvent] = list(
-            itertools.chain.from_iterable(self._events_groups)
-        )
-        self._output_filename = output_filename
         self._cores = tuple(sorted(cores)) if cores else None
-        self._pid = pid
-        self._output_path = Path(output_filename).parent
         self._recorders: List[LinuxPerf._Recorder] = []
+        self._events_groups: Sequence[PerfEventGroup] = []
+        self._flat_events: List[PerfEvent] = []
+        self._output_filename: Optional[str] = None
+        self._output_path: Optional[Path] = None
+
+    @property
+    def max_event_count(self) -> int:
+        return 1000
+
+    def enable(self) -> None:
+        pass
+
+    def disable(self) -> None:
+        pass
+
+    def start(
+        self,
+        events_groups: Sequence[PerfEventGroup],
+        output_filename: str,
+        pid: Optional[int] = None,
+    ) -> None:
+        """Starts performance event recording for this run (build recorders here)."""
+        # Reset any previous run state
+        self._recorders.clear()
+        self._events_groups = events_groups
+        self._flat_events = list(itertools.chain.from_iterable(self._events_groups))
+        self._output_filename = output_filename
+        self._output_path = Path(output_filename).parent
 
         for i, event_groups in enumerate(self._extract_recorders_events(self._events_groups)):
             recorder = self._Recorder(
@@ -228,16 +243,9 @@ class LinuxPerf(Perf):
                 cores=self._cores,
                 perf_args=self._perf_args,
                 interval=self._interval,
-                pid=self._pid,
+                pid=pid,
             )
             self._recorders.append(recorder)
-
-    @property
-    def max_event_count(self) -> int:
-        return 1000
-
-    def start(self) -> None:
-        """Starts performance event recording."""
         for r in self._recorders:
             r.start()
 

@@ -21,6 +21,10 @@ class DummyFakePerf:
     def __init__(self, *a, **k):
         pass
 
+    def enable(self):
+        # CpuProbe calls enable() on construction in the new flow
+        pass
+
     @classmethod
     def get_pmu_counters(cls, core):
         return 4  # match fixture expects 4
@@ -705,8 +709,8 @@ def test_cpuprobe_constructor_initializes_state_correctly(test_telemetry_spec):
     assert group_names == ["topdown_root_group"]
     # Event scheduler is initialized and has proper type
     assert isinstance(probe._event_scheduler, EventScheduler)
-    # Perf instance not started yet
-    assert probe._perf_instance is None
+    # Perf instance is constructed (but not yet started)
+    assert probe._perf_instance is not None
     # Event records dict empty
     assert probe._event_records == {}
 
@@ -720,7 +724,12 @@ class FakePerfSimple:
     def __init__(self, *a, **k):
         pass
 
-    def start(self):
+    def enable(self):
+        # No-op for compatibility with new CpuProbe flow
+        pass
+
+    def start(self, events_groups, output_filename, pid):
+        # Ignore args; CpuProbe verifies behavior via queued results
         pass
 
     def stop(self):

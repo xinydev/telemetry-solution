@@ -137,6 +137,12 @@ class CpuProbe(Base.Probe):
             split=not self._conf.multiplex
         )
 
+        # Instantiate the platform Perf once up-front and enable it
+        self._perf_instance = self._perf_factory.create(
+            self._cores if not self._pid_tracking else None
+        )
+        self._perf_instance.enable()
+
         # Declare the perf records
         self._event_records: EventRecords = {}
 
@@ -262,13 +268,12 @@ class CpuProbe(Base.Probe):
 
         product_name = normalize_str(self._product_name).replace(" ", "_")
         filename: str = f"perf.stat.cpu.{product_name}.{index}.txt"
-        self._perf_instance = self._perf_factory.create(
-            list(schedule_unit),
+        assert self._perf_instance is not None
+        self._perf_instance.start(
+            tuple(schedule_unit),
             filename,
-            self._cores if not self._pid_tracking else None,
             next(iter(self._pid)) if self._pid_tracking else None,
         )
-        self._perf_instance.start()
 
     def stop_capture(
         self, run: int = 1, pid: Optional[int] = None, interrupted: bool = False
@@ -317,10 +322,17 @@ class CpuProbe(Base.Probe):
 
         self._event_records = cast(EventRecords, dict_deep_merge(self._event_records, results))
 
-        # Return early if there are additional capture group left
-        if self._capture_it.has_next():
+        # If more capture groups remain:
+        #   • normal case → return and keep collecting
+        #   • interrupted → compute partial output now
+        if self._capture_it.has_next() and not interrupted:
             return
 
+        # If this was the last run for this probe (or interrupted), mark as no more runs
+        try:
+            self._perf_instance.disable()
+        except Exception:  # pylint: disable=broad-except
+            pass
         # All the events have been captured, start their aggregation then compute the metrics
         self._update_aggregate()
         self.computed_metrics = self._compute_metrics(
@@ -426,6 +438,7 @@ class CpuProbe(Base.Probe):
                 result_val = simple_maths.evaluate(substituted_formula)
             except Exception:  # pylint: disable=broad-exception-caught
                 result_val = None
+
         return result_val
 
     def output(self) -> None:

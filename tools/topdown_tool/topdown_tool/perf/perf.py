@@ -111,14 +111,10 @@ class Perf(ABC):
     All shared static helpers for event formatting and output preparation are also defined here.
     """
 
-    # pylint: disable=too-many-arguments
     @abstractmethod
     def __init__(
         self,
-        events_groups: Sequence[PerfEventGroup],
-        output_filename: str,
         cores: Optional[Sequence[int]] = None,
-        pid: Optional[int] = None,
         *,
         perf_args: Optional[str] = None,
         interval: Optional[int] = None,
@@ -130,7 +126,18 @@ class Perf(ABC):
         """Maximum events supported per measurement for this platform."""
 
     @abstractmethod
-    def start(self) -> None: ...
+    def enable(self) -> None: ...
+
+    @abstractmethod
+    def disable(self) -> None: ...
+
+    @abstractmethod
+    def start(
+        self,
+        events_groups: Sequence[PerfEventGroup],
+        output_filename: str,
+        pid: Optional[int] = None,
+    ) -> None: ...
 
     @abstractmethod
     def stop(self) -> None: ...

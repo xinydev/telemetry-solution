@@ -13,7 +13,7 @@ import shutil
 from typing import Type, Optional, Sequence
 import argparse
 
-from topdown_tool.perf.perf import Perf, PerfEventGroup
+from topdown_tool.perf.perf import Perf
 from topdown_tool.perf.linux_perf import LinuxPerf
 from topdown_tool.perf.windows_perf import WindowsPerf
 
@@ -40,28 +40,19 @@ class PerfFactory:
     # pylint: disable=too-many-function-args
     def create(
         self,
-        events_groups: Sequence[PerfEventGroup],
-        output_filename: str,
         cores: Optional[Sequence[int]] = None,
-        pid: Optional[int] = None,
     ) -> Perf:
         """
         Create a Perf instance using the resolved platform-specific class.
 
         Args:
-            events_groups: Sequence of grouped performance events to monitor.
-            output_filename: Base output file path for perf statistics.
             cores: Optional list of CPU core indices to record data on.
-            pid: Optional process id to measure.
 
         Returns:
             A fully initialized Perf object (LinuxPerf or WindowsPerf).
         """
         return self._impl_class(
-            events_groups,
-            output_filename,
             cores,
-            pid,
             perf_args=self._perf_args,
             interval=self._interval,
         )

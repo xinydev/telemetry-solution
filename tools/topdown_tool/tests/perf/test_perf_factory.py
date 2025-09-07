@@ -22,8 +22,7 @@ def test_perf_factory_create_instance():
     factory._perf_args = "--dry-run"
     factory._interval = 100
 
-    event_groups = [(DummyEvent(),)]
-    perf_instance = factory.create(event_groups, "output.txt", cores=[0])
+    perf_instance = factory.create(cores=[0])
 
     assert perf_instance is not None
     assert hasattr(perf_instance, "start")
