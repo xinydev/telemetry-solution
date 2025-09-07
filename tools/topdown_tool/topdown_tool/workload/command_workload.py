@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2022-2025 Arm LimitedLimited
+
 import ctypes
 import os
 import signal

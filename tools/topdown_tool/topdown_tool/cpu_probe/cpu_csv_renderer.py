@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2025 Arm Limited
+
 import os
 import csv
 from typing import Dict, Union, List, Optional, Tuple, cast

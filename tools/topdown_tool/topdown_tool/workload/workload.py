@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2025 Arm Limited
+
 import signal
 from abc import ABC, abstractmethod
 from types import TracebackType
