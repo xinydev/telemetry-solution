@@ -194,7 +194,7 @@ class CpuProbeFactory(Base.ProbeFactory):
 
     @staticmethod
     def _decode_sme_arg(arg: str) -> Optional[Tuple[str, List[int]]]:
-        """Decode the SME (Scallable Matrix Extension) argument from the command line.
+        """Decode the SME (Scalable Matrix Extension) argument from the command line.
 
         Args:
             arg (str): The SME argument string, expected format: 'file.json:core1,core2-coreN'.
@@ -238,58 +238,61 @@ class CpuProbeFactory(Base.ProbeFactory):
         This method organizes CPU options into dedicated argument groups:
 
             - Specification inclusion: --cpu, --sme
-            - Specification inspection: --cpu-list, --cpu-list-groups, --cpu-list-metrics, --cpu-list-events, --cpu-descriptions, --cpu-show-sample-events
+            - Specification inspection: --cpu-list-cores, --cpu-list-groups, --cpu-list-metrics, --cpu-list-events, --cpu-descriptions, --cpu-show-sample-events
             - Capture selection: --core, --cpu-no-multiplex, --cpu-collect-by, --cpu-metric-group, --cpu-node, --cpu-stages
-            - Output control: --cpu-csv
+            - Output control: --cpu-generate-csv
         """
         # Create top-level CPU groups for each section
-        spec_group = parser.add_argument_group(f"{self.name()} – Specification inclusion")
-        inspect_group = parser.add_argument_group(f"{self.name()} – Specification inspection")
-        capture_group = parser.add_argument_group(f"{self.name()} – Capture selection")
-        output_group = parser.add_argument_group(f"{self.name()} – Output control")
+        spec_group = parser.add_argument_group(f"{self.name()} - Specification")
+        inspect_group = parser.add_argument_group(f"{self.name()} - Inspection")
+        capture_group = parser.add_argument_group(f"{self.name()} - Capture Selection")
+        output_group = parser.add_argument_group(f"{self.name()} - Output")
 
         # Specification inclusion
         spec_group.add_argument(
             "--cpu",
             action="append",
-            help="CPU telemetry specification JSON file name. CPU specification is automatically retrieved, if this option is not provided.",
+            help="CPU telemetry specification JSON. If omitted, the spec is auto-detected. May be provided multiple times.",
         )
         spec_group.add_argument(
             "--sme",
             action="append",
             type=self._decode_sme_arg,
-            help="Provide an SME telemetry specification and specify which cores from the CPU cluster it applies to. e.g. sme_spec.json:0,2-3",
+            help="Add an SME (Scalable Matrix Extension) telemetry specification for specific cores. Format: file.json:core-list (e.g., sme.json:0,2-3).",
         )
 
         # Specification inspection
         inspect_group.add_argument(
-            "--cpu-list", action="store_true", help="List available CPUs on the system"
+            "--cpu-list-cores",
+            action="store_true",
+            help="List detected CPU models and the core indices where they are present.",
         )
         inspect_group.add_argument(
             "--cpu-list-groups",
             action="store_true",
-            help="List supported CPU metric groups by the telemetry specification",
+            help="List metric groups defined in the CPU telemetry specification.",
         )
         inspect_group.add_argument(
             "--cpu-list-metrics",
             action="store_true",
-            help="List supported CPU metrics by the telemetry specification",
+            help="List metrics defined in the CPU telemetry specification.",
         )
         inspect_group.add_argument(
             "--cpu-list-events",
             action="store_true",
-            help="List supported CPU events by the telemetry specification",
+            help="List CPU PMU events referenced by the CPU telemetry specification.",
         )
         inspect_group.add_argument(
             "--cpu-descriptions",
             "-d",
+            dest="cpu_descriptions",
             action="store_true",
-            help="Include descriptions of the metric group or metric as per telemetry specification when metrics or groups are listed using --cpu-list-metrics or --cpu-list-groups.",
+            help="When listing, include description text from the specification (works with all CPU inspection list options).",
         )
         inspect_group.add_argument(
             "--cpu-show-sample-events",
             action="store_true",
-            help="Include sample events for metrics as per telemetry specification when metrics are listed using --cpu-list-metrics.",
+            help='When listing metrics, include suggested sampling (leader) events for accurate collection (e.g., for branch MPKI, sample "branch-misses" rather than "instructions-retired").',
         )
 
         # Capture selection (includes --core)
@@ -297,7 +300,7 @@ class CpuProbeFactory(Base.ProbeFactory):
             "--core",
             "-C",
             type=range_decode,
-            help="Count only on the list of CPUs provided. Multiple CPUs can be provided as a comma-separated list with no space.",
+            help="Restrict counting to specific CPUs. Accepts a comma-separated list and ranges (e.g., 0,2-3).",
         )
         capture_group.add_argument(
             "--cpu-no-multiplex",
@@ -310,7 +313,12 @@ class CpuProbeFactory(Base.ProbeFactory):
             type=CollectBy.from_string,
             choices=list(CollectBy),
             default=CollectBy.METRIC,
-            help='If multiplexing is enabled, collect events grouped by "none", "metric" (default), or "group".',
+            help="R|Control how events are grouped into perf event-groups and scheduled across runs:\n"
+            "  • none   – capture each event independently.\n"
+            "  • metric – capture together the set of events that form a metric (default).\n"
+            "  • group  – capture together events from the same metric group.\n"
+            "With multiplexing enabled, grouping affects how events are scheduled across runs; "
+            "without multiplexing, it affects how events are grouped within a single run.",
         )
         capture_group.add_argument(
             "--cpu-metric-group",
@@ -321,7 +329,7 @@ class CpuProbeFactory(Base.ProbeFactory):
         capture_group.add_argument(
             "--cpu-node",
             "-n",
-            help='Collect metrics on a specific methodology node provided (e.g. "frontend_bound"). See --cpu-list-metrics for available nodes',
+            help='Start metric collection from this methodology node and include its subtree (e.g., "frontend_bound"). See --cpu-list-metrics for available nodes.',
         )
         capture_group.add_argument(
             "--cpu-level", "-l", type=int, choices=[1, 2], help=argparse.SUPPRESS
@@ -331,21 +339,34 @@ class CpuProbeFactory(Base.ProbeFactory):
             "-s",
             action=_ProcessStageArgs,
             default=DEFAULT_ALL_STAGES,
-            help='Specify methodology stage to collect, separated by a comma. e.g. "topdown,uarch" or "1,2" or "all". "combined" can be used to collect topdown metrics as a tree.',
+            help='Methodology stages to collect. One of: topdown, uarch, 1, 2, all, combined. Combine with commas (e.g., "topdown,uarch"). "combined" collects topdown metrics as a tree.',
         )
 
         # Output control
         output_group.add_argument(
-            "--cpu-generate-metrics-csv",
-            action="store_true",
-            help="Save metrics computed in the CSV format",
-        )
-        output_group.add_argument(
-            "--cpu-generate-events-csv",
-            action="store_true",
-            help="Save events recorded in the CSV format",
+            "--cpu-generate-csv",
+            type=lambda s: [x.strip().lower() for x in s.split(",") if x.strip()],
+            metavar="metrics[,events]",
+            help="Generate CSV output for one or both: 'metrics' and/or 'events' (comma-separated). Requires --csv-output-path.",
         )
         output_group.add_argument("--cpu-dump-events", help=argparse.SUPPRESS)
+
+        # Append CPU-specific examples to the global parser epilog
+        cpu_examples = (
+            "Examples:\n"
+            "  Command capture (CSV metrics every 1000 ms):\n"
+            "    topdown-tool --cpu-generate-csv metrics --csv-output-path out -I 1000 -- sleep 10\n"
+            "  PID capture (events to CSV):\n"
+            "    topdown-tool -p 1234 --cpu-generate-csv events --csv-output-path out\n"
+            "  Capture both metrics and events to CSV:\n"
+            "    topdown-tool --cpu-generate-csv metrics,events --csv-output-path out -- sleep 5\n"
+            "  Inspect metrics with descriptions and sample events:\n"
+            "    topdown-tool --cpu-list-metrics -d --cpu-show-sample-events\n"
+        )
+        if parser.epilog:
+            parser.epilog = f"{parser.epilog}\n\n{cpu_examples}"
+        else:
+            parser.epilog = cpu_examples
 
     def process_cli_arguments(
         self, args: argparse.Namespace, cpu_detect: Type[CPUDetect] = CPUDetect
@@ -367,16 +388,24 @@ class CpuProbeFactory(Base.ProbeFactory):
         """
         conf = self._conf
         conf.cpu_dump_events = args.cpu_dump_events
-        conf.cpu_generate_metrics_csv = args.cpu_generate_metrics_csv
-        conf.cpu_generate_events_csv = args.cpu_generate_events_csv
+        # Populate combined CSV targets directly on configuration
+        selected_csv = []
+        if hasattr(args, "cpu_generate_csv") and args.cpu_generate_csv:
+            for item in args.cpu_generate_csv:
+                if item not in ("metrics", "events"):
+                    raise ArgsError(
+                        f"Invalid value for --cpu-generate-csv: {item}. Use 'metrics' and/or 'events'."
+                    )
+                selected_csv.append(item)
+        conf.cpu_generate_csv = selected_csv
+
         require_csv_path_flags = [
             conf.cpu_dump_events,
-            conf.cpu_generate_metrics_csv,
-            conf.cpu_generate_events_csv,
+            bool(conf.cpu_generate_csv),
         ]
         if args.csv_output_path is None and any(require_csv_path_flags):
             raise ArgsError("CSV output path must be specified with --csv-output-path")
-        if args.interval is not None and not conf.cpu_generate_metrics_csv:
+        if args.interval is not None and not bool(conf.cpu_generate_csv):
             raise ArgsError("Must use interval option with CSV option")
         conf.cpu_list_groups = args.cpu_list_groups
         conf.cpu_list_metrics = args.cpu_list_metrics
@@ -394,13 +423,16 @@ class CpuProbeFactory(Base.ProbeFactory):
         self._update_midr_cpu_core_map(args, cpu_detect)
         # Update CPU descriptions by loading telemetry JSON files, with CLI overrides if provided.
         self._update_cpu_descriptions(args, cpu_detect)
-        # List detected CPUs if the --cpu-list argument was specified.
+        # List detected CPUs if the --cpu-list-cores argument was specified.
         self._list_cpus(args, cpu_detect)  # Kind of hacky to have it here.
 
         conf.pid_tracking_applicable = len(self._midr_core_map) == 1 and args.core is None
 
         return not (
-            args.cpu_list or args.cpu_list_groups or args.cpu_list_metrics or args.cpu_list_events
+            args.cpu_list_cores
+            or args.cpu_list_groups
+            or args.cpu_list_metrics
+            or args.cpu_list_events
         )
 
     def _update_midr_cpu_core_map(
@@ -489,7 +521,7 @@ class CpuProbeFactory(Base.ProbeFactory):
         # This method outputs a table of detected CPUs, showing the product name and the indices of the cores
         # where each CPU is present. It is used for informational purposes to help users understand the
         # CPU topology on the system.
-        if not args.cpu_list:
+        if not args.cpu_list_cores:
             return
 
         table = Table(title="Available CPUs")

@@ -138,7 +138,7 @@ def base_args():
     ns.cpu = None
     ns.core = None
     ns.sme = None
-    ns.cpu_list = False
+    ns.cpu_list_cores = False
     ns.cpu_list_groups = False
     ns.cpu_list_metrics = False
     ns.cpu_list_events = False
@@ -151,8 +151,7 @@ def base_args():
     ns.cpu_descriptions = False
     ns.cpu_show_sample_events = False
     ns.csv_output_path = None
-    ns.cpu_generate_metrics_csv = False
-    ns.cpu_generate_events_csv = False
+    ns.cpu_generate_csv = None
     ns.interval = None
     ns.cpu_dump_events = None
     return ns
@@ -324,9 +323,9 @@ def test_process_cli_arguments_missing_csv_raises(tmp_metrics_dir, base_args, mo
     "flag_overrides",
     [
         {"cpu_dump_events": True},
-        {"cpu_generate_metrics_csv": True},
-        {"cpu_generate_events_csv": True},
-        {"cpu_generate_metrics_csv": True, "cpu_generate_events_csv": True},
+        {"cpu_generate_csv": ["metrics"]},
+        {"cpu_generate_csv": ["events"]},
+        {"cpu_generate_csv": ["metrics", "events"]},
     ],
 )
 def test_process_cli_arguments_requires_csv_output_path_for_csv_flags(base_args, flag_overrides):
@@ -340,7 +339,7 @@ def test_process_cli_arguments_requires_csv_output_path_for_csv_flags(base_args,
 
 def test_process_cli_arguments_interval_requires_metrics_csv(base_args):
     base_args.interval = 1
-    # metrics CSV not enabled -> should fail
+    # CSV not enabled -> should fail
     factory = CpuProbeFactory()
     with pytest.raises(ArgsError):
         factory.process_cli_arguments(base_args, cpu_detect=FakeCPUDetect)
@@ -353,7 +352,7 @@ def test_process_cli_arguments_valid_csv_combinations(
     monkeypatch.setattr(CpuProbeFactory, "METRICS_DIR", tmp_metrics_dir)
     monkeypatch.setattr(CpuProbeFactory, "SCHEMAS_DIR", tmp_schemas_dir)
     base_args_a = argparse.Namespace(**vars(base_args))
-    base_args_a.cpu_generate_metrics_csv = True
+    base_args_a.cpu_generate_csv = ["metrics"]
     base_args_a.csv_output_path = "out"
     base_args_a.interval = 1
     base_args_a.core = [0]
@@ -362,7 +361,7 @@ def test_process_cli_arguments_valid_csv_combinations(
 
     # Case B: events CSV with path (no interval required)
     base_args_b = argparse.Namespace(**vars(base_args))
-    base_args_b.cpu_generate_events_csv = True
+    base_args_b.cpu_generate_csv = ["events"]
     base_args_b.csv_output_path = "out"
     base_args_b.core = [0]
     assert factory.process_cli_arguments(base_args_b, cpu_detect=FakeCPUDetect) in (True, False)
@@ -384,7 +383,7 @@ def test_create_method(monkeypatch, tmp_metrics_dir, tmp_schemas_dir, base_args)
     base_args.core = [0]
     base_args.interval = 1
     base_args.csv_output_path = "dummy"
-    base_args.cpu_generate_metrics_csv = True
+    base_args.cpu_generate_csv = ["metrics"]
 
     # NEW: Use the generator to create a dummy SME telemetry spec.
     sme_spec = generate_fake_spec(
@@ -437,7 +436,7 @@ def test_create_method(monkeypatch, tmp_metrics_dir, tmp_schemas_dir, base_args)
 
 # NEW: Test that when any listing flag is set, _list_cpus is called and process_cli_arguments returns False.
 @pytest.mark.parametrize(
-    "list_flag", ["cpu_list", "cpu_list_groups", "cpu_list_metrics", "cpu_list_events"]
+    "list_flag", ["cpu_list_cores", "cpu_list_groups", "cpu_list_metrics", "cpu_list_events"]
 )
 def test_process_cli_arguments_list_flags_independently(
     tmp_metrics_dir, base_args, monkeypatch, list_flag
@@ -462,7 +461,7 @@ def test_process_cli_arguments_list_flags_independently(
 
 # NEW: Test that when no listing flags are set, process_cli_arguments returns True.
 def test_process_cli_arguments_no_list_flags(tmp_metrics_dir, base_args):
-    base_args.cpu_list = False
+    base_args.cpu_list_cores = False
     base_args.cpu_list_groups = False
     base_args.cpu_list_metrics = False
     base_args.cpu_list_events = False
@@ -540,7 +539,7 @@ def test_complex_probe_creation(monkeypatch, tmp_path):
     base_args.cpu = None
     base_args.core = [0, 2, 3, 4, 5, 8]
     base_args.sme = []  # will assign below
-    base_args.cpu_list = False
+    base_args.cpu_list_cores = False
     base_args.cpu_list_groups = False
     base_args.cpu_list_metrics = False
     base_args.cpu_list_events = False
@@ -553,7 +552,7 @@ def test_complex_probe_creation(monkeypatch, tmp_path):
     base_args.cpu_descriptions = False
     base_args.cpu_show_sample_events = False
     base_args.csv_output_path = "dummy"
-    base_args.cpu_generate_metrics_csv = True
+    base_args.cpu_generate_csv = ["metrics"]
     base_args.cpu_generate_events_csv = False
     base_args.interval = 1
     base_args.cpu_dump_events = None
@@ -617,7 +616,7 @@ def test_perf_factory_integration(
     base_args.interval = 500
     base_args.cpu_dump_events = None
     base_args.csv_output_path = "out/"
-    base_args.cpu_generate_metrics_csv = True
+    base_args.cpu_generate_csv = ["metrics"]
     base_args.cpu_stages = DEFAULT_ALL_STAGES
     base_args.cpu_collect_by = CollectBy.METRIC
 

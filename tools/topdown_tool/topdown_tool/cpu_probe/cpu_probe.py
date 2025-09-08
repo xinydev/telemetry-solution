@@ -534,7 +534,7 @@ class CpuProbe(Base.Probe):
         if not self._capture_data:
             return
 
-        if self._conf.cpu_generate_events_csv or self._conf.cpu_dump_events:
+        if ("events" in self._conf.cpu_generate_csv) or self._conf.cpu_dump_events:
             assert self._base_csv_dir is not None
             self._csv_renderer.dump_events(
                 self._event_records, self._db, self._product_name, join(self._base_csv_dir, "cpu")
@@ -544,7 +544,7 @@ class CpuProbe(Base.Probe):
         if self._conf.cpu_dump_events:
             return
 
-        if self._conf.cpu_generate_metrics_csv:
+        if "metrics" in self._conf.cpu_generate_csv:
             assert self._base_csv_dir is not None
             self._csv_renderer.render_metric_groups(
                 self.computed_metrics,
@@ -553,6 +553,16 @@ class CpuProbe(Base.Probe):
                 join(self._base_csv_dir, "cpu"),
             )
 
+        # Suppress CLI rendering when any CSV flag is set AND the computed metrics contain timeline data.
+        # We infer timeline presence if any time key is not None. In non-timeline runs, each location maps
+        # to a single None key. If needed in future, we can normalize empty mappings to {None: {...}} here.
+        has_timeline = any(
+            (time is not None)
+            for loc_map in self.computed_metrics.values()
+            for time in loc_map.keys()
+        )
+        if self._conf.cpu_generate_csv and has_timeline:
+            return
         if self._conf.stages is COMBINED_STAGES or self._conf.node is not None:
             self._cli_renderer.render_metrics_tree(
                 self.computed_metrics,

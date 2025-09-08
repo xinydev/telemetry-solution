@@ -17,8 +17,8 @@ COMBINED_STAGES: List[int] = []
 @dataclass
 class CpuProbeConfiguration:
     cpu_dump_events: Optional[Any] = None
-    cpu_generate_metrics_csv: bool = False
-    cpu_generate_events_csv: bool = False
+    # Combined CSV generation targets; allowed values: "metrics", "events"
+    cpu_generate_csv: List[str] = field(default_factory=list)
     cpu_list_groups: bool = False
     cpu_list_metrics: bool = False
     cpu_list_events: bool = False

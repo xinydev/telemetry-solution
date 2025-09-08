@@ -107,19 +107,22 @@ class PerfFactory:
         Args:
             parser: The top-level argument parser to which the perf options group will be added.
         """
-        group = parser.add_argument_group("General perf capture options")
-        group.add_argument("--perf-path", type=str, help="Path to perf executable")
+        group = parser.add_argument_group("Perf Capture Options")
+        group.add_argument(
+            "--perf-path",
+            type=str,
+            help="Path to the perf executable (default: 'perf' on Linux, 'wperf' on Windows).",
+        )
         group.add_argument(
             "--perf-args",
             type=str,
-            help="Additional command line arguments to pass to perf",
+            help="Extra arguments passed verbatim to perf (quoted as a single string). Example: --perf-args '--call-graph dwarf'. Note: options may conflict with internally provided arguments.",
         )
         group.add_argument(
             "--interval",
             "-I",
-            "-i",
             type=int,
-            help="Collect/output data every <interval> milliseconds",
+            help="Sampling/output interval in milliseconds. Only valid when CSV output is enabled (use with --cpu-generate-csv metrics and/or events).",
         )
 
     def process_cli_arguments(self, args: argparse.Namespace) -> None:

@@ -1041,7 +1041,7 @@ def dummy_probe(mocker, test_telemetry_db):
     probe._csv_renderer = mocker.Mock()
     probe._capture_data = True
     probe._capture_groups = list(test_telemetry_db.groups.values())
-    probe.computed_metrics = {"irrelevant": "dummy"}
+    probe.computed_metrics = {"irrelevant": {None: {"dummy"}}}
     probe._event_records = {}
     probe._base_csv_dir = "fake_dir"
     return probe
@@ -1118,8 +1118,10 @@ def test_list_modes(
 )
 def test_output_csv_calls_csv_renderer(dummy_probe, gen_metrics_csv, gen_events_csv):
     dummy_probe._conf.cpu_dump_events = None
-    dummy_probe._conf.cpu_generate_metrics_csv = gen_metrics_csv
-    dummy_probe._conf.cpu_generate_events_csv = gen_events_csv
+    # new combined flag behaviour
+    dummy_probe._conf.cpu_generate_csv = (["metrics"] if gen_metrics_csv else []) + (
+        ["events"] if gen_events_csv else []
+    )
 
     dummy_probe.output()
 
@@ -1151,7 +1153,7 @@ def test_output_csv_calls_csv_renderer(dummy_probe, gen_metrics_csv, gen_events_
 @pytest.mark.parametrize("gen_metrics_csv", [False, True])
 def test_output_cpu_dump_events(dummy_probe, gen_metrics_csv):
     dummy_probe._conf.cpu_dump_events = True
-    dummy_probe._conf.cpu_generate_metrics_csv = gen_metrics_csv
+    dummy_probe._conf.cpu_generate_csv = ["metrics"] if gen_metrics_csv else []
 
     dummy_probe.output()
 

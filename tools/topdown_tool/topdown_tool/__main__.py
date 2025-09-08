@@ -75,7 +75,7 @@ def get_selected_factories_from_args(
         "--probe",
         action="append",
         metavar="NAME[,NAME...]",
-        help=f"Select IPs to profile (default: {', '.join(default_probe_names)}). List the probes supported with --probe-list",
+        help=f"Select subsystems to profile (default: {', '.join(default_probe_names)}). List available probes with --probe-list",
     )
     probe_args, _ = minimal_parser.parse_known_args(_args)
 
@@ -110,6 +110,18 @@ def get_selected_factories_from_args(
     return selected_factories
 
 
+class SmartFormatter(argparse.RawDescriptionHelpFormatter):
+    """
+    A formatter that preserves newlines only when the help string starts with 'R|'.
+    Otherwise, it behaves like the default help formatter.
+    """
+
+    def _split_lines(self, text: str, width: int) -> List[str]:
+        if text.startswith("R|"):
+            return text[2:].splitlines()
+        return super()._split_lines(text, width)
+
+
 def create_base_arg_parser() -> argparse.ArgumentParser:
     """
     Build the application argument parser with perf arguments.
@@ -118,7 +130,7 @@ def create_base_arg_parser() -> argparse.ArgumentParser:
         argparse.ArgumentParser: App argument parser.
     """
     parser = argparse.ArgumentParser(
-        formatter_class=argparse.RawDescriptionHelpFormatter, add_help=False, allow_abbrev=False
+        formatter_class=SmartFormatter, add_help=False, allow_abbrev=False
     )
 
     # Add general perf options
@@ -156,18 +168,18 @@ def extend_arg_parser(
         "--probe",
         action="append",
         metavar="NAME[,NAME...]",
-        help=f"Select IPs to profile (default: {', '.join(default_probe_names)}). List the probes supported with --probe-list",
+        help=f"Select subsystems to profile (default: {', '.join(default_probe_names)}). List available probes with --probe-list",
     )
     parser.add_argument(
         "--probe-list",
         action="store_true",
-        help="List probes present on this system.",
+        help="List available probes on this system.",
     )
     parser.add_argument(
         "command",
         default=[],
         nargs=argparse.REMAINDER,
-        help='Workload to profile. Provide the workload execution command with subsequent arguments passed as program arguments. e.g. "sleep 10"',
+        help="Workload to profile (command and its arguments). Use -- to separate tool options from the workload command. Example: -- sleep 10",
     )
 
     # Extract pids from the --pid argument
@@ -181,7 +193,7 @@ def extend_arg_parser(
         dest="pids",
         help="Comma separated list of process IDs to monitor.",
     )
-    output_group = parser.add_argument_group("output options")
+    output_group = parser.add_argument_group("Output Options")
     output_group.add_argument(
         "--log-level",
         dest="loglevel",
@@ -195,7 +207,10 @@ def extend_arg_parser(
         action="store_true",
         help="Enable detailed exception traceback output",
     )
-    output_group.add_argument("--csv-output-path", help="Output directory for CSV data")
+    output_group.add_argument(
+        "--csv-output-path",
+        help="Directory for CSV output. Required when using --cpu-generate-csv (metrics and/or events). A timestamped subdirectory is created automatically.",
+    )
 
     # Add Probe specific options for selected probes only
     for probe in selected_factories:
@@ -405,7 +420,6 @@ def main(
     list_parser.add_argument("--probe-list", action="store_true")
     early_args, _ = list_parser.parse_known_args(_args)
     if early_args.probe_list:
-        print(f"early args are {early_args}")
         print_available_probes_table(available_factories, console)
         return
 
@@ -427,6 +441,9 @@ def main(
     # Extend parser with only selected probe factories
     extend_arg_parser(parser, selected_factories, default_probe_names)
     args = parser.parse_args(_args)
+    # Normalize command separator: drop leading '--' if provided
+    if args.command and len(args.command) > 0 and args.command[0] == "--":
+        args.command = args.command[1:]
 
     logging.basicConfig(format=LOG_FORMAT, level=args.loglevel)
 
