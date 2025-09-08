@@ -365,7 +365,7 @@ def main(
 
     factory = None
 
-    def get_warning_text(factory: ProbeFactory | None) -> str:
+    def get_warning_text(factory: Optional[ProbeFactory]) -> str:
         return f"Failed processing of CLI arguments for {factory.name()}" if factory else ""
 
     def handle_exception(
