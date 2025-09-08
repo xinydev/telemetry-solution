@@ -41,7 +41,8 @@ class CommandWorkload(Workload):
         self.kill()
 
     def __del__(self) -> None:
-        self.kill()
+        if getattr(self, "_proc", None):
+            self.kill()
 
     def start(self) -> Set[int]:
         """
