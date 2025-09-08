@@ -83,7 +83,7 @@ class CpuCsvRenderer:
             elif isinstance(loc, CpuAggregate):
                 # Use range_encode to encode the aggregate CPU ids.
                 cpu_range = range_encode([cpu.id for cpu in loc.cpus])
-                filename = f"{product_name}_aggregate_({cpu_range})_metrics.csv"
+                filename = f"{product_name}_core_aggregate_({cpu_range})_metrics.csv"
             elif isinstance(loc, Uncore):
                 filename = f"{product_name}_metrics.csv"
             else:
@@ -154,8 +154,8 @@ class CpuCsvRenderer:
                 core_id = f"core_{loc.id}"
                 filename = f"{product_name.lower().replace(' ', '_')}_{core_id}_events.csv"
             elif isinstance(loc, CpuAggregate):
-                core_id = f"aggregate_({range_encode([cpu.id for cpu in loc.cpus])})"
-                filename = f"{product_name.lower().replace(' ', '_')}_core_{core_id}_events.csv"
+                core_id = f"core_aggregate_({range_encode([cpu.id for cpu in loc.cpus])})"
+                filename = f"{product_name.lower().replace(' ', '_')}_{core_id}_events.csv"
             elif isinstance(loc, Uncore):
                 filename = f"{product_name.lower().replace(' ', '_')}_events.csv"
             else:

@@ -86,7 +86,7 @@ def test_write_csv_with_core_and_aggregate(tmp_path, db, cpu_csv_renderer, regen
     compare_reference(actual_core, reference_core, regen_reference_mode)
 
     # Check aggregate file (ids 0,1)
-    agg_filename = f"testcpu_aggregate_({range_encode([0, 1])})_metrics.csv"
+    agg_filename = f"testcpu_core_aggregate_({range_encode([0, 1])})_metrics.csv"
     path_agg = out_dir / agg_filename
     actual_agg = read_file_str(path_agg)
     reference_agg = get_fixture_path(
