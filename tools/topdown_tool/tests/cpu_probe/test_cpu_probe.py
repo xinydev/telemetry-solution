@@ -728,7 +728,7 @@ class FakePerfSimple:
         # No-op for compatibility with new CpuProbe flow
         pass
 
-    def start(self, events_groups, output_filename, pid):
+    def start(self, events_groups, output_filename, pid, cores):
         # Ignore args; CpuProbe verifies behavior via queued results
         pass
 

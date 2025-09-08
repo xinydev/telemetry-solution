@@ -189,7 +189,6 @@ class LinuxPerf(Perf):
 
     def __init__(
         self,
-        cores: Optional[Sequence[int]] = None,
         *,
         perf_args: Optional[str] = None,
         interval: Optional[int] = None,
@@ -204,7 +203,7 @@ class LinuxPerf(Perf):
         """
         self._perf_args = perf_args
         self._interval = interval
-        self._cores = tuple(sorted(cores)) if cores else None
+        self._cores: Optional[Sequence[int]] = None
         self._recorders: List[LinuxPerf._Recorder] = []
         self._events_groups: Sequence[PerfEventGroup] = []
         self._flat_events: List[PerfEvent] = []
@@ -226,6 +225,7 @@ class LinuxPerf(Perf):
         events_groups: Sequence[PerfEventGroup],
         output_filename: str,
         pid: Optional[int] = None,
+        cores: Optional[Sequence[int]] = None,
     ) -> None:
         """Starts performance event recording for this run (build recorders here)."""
         # Reset any previous run state
@@ -234,6 +234,7 @@ class LinuxPerf(Perf):
         self._flat_events = list(itertools.chain.from_iterable(self._events_groups))
         self._output_filename = output_filename
         self._output_path = Path(output_filename).parent
+        self._cores = tuple(sorted(cores)) if cores else None
 
         for i, event_groups in enumerate(self._extract_recorders_events(self._events_groups)):
             recorder = self._Recorder(

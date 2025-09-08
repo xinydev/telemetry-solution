@@ -157,9 +157,7 @@ class CpuProbe(Base.Probe):
         )
 
         # Instantiate the platform Perf once up-front and enable it
-        self._perf_instance = self._perf_factory.create(
-            self._cores if not self._pid_tracking else None
-        )
+        self._perf_instance = self._perf_factory.create()
         self._perf_instance.enable()
 
         # Declare the perf records
@@ -333,6 +331,7 @@ class CpuProbe(Base.Probe):
             tuple(schedule_unit),
             filename,
             next(iter(self._pid)) if self._pid_tracking else None,
+            cores=self._cores if not self._pid_tracking else None,
         )
 
     def stop_capture(

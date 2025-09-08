@@ -10,7 +10,7 @@ and manages CLI options for customizing perf execution (e.g. binary path, argume
 
 import sys
 import shutil
-from typing import Type, Optional, Sequence
+from typing import Type, Optional
 import argparse
 
 from topdown_tool.perf.perf import Perf
@@ -37,22 +37,14 @@ class PerfFactory:
         self._perf_args: Optional[str] = None
         self._interval: Optional[int] = None
 
-    # pylint: disable=too-many-function-args
-    def create(
-        self,
-        cores: Optional[Sequence[int]] = None,
-    ) -> Perf:
+    def create(self) -> Perf:
         """
         Create a Perf instance using the resolved platform-specific class.
-
-        Args:
-            cores: Optional list of CPU core indices to record data on.
 
         Returns:
             A fully initialized Perf object (LinuxPerf or WindowsPerf).
         """
         return self._impl_class(
-            cores,
             perf_args=self._perf_args,
             interval=self._interval,
         )

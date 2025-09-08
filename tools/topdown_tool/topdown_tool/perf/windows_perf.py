@@ -47,7 +47,6 @@ class WindowsPerf(Perf):
 
     def __init__(
         self,
-        cores: Optional[Sequence[int]] = None,
         *,
         perf_args: Optional[str] = None,
         interval: Optional[int] = None,
@@ -57,18 +56,16 @@ class WindowsPerf(Perf):
 
         Parameters
         ----------
-        cores : Optional[Sequence[int]]
-            Specific CPU cores to record. `None` means "all cores".
         perf_args : Optional[str], keyword-only
             Additional flags to pass to `wperf` verbatim.
         interval : Optional[int], keyword-only
-            Sampling interval in **milliseconds**. `None` means one-shot (no
+            Sampling interval in milliseconds. None means one-shot (no
             periodic sampling).
         """
         # Stable settings
         self._perf_args = perf_args
         self._interval = interval
-        self._cores = tuple(sorted(cores)) if cores is not None else None
+        self._cores: Optional[Tuple[int, ...]] = None
         # Run-scoped / lifecycle
         self._events_groups: Sequence[PerfEventGroup] = []
         self._coordinator = WperfCoordinator.get_instance()
@@ -124,6 +121,7 @@ class WindowsPerf(Perf):
         events_groups: Sequence[PerfEventGroup],
         output_filename: str,
         pid: Optional[int] = None,
+        cores: Optional[Sequence[int]] = None,
     ) -> None:
         """
         Provide per-run parameters and request the shared run to start.
@@ -142,6 +140,7 @@ class WindowsPerf(Perf):
         if not self._coordinator:
             raise RuntimeError("Probe not properly registered with coordinator")
         self._events_groups = events_groups
+        self._cores = tuple(sorted(cores)) if cores is not None else None
         self._coordinator.start(self, pid)
 
     def stop(self) -> None:

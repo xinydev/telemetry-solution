@@ -114,7 +114,6 @@ class Perf(ABC):
     @abstractmethod
     def __init__(
         self,
-        cores: Optional[Sequence[int]] = None,
         *,
         perf_args: Optional[str] = None,
         interval: Optional[int] = None,
@@ -137,6 +136,7 @@ class Perf(ABC):
         events_groups: Sequence[PerfEventGroup],
         output_filename: str,
         pid: Optional[int] = None,
+        cores: Optional[Sequence[int]] = None,
     ) -> None: ...
 
     @abstractmethod
