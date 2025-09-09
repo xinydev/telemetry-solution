@@ -200,3 +200,22 @@ perf-json-generator:
         - tools/perf_json_generator/reports/*.xml
     expose_as: 'Perf JSON'
     expire_in: 7 days
+
+topdown-tool-create-package:
+  extends: .build-base
+  image: python:3.9.23-bullseye
+  tags: [linux_arm64]
+  when: manual
+  script:
+    - |
+      apt update
+      apt install -y binutils
+      python3 -m venv .venv
+      source .venv/bin/activate
+      pip install pyinstaller
+      cd tools/topdown_tool
+      pip install .
+      pyinstaller --clean -Fsn topdown-tool --optimize 2 --bootloader-ignore-signals --copy-metadata topdown_tool --hidden-import topdown_tool.cpu_probe.cpu_factory --add-data topdown_tool/cpu_probe/metrics:topdown_tool/cpu_probe/metrics --add-data topdown_tool/cpu_probe/schemas:topdown_tool/cpu_probe/schemas topdown_tool/__main__.py
+  artifacts:
+    paths:
+      - tools/topdown_tool/dist/topdown-tool
