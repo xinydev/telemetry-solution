@@ -398,25 +398,44 @@ class LinuxPerf(Perf):
         """
 
         def check_pmu_availability(core: int, count: int) -> bool:
-            cmdline = [
-                LinuxPerf._perf_path,
-                "stat",
-                "-e",
-                "{" + ",".join(["instructions:u"] * count) + "}",
-                "-C",
-                str(core),
-                "-x",
-                "\\t",
-                LinuxPerf._perf_path,
-                "-v",
-            ]
-            with Popen(cmdline, stdin=DEVNULL, stdout=DEVNULL, stderr=PIPE, text=True) as process:
-                stderr = process.communicate()[1]
-                for line in stderr.splitlines():
+            def run_perf(event: str) -> List[str]:
+                cmdline = [
+                    LinuxPerf._perf_path,
+                    "stat",
+                    "-e",
+                    "{" + ",".join([event + ":u"] * count) + "}",
+                    "-C",
+                    str(core),
+                    "-x",
+                    "\\t",
+                    LinuxPerf._perf_path,
+                    "-v",
+                ]
+                with Popen(
+                    cmdline, stdin=DEVNULL, stdout=DEVNULL, stderr=PIPE, text=True
+                ) as process:
+                    return process.communicate()[1].strip().splitlines()
+
+            # First attempt with "r8:u"
+            stderr_lines = run_perf("r8")
+            if len(stderr_lines) == count:
+                for line in stderr_lines:
                     row = line.split("\t")
                     if row[0] in {"<not counted>", "<not supported>"} or float(row[4]) != 100.0:
                         return False
-            return True
+                return True
+
+            # Retry with "instructions:u"
+            stderr_lines = run_perf("instructions")
+            if len(stderr_lines) == count:
+                for line in stderr_lines:
+                    row = line.split("\t")
+                    if row[0] in {"<not counted>", "<not supported>"} or float(row[4]) != 100.0:
+                        return False
+                return True
+
+            # If both attempts fail to produce the expected number of lines
+            raise RuntimeError(f"Failed to check PMU availability with perf. Expected {count} lines in perf stderr")
 
         pmu_min = 0
         pmu_max = 31
