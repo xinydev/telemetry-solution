@@ -10,28 +10,84 @@ Topdown Tool captures PMU events for the required metrics using [`perf stat` on 
 * Python 3.9 or later.
 * Under Linux: `inotifywait` from `inotify-tools` package
 
+Platform prerequisites quickstart:
+
+- Linux:
+
+The following commands target Ubuntu 22.04 LTS and newer. On other Linux distributions, install the equivalent packages (Git, Python 3 with venv and pip, and inotify-tools) using your distribution’s package manager.
+```sh
+sudo apt-get update
+sudo apt-get install -y git python3 python3-venv python3-pip inotify-tools
+```
+
+- Windows:
+```sh
+winget install WindowsPerf
+```
+For more details, see the WindowsPerf documentation.
+
 # Install
-This tool must be installed as a python package by running the following from the project directory:
 
+Run all commands in this section from the `tools/topdown_tool` directory of the telemetry repository. If you’re at the repo root:
 ```sh
-pip3 install .
+cd tools/topdown_tool
 ```
 
-or
+We recommend installing in a Python virtual environment to avoid conflicts with the system Python and to keep your environment reproducible.
 
+About pip vs pip3:
+- Prefer `python3 -m pip ...` in commands to avoid ambiguity across distributions.
+- On some Ubuntu 22.04 systems, user-local installs may fail due to an older front-end `pip`. If that happens, see the [Known Issues](#known-issues) section for a workaround.
+
+## Method 1: Virtual environment (recommended)
+
+Create and activate a venv:
 ```sh
-pip3 install --user .
+python3 -m venv .venv
+source .venv/bin/activate
 ```
+
+Install the package:
+```sh
+python3 -m pip install .
+```
+
+Verify:
+```sh
+topdown-tool --help
+```
+Note: If you see:
+```sh
+Error: Insufficient privilege. This tool requires either perf_event_paranoid=-1, CAP_PERFMON, or CAP_SYS_ADMIN.
+```
+set the required permissions as described in the Permissions section below.
+
+## Method 2: User-local install (no virtualenv)
+
+Install for the current user:
+```sh
+python3 -m pip install --user .
+```
+
+Ensure your local bin is on PATH so the `topdown-tool` command is found:
+```sh
+export PATH="$HOME/.local/bin:$PATH"
+```
+(Consider adding the line above to your shell profile, e.g., `~/.bashrc` or `~/.zshrc`.)
+
+If installation fails on Ubuntu 22.04 with “metadata-generation-failed”, see [Known Issues](#known-issues) for a workaround.
 
 
 # Usage
 
 ## Permissions
 
+### Linux
+
 topdown-tool needs to access performance monitoring counters (PMUs) in system-wide mode.
 This requires elevated permissions. There are a few ways you can satisfy this requirement:
 
-- **Changing `/proc/sys/kernel/perf_event_paranoid` to `-1` (recommended for most cases):** This is the quickest and most practical method, especially on single user machine or throwaway environment.
+- **Changing `/proc/sys/kernel/perf_event_paranoid` to `-1` (recommended for most cases):** This is the quickest and most practical method, especially on a single-user machine or in a throwaway environment.
 
 ```sh
 sudo sh -c 'echo -1 > /proc/sys/kernel/perf_event_paranoid'
@@ -50,10 +106,16 @@ to temporarily disable enforcement.
 
 Once the permissions are set, you can run `topdown-tool` as your normal user.
 
-If you encounter additional issues please read the [known issues section](#known-issues) below.
+If you encounter additional issues on Linux, see [Known Issues](#known-issues).
 
-## Running from a package install
-If installed as a python package, and pip's `<install>/bin` directory is in your PATH, you can execute the tool as follows:
+### Windows
+
+On Windows, run `topdown-tool` from an Administrator Command Prompt or an Administrator PowerShell terminal. This ensures the tool has sufficient privileges to access performance counters.
+
+
+
+## Verify installation and view CLI help
+Use the command below to validate the installation and display the CLI help (usage and options). It works when the `topdown-tool` script is on your PATH (e.g., inside an activated virtual environment or after a user-local install with `$HOME/.local/bin` on PATH):
 
 ```sh
 topdown-tool --help
@@ -155,6 +217,45 @@ Metric selection is probe-specific. For the CPU probe, see [README.CPU.md](./REA
 See `topdown-tool --help` for full usage information.
 
 # Known Issues
+
+## Ubuntu 22.04: "metadata-generation-failed" during `pip install .`
+
+On Ubuntu 22.04 environments, installing from source may fail with:
+```
+error: metadata-generation-failed
+```
+
+Cause:
+- The system’s `pip` (from Ubuntu 22.04) can be too old for modern build backends, and `python3 -m pip` may keep using the system `pip` module even after `--user` upgrades.
+
+Workarounds:
+
+- Preferred: use a virtual environment:
+```sh
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install .
+```
+
+- If you must use a user-local install, use the `pip3` script from your user bin after ensuring it’s first on PATH:
+```sh
+export PATH="$HOME/.local/bin:$PATH"
+pip3 install --user -U pip wheel "hatchling>=1.25" "packaging>=24.2"
+pip3 install --user .
+```
+
+## Command not found after user-local install
+
+If you see:
+```
+bash: topdown-tool: command not found
+```
+
+Ensure your local bin directory is on PATH:
+```sh
+export PATH="$HOME/.local/bin:$PATH"
+```
+
 ## Reduced PMU counter availability for non-metal AWS/EC2 instances
 When running non-metal instances on Amazon's Elastic Compute Cloud, not all hardware event counters are available to the end user (even when reserving all cores on a node).
 
@@ -183,7 +284,7 @@ source .venv/bin/activate
 Install the project in development (“editable”) mode with testing and linting dependencies:
 
 ```sh
-pip install -e ".[test,lint]"
+python3 -m pip install -e ".[test,lint]"
 ```
 
 ## Running from the Repository
@@ -207,7 +308,7 @@ python.exe .\topdown_tool
 For a smoother development experience, we recommend enabling pre-commit hooks and using our formatting/linting toolchain. Run:
 
 ```sh
-pip install pre-commit
+python3 -m pip install pre-commit
 pre-commit install
 ```
 
