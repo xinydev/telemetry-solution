@@ -2,12 +2,12 @@
 # Copyright 2022-2025 Arm Limited
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling>=1.25"]
 build-backend = "hatchling.build"
 
 [project]
 name = "topdown-tool"
-version = "0.1.0"
+version = "1.0.0"
 authors = [
   {name = "Vincent Coubard", email = "vincent.coubard@arm.com"},
   {name = "Adam Zenker", email = "adam.zenker@arm.com"}
@@ -16,7 +16,7 @@ description = "Utility to collect topdown performance analysis metrics for Arm N
 readme = "README.md"
 keywords = ["Arm", "perf", "topdown", "metrics"]
 license = "Apache-2.0"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Environment :: Console",
