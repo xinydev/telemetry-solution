@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2025 Arm Limited
+
+repos:
+  - repo: local
+    hooks:
+      - id: conventional-commit-msg
+        name: commit message validator
+        entry: python .ci/commit-msg-checker.py
+        language: python
+        pass_filenames: true
+        stages: [commit-msg]
+

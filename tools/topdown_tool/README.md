@@ -304,14 +304,26 @@ python.exe .\topdown_tool
 
 ## Setting Up Pre-Commit and Code Quality Tools
 
-For a smoother development experience, we recommend enabling pre-commit hooks and using our formatting/linting toolchain. Run:
+For a smoother development experience, we recommend enabling pre-commit hooks and using our formatting/linting toolchain.
+Run the following commands from the root directory of the repository:
 
 ```sh
 python3 -m pip install pre-commit
-pre-commit install
+pre-commit install -c .pre-commit-config.yaml --hook-type commit-msg
+pre-commit install -c tools/topdown_tool/.pre-commit-config.yaml
 ```
 
-This will ensure checks for formatting (black) and linting (flake8, pylint) run automatically before each commit.
+This will ensure checks for formatting (black), linting (flake8, pylint) and commit-message validation run automatically before each commit.
+
+The commit message should have the following format:
+
+```sh
+<scope>: <summary>
+<empty line>
+<detailed explanation, possibly multiple lines>
+```
+
+The list of valid scopes are in the [.ci/commit-msg-scopes](../../.ci/commit-msg-scopes) file.
 
 ## Running Common Tasks
 
