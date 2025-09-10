@@ -20,7 +20,7 @@ def is_common(code):
         return True
 
     # Previously reserved but applies for Armv8.6 onwards
-    if code >= 0x8100 and code <= 0x8124:
+    if code >= 0x8100 and code <= 0x8125:
         return True
 
     # Previously reserved but applies for Armv8.6 onwards
