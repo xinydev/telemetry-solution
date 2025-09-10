@@ -1,31 +1,62 @@
-# Telemetry Solution
+# Arm Telemetry Solution
 
-## Contents
+Arm Telemetry Solution provides a standardized solution with a set of key components, a top-down performance analysis methodology, a telemetry data framework, and a command-line based profiling tool. The solution leverages telemetry data from Arm IP to identify performance bottlenecks and improve execution efficiency. 
 
-- [Arm Topdown Methodology](#arm-topdown-methodology)
-- [PMU Events](#pmu-events)
-- [Arm Telemetry Framework](#arm-telemetry-framework)
-- [JSON Schema](#json-schema)
+This repo contains Arm telemetry specifications, telemetry tools and test suites.
+- **data** Contains the telemetry specification JSON for all supported Arm products.
+- **tools** Contains telemetry tools, validation tests and other utilities for telemetry data collection and validation.
+
+## Content
+
+- [Arm Telemetry Solution](#arm-telemetry-solution)
+  - [Content](#content)
+  - [Arm Topdown Methodology](#arm-topdown-methodology)
+  - [Arm CPU Telemetry Solution](#arm-cpu-telemetry-solution)
+  - [Arm Telemetry Framework](#arm-telemetry-framework)
+  - [CPU Telemetry Specifications \& JSON Schema](#cpu-telemetry-specifications--json-schema)
     - [Event Field Definitions](#event-field-definitions)
     - [Metric Field Definitions](#metric-field-definitions)
     - [Topdown Methodology Field Definitions](#topdown-methodology-field-definitions)
-- [Tools](#tools)
-- [Support](#support)
-- [License](#license)
+  - [Tools](#tools)
+  - [Support](#support)
+  - [License](#license)
 
 
 ## Arm Topdown Methodology
 
-Arm Topdown Methodology specifies a set of metrics and methodology using hardware PMU events that can be used for identifying processor bottlenecks during the code execution.
+Arm Topdown Methodology specifies a set of metrics and performance analysis methodology using hardware PMU events, to help identify processor bottlenecks during workload execution.
 
-Arm Topdown methodology for micro-architectural analysis can be conducted in two stages:
+Arm Topdown methodology can be conducted in two stages:
 
-- **Stage 1:** Topdown Analysis stage for hot spot analysis, with stall-related metrics for identifying the pipeline bottleneck.
+- **Stage 1: Topdown Analysis** Topdown hot spot analysis stage using stall-related metrics to locate the pipeline bottlenecks.
 
-- **Stage 2:** Micro-architecture Exploration stage to conduct further analysis of bottlenecking CPU resources, with CPU resource effectiveness metric groups and metrics.
+- **Stage 2: Micro-architecture Exploration** Deeper analysis stage to further analyze bottlenecked resources, using per micro-architecture resource effectiveness metric groups and metrics.
 
 
-Refer to [Arm Neoverse V1 Performance Analysis Methodology whitepaper](https://armkeil.blob.core.windows.net/developer/Files/pdf/white-paper/neoverse-v1-core-performance-analysis.pdf) for an introduction to the Arm Topdown methodology supported by the Neoverse V1 processor.
+## Arm CPU Telemetry Solution
+
+The Arm CPU Telemetry Solution enables collection, analysis, and representation of CPU telemetry data on Arm platforms.
+
+- Each supported CPU provides a Telemetry Specification defining PMU events and a metric-driven hierarchical decision tree for hotspot detection. This decision tree is Arm’s implementation of the Topdown Methodology for performance analysis.
+
+- Telemetry data is structured in the Arm Telemetry Framework, which standardizes events/metrics into machine-readable JSON (MRS). This supports large-scale data collection, processing, and integration with profiling tools.
+- The solution includes the Arm Topdown Tool, a simple CLI for profiling applications. It parses the MRS to collect telemetry data and deliver performance insights. The tool is supported on Linux and Windows.
+
+For more information about Arm CPU Telemetry Solution, see Arm® Telemetry on Arm Developer, see [Arm CPU Telemetry Solution Topdown Methodology Specification](https://developer.arm.com/documentation/109542/latest/). 
+
+Key chapters from this solution architecture specification are as below:
+
+| Chapter                                          | Content     |
+| -------------------------------------------------| ----------- |
+| Arm Topdown Methodology                          | Topdown methodology and stages for performance analysis (Stage 1 and Stage 2).            |
+| Arm Telemetry Framework for CPUs                 | Arm telemetry framework and data model standardization.                                   |
+| Arm Telemetry Specification and Profiling Tools  | Details on how telemetry specification is enabled for Linux and Windows perf tools.       |
+| Arm Topdown Tool Example                         | Arm Topdown tool data collection example.                                                 |
+| Linux perf data collection                       | Linux perf tool data collection example.                                                  |
+| Windows perf data collection                     | Windows perf tool data collection example.                                                |
+
+
+Refer to [Arm Neoverse V1 Performance Analysis Methodology whitepaper](https://armkeil.blob.core.windows.net/developer/Files/pdf/white-paper/neoverse-v1-core-performance-analysis.pdf) for an example Arm Topdown methodology supported by the Neoverse V1 processor, with example case studies.
 
 Key chapters from this whitepaper are as below:
 
@@ -38,33 +69,13 @@ Key chapters from this whitepaper are as below:
 | Appendix C  | Telemetry Specification: Metrics and metric groups for performance analysis derives using PMU events |
 
 
-**Note:** We support this solution for Neoverse CPUs at the moment with PMU events, metrics and methodology specified and upstreamed on Linux perf for Neoverse N1 and V1 CPUs. More Arm CPU support for the telemetry solution is coming soon.
+**Note:** 
 
-For beginners who are not familiar with the Linux perf tool or looking for a quick primer on how to collect PMU events for performance analysis, refer to Chapter 4 of a previous whitepaper on this topic [Arm Neoverse N1 Performance Analysis Methodology whitepaper](https://armkeil.blob.core.windows.net/developer/Files/pdf/white-paper/neoverse-n1-core-performance-v2.pdf). On a Linux system we recommend the [Arm System Capabilities Reporter](https://github.com/ArmDeveloperEcosystem/sysreport) to optimize your performance tools experience.
-
-
-## PMU Events
-
-Arm CPUs support PMU events that are architected and specified by Arm architecture. In this repository, we add all the PMU events supported by the Arm CPUs in a standardized machine-readable (JSON) format for tooling. The JSON files published for the Arm CPUs that support telemetry-solution follow the Arm Telemetry Framework and JSON Schema discussed below.
-
-Please subscribe to release notifications on this [GitLab](https://gitlab.arm.com/telemetry-solution/telemetry-solution) project to follow the new CPUs that support the solution.
-
-| Content                      | Description                                                                           | Folder |
-|------------------------------|---------------------------------------------------------------------------------------|--------|
-| Core Telemetry Specification | Telemetry specification of the CPU PMU events, metrics and methodology as JSON files. | [data/pmu/cpu](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/data/pmu/cpu) |
-
-For all the CPUs, key references for PMU events are as below:
-
-| Document type                      | Reference Links |
-|------------------------------------|-----------------|
-| Arm Architecture PMU Specification | [Arm Architecture Reference Manual for A-profile architecture](https://developer.arm.com/documentation/ddi0487/latest/) |
-| CPU PMU Specification              | Check the product TRM   (Eg: [Arm Neoverse V1 Technical Reference Manual](https://developer.arm.com/documentation/101427/latest/)) |
-| CPU PMU Guides                     | For Neoverse CPUs, Arm publishes PMU Guides per product to provide more clarification on the PMU event implementation on the specific product.   (Eg: [Arm Neoverse V1 PMU Guide](https://developer.arm.com/documentation/PJDOC-1063724031-605393/2-0/?lang=en)) |
-
+The Arm CPU Telemetry Solution is supported across all Neoverse and Lumex CPUs, with PMU events, metrics, and methodology defined and upstreamed in Linux perf. Support for additional Arm CPUs will be available soon.
 
 ## Arm Telemetry Framework
 
-The building blocks of the Telemetry Framework are as follows.
+The building blocks of the Telemetry Framework are as follows. 
 
 - **Events** are hardware PMU events that count micro-architectural activity.
 
@@ -75,34 +86,34 @@ The building blocks of the Telemetry Framework are as follows.
 - **Methodology** specifies different performance analysis approaches common among software consumers or performance analysts.
 
 
-## JSON Schema
+## CPU Telemetry Specifications & JSON Schema
 
-Arm has developed a standardized JSON schema for PMU events, metrics and methodology tree for a CPU in a single JSON file for tooling.
+Arm provides a standardized JSON schema to describe PMU events, derived metrics, and the methodology tree for a CPU in a single file, enabling seamless integration with tooling.
 
-High level schema of the first release of JSON file is as below:
+High level schema structure is as follows:
 
-    "events": {}  #PMU events supported by the CPU
-    "metrics": {} #Derived metrics supported by the CPU
-    "groups": {   #Groups of events and metrics
-        "function": {} #Event groups based on CPU function
-        "metrics": {}  #Metric groups for analysis and methodology
-    }
-    "methodologies": {
-        "topdown_methodology": {} #Topdown methodology stages and decision tree
-    }
-
+{
+  "events": {},        // PMU events supported by the CPU
+  "metrics": {},       // Derived metrics supported by the CPU
+  "groups": {          // Grouping of events and metrics
+    "function": {},    // Event groups by CPU function
+    "metrics": {}      // Metric groups for analysis/methodology
+  },
+  "methodologies": {
+    "topdown_methodology": {}  // Stages and decision tree for Topdown analysis
+  }
+}
 
 ### Event Field Definitions
 
-| Field           | Definition |
-|-----------------|------------|
-| `code`          | Event register code for counting |
-| `title`         | Title of the event |
-| `description`   | Description of what is being counted for the event |
-| `common`        | Common architectural event that should be common across Arm micro-architectures |
-| `accesses`      | Access interface – PMU/ETM |
-| `architectural` | Architecturally specified event, included in Arm Architecture Reference Manual |
-| `impdef`        | Micro-architecture implementation specific event, not specified by the architecture |
+| Field                 | Definition |
+|-----------------------|------------|
+| `code`                | Event register code for counting |
+| `title`               | Title of the event |
+| `description`         | Description of what is being counted for the event |
+| `accesses`            | Access interface – PMU/ETM |
+| `architecture_dfined` | Architecturally defined event, included in Arm Architecture Reference Manual |
+| `product_defined`     | Micro-architecture implementation specific event, specified by the product architecture |
 
 
 ### Metric Field Definitions
@@ -129,14 +140,15 @@ High level schema of the first release of JSON file is as below:
 
 ## Tools
 
-The tools folder contains a collection of tools used for performance analysis on Arm-based platforms. There are tools to perform topdown analysis (topdown_tool), stress microarchitectural CPU features (ustress), and others to convert data into more easily consumable formats (perf_json_generator, spe_parser).
+The tools folder contains a collection of telemetry tools used for performance analysis on Arm-based platforms. `topdown_tool` performs topdown analysis, `ustress` is a validation test suite that stresses microarchitectural CPU features, `spe_parser` processes Arm SPE data and `perf_json_generator` generate CPU definition for Linux perf from Arm CPU JSON specification.
+
 
 | Name                | Description | Folder |
 |---------------------|-------------|--------|
+| Arm Topdown Tool        | Tool to support the Arm topdown methodology by collecting derived metrics based on Performance Monitoring Unit (PMU) events. | [tools/topdown_tool](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/topdown_tool) |
 | Perf JSON Generator | Tool to generate JSON files for Linux perf tool which enable and document Arm PMU events and metrics. | [tools/perf_json_generator](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/perf_json_generator) |
 | SPE Parser          | Tool to parse SPE raw data and generate a Parquet or CSV file for further processing and analysis. | [tools/spe_parser](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/spe_parser) |
-| Topdown Tool        | Tool to support the Arm topdown methodology by collecting derived metrics based on Performance Monitoring Unit (PMU) events. | [tools/topdown_tool](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/topdown_tool) |
-| UStress workload    | Validation workload suite to stress test major CPU resources. | [tools/ustress](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/ustress) |
+| UStress Test    | Validation test suite to stress test major CPU resources. | [tools/ustress](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/ustress) |
 
 
 ## Support
