@@ -3,7 +3,7 @@ Topdown tool runs top down performance analysis on supported Arm CPUs.
 
 For each supported CPU Arm distributes a telemetry specification JSON file which describes topdown metrics to compute.
 
-Topdown Tool captures PMU events for the required metrics using [`perf stat` on Linux](https://perf.wiki.kernel.org/index.php/Main_Page) on Linux and [WindowsPerf](https://gitlab.com/Linaro/WindowsPerf/windowsperf) on Microsoft Windows
+Topdown Tool captures PMU events for the required metrics using [`perf stat` on Linux](https://perf.wiki.kernel.org/index.php/Main_Page) on Linux and [WindowsPerf](https://gitlab.com/Linaro/WindowsPerf/windowsperf) on Microsoft Windows.
 
 # Requirements
 * A working [Linux Perf](https://perf.wiki.kernel.org/index.php/Main_Page) or [WindowsPerf](https://gitlab.com/Linaro/WindowsPerf/windowsperf) (3.3.3 or later) setup.
@@ -12,7 +12,7 @@ Topdown Tool captures PMU events for the required metrics using [`perf stat` on 
 
 Platform prerequisites quickstart:
 
-- Linux:
+## Linux
 
 The following commands target Ubuntu 22.04 LTS and newer. On other Linux distributions, install the equivalent packages (Git, Python 3 with venv and pip, and inotify-tools) using your distribution’s package manager.
 ```sh
@@ -20,7 +20,7 @@ sudo apt-get update
 sudo apt-get install -y git python3 python3-venv python3-pip inotify-tools
 ```
 
-- Windows:
+## Windows
 ```sh
 winget install WindowsPerf
 ```
@@ -56,11 +56,13 @@ Verify:
 ```sh
 topdown-tool --help
 ```
-Note: If you see:
-```sh
-Error: Insufficient privilege. This tool requires either perf_event_paranoid=-1, CAP_PERFMON, or CAP_SYS_ADMIN.
-```
-set the required permissions as described in the Permissions section below.
+
+> [!note] Linux
+> If you see:
+> ```sh
+> Error: Insufficient privilege. This tool requires either perf_event_paranoid=-1, CAP_PERFMON, or CAP_SYS_ADMIN.
+> ```
+> set the required permissions as described in the Permissions section below.
 
 ## Method 2: User-local install (no virtualenv)
 
@@ -69,13 +71,16 @@ Install for the current user:
 python3 -m pip install --user .
 ```
 
-Ensure your local bin is on PATH so the `topdown-tool` command is found:
-```sh
-export PATH="$HOME/.local/bin:$PATH"
-```
-(Consider adding the line above to your shell profile, e.g., `~/.bashrc` or `~/.zshrc`.)
+After that, ensure that the `topdown-tool` command is available from the command line.
 
-If installation fails on Ubuntu 22.04 with “metadata-generation-failed”, see [Known Issues](#known-issues) for a workaround.
+> [!note] Linux
+> Ensure `topdown-tool` command availability by adding your local bin directory to PATH:
+> ```sh
+> export PATH="$HOME/.local/bin:$PATH"
+> ```
+> (Consider adding the line above to your shell profile, e.g., `~/.bashrc` or `~/.zshrc`.)
+>
+> If installation fails on Ubuntu 22.04 with “metadata-generation-failed”, see [Known Issues](#known-issues) for a workaround.
 
 
 # Usage
@@ -218,7 +223,25 @@ See `topdown-tool --help` for full usage information.
 
 # Known Issues
 
-## Ubuntu 22.04: "metadata-generation-failed" during `pip install .`
+## General
+
+### Reduced PMU counter availability for non-metal AWS/EC2 instances
+When running non-metal instances on Amazon's Elastic Compute Cloud, not all hardware event counters are available to the end user (even when reserving all cores on a node).
+
+This results in fewer events being monitored simultaneously, which can increase negative effects associated with counter multiplexing.
+
+In some cases, this can prevent all events within a single metric from being scheduled together, which will trigger an error.
+
+#### Possible workarounds:
+* Use a metal instance.
+* It is possible to schedule events within a metric independently by specifying `--cpu-collect-by=none`, although note that this can lead to unusual/invalid data for all but the most homogeneous workloads.
+
+### Command not found after user-local install
+If `topdown-tool` command is not found, then ensure that the directory for `topdown-tool` binary is available on PATH. See details in chapter [Method 2: User-local install (no virtualenv)](#method-2-user-local-install-no-virtualenv).
+
+## Linux
+
+### Ubuntu 22.04: "metadata-generation-failed" during `pip install .`
 
 On Ubuntu 22.04 environments, installing from source may fail with:
 ```
@@ -243,30 +266,6 @@ export PATH="$HOME/.local/bin:$PATH"
 pip3 install --user -U pip wheel "hatchling>=1.25" "packaging>=24.2"
 pip3 install --user .
 ```
-
-## Command not found after user-local install
-
-If you see:
-```
-bash: topdown-tool: command not found
-```
-
-Ensure your local bin directory is on PATH:
-```sh
-export PATH="$HOME/.local/bin:$PATH"
-```
-
-## Reduced PMU counter availability for non-metal AWS/EC2 instances
-When running non-metal instances on Amazon's Elastic Compute Cloud, not all hardware event counters are available to the end user (even when reserving all cores on a node).
-
-This results in fewer events being monitored simultaneously, which can increase negative effects associated with counter multiplexing.
-
-In some cases, this can prevent all events within a single metric from being scheduled together, which will trigger an error.
-
-### Possible workarounds:
-* Use a metal instance.
-* It is possible to schedule events within a metric independently by specifying `--cpu-collect-by=none`, although note that this can lead to unusual/invalid data for all but the most homogeneous workloads.
-
 
 # Development
 
