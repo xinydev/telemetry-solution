@@ -17,9 +17,11 @@ Limitations:
 
 import itertools
 import logging
+import os
 from pathlib import Path
 from subprocess import Popen, PIPE, DEVNULL
 from signal import SIGINT
+from select import select
 import shlex
 from typing import List, Optional, Sequence, Tuple, final
 
@@ -138,6 +140,21 @@ class LinuxPerf(Perf):
             if self._interval is not None:
                 self._cmd.extend(["-I", str(self._interval)])
 
+            # Start with events disabled.
+            # Create control and acknowledgement pipes
+            # The control pipe will be used to enable events,
+            # while the acknowledgement pipe will be used to resume topdown tool.
+            self._ctl_pipe: Optional[Tuple[int, int]] = os.pipe2(0)
+            self._ack_pipe: Optional[Tuple[int, int]] = os.pipe2(0)
+
+            os.set_blocking(self._ack_pipe[0], False)
+
+            self._cmd.extend(
+                ["--delay", "-1", "--control", f"fd:{self._ctl_pipe[0]},{self._ack_pipe[1]}"]
+            )
+
+            self._control_index = len(self._cmd) - 1
+
             # Add additional user defined arguments if needed
             if self._perf_args:
                 self._cmd += shlex.split(self._perf_args)
@@ -165,20 +182,53 @@ class LinuxPerf(Perf):
                 logging.info("Empty run with no events")
                 return
 
+            assert isinstance(self._ctl_pipe, tuple) and isinstance(self._ack_pipe, tuple) or self._ctl_pipe is None and self._ack_pipe is None
+            if self._ctl_pipe is None or self._ack_pipe is None:
+                self._ctl_pipe = os.pipe2(0)
+                self._ack_pipe = os.pipe2(0)
+                self._cmd[self._control_index] = f"fd:{self._ctl_pipe[0]},{self._ack_pipe[1]}"
+
             # pylint: disable=protected-access
             LinuxPerf._write_cli_command(
                 self._cli_filename, self._cmd
             )  # pylint: disable=protected-access
-            self._process = Popen(self._cmd)  # pylint: disable=consider-using-with
+
+            # pylint: disable=consider-using-with
+            self._process = Popen(
+                self._cmd,
+                stderr=DEVNULL,
+                close_fds=True,
+                pass_fds=(self._ctl_pipe[0], self._ack_pipe[1]),
+            )
             logging.info('Running "%s"', " ".join(shlex.quote(arg) for arg in self._cmd))
+
+            os.close(self._ctl_pipe[0])
+            os.close(self._ack_pipe[1])
+
+            # Try to enable perf after it created events
+            msg = b"enable"
+            if os.write(self._ctl_pipe[1], msg) != len(msg):
+                os.close(self._ctl_pipe[1])
+                os.close(self._ack_pipe[0])
+                raise RuntimeError("Perf version not supported. Control pipe closed by perf.")
+
+            # Wait for acknowledgement
+            readable_fds, _, _ = select((self._ack_pipe[0], ), (), (), 2.0)
+            if self._ack_pipe[0] not in readable_fds:
+                os.close(self._ack_pipe[0])
+                raise RuntimeError("Perf version not supported. Perf didn't acknowledge.")
+            expected_msg = b"ack\n\0"
+            if os.read(self._ack_pipe[0], len(expected_msg)) != expected_msg:
+                os.close(self._ack_pipe[0])
+                raise RuntimeError("Perf version not supported. Unexpected acknowledgement message.")
 
         def stop(self) -> None:
             """
             Stop all active `perf` subprocesses by sending SIGINT.
             """
-            assert self._process is not None
             if self._events is None:
                 return
+            assert self._process is not None
             self._process.send_signal(SIGINT)
 
         def wait(self) -> None:
@@ -186,6 +236,11 @@ class LinuxPerf(Perf):
                 return
             self._process.wait()
             self._process = None
+            assert isinstance(self._ctl_pipe, tuple) and isinstance(self._ack_pipe, tuple)
+            os.close(self._ctl_pipe[1])
+            os.close(self._ack_pipe[0])
+            self._ctl_pipe = None
+            self._ack_pipe = None
 
     def __init__(
         self,
@@ -435,7 +490,9 @@ class LinuxPerf(Perf):
                 return True
 
             # If both attempts fail to produce the expected number of lines
-            raise RuntimeError(f"Failed to check PMU availability with perf. Expected {count} lines in perf stderr")
+            raise RuntimeError(
+                f"Failed to check PMU availability with perf. Expected {count} lines in perf stderr"
+            )
 
         pmu_min = 0
         pmu_max = 31
