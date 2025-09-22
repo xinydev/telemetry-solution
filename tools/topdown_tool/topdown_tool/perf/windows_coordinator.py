@@ -25,20 +25,15 @@ Key responsibilities:
   * Start and gracefully finalize a single shared ``wperf`` process.
   * Parse JSON output and filter results per perf instance registration.
 
-Attributes:
-  CTRL_C_EVENT (int): On Windows, the Win32 constant for Ctrl-C events. On
-    non-Windows, a harmless dummy value (unused).
 """
 import logging
 from pathlib import Path
 import os
 import time
 from subprocess import Popen, TimeoutExpired, list2cmdline
-from typing import Any, Dict, Iterator, List, Optional, Sequence, Tuple, TYPE_CHECKING
+from typing import Dict, List, Optional, Sequence, Tuple, TYPE_CHECKING
 from dataclasses import dataclass
-import sys
-import contextlib
-import signal
+
 from collections import defaultdict
 from topdown_tool.perf.perf import (
     Cpu,
@@ -53,152 +48,19 @@ from topdown_tool.perf.windows_perf_parser import (
     ParsedCounters,
 )
 
+from topdown_tool.common.win32 import (
+    send_console_ctrl_c,
+    ignore_sigint_temporarily,
+    swallow_keyboard_interrupt,
+)
+from topdown_tool.perf.wperf_artifact_handler import (
+    cleanup_run_artifacts_for_output_windows,
+    is_json_stable,
+    wait_for_json_stable,
+)
+
 if TYPE_CHECKING:
     from topdown_tool.perf.windows_perf import WindowsPerf
-
-if sys.platform == "win32":
-    import ctypes
-
-    # Win32 constants --------------------------------------------------------
-    CTRL_C_EVENT = signal.CTRL_C_EVENT  # re-export for symmetry
-
-    # kernel32 DLL handle
-    _kernel32 = ctypes.windll.kernel32  # noqa: SLF001
-
-    # real Win32 API functions ----------------------------------------------
-    SetConsoleCtrlHandler = _kernel32.SetConsoleCtrlHandler  # type: ignore[assignment]
-    GenerateConsoleCtrlEvent = _kernel32.GenerateConsoleCtrlEvent  # type: ignore[assignment]
-
-    # helpers that raise proper WinError
-    WinError = ctypes.WinError
-    get_last_error = ctypes.get_last_error
-else:  # ───────────────────────────── non-Windows fall-back/stubs ───────────
-    CTRL_C_EVENT = 0  # dummy value – never used on POSIX
-
-    def SetConsoleCtrlHandler(handler: Any, add: bool) -> None:  # pylint: disable=invalid-name
-        """POSIX stub for ``SetConsoleCtrlHandler``.
-
-        Always raises because this API is Windows-only.
-
-        Args:
-        handler: Ignored.
-        add: Ignored.
-
-        Raises:
-        NotImplementedError: Always, because the API is Windows-only.
-        """
-        raise NotImplementedError("SetConsoleCtrlHandler is Windows-only.")
-
-    def GenerateConsoleCtrlEvent(ctrl_event: int, pgid: int) -> int:  # pylint: disable=invalid-name
-        """POSIX stub for ``GenerateConsoleCtrlEvent``.
-
-        Always raises because this API is Windows-only.
-
-        Args:
-        ctrl_event: Ignored.
-        pgid: Ignored.
-
-        Raises:
-        NotImplementedError: Always, because the API is Windows-only.
-        """
-        raise NotImplementedError("GenerateConsoleCtrlEvent is Windows-only.")
-
-    WinError = OSError  # best effort
-
-    def get_last_error() -> int:  # noqa: D401
-        """Return a sentinel error code on non-Windows platforms.
-
-        Returns:
-        int: Always ``-1`` to indicate a placeholder value.
-        """
-        return -1
-
-
-def _broadcast_ctrl_c() -> None:
-    """Broadcast a Ctrl-C console event to the current Windows console group.
-
-    Uses the Win32 ``GenerateConsoleCtrlEvent`` API and temporarily installs no
-    custom console control handler (Python handles SIGINT separately). If the
-    system call fails, the corresponding Win32 error is raised to aid
-    diagnostics.
-
-    Raises:
-      OSError: If the underlying Windows API reports an error when sending
-        the event.
-    """
-    SetConsoleCtrlHandler(None, True)
-    try:
-        if GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0) == 0:
-            # Pull the Win32 error message for the log
-            raise WinError(get_last_error())
-    finally:
-        SetConsoleCtrlHandler(None, False)
-
-
-# ----------------------------------------------------------------------
-# While we broadcast a console-wide Ctrl-C, that same signal bounces back
-# to *our* interpreter.  Temporarily ignore SIGINT so it doesn’t raise
-# InterruptedError inside the coordinator’s inner loops.
-# ----------------------------------------------------------------------
-@contextlib.contextmanager
-def _ignore_sigint_temporarily() -> Iterator[None]:
-    """Temporarily ignore ``signal.SIGINT`` inside a critical region.
-
-    When coordinating ``wperf`` shutdown we broadcast Ctrl-C to the console,
-    which also targets our own process. Use this context to mask SIGINT for a
-    short region to prevent ``InterruptedError`` from surfacing in tight loops.
-
-    Yields:
-      None: Restores the previous SIGINT handler on exit.
-    """
-    prev = signal.getsignal(signal.SIGINT)
-    signal.signal(signal.SIGINT, signal.SIG_IGN)
-    try:
-        yield
-    finally:
-        signal.signal(signal.SIGINT, prev)
-
-
-# ----------------------------------------------------------------------
-# Eat exactly one InterruptedError raised by our SIGINT handler and let
-# the surrounding loop run its next iteration.  Nothing else is masked.
-# ----------------------------------------------------------------------
-@contextlib.contextmanager
-def _swallow_user_interrupt() -> Iterator[None]:
-    """Swallow a single ``InterruptedError`` raised by the SIGINT handler.
-
-    Useful around polling/logging sections that might race with a user Ctrl-C.
-    Any exception other than ``InterruptedError`` is propagated.
-
-    Yields:
-      None
-    """
-    try:
-        yield
-    except InterruptedError:
-        pass
-
-
-def _cleanup_wperf_side_artifacts(dirpath: Path) -> None:
-    """Delete stray ``wperf_system_side_*.core.csv`` artifacts.
-
-    Retries briefly to work around transient file locks on Windows.
-
-    Args:
-      dirpath: Directory to scan and clean.
-    """
-    pattern = "wperf_system_side_*.core.csv"
-    try:
-        for p in dirpath.glob(pattern):
-            # up to ~250 ms backoff if something briefly holds the file
-            for _ in range(5):
-                try:
-                    p.unlink(missing_ok=True)
-                    break
-                except PermissionError:
-                    time.sleep(0.05)
-    except Exception:  # pylint: disable=broad-except
-        logging.debug("Failed to clean side artifacts in %s", dirpath, exc_info=True)
 
 
 class WperfCoordinator:
@@ -537,24 +399,17 @@ class WperfCoordinator:
         may still run a separate “stable size” loop afterwards.
         """
 
-        def _json_ready(path: str) -> bool:
-            if not os.path.isfile(path):
-                return False
-            size = os.path.getsize(path)
-            time.sleep(0.3)
-            return os.path.isfile(path) and os.path.getsize(path) == size
-
         # phase 1 – hope wperf stops on its own
         try:
             logging.debug("Waiting up to 1 s for wperf to exit naturally")
-            with _swallow_user_interrupt():
+            with swallow_keyboard_interrupt():
                 proc.wait(timeout=1)
         except TimeoutExpired:
             # phase 2 – send Ctrl-C; ignore local SIGINT while broadcasting
-            with _ignore_sigint_temporarily():
+            with ignore_sigint_temporarily():
                 logging.info("wperf still running - sending CTRL_C_EVENT")
                 try:
-                    _broadcast_ctrl_c()
+                    send_console_ctrl_c()
                 except Exception as exc:  # pylint: disable=broad-except
                     logging.error("send_signal failed: %s", exc)
 
@@ -562,7 +417,7 @@ class WperfCoordinator:
                 while time.time() < deadline:
                     if proc.poll() is not None:  # process exited
                         break
-                    if _json_ready(out_path):  # JSON flushed
+                    if is_json_stable(Path(out_path)):  # JSON flushed and settled
                         logging.debug("JSON file detected while wperf alive")
                         break
                     time.sleep(0.2)
@@ -579,44 +434,6 @@ class WperfCoordinator:
                         proc.kill()
                     except Exception as exc:  # pylint: disable=broad-except
                         logging.error("Final kill failed: %s", exc)
-
-    def _cleanup_run_artifacts(self, out_path: str) -> None:
-        """Best-effort cleanup of JSON/CLI files and side CSV artifacts for a run."""
-        # Remove the main JSON (retry briefly for Windows file locks)
-        for _ in range(5):
-            try:
-                if self._output_file and Path(self._output_file).exists():
-                    Path(self._output_file).unlink()
-                break
-            except PermissionError:
-                time.sleep(0.05)  # 50 ms backoff
-
-        # Remove the @events cmdline file and the exact CLI text
-        try:
-            base = None
-            if self._output_file:
-                s = str(self._output_file)
-                base = s[:-5] if s.endswith(".json") else s  # strip ".json"
-            if base:
-                for suffix in (".cmdline", ".cli.txt"):
-                    p = Path(base + suffix)
-                    if p.exists():
-                        p.unlink()
-        except Exception:  # pylint: disable=broad-except
-            logging.debug(
-                "Failed to remove cmdline/cli files for %s",
-                self._output_file,
-                exc_info=True,
-            )
-
-        # Best-effort cleanup of wperf CSV artifacts
-        try:
-            out_dir = Path(out_path).parent if out_path else Path.cwd()
-            _cleanup_wperf_side_artifacts(out_dir)
-            if out_dir != Path.cwd():
-                _cleanup_wperf_side_artifacts(Path.cwd())
-        except Exception:  # pylint: disable=broad-except
-            logging.debug("CSV artifact cleanup failed", exc_info=True)
 
     # pylint: disable=too-many-branches, too-many-locals, too-many-statements
     def _finalize_capture(self) -> None:
@@ -639,29 +456,14 @@ class WperfCoordinator:
 
         logging.info("Finalizing wperf (pid %s), output path: %s", proc.pid, out_path)
 
-        # ------------------------------------------------------------------ 1–2
+        # ------------------------------------------------------------------ 1
         # Attempt graceful shutdown; wait for either process exit or initial JSON
         self._shutdown_wperf_until_json_or_exit(proc, out_path)
 
-        # ------------------------------------------------------------------ 3
-        # wait until the JSON file is present and stable (<= 30 s)
-
-        deadline = time.time() + 30.0
-        last_size = -1
-        stable_for = 0
-        while time.time() < deadline:
-            with _swallow_user_interrupt():
-                if os.path.isfile(out_path):
-                    size_now = os.path.getsize(out_path)
-                    if size_now > 0:
-                        if size_now == last_size:
-                            stable_for += 1
-                            if stable_for >= 3:
-                                break
-                        else:
-                            stable_for = 0
-                        last_size = size_now
-                time.sleep(0.2)
+        # ------------------------------------------------------------------ 2
+        # Wait until the JSON file is present and stable (<= 30 s)
+        with swallow_keyboard_interrupt():
+            wait_for_json_stable(Path(out_path), timeout=30.0, interval=0.2)
 
         # ------------------------------------------------------------------ 3
         # CPU / regular uncore counters
@@ -692,7 +494,7 @@ class WperfCoordinator:
 
         # ------------------------------------------------------------------ 5
         # tidy up artifacts
-        self._cleanup_run_artifacts(out_path)
+        cleanup_run_artifacts_for_output_windows(Path(out_path))
 
         # reset coordinator state for the next run
         self._wperf_process = None
