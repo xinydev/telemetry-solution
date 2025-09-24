@@ -166,6 +166,15 @@ topdown-tool:
       junit:
         - tools/topdown_tool/reports/*.xml
 
+topdown-tool-blackduck:
+  extends: topdown-tool
+  when: manual
+  parallel:
+    matrix:
+      - PYENV:
+        - blackduck-detect
+        - blackduck-snippet-matching
+
 perf-json-generator:
   extends: .build-base
   script:
