@@ -167,13 +167,24 @@ topdown-tool:
         - tools/topdown_tool/reports/*.xml
 
 topdown-tool-blackduck:
-  extends: topdown-tool
-  when: manual
-  parallel:
-    matrix:
-      - PYENV:
-        - blackduck-detect
-        - blackduck-snippet-matching
+  extends: .build-base
+  rules:
+    # Only in merge request pipelines
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+      allow_failure: false
+    # Elsewhere, don’t include this job
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: never
+  script:
+    - |
+      python3 -m venv .venv
+      source .venv/bin/activate
+      BASELINE_VERSION=$(cat .ci/blackduck-baseline-version)
+      cd tools/topdown_tool
+      python -m pip install .
+      CURRENT_VERSION=$(python -m pip show topdown-tool | grep Version | awk '{print $2}')-$CI_COMMIT_SHORT_SHA
+      ../../.ci/blackduck-scan.sh $BASELINE_VERSION $CURRENT_VERSION $BLACKDUCK_TOPDOWN_TOOL_PROJECT_ID $BLACKDUCK_TOPDOWN_TOOL_PROJECT_NAME './topdown_tool,./tests'
 
 perf-json-generator:
   extends: .build-base
