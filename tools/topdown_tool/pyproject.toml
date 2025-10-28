@@ -37,6 +37,7 @@ lint = ["flake8==7.3.0", "mypy==1.17.1", "pylint==3.3.7"]
 
 [project.scripts]
 topdown-tool = "topdown_tool.__main__:main"
+validate-cpu-spec = "topdown_tool.cpu_probe.cpu_model:main"
 
 [project.entry-points."topdown_tool.probe_factories"]
 cpu_probe_factory = "topdown_tool.cpu_probe.cpu_factory:CpuProbeFactory"

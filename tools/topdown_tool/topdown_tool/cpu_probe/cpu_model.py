@@ -10,10 +10,13 @@ It ensures that all telemetry configuration data conforms to expected type and r
 from pathlib import Path
 import json
 import os
-from typing import Annotated, Any, Dict, List, Tuple, Union, Literal
+import sys
+import argparse
+from typing import Annotated, Any, Dict, Iterable, List, Literal, Optional, Tuple, Union, cast
 import logging
 import jsonschema
 from pydantic import BaseModel, Field, StringConstraints, ValidationInfo, model_validator
+from rich.console import Console
 
 # Reusable type for hexadecimal strings like "0x1A2B"
 HexStr = Annotated[str, StringConstraints(pattern=r"^0x[0-9A-Fa-f]+$")]
@@ -310,7 +313,7 @@ class TelemetrySpecification(BaseModel):
     def _find_duplicates(values: Tuple[str, ...]) -> Tuple[str, ...]:
         """Return a tuple of duplicated entries preserving first occurrence order."""
         seen = set()
-        duplicates = []
+        duplicates: List[str] = []
         for value in values:
             if value not in seen:
                 seen.add(value)
@@ -477,20 +480,111 @@ class TelemetrySpecification(BaseModel):
         return self
 
 
-if __name__ == "__main__":
-    import sys
-    from rich.console import Console
-
-    if len(sys.argv) != 3:
-        sys.stderr.write(f"Usage: {sys.argv[0]} path_to_json_file path_to_schemas_dir\n")
-        sys.exit(1)
-    json_path = sys.argv[1]
-    schemas_dir = sys.argv[2]
+def _validate_file(path: Path, schema_root: Path) -> Tuple[bool, Optional[str]]:
+    path = path.resolve()
+    schema_root = schema_root.resolve()
     try:
-        spec = TelemetrySpecification.load_from_json_file(json_path, schemas_dir)
-        print(f"Valid TelemetrySpecification loaded from {json_path}.")
-        sys.exit(0)
-    except Exception as e:  # pylint: disable=broad-exception-caught
-        sys.stderr.write(f"Error loading TelemetrySpecification: {e}\n")
+        with path.open(encoding="utf-8") as handle:
+            document = json.load(handle)
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        return False, f"{path}: Unable to parse JSON: {exc}"
+
+    schema_label = document.get("$schema")
+    if schema_label:
+        schema_path = schema_root / schema_label
+        if not schema_path.exists():
+            return False, f"{path}: Schema '{schema_label}' not found under {schema_root}"
+
+    try:
+        TelemetrySpecification.load_from_json_file(path, schema_root, duplicate_policy="error")
+        return True, None
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        return False, f"{path}: {exc}"
+
+
+def _validate_directory(spec_dir: Path, schema_root: Path) -> Tuple[List[str], int]:
+    spec_dir = spec_dir.resolve()
+    schema_root = schema_root.resolve()
+    json_files = sorted(p for p in spec_dir.rglob("*.json") if p.is_file())
+    if not json_files:
+        return [f"No JSON files found under {spec_dir}"], 0
+    errors: List[str] = []
+    for json_path in json_files:
+        ok, message = _validate_file(json_path, schema_root)
+        _report_validation(json_path, ok, message)
+        if not ok and message:
+            errors.append(message)
+    return errors, len(json_files)
+
+
+def _report_validation(path: Path, ok: bool, message: Optional[str]) -> None:
+    """Pretty-print the validation outcome for a single file."""
+    if ok:
+        print(f"[PASS] {path}")
+    else:
+        print(f"[FAIL] {path}", file=sys.stderr)
+        if message:
+            print(message, file=sys.stderr)
+
+
+def cli_main(argv: Optional[Iterable[str]] = None) -> int:
+    parser = argparse.ArgumentParser(
+        description="Validate Arm CPU telemetry specification JSON files."
+    )
+    parser.add_argument(
+        "--file",
+        "-f",
+        type=Path,
+        help="Validate a single specification JSON file.",
+    )
+    parser.add_argument(
+        "--spec-dir",
+        "-d",
+        type=Path,
+        help="Recursively validate all specification JSON files under this directory.",
+    )
+    parser.add_argument(
+        "--schema-dir",
+        "-s",
+        type=Path,
+        help="Directory containing JSON schemas referenced by the specifications.",
+        required=True,
+    )
+    args = parser.parse_args(list(argv) if argv is not None else None)
+
+    file_path: Optional[Path] = args.file
+    spec_dir: Optional[Path] = args.spec_dir
+    schema_dir: Path = cast(Path, args.schema_dir)
+
+    if file_path and spec_dir:
+        parser.error("Use either --file or --spec-dir, not both.")
+
+    if file_path is None and spec_dir is None:
+        parser.error("Specify --file for a single spec or --spec-dir for bulk validation.")
+
+    if file_path:
+        ok, message = _validate_file(file_path, schema_dir)
+        _report_validation(file_path.resolve(), ok, message)
+        return 0 if ok else 1
+
+    assert spec_dir is not None
+    errors, total = _validate_directory(spec_dir, schema_dir)
+    if errors:
+        print("\nValidation failures:", file=sys.stderr)
+        for error in errors:
+            print(f"  - {error}", file=sys.stderr)
+        return 1
+    print(f"\nValidated {total} specification(s) successfully.")
+    return 0
+
+
+def main(argv: Optional[Iterable[str]] = None) -> int:
+    try:
+        return cli_main(argv)
+    except Exception:  # pylint: disable=broad-exception-caught
         Console().print_exception(show_locals=True)
-        sys.exit(1)
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

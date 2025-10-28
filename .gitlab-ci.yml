@@ -186,6 +186,15 @@ topdown-tool-blackduck:
       CURRENT_VERSION=$(python -m pip show topdown-tool | grep Version | awk '{print $2}')-$CI_COMMIT_SHORT_SHA
       ../../.ci/blackduck-scan.sh $BASELINE_VERSION $CURRENT_VERSION $BLACKDUCK_TOPDOWN_TOOL_PROJECT_ID $BLACKDUCK_TOPDOWN_TOOL_PROJECT_NAME './topdown_tool,./tests'
 
+validate-cpu-specs:
+  extends: .build-base
+  script:
+    - |
+      python3 -m venv .venv
+      source .venv/bin/activate
+      python -m pip install tools/topdown_tool
+      validate-cpu-spec --spec-dir data/pmu/cpu --schema-dir data/schema/cpu
+
 perf-json-generator:
   extends: .build-base
   script:
