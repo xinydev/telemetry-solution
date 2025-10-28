@@ -10,12 +10,18 @@ It ensures that all telemetry configuration data conforms to expected type and r
 from pathlib import Path
 import json
 import os
-from typing import Annotated, Any, Dict, Tuple, Union
+from typing import Annotated, Any, Dict, List, Tuple, Union, Literal
+import logging
 import jsonschema
-from pydantic import BaseModel, Field, StringConstraints, model_validator
+from pydantic import BaseModel, Field, StringConstraints, ValidationInfo, model_validator
 
 # Reusable type for hexadecimal strings like "0x1A2B"
 HexStr = Annotated[str, StringConstraints(pattern=r"^0x[0-9A-Fa-f]+$")]
+
+DuplicatePolicy = Literal["error", "log"]
+
+
+logger = logging.getLogger(__name__)
 
 
 class ProductConfiguration(BaseModel):
@@ -219,13 +225,18 @@ class TelemetrySpecification(BaseModel):
 
     @staticmethod
     def load_from_json_file(
-        path: Union[str, Path], schema_dir: Union[str, Path], encoding: str = "utf-8"
+        path: Union[str, Path],
+        schema_dir: Union[str, Path],
+        encoding: str = "utf-8",
+        duplicate_policy: DuplicatePolicy = "log",
     ) -> "TelemetrySpecification":
         """Loads a TelemetrySpecification from a JSON file.
 
         Args:
             path (Union[str, Path]): Path to the JSON file.
+            schema_dir (Union[str, Path]): Base directory containing JSON schemas.
             encoding (str): File encoding; defaults to 'utf-8'.
+            duplicate_policy (DuplicatePolicy): How to handle duplicates ("log" or "error").
 
         Returns:
             TelemetrySpecification: The parsed telemetry configuration.
@@ -259,7 +270,9 @@ class TelemetrySpecification(BaseModel):
                         ) from e
 
                 try:
-                    result = TelemetrySpecification.model_validate(data)
+                    result = TelemetrySpecification.model_validate(
+                        data, context={"duplicate_policy": duplicate_policy}
+                    )
                 except Exception as e:
                     raise ValueError(
                         f"Schema validation failed for {path} with the following error: {e}\nPlease check the JSON file and the schema."
@@ -293,12 +306,52 @@ class TelemetrySpecification(BaseModel):
             raise ValueError("; ".join(errors))
         return self
 
+    @staticmethod
+    def _find_duplicates(values: Tuple[str, ...]) -> Tuple[str, ...]:
+        """Return a tuple of duplicated entries preserving first occurrence order."""
+        seen = set()
+        duplicates = []
+        for value in values:
+            if value not in seen:
+                seen.add(value)
+            elif value not in duplicates:
+                duplicates.append(value)
+        return tuple(duplicates)
+
+    @staticmethod
+    def _duplicate_policy(info: ValidationInfo) -> DuplicatePolicy:
+        context = info.context or {}
+        policy = context.get("duplicate_policy")
+        return policy if policy in ("log", "error") else "log"
+
+    @classmethod
+    def _handle_duplicates(cls, message: str, info: ValidationInfo) -> None:
+        if cls._duplicate_policy(info) == "log":
+            logger.warning(message)
+        else:
+            raise ValueError(message)
+
+    @classmethod
+    def _record_or_warn_duplicates(
+        cls, message: str, info: ValidationInfo, errors: List[str]
+    ) -> None:
+        if cls._duplicate_policy(info) == "log":
+            logger.warning(message)
+        else:
+            errors.append(message)
+
     @model_validator(mode="after")
-    def _validate_function_groups_events(self) -> "TelemetrySpecification":
-        # Validates that all function groups reference defined events.
-        # Raises: ValueError if a function group references an undefined event.
+    def _validate_function_groups_events(self, info: ValidationInfo) -> "TelemetrySpecification":
+        # Validates function groups for duplicate and undefined event references.
+        # Raises: ValueError if duplicates are present or an event reference is undefined.
         defined_events = set(self.events.keys())
         for fg_name, function_group in self.groups.function.items():
+            duplicate_events = self._find_duplicates(function_group.events)
+            if duplicate_events:
+                self._handle_duplicates(
+                    f"Function group '{fg_name}' defines duplicate events: {duplicate_events}",
+                    info,
+                )
             missing = set(function_group.events) - defined_events
             if missing:
                 raise ValueError(
@@ -307,11 +360,17 @@ class TelemetrySpecification(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def _validate_metric_groups_metrics(self) -> "TelemetrySpecification":
-        # Validates that all metric groups reference defined metrics.
-        # Raises: ValueError if a metric group references an undefined metric.
+    def _validate_metric_groups_metrics(self, info: ValidationInfo) -> "TelemetrySpecification":
+        # Validates metric groups for duplicate and undefined metric references.
+        # Raises: ValueError if duplicates are present or a metric reference is undefined.
         defined_metrics = set(self.metrics.keys())
         for mg_name, metric_group in self.groups.metrics.items():
+            duplicate_metrics = self._find_duplicates(metric_group.metrics)
+            if duplicate_metrics:
+                self._handle_duplicates(
+                    f"Metric group '{mg_name}' defines duplicate metrics: {duplicate_metrics}",
+                    info,
+                )
             missing = set(metric_group.metrics) - defined_metrics
             if missing:
                 raise ValueError(
@@ -320,14 +379,27 @@ class TelemetrySpecification(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def _validate_metric_grouping(self) -> "TelemetrySpecification":
+    def _validate_metric_grouping(self, info: ValidationInfo) -> "TelemetrySpecification":
         # Validates the MetricGrouping settings.
-        # Raises: ValueError if stage settings contain undefined or duplicate groups.
+        # Raises: ValueError if stages contain duplicates, undefined groups, or overlap.
         # Constraints:
-        # - All metric identifiers in stage_1 and stage_2 are defined in the groups.metrics dictionary.
+        # - No duplicate metric group identifiers within stage_1 or stage_2.
+        # - All identifiers in stage_1 and stage_2 are defined in groups.metrics.
         # - No group identifier appears in both stage_1 and stage_2.
         mg = self.methodologies.topdown_methodology.metric_grouping
         defined_metrics_groups = set(self.groups.metrics.keys())
+        duplicate_stage_1 = self._find_duplicates(mg.stage_1)
+        if duplicate_stage_1:
+            self._handle_duplicates(
+                f"metric_grouping stage_1 contains duplicate metric groups: {duplicate_stage_1}",
+                info,
+            )
+        duplicate_stage_2 = self._find_duplicates(mg.stage_2)
+        if duplicate_stage_2:
+            self._handle_duplicates(
+                f"metric_grouping stage_2 contains duplicate metric groups: {duplicate_stage_2}",
+                info,
+            )
         stage_1 = set(mg.stage_1)
         stage_2 = set(mg.stage_2)
         errors = []
@@ -345,28 +417,40 @@ class TelemetrySpecification(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def _validate_decision_tree_root_nodes(self) -> "TelemetrySpecification":
-        # Validates that decision tree root nodes reference defined metrics.
-        # Raises: ValueError if a root node is undefined.
+    def _validate_decision_tree_root_nodes(self, info: ValidationInfo) -> "TelemetrySpecification":
+        # Validates decision tree root nodes for duplicates and undefined metrics.
+        # Raises: ValueError if a root node is duplicated or undefined.
         defined_metrics = set(self.metrics.keys())
-        root_nodes = set(self.methodologies.topdown_methodology.decision_tree.root_nodes)
-        missing = root_nodes - defined_metrics
+        root_nodes = self.methodologies.topdown_methodology.decision_tree.root_nodes
+        duplicate_roots = self._find_duplicates(root_nodes)
+        if duplicate_roots:
+            self._handle_duplicates(
+                f"Decision tree root_nodes contain duplicates: {duplicate_roots}", info
+            )
+        missing = set(root_nodes) - defined_metrics
         if missing:
             raise ValueError(f"Decision tree root_nodes contain undefined metrics: {missing}")
         return self
 
     @model_validator(mode="after")
-    def _validate_decision_tree_metrics(self) -> "TelemetrySpecification":
-        # Validates the decision tree nodes for consistency.
-        # Raises: ValueError if any decision tree node is invalid.
+    def _validate_decision_tree_metrics(self, info: ValidationInfo) -> "TelemetrySpecification":
+        # Validates decision tree nodes for duplicates and consistency.
+        # Raises: ValueError if nodes are duplicated or reference undefined entities.
         # Node constraints:
-        # - 'name' must be a key of the top-level metrics dictionary.
-        # - 'group' must be a key in groups.metrics and the node's name must be included in that MetricGroup's metrics list.
-        # - Every string in 'next_items' must be either a key in groups.metrics or a key in the top-level metrics dictionary.
+        # - Node names must be unique and defined in metrics.
+        # - 'group' must exist in groups.metrics and include the node name.
+        # - Each 'next_item' must be a metric or metric group identifier.
         dt = self.methodologies.topdown_methodology.decision_tree
-        errors = []
+        errors: List[str] = []
         defined_metrics = set(self.metrics.keys())
         defined_metric_groups = set(self.groups.metrics.keys())
+        duplicate_names = self._find_duplicates(tuple(node.name for node in dt.metrics))
+        if duplicate_names:
+            self._record_or_warn_duplicates(
+                f"Decision tree metrics contain duplicate node names: {duplicate_names}",
+                info,
+                errors,
+            )
         for node in dt.metrics:
             # Validate 'name'
             if node.name not in defined_metrics:

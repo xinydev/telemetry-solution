@@ -2,6 +2,7 @@
 # Copyright 2025 Arm Limited
 
 import copy
+import logging
 import pytest
 
 from topdown_tool.cpu_probe.cpu_model import TelemetrySpecification
@@ -134,6 +135,16 @@ def test_validate_function_groups_events_failure(valid_document):
         TelemetrySpecification.model_validate(doc)
 
 
+def test_function_group_duplicate_events(valid_document):
+    """Function group with the same event twice should raise."""
+    doc = copy.deepcopy(valid_document)
+    doc["groups"]["function"]["GROUP1"]["events"] = ["EVENT1", "EVENT1"]
+    with pytest.raises(
+        ValueError, match="Function group 'GROUP1' defines duplicate events: \\('EVENT1',\\)"
+    ):
+        TelemetrySpecification.model_validate(doc, context={"duplicate_policy": "error"})
+
+
 def test_validate_metric_groups_metrics_failure(valid_document):
     """Test that a metric group referencing an undefined metric triggers an error."""
     doc = copy.deepcopy(valid_document)
@@ -143,6 +154,26 @@ def test_validate_metric_groups_metrics_failure(valid_document):
         ValueError, match="Metric group 'METRIC_GROUP1' references undefined metrics"
     ):
         TelemetrySpecification.model_validate(doc)
+
+
+def test_metric_group_duplicate_metrics(valid_document):
+    """Metric group with the same metric twice should raise."""
+    doc = copy.deepcopy(valid_document)
+    doc["groups"]["metrics"]["METRIC_GROUP1"]["metrics"] = ["METRIC1", "METRIC1"]
+    with pytest.raises(
+        ValueError,
+        match="Metric group 'METRIC_GROUP1' defines duplicate metrics: \\('METRIC1',\\)",
+    ):
+        TelemetrySpecification.model_validate(doc, context={"duplicate_policy": "error"})
+
+
+def test_metric_group_duplicate_metrics_logs(valid_document, caplog):
+    """Duplicates should log when duplicate_policy='log'."""
+    doc = copy.deepcopy(valid_document)
+    doc["groups"]["metrics"]["METRIC_GROUP1"]["metrics"] = ["METRIC1", "METRIC1"]
+    with caplog.at_level(logging.WARNING, logger="topdown_tool.cpu_probe.cpu_model"):
+        TelemetrySpecification.model_validate(doc, context={"duplicate_policy": "log"})
+    assert "Metric group 'METRIC_GROUP1' defines duplicate metrics" in caplog.text
 
 
 def test_validate_metric_grouping_failure(valid_document):
@@ -158,7 +189,32 @@ def test_validate_metric_grouping_failure(valid_document):
     doc["methodologies"]["topdown_methodology"]["metric_grouping"]["stage_1"] = ["METRIC_GROUP1"]
     doc["methodologies"]["topdown_methodology"]["metric_grouping"]["stage_2"] = ["METRIC_GROUP1"]
     with pytest.raises(ValueError, match="A metric cannot be defined in both stage_1 and stage_2"):
-        TelemetrySpecification.model_validate(doc)
+        TelemetrySpecification.model_validate(doc, context={"duplicate_policy": "error"})
+
+
+def test_metric_grouping_duplicate_stage_entries(valid_document):
+    """Duplicate metric groups within a stage should be rejected."""
+    doc = copy.deepcopy(valid_document)
+    doc["methodologies"]["topdown_methodology"]["metric_grouping"]["stage_1"] = [
+        "METRIC_GROUP1",
+        "METRIC_GROUP1",
+    ]
+    with pytest.raises(
+        ValueError,
+        match="metric_grouping stage_1 contains duplicate metric groups: \\('METRIC_GROUP1',\\)",
+    ):
+        TelemetrySpecification.model_validate(doc, context={"duplicate_policy": "error"})
+
+    doc = copy.deepcopy(valid_document)
+    doc["methodologies"]["topdown_methodology"]["metric_grouping"]["stage_2"] = [
+        "METRIC_GROUP1",
+        "METRIC_GROUP1",
+    ]
+    with pytest.raises(
+        ValueError,
+        match="metric_grouping stage_2 contains duplicate metric groups: \\('METRIC_GROUP1',\\)",
+    ):
+        TelemetrySpecification.model_validate(doc, context={"duplicate_policy": "error"})
 
 
 def test_validate_decision_tree_root_nodes_failure(valid_document):
@@ -170,6 +226,19 @@ def test_validate_decision_tree_root_nodes_failure(valid_document):
     ]
     with pytest.raises(ValueError, match="Decision tree root_nodes contain undefined metrics"):
         TelemetrySpecification.model_validate(doc)
+
+
+def test_decision_tree_root_duplicate_entries(valid_document):
+    """Duplicate root nodes should be rejected."""
+    doc = copy.deepcopy(valid_document)
+    doc["methodologies"]["topdown_methodology"]["decision_tree"]["root_nodes"] = [
+        "METRIC1",
+        "METRIC1",
+    ]
+    with pytest.raises(
+        ValueError, match="Decision tree root_nodes contain duplicates: \\('METRIC1',\\)"
+    ):
+        TelemetrySpecification.model_validate(doc, context={"duplicate_policy": "error"})
 
 
 def test_validate_decision_tree_metrics_failure(valid_document):
@@ -203,3 +272,21 @@ def test_validate_decision_tree_metrics_failure(valid_document):
         match="has next_item 'NON_EXISTENT' which is neither a defined metric nor a defined metric group",
     ):
         TelemetrySpecification.model_validate(doc)
+
+
+def test_decision_tree_duplicate_metric_nodes(valid_document):
+    """Duplicate metric node names should raise."""
+    doc = copy.deepcopy(valid_document)
+    doc["methodologies"]["topdown_methodology"]["decision_tree"]["metrics"].append(
+        {
+            "name": "METRIC1",
+            "group": "METRIC_GROUP1",
+            "next_items": [],
+            "sample_events": [],
+        }
+    )
+    with pytest.raises(
+        ValueError,
+        match="Decision tree metrics contain duplicate node names: \\('METRIC1',\\)",
+    ):
+        TelemetrySpecification.model_validate(doc, context={"duplicate_policy": "error"})
