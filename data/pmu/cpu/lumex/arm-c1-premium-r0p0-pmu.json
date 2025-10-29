@@ -6217,17 +6217,7 @@
                     "backend_mem_cpu_hazard_cme_bound",
                     "backend_mem_cme_lsrt_full_bound",
                     "backend_mem_cme_barrier_bound",
-                    "backend_core_bound",
-                    "backend_mem_bound",
-                    "backend_core_spec_throttle_bound",
-                    "backend_core_rename_bound",
-                    "backend_busy_bound",
-                    "backend_core_other_bound",
-                    "backend_mem_cache_bound",
-                    "backend_mem_tlb_bound",
-                    "backend_mem_store_bound",
-                    "backend_cache_l1d_bound",
-                    "backend_cache_l2d_bound"
+                    "backend_core_spec_throttle_bound"
                 ]
             },
             "Topdown_CME": {
@@ -6267,15 +6257,7 @@
                     "load_store_percentage",
                     "load_ls_percentage",
                     "store_ls_percentage",
-                    "load_percentage",
-                    "store_percentage",
-                    "integer_dp_percentage",
-                    "simd_percentage",
-                    "scalar_fp_percentage",
-                    "barrier_percentage",
-                    "branch_percentage",
-                    "crypto_percentage",
-                    "sve_percentage"
+                    "barrier_percentage"
                 ]
             },
             "Topdown_L1": {
