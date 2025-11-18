@@ -6,6 +6,7 @@ from typing import List, Optional, Set, Type
 
 from topdown_tool.workload.workload import Workload
 from topdown_tool.common import CommandRunner, ManagedProcess, get_command_runner
+from topdown_tool.common.devlib_types import Target
 
 
 class CommandWorkload(Workload):
@@ -17,7 +18,12 @@ class CommandWorkload(Workload):
     Object that ensures its entire process tree is terminated on kill().
     """
 
-    def __init__(self, command: List[str], runner: Optional[CommandRunner] = None):
+    def __init__(
+        self,
+        command: List[str],
+        runner: Optional[CommandRunner] = None,
+        target: Optional["Target"] = None,
+    ) -> None:
         # Setup signal handlers
         super().__init__()
 
@@ -25,7 +31,7 @@ class CommandWorkload(Workload):
         self.pid: int = -1
 
         # Create platform-specific runner and spawn the process
-        self._runner: CommandRunner = runner or get_command_runner()
+        self._runner: CommandRunner = runner or get_command_runner(target)
         self._proc: ManagedProcess = self._runner.spawn(command)
 
         # Expose standard fields

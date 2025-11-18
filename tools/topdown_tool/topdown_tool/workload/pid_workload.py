@@ -8,6 +8,7 @@ from typing import Optional, Set, Type
 
 from topdown_tool.workload.workload import Workload
 from topdown_tool.common import get_pid_watcher, PidWatcher
+from topdown_tool.common.devlib_types import Target
 
 
 class PidWorkload(Workload):
@@ -25,9 +26,14 @@ class PidWorkload(Workload):
 
     # Delegate PID monitoring to a platform-specific watcher implementation.
 
-    def __init__(self, pids: Set[int], watcher: Optional[PidWatcher] = None) -> None:
+    def __init__(
+        self,
+        pids: Set[int],
+        watcher: Optional[PidWatcher] = None,
+        target: Optional["Target"] = None,
+    ) -> None:
         super().__init__()
-        self._watcher = watcher or get_pid_watcher(pids)
+        self._watcher = watcher or get_pid_watcher(pids, target)
         self.pids: Set[int] = self._watcher.start()
 
     def __exit__(
