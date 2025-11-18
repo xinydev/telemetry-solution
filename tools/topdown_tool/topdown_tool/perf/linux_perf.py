@@ -1,102 +1,41 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2025 Arm Limited
 
-"""
-Linux-specific implementation of the Perf interface using the `perf` tool.
+"""Run `perf stat` locally on the host system.
 
-This module defines the `LinuxPerf` class, which implements the abstract `Perf` interface for recording
-hardware performance counters using the Linux `perf` command-line tool.
-
-It manages event grouping, spawns multiple `perf stat` processes if needed, parses their output,
-and aggregates results for each core or uncore unit.
+This module exposes :class:`LinuxPerf`, the concrete :class:`Perf` implementation for
+Linux hosts. The class constructs the local `perf` command line, manages the
+subprocess lifecycle, and parses the textual statistics emitted by `perf`.
 
 Limitations:
-    - Requires CAP_PERFMON or CAP_SYS_ADMIN or kernel.perf_event_paranoid == -1
-    - MIDR queries are not supported on Linux (NotImplementedError)
+    * Requires CAP_PERFMON or CAP_SYS_ADMIN or ``kernel.perf_event_paranoid == -1``
+      on the host environment.
+    * MIDR queries are not supported on Linux (``NotImplementedError``).
 """
 
-import itertools
 import logging
 import os
 from pathlib import Path
-from subprocess import Popen, PIPE, DEVNULL
-from signal import SIGINT
 from select import select
 import shlex
-from typing import List, Optional, Sequence, Tuple, final
+from signal import SIGINT
+from subprocess import DEVNULL, PIPE, Popen
+from typing import Optional, Sequence, Tuple
 
-from topdown_tool.perf.perf import (
-    Perf,
-    PerfEvent,
-    PerfEventGroup,
-    PerfEventCount,
-    PerfRecordLocation,
-    PerfTimedResults,
-    PerfResults,
-    PerfRecords,
-    Cpu,
-    Uncore,
-)
-
-# pylint: disable=duplicate-code
-
-_PERF_SEPARATOR: str = ";"
+from topdown_tool.perf.linux_perf_base import LinuxPerfBase
+from topdown_tool.perf.perf import Perf, PerfEventGroup
 
 
-class LinuxPerf(Perf):
-    """
-    Linux-specific Perf implementation using the `perf` command-line tool for collecting event statistics.
+class LinuxPerf(LinuxPerfBase):
+    """Orchestrate local ``perf stat`` runs.
 
-    This class builds and executes `perf stat` commands for each set of grouped performance events,
-    manages per-core recording, and aggregates textual output into structured results.
-
-    Supports optional interval-based sampling and can handle platform-specific permission checks.
+    Instances of this class build `perf` command lines, launch the local
+    subprocess, and expose structured results to the probes.
     """
 
-    _perf_path: str = "perf"
+    class _Recorder(LinuxPerfBase._Recorder):  # pylint: disable=protected-access
+        """Manage a local ``perf stat`` subprocess."""
 
-    @staticmethod
-    def have_perf_privilege() -> bool:
-        """
-        Determine whether the current process has sufficient privileges to access all perf events.
-
-        This includes:
-            - `perf_event_paranoid` set to -1
-            - CAP_PERFMON or CAP_SYS_ADMIN
-
-        Returns:
-            True if perf privilege is granted, otherwise False.
-        """
-
-        try:
-            with open("/proc/sys/kernel/perf_event_paranoid", encoding="ascii") as f:
-                if int(f.read().strip()) == -1:
-                    return True
-        except Exception as e:  # pylint: disable=broad-exception-caught
-            logging.warning("Could not read perf_event_paranoid: %s", e)
-
-        try:
-            with open("/proc/self/status", encoding="ascii") as f:
-                for line in f:
-                    if line.startswith("CapEff:"):
-                        eff_caps = int(line.split()[1], 16)
-                        if (eff_caps & (1 << 38)) or (eff_caps & (1 << 21)):
-                            return True
-        except Exception as e:  # pylint: disable=broad-exception-caught
-            logging.warning("Could not read capabilities from /proc/self/status: %s", e)
-
-        return False
-
-    class _Recorder:
-        # The Recorder class functions as a partner to the Perf class when the volume of
-        # performance events exceeds system limits such as file descriptors or command line
-        # argument length.
-        #
-        # The Perf class uses this class to divide the event capture load across multiple
-        # perf instances.
-        #
-        # It builds the perf command line, starts the event capture process, stops it as requested,
-        # and waits until the process completes.
         # pylint: disable=too-many-branches, too-many-arguments, too-many-positional-arguments
         def __init__(
             self,
@@ -107,38 +46,32 @@ class LinuxPerf(Perf):
             perf_args: Optional[str],
             interval: Optional[int],
             pid: Optional[int],
-        ):
+        ) -> None:
+            """Initialise the local recorder.
+
+            Args:
+                events: Event groups assigned to the recorder.
+                cli_filename: File that receives the fully quoted command line.
+                output_filename: Local path where ``perf`` writes statistics.
+                cores: Optional list of CPU IDs passed via ``-C``.
+                perf_args: Extra ``perf`` command-line arguments from the user.
+                interval: Optional sampling interval (milliseconds) mapped to ``-I``.
+                pid: Optional PID passed through ``-p`` for task-scoped counting.
+            """
+            super().__init__(events=events, output_filename=output_filename)
+            self._cli_filename = cli_filename
             self._perf_args = perf_args
             self._interval = interval
-            self._events = events
-            self._flat_events = list(itertools.chain.from_iterable(events))
-            self._cli_filename = cli_filename
-            self._output_filename = output_filename
             self._process: Optional[Popen] = None
 
-            self._cmd = [
+            cmd = LinuxPerfBase._compose_stat_command(
                 LinuxPerf._perf_path,
-                "stat",
-                "-x",
-                _PERF_SEPARATOR,
-                "-o",
                 self._output_filename,
-            ]
-
-            # Add events
-            self._cmd.extend(["-e", LinuxPerf._build_event_string(self._events)])
-
-            # Add cores argument if needed
-            if cores is not None:
-                self._cmd.extend(["--per-core", "-C", ",".join(map(str, cores))])
-
-            # Add pid argument if needed
-            if pid is not None:
-                self._cmd.extend(["-p", str(pid)])
-
-            # Add interval argument if needed
-            if self._interval is not None:
-                self._cmd.extend(["-I", str(self._interval)])
+                cores=cores,
+                pid=pid,
+                interval=self._interval,
+            )
+            cmd.extend(["-e", Perf.build_event_string(self._events)])
 
             # Start with events disabled.
             # Create control and acknowledgement pipes
@@ -146,92 +79,79 @@ class LinuxPerf(Perf):
             # while the acknowledgement pipe will be used to resume topdown tool.
             self._ctl_pipe: Optional[Tuple[int, int]] = os.pipe2(0)
             self._ack_pipe: Optional[Tuple[int, int]] = os.pipe2(0)
-
             os.set_blocking(self._ack_pipe[0], False)
 
-            self._cmd.extend(
+            cmd.extend(
                 ["--delay", "-1", "--control", f"fd:{self._ctl_pipe[0]},{self._ack_pipe[1]}"]
             )
-
-            self._control_index = len(self._cmd) - 1
-
+            self._command = cmd
+            self._control_index = len(self._command) - 1
             # Add additional user defined arguments if needed
-            if self._perf_args:
-                self._cmd += shlex.split(self._perf_args)
-
+            if perf_args:
+                self._command += shlex.split(perf_args)
             # Empty file for measurements
-            LinuxPerf._initialize_output_file(self._output_filename)
-
-        @property
-        def events(self) -> Sequence[PerfEventGroup]:
-            return self._events
-
-        @property
-        def flat_events(self) -> List[PerfEvent]:
-            return self._flat_events
-
-        @property
-        def output_filename(self) -> str:
-            return self._output_filename
+            LinuxPerfBase._initialize_output_file(self._output_filename)
 
         def start(self) -> None:
-            """
-            Start performance data recording by launching one or more `perf stat` processes.
-            """
+            """Launch the local ``perf stat`` process with the prepared arguments."""
             if self._events is None:
                 logging.info("Empty run with no events")
                 return
 
-            assert isinstance(self._ctl_pipe, tuple) and isinstance(self._ack_pipe, tuple) or self._ctl_pipe is None and self._ack_pipe is None
+            assert (
+                isinstance(self._ctl_pipe, tuple)
+                and isinstance(self._ack_pipe, tuple)
+                or self._ctl_pipe is None
+                and self._ack_pipe is None
+            )
             if self._ctl_pipe is None or self._ack_pipe is None:
                 self._ctl_pipe = os.pipe2(0)
                 self._ack_pipe = os.pipe2(0)
-                self._cmd[self._control_index] = f"fd:{self._ctl_pipe[0]},{self._ack_pipe[1]}"
+                self._command[self._control_index] = f"fd:{self._ctl_pipe[0]},{self._ack_pipe[1]}"
 
             # pylint: disable=protected-access
-            LinuxPerf._write_cli_command(
-                self._cli_filename, self._cmd
-            )  # pylint: disable=protected-access
+            LinuxPerfBase.write_cli_command(self._cli_filename, self._command)
 
-            # pylint: disable=consider-using-with
-            self._process = Popen(
-                self._cmd,
+            self._process = Popen(  # pylint: disable=consider-using-with
+                self._command,
                 stderr=DEVNULL,
                 close_fds=True,
                 pass_fds=(self._ctl_pipe[0], self._ack_pipe[1]),
             )
-            logging.info('Running "%s"', " ".join(shlex.quote(arg) for arg in self._cmd))
+
+            logging.info('Running "%s"', " ".join(shlex.quote(arg) for arg in self._command))
 
             os.close(self._ctl_pipe[0])
             os.close(self._ack_pipe[1])
 
-            # Try to enable perf after it created events
+            # Try to enable perf after it creates the events.
             msg = b"enable"
             if os.write(self._ctl_pipe[1], msg) != len(msg):
                 os.close(self._ctl_pipe[1])
                 os.close(self._ack_pipe[0])
                 raise RuntimeError("Perf version not supported. Control pipe closed by perf.")
 
-            # Wait for acknowledgement
-            readable_fds, _, _ = select((self._ack_pipe[0], ), (), (), 2.0)
+            # Wait for acknowledgement from perf to ensure events are ready.
+            readable_fds, _, _ = select((self._ack_pipe[0],), (), (), 2.0)
             if self._ack_pipe[0] not in readable_fds:
                 os.close(self._ack_pipe[0])
                 raise RuntimeError("Perf version not supported. Perf didn't acknowledge.")
             expected_msg = b"ack\n\0"
             if os.read(self._ack_pipe[0], len(expected_msg)) != expected_msg:
                 os.close(self._ack_pipe[0])
-                raise RuntimeError("Perf version not supported. Unexpected acknowledgement message.")
+                raise RuntimeError(
+                    "Perf version not supported. Unexpected acknowledgement message."
+                )
 
         def stop(self) -> None:
-            """
-            Stop all active `perf` subprocesses by sending SIGINT.
-            """
+            """Stop the local ``perf`` process by sending ``SIGINT``."""
             if self._events is None:
                 return
             assert self._process is not None
             self._process.send_signal(SIGINT)
 
         def wait(self) -> None:
+            """Wait for the local ``perf`` process to exit and close pipes."""
             if self._events is None or self._process is None:
                 return
             self._process.wait()
@@ -242,286 +162,81 @@ class LinuxPerf(Perf):
             self._ctl_pipe = None
             self._ack_pipe = None
 
-    def __init__(
+    @staticmethod
+    def have_perf_privilege() -> bool:
+        """Return whether unrestricted ``perf`` access is available on the host.
+
+        Returns:
+            bool: ``True`` if the host satisfies the privilege checks; otherwise ``False``.
+        """
+        return LinuxPerf._has_local_privileges()
+
+    @staticmethod
+    def _has_local_privileges() -> bool:
+        """Return whether the host satisfies the standard perf privilege checks.
+
+        Returns:
+            bool: ``True`` if the checks indicate sufficient privilege; otherwise ``False``.
+        """
+        paranoid_value: Optional[str] = None
+        status_value: Optional[str] = None
+
+        try:
+            with open("/proc/sys/kernel/perf_event_paranoid", encoding="ascii") as file_obj:
+                paranoid_value = file_obj.read()
+        except Exception as exc:  # pylint: disable=broad-exception-caught
+            logging.warning("Could not read perf_event_paranoid: %s", exc)
+
+        try:
+            with open("/proc/self/status", encoding="ascii") as file_obj:
+                status_value = file_obj.read()
+        except Exception as exc:  # pylint: disable=broad-exception-caught
+            logging.warning("Could not read capabilities from /proc/self/status: %s", exc)
+
+        return LinuxPerfBase._has_privilege_from_values(paranoid_value, status_value)
+
+    def _create_recorder(  # pylint: disable=too-many-arguments
         self,
         *,
-        perf_args: Optional[str] = None,
-        interval: Optional[int] = None,
-    ):
-        """
-        Initialize a LinuxPerf instance.
-
-        Args:
-            cores: Optional list of core indices to record events on.
-            perf_args: Additional user-provided command-line arguments for `perf`.
-            interval: Optional sampling interval in milliseconds.
-        """
-        self._perf_args = perf_args
-        self._interval = interval
-        self._cores: Optional[Sequence[int]] = None
-        self._recorders: List[LinuxPerf._Recorder] = []
-        self._events_groups: Sequence[PerfEventGroup] = []
-        self._flat_events: List[PerfEvent] = []
-        self._output_filename: Optional[str] = None
-        self._output_path: Optional[Path] = None
-
-    @property
-    def max_event_count(self) -> int:
-        return 1000
-
-    def enable(self) -> None:
-        pass
-
-    def disable(self) -> None:
-        pass
-
-    def start(
-        self,
-        events_groups: Sequence[PerfEventGroup],
-        output_filename: str,
-        pid: Optional[int] = None,
-        cores: Optional[Sequence[int]] = None,
-    ) -> None:
-        """Starts performance event recording for this run (build recorders here)."""
-        # Reset any previous run state
-        self._recorders.clear()
-        self._events_groups = events_groups
-        self._flat_events = list(itertools.chain.from_iterable(self._events_groups))
-        self._output_filename = output_filename
-        self._output_path = Path(output_filename).parent
-        self._cores = tuple(sorted(cores)) if cores else None
-
-        for i, event_groups in enumerate(self._extract_recorders_events(self._events_groups)):
-            recorder = self._Recorder(
-                events=event_groups,
-                cli_filename=self._output_path / f"perf-cli-{i}",
-                output_filename=f"{self._output_filename}-{i}",
-                cores=self._cores,
-                perf_args=self._perf_args,
-                interval=self._interval,
-                pid=pid,
-            )
-            self._recorders.append(recorder)
-        for r in self._recorders:
-            r.start()
-
-    def stop(self) -> None:
-        """Stops performance event recording."""
-        for r in self._recorders:
-            r.stop()
-
-    # pylint: disable=too-many-locals
-    def get_perf_result(self) -> PerfRecords:
-        """
-        Wait for all perf subprocesses to complete and aggregate their outputs.
-
-        Returns:
-            A PerfRecords object containing the recorded results for each core (or uncore) and timestamp.
-        """
-        locations: List[PerfRecordLocation] = (
-            [Cpu(core) for core in self._cores] if self._cores is not None else [Uncore()]
+        index: int,  # pylint: disable=unused-argument
+        events: Sequence[PerfEventGroup],
+        cli_path: Path,
+        output_basename: str,
+        pid: Optional[int],
+    ) -> LinuxPerfBase._Recorder:  # pylint: disable=protected-access
+        return self._Recorder(
+            events=events,
+            cli_filename=cli_path,
+            output_filename=output_basename,
+            cores=self._cores,
+            perf_args=self._perf_args,
+            interval=self._interval,
+            pid=pid,
         )
-        records: PerfRecords = PerfRecords({loc: PerfTimedResults() for loc in locations})
-
-        for recorder in self._recorders:
-            recorder.wait()
-
-            if recorder.events is None:
-                continue
-
-            output = self._read_perf_stat_output(recorder.output_filename)
-
-            # Sanity check
-            assert len(output) % len(recorder.flat_events) == 0
-
-            # We need to map each recorder.events to their value
-            i = 0
-            while i < len(output):
-                # Compute the CPU index as next iteration is for a full range of its values
-                location: PerfRecordLocation
-                if self._cores:
-                    cpu_index = i // len(recorder.flat_events) % len(self._cores)
-                    location = Cpu(self._cores[cpu_index])
-                else:
-                    location = Uncore()
-
-                for event_group in recorder.events:
-                    step = len(event_group)
-                    values = output[i : i + step]
-                    i = i + step
-                    base_time = values[0][2]
-                    # Sanity check, all the time should be equal and the name must match
-                    for idx, (event_name, _value, t) in enumerate(values):
-                        assert t == base_time
-                        assert event_name == event_group[idx].perf_name()
-
-                    records[location].setdefault(base_time, PerfResults())
-                    assert records[location][base_time].get(tuple(event_group)) is None
-                    records[location][base_time][tuple(event_group)] = tuple(v[1] for v in values)
-
-        return records
-
-    def _read_perf_stat_output(
-        self, filename: str
-    ) -> List[Tuple[str, Optional[float], Optional[float]]]:
-        """
-        Parse raw perf output from a perf stat file.
-
-        Args:
-            filename: Path to a perf output file.
-
-        Returns:
-            List of (event name, value, timestamp) tuples.
-        """
-        with open(filename, encoding="utf-8") as f:
-            return [
-                self._parse_perf_line(line)
-                for line in f.read().splitlines()
-                if line and not line.startswith("#")
-            ]
-
-    def _parse_perf_line(self, line: str) -> Tuple[str, Optional[float], Optional[float]]:
-        """
-        Parse a single line from perf output and extract the event name, value, and time (if present).
-
-        Returns:
-            Tuple containing (event name, value, time).
-        """
-        if self._interval is not None:
-            if self._cores is None:
-                # e.g. 0.100116703;178;;ITLB_WALK;96758700;100.00;;
-                time_str, count_str, _, event, *_ = line.split(_PERF_SEPARATOR)
-            else:
-                time_str, _, _, count_str, _, event, *_ = line.split(_PERF_SEPARATOR)
-            time = float(time_str)
-        else:
-            # e.g. 139198,,BR_PRED:u,800440,100.00,,
-            if self._cores is None:
-                count_str, _, event, *_ = line.split(_PERF_SEPARATOR)
-            else:
-                _, _, count_str, _, event, *_ = line.split(_PERF_SEPARATOR)
-            time = None
-
-        if count_str == "<not counted>":
-            logging.info("Perf event %s was not counted", event)
-        elif count_str == "<not supported>":
-            logging.info("Perf event %s was not supported.", event)
-        if count_str == "0":
-            logging.info("Perf counted 0 %s events", event)
-
-        count = None if count_str in ("<not counted>", "<not supported>") else float(count_str)
-        return self._strip_modifier(event), count, time
-
-    # pylint: disable=too-many-arguments, too-many-positional-arguments
-    def _create_event_count(
-        self,
-        r: _Recorder,
-        index: int,
-        name: str,
-        value: Optional[float],
-        time: Optional[float],
-    ) -> PerfEventCount:
-        """
-        Create a PerfEventCount object from the recorder data and a flat event index.
-
-        Args:
-            r: The recorder the data came from.
-            index: Flat index of the event.
-            name: Name of the event.
-            value: Measured value.
-            time: Timestamp.
-
-        Returns:
-            PerfEventCount object for the parsed data.
-        """
-        event = r.flat_events[index % len(r.flat_events)]
-        assert name == event.perf_name()
-        return PerfEventCount(event=event, value=value, time=time)
 
     @classmethod
     def get_pmu_counters(cls, core: int) -> int:
-        """
-        Determine the number of concurrently measurable PMU counters on a given core.
+        """Determine the number of concurrently measurable PMU counters on ``core``."""
 
-        Performs binary search using `perf stat` and synthetic events.
-
-        Args:
-            core: The core to test.
-
-        Returns:
-            The maximum number of hardware counters available on the given core.
-        """
-
-        def check_pmu_availability(core: int, count: int) -> bool:
-            def run_perf(event: str) -> List[str]:
-                cmdline = [
-                    LinuxPerf._perf_path,
-                    "stat",
-                    "-e",
-                    "{" + ",".join([event + ":u"] * count) + "}",
-                    "-C",
-                    str(core),
-                    "-x",
-                    "\\t",
-                    LinuxPerf._perf_path,
-                    "-v",
-                ]
-                with Popen(
-                    cmdline, stdin=DEVNULL, stdout=DEVNULL, stderr=PIPE, text=True
-                ) as process:
-                    return process.communicate()[1].strip().splitlines()
-
-            # First attempt with "r8:u"
-            stderr_lines = run_perf("r8")
-            if len(stderr_lines) == count:
-                for line in stderr_lines:
-                    row = line.split("\t")
-                    if row[0] in {"<not counted>", "<not supported>"} or float(row[4]) != 100.0:
-                        return False
-                return True
-
-            # Retry with "instructions:u"
-            stderr_lines = run_perf("instructions")
-            if len(stderr_lines) == count:
-                for line in stderr_lines:
-                    row = line.split("\t")
-                    if row[0] in {"<not counted>", "<not supported>"} or float(row[4]) != 100.0:
-                        return False
-                return True
-
-            # If both attempts fail to produce the expected number of lines
-            raise RuntimeError(
-                f"Failed to check PMU availability with perf. Expected {count} lines in perf stderr"
+        def runner(event: str, sample_count: int) -> Sequence[str]:
+            cmdline = LinuxPerfBase._build_pmu_probe_command(
+                cls._perf_path,
+                event,
+                sample_count,
+                core,
             )
+            with Popen(cmdline, stdin=DEVNULL, stdout=DEVNULL, stderr=PIPE, text=True) as process:
+                return [line for line in process.communicate()[1].strip().splitlines() if line]
 
-        pmu_min = 0
-        pmu_max = 31
-        while pmu_min != pmu_max:
-            pmu_attempt = (pmu_min + pmu_max + 1) // 2
-            if check_pmu_availability(core, pmu_attempt):
-                pmu_min = pmu_attempt
-            else:
-                pmu_max = pmu_attempt - 1
-        return pmu_min
+        def check_pmu_availability(count: int) -> bool:
+            """Return ``True`` when ``count`` events can be scheduled concurrently."""
+            result = cls._probe_pmu_count(count=count, runner=runner)
+            if result is None:
+                raise RuntimeError(
+                    f"Failed to check PMU availability with perf. Expected {count} lines in perf stderr"
+                )
+            return result
 
-    @classmethod
-    def get_midr_value(cls, core: int) -> int:
-        """
-        Not supported on Linux. Always raises NotImplementedError.
-
-        Raises:
-            NotImplementedError
-        """
-        raise NotImplementedError("MIDR value is not supported on Linux")
-
-    @staticmethod
-    @final
-    def _write_cli_command(path: Path, cmd: List[str]) -> None:
-        """Write the perf command line to a CLI log file (Linux)."""
-        cmd_line = " ".join(shlex.quote(arg) for arg in cmd)
-        with open(path, "w", encoding="utf-8") as f:
-            f.write(cmd_line)
-
-    @classmethod
-    def update_perf_path(cls, perf_path: str) -> None:
-        cls._perf_path = perf_path
+        pmu_max = LinuxPerfBase._binary_search_pmu_max(check_pmu_availability)
+        logging.info("Detected %d PMU counters on core %d", pmu_max, core)
+        return pmu_max

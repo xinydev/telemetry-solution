@@ -225,7 +225,7 @@ class Perf(ABC):
 
     @staticmethod
     @final
-    def _build_event_string(events: Sequence[PerfEventGroup]) -> str:
+    def build_event_string(events: Sequence[PerfEventGroup]) -> str:
         """
         Generate the perf-compatible event string for a list of event groups.
 
