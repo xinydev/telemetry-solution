@@ -24,8 +24,6 @@ handle leaks. The underlying process handle is owned by subprocess.Popen and
 is not manually closed here.
 """
 
-from __future__ import annotations
-
 import ctypes
 import subprocess
 import shutil

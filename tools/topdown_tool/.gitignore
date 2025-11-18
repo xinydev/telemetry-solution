@@ -4,6 +4,7 @@
 /.cache
 /perf-cli-*
 /perf.stat.*
+/wperf*
 *.csv
 /pytest.xml
 /wperf.json

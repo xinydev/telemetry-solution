@@ -24,9 +24,6 @@ For convenience, this package supports lazy attribute access:
     from topdown_tool.common.pidwatch import LinuxPidWatcher, Win32PidWatcher
 will defer importing the platform modules until first attribute access.
 """
-
-from __future__ import annotations
-
 from typing import TYPE_CHECKING, Any
 
 __all__ = ["LinuxPidWatcher", "Win32PidWatcher"]

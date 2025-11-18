@@ -15,8 +15,6 @@ Design:
   by wait_next().
 """
 
-from __future__ import annotations
-
 # NOTE: Avoid importing Protocols (PidWatcher/ManagedProcess) from topdown_tool.common
 # here to prevent cyclic imports. This module exposes a concrete implementation only.
 

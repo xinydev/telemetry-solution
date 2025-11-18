@@ -14,8 +14,6 @@ Design:
 - Close handles when a process signals, and when close() is called.
 """
 
-from __future__ import annotations
-
 import sys
 from typing import Dict, Optional, Set
 

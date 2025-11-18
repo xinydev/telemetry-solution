@@ -19,8 +19,6 @@ running user code:
 - kill(): sends SIGTERM and waits for the child to exit (best-effort).
 """
 
-from __future__ import annotations
-
 import os
 import shutil
 import signal

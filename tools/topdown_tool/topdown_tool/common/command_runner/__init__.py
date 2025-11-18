@@ -28,8 +28,6 @@ For convenience, this package supports lazy attribute access:
 will defer importing the platform modules until first attribute access.
 """
 
-from __future__ import annotations
-
 from typing import TYPE_CHECKING, Any
 
 __all__ = ["LinuxCommandRunner", "Win32CommandRunner"]

@@ -13,8 +13,6 @@ implementations that consume the protocols.
 These Protocols are intentionally small to keep them easy to mock in tests.
 """
 
-from __future__ import annotations
-
 from typing import List, Optional, Protocol, Set
 
 

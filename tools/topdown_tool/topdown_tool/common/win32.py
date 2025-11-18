@@ -5,7 +5,6 @@
 Shared Win32 constants and tiny helpers for kernel32 calls.
 Keep all WAIT_* and INFINITE values in one place to avoid duplication.
 """
-from __future__ import annotations
 
 import contextlib
 import signal
