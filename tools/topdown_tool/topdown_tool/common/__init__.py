@@ -11,7 +11,7 @@ Goals:
   cyclic imports and make patching in tests straightforward.
 """
 
-from typing import List, Optional, Set, Sequence, TypeVar
+from typing import List, Optional, Sequence, Set, TypeVar
 import sys
 
 # Re-export Protocols from a dedicated module to avoid cyclic imports while
@@ -22,11 +22,12 @@ from topdown_tool.common.abstractions import (  # noqa: F401
     ManagedProcess,
     CommandRunner,
 )
+from topdown_tool.common.devlib_types import Target
 
 T = TypeVar("T")
 
 
-def get_pid_watcher(pids: Set[int]) -> PidWatcher:
+def get_pid_watcher(pids: Set[int], target: Optional["Target"]) -> PidWatcher:
     """
     Factory for a platform-specific PidWatcher implementation.
 
@@ -36,6 +37,11 @@ def get_pid_watcher(pids: Set[int]) -> PidWatcher:
                             lambda p: FakePidWatcher(p))
     - Deferred imports avoid importing platform modules on the wrong OS.
     """
+    if target is not None:
+        # pylint: disable=import-outside-toplevel
+        from topdown_tool.common.pidwatch.remote_linux import RemoteLinuxPidWatcher  # type: ignore[attr-defined]
+
+        return RemoteLinuxPidWatcher(pids, target)  # pragma: no cover
     if sys.platform == "linux":
         # pylint: disable=import-outside-toplevel
         from topdown_tool.common.pidwatch.linux import LinuxPidWatcher  # type: ignore[attr-defined]
@@ -49,7 +55,7 @@ def get_pid_watcher(pids: Set[int]) -> PidWatcher:
     raise NotImplementedError(f"Unsupported platform: {sys.platform}")
 
 
-def get_command_runner() -> CommandRunner:
+def get_command_runner(target: Optional["Target"]) -> CommandRunner:
     """
     Factory for a platform-specific CommandRunner implementation.
 
@@ -59,6 +65,11 @@ def get_command_runner() -> CommandRunner:
                             lambda: FakeCommandRunner())
     - Deferred imports avoid importing platform modules on the wrong OS.
     """
+    if target is not None:
+        # pylint: disable=import-outside-toplevel
+        from topdown_tool.common.command_runner.remote_linux import RemoteLinuxCommandRunner  # type: ignore[attr-defined]
+
+        return RemoteLinuxCommandRunner(target)  # pragma: no cover
     if sys.platform == "linux":
         # pylint: disable=import-outside-toplevel
         from topdown_tool.common.command_runner.linux import LinuxCommandRunner  # type: ignore[attr-defined]
