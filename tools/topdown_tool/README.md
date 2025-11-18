@@ -126,6 +126,49 @@ Use the command below to validate the installation and display the CLI help (usa
 topdown-tool --help
 ```
 
+## Remote targets (devlib)
+
+The tool can collect metrics from a remote Linux or Android target through [devlib](https://github.com/ARM-software/devlib). Install the optional remote dependencies before using these options:
+
+```bash
+pip install ".[remote]"
+```
+
+The extra pulls in devlib (including PR [#727](https://github.com/ARM-software/devlib/pull/727)) which adds the background command support required by topdown-tool. After installation, make sure the devlib perf binary matches the version you intend to use (for example, copy a recent `perf` into the relevant `devlib/bin/<abi>/` directory).
+
+Once the dependencies are installed, provide the remote type with `--target-type` and the connection details with `--target-config`. The configuration argument accepts either an inline JSON object or a path to a JSON file. Supported target types are:
+- `ssh` for Linux hosts reachable over SSH.
+- `adb` for Android devices attached through the Android Debug Bridge.
+
+### Configuration schema
+
+- **SSH targets** (`--target-type ssh`): the JSON must include `host` and `username`. Add either `password` or a `keyfile` path; optional fields such as `port`, `password`, and `keyfile_password` are forwarded directly to devlib.
+- **ADB targets** (`--target-type adb`): provide the Android `device` identifier as shown by `adb devices`. Optional keys like `adb_server_host` and `adb_server_port` are also supported.
+
+Refer to the [devlib connection documentation](https://github.com/ARM-software/devlib#targets) for the full list of available keys.
+
+> [!note]
+> The optional `remote` dependency group installs devlib from [PR #727](https://github.com/ARM-software/devlib/pull/727), which adds support for background ADB commands required by topdown-tool. After installing the extra, replace the legacy perf binary shipped with devlib by copying a recent build into the corresponding ABI directory (for example, `cp perf ~/.local/lib/python3.10/site-packages/devlib/bin/arm64/`).
+
+### Examples
+
+Connect to an SSH target:
+```sh
+topdown-tool --target-type ssh --target-config '{"host": "192.0.2.10", "username": "ubuntu", "password": "secret"}' -- ./a.out
+```
+
+Connect to an Android device using its ADB serial:
+```sh
+topdown-tool --target-type adb --target-config '{"device": "SERIAL"}' --probe CPU -- ./a.out
+```
+
+You may also store the JSON in a file (for example `ssh.json`) and pass its path:
+```sh
+topdown-tool --target-type ssh --target-config ssh.json -- ./a.out
+```
+
+The remote options must be supplied on each invocation and they replace the local perf runner with the remote implementation.
+
 ## Choosing what to monitor
 
 topdown-tool lets you fine-tune what is being monitored:

@@ -5,7 +5,7 @@ This folder contains the tools for Telemetry solution and methodologies.
 
 ## topdown_tool
 
-Tool to support the Arm topdown methodology by collecting derived metrics based on Performance Monitoring Unit (PMU) events.
+Tool to support the Arm topdown methodology by collecting derived metrics based on Performance Monitoring Unit (PMU) events. The CLI can operate on the host or on remote Linux/Android devices.
 
 ## ustress
 

@@ -30,6 +30,8 @@ from topdown_tool.probe.probe import load_probe_factories
 from topdown_tool.perf import perf_factory
 from topdown_tool.probe import Probe, ProbeFactory
 from topdown_tool.workload import CommandWorkload, PidWorkload, SystemwideWorkload
+from topdown_tool.common import remote_target_manager
+from topdown_tool.common.devlib_types import Target
 
 # Install rich pretty exception handler globally and show local variables in tracebacks
 rich.traceback.install(show_locals=True)
@@ -132,6 +134,9 @@ def create_base_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         formatter_class=SmartFormatter, add_help=False, allow_abbrev=False
     )
+
+    # Add global remote target options before perf-specific ones so parsing works early
+    remote_target_manager.add_cli_arguments(parser)
 
     # Add general perf options
     perf_factory.add_cli_arguments(parser)
@@ -254,7 +259,9 @@ def print_available_probes_table(
     console.print(table)
 
 
-def capture_command_workload(probes: List[Probe], command: List[str]) -> None:
+def capture_command_workload(
+    probes: List[Probe], command: List[str], target: Optional["Target"]
+) -> None:
     """
     Run a command and capture the required telemetry data. The command is executed
     repeatedly until all probes report that they have captured the data they need.
@@ -278,7 +285,7 @@ def capture_command_workload(probes: List[Probe], command: List[str]) -> None:
         running_probes = []
         interrupted_capture = False
         pid = None
-        with CommandWorkload(command) as workload:
+        with CommandWorkload(command, target=target) as workload:
             try:
                 for probe in need_capture:
                     probe.start_capture(run, workload.pid)
@@ -302,6 +309,7 @@ def capture_command_workload(probes: List[Probe], command: List[str]) -> None:
 
 def capture_systemwide_workload(
     probes: List[Probe],
+    target: Optional["Target"],
 ) -> None:
     """
     Start system-wide telemetry capture until interrupted.
@@ -316,7 +324,7 @@ def capture_systemwide_workload(
     run = 1
     interrupted = False
 
-    with SystemwideWorkload() as workload:
+    with SystemwideWorkload(target) as workload:
         try:
             workload.start()
             for probe in (p for p in probes if p.need_capture()):
@@ -344,7 +352,7 @@ def capture_systemwide_workload(
                     logging.exception("Probe %r failed during stop_capture", probe)
 
 
-def capture_pid_workload(probes: List[Probe], pids: Set[int]) -> None:
+def capture_pid_workload(probes: List[Probe], pids: Set[int], target: Optional["Target"]) -> None:
     """
     Monitor a set of PIDs and capture telemetry data until all processes exit or the user interrupts.
 
@@ -360,7 +368,7 @@ def capture_pid_workload(probes: List[Probe], pids: Set[int]) -> None:
     run = 1
     interrupted = False
     unique_pids = set()
-    with PidWorkload(pids) as workload:
+    with PidWorkload(pids, target=target) as workload:
         try:
             unique_pids = workload.start()
             for probe in probes:
@@ -408,8 +416,10 @@ def main(
     # Build parser with only perf initially
     parser = create_base_arg_parser()
 
-    # Handle Perf specific arguments
+    # Parse known args (so we can identify selected probes before extending the parser)
     args, _ = parser.parse_known_args(_args)
+    # Remote targets need to be configured before privilege checks run.
+    remote_target_manager.configure_from_args(args)
     perf_factory.process_cli_arguments(args)
 
     # Get available probe types on the system
@@ -522,12 +532,13 @@ def main(
 
     # Capture data depending on requested type
     try:
+        remote_target = remote_target_manager.get_remote_target()
         if args.command:
-            capture_command_workload(probes, args.command)
+            capture_command_workload(probes, args.command, remote_target)
         elif args.pids:
-            capture_pid_workload(probes, args.pids)
+            capture_pid_workload(probes, args.pids, remote_target)
         else:
-            capture_systemwide_workload(probes)
+            capture_systemwide_workload(probes, remote_target)
     except (InterruptedError,) as e:
         console.print(e)
     except OSError as e:
