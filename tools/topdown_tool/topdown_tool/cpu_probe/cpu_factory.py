@@ -4,14 +4,14 @@
 """
 This module provides the factory for creating CPU probe instances used in telemetry data capture.
 It defines the CpuProbeFactory class, which is responsible for processing CLI arguments specific to CPU probing,
-detecting CPU hardware details (using the CPUDetect helper class) and loading telemetry specifications, and creating
-CpuProbe objects accordingly.
+detecting CPU hardware details (via pluggable CpuDetector implementations) and loading telemetry specifications,
+and creating CpuProbe objects accordingly.
 
 Other Key Components:
-    - CPUDetect: A helper class that retrieves CPU details such as the number of cores,
-      MIDR values, and computes unique CPU identifiers.
-    - CpuProbeFactory: Processes configuration options, updates CPU description mappings, and instantiates CpuProbe instances
-      based on available CPU hardware information and supplied telemetry JSON files.
+    - CpuDetector hierarchy: Helpers that retrieve CPU details such as the number of cores,
+      MIDR values, and compute unique CPU identifiers for local and remote targets.
+    - CpuProbeFactory: Processes configuration options, updates CPU description mappings, and instantiates CpuProbe
+      instances based on available CPU hardware information and supplied telemetry JSON files.
 
 Usage Example:
     parser = argparse.ArgumentParser()
@@ -33,8 +33,7 @@ import argparse
 from dataclasses import dataclass
 import json
 import os
-import sys
-from typing import Dict, List, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, List, Optional, Sequence, Tuple, Union
 from rich import get_console
 from rich.table import Table
 from topdown_tool.common import ArgsError, range_decode, unwrap
@@ -43,67 +42,15 @@ from topdown_tool.cpu_probe.common import (
     DEFAULT_ALL_STAGES,
     CpuProbeConfiguration,
 )
+from topdown_tool.cpu_probe.cpu_detector import (
+    CpuDetector,
+    CpuDetectorFactory,
+)
 from topdown_tool.cpu_probe.cpu_model import TelemetrySpecification
 from topdown_tool.cpu_probe.cpu_probe import CpuProbe
 from topdown_tool.perf.event_scheduler import CollectBy
 from topdown_tool.perf import perf_factory, PerfFactory
 import topdown_tool.probe as Base
-
-
-class CPUDetect:
-    """Helper class for detecting CPU details necessary for CPU probing.
-
-    This class provides utility methods for obtaining the number of CPU cores, reading a core's MIDR value,
-    and computing a unique CPU identifier based on the MIDR.
-    """
-
-    MIDR_PATH = "/sys/devices/system/cpu/cpu{}/regs/identification/midr_el1"
-
-    @staticmethod
-    def cpu_count() -> int:
-        """Return the number of CPU cores detected on the system.
-
-        Returns:
-            int: The count of CPU cores.
-
-        Raises:
-            Exception: If os.cpu_count() returns None.
-        """
-        return unwrap(os.cpu_count(), "os.cpu_count() returned an unnexpected value")
-
-    @staticmethod
-    def cpu_midr(core: int) -> int:
-        """Retrieve the MIDR (Main ID Register) value for a specified core.
-
-        Args:
-            core (int): The core index to query.
-
-        Returns:
-            int: The MIDR value as an integer.
-        """
-        midr: int = 0
-        if sys.platform == "linux":
-            with open(CPUDetect.MIDR_PATH.format(core), encoding="utf-8") as f:
-                midr = int(f.readline(), 16)
-        elif sys.platform == "win32":
-            midr = perf_factory.get_midr_value(core)
-        else:
-            raise RuntimeError("MIDR only available on Linux and Windows platforms")
-        return midr
-
-    @staticmethod
-    def cpu_id(midr: int) -> int:
-        """Compute a unique CPU identifier from the MIDR value.
-
-        Args:
-            midr (int): The MIDR value.
-
-        Returns:
-            int: The computed CPU identifier.
-        """
-        implementer = midr >> 24 & 0xFF
-        part_num = midr >> 4 & 0xFFF
-        return (implementer << 12) | part_num
 
 
 class _ProcessStageArgs(argparse.Action):
@@ -140,7 +87,7 @@ class CpuProbeFactory(Base.ProbeFactory):
     """Factory class for creating CPU probe instances.
 
     Processes command line arguments related to CPU probing, sets up CPU-specific configurations by
-    detecting hardware parameters via CPUDetect, and creates CpuProbe instances configured with the appropriate
+    detecting hardware parameters via CpuDetector implementations, and creates CpuProbe instances configured with the appropriate
     telemetry specification.
 
     Example:
@@ -171,6 +118,7 @@ class CpuProbeFactory(Base.ProbeFactory):
         self._midr_core_map: Dict[int, List[int]] = {}
         # Default mapping of CPU ID to a JSON description file
         self._cpu_descriptions: Dict[int, CpuProbeFactory._CpuDescription] = {}
+        self._cpu_detector: Optional[CpuDetector] = None
 
     def name(self) -> str:
         """Return the name of the probe.
@@ -369,7 +317,7 @@ class CpuProbeFactory(Base.ProbeFactory):
             parser.epilog = cpu_examples
 
     def process_cli_arguments(
-        self, args: argparse.Namespace, cpu_detect: Type[CPUDetect] = CPUDetect
+        self, args: argparse.Namespace, cpu_detector: Optional[CpuDetector] = None
     ) -> bool:
         """Process and validate command-line arguments for CPU probing.
 
@@ -378,7 +326,8 @@ class CpuProbeFactory(Base.ProbeFactory):
 
         Args:
             args (argparse.Namespace): Parsed command-line arguments.
-            cpu_detect (Type[CPUDetect], optional): Utility class for CPU detection. Defaults to CPUDetect.
+            cpu_detector (Optional[CpuDetector]): Pre-configured detector instance, primarily for tests.
+                When omitted, a detector matching the current environment is created automatically.
 
         Returns:
             bool: True if actual telemetry capture should proceed; False if only informational output is desired.
@@ -420,11 +369,14 @@ class CpuProbeFactory(Base.ProbeFactory):
         conf.show_sample_events = args.cpu_show_sample_events
 
         # Update CPU core mapping based on provided or default core list.
-        self._update_midr_cpu_core_map(args, cpu_detect)
+        detector = cpu_detector or CpuDetectorFactory.create(perf_factory)
+        self._cpu_detector = detector
+
+        self._update_midr_cpu_core_map(args, detector)
         # Update CPU descriptions by loading telemetry JSON files, with CLI overrides if provided.
-        self._update_cpu_descriptions(args, cpu_detect)
+        self._update_cpu_descriptions(args, detector)
         # List detected CPUs if the --cpu-list-cores argument was specified.
-        self._list_cpus(args, cpu_detect)  # Kind of hacky to have it here.
+        self._list_cpus(args, detector)  # Kind of hacky to have it here.
 
         conf.pid_tracking_applicable = len(self._midr_core_map) == 1 and args.core is None
 
@@ -436,30 +388,28 @@ class CpuProbeFactory(Base.ProbeFactory):
         )
 
     def _update_midr_cpu_core_map(
-        self, args: argparse.Namespace, cpu_detect: Type[CPUDetect] = CPUDetect
+        self, args: argparse.Namespace, cpu_detector: CpuDetector
     ) -> None:
         # Update the mapping of MIDR values to core indices based on the current configuration.
         #
         # This method populates the _midr_core_map dictionary, which maps each detected CPU's MIDR
         # to the list of core indices where that CPU is present.
-
         # Determine which cores to monitor; if none specified, use all available cores.
-        cores_to_monitor = list(range(cpu_detect.cpu_count())) if args.core is None else args.core
+        cores_to_monitor = list(range(cpu_detector.cpu_count())) if args.core is None else args.core
 
         # Build a mapping from MIDR to the list of core indices.
         self._midr_core_map = {}
         for core in cores_to_monitor:
             try:
                 # Attempt to read the MIDR value for the core. If unsuccessful, skip the core.
-                midr = cpu_detect.cpu_midr(core)
+                midr = cpu_detector.cpu_midr(core)
                 self._midr_core_map.setdefault(midr, []).append(core)
             except Exception:  # pylint: disable=broad-exception-caught
+                # Skip cores we can't read MIDR from (e.g., permission issues on target)
                 pass
 
     # pylint: disable=too-many-locals
-    def _update_cpu_descriptions(
-        self, args: argparse.Namespace, cpu_detect: Type[CPUDetect] = CPUDetect
-    ) -> None:
+    def _update_cpu_descriptions(self, args: argparse.Namespace, cpu_detector: CpuDetector) -> None:
         # Update the CPU descriptions mapping based on available telemetry JSON files and user configuration.
         #
         # This method loads the default CPU descriptions from the mapping.json file, overrides them with
@@ -485,7 +435,7 @@ class CpuProbeFactory(Base.ProbeFactory):
                 revision = cpu_desc.product_configuration.minor_revision
 
                 midr = self.build_midr(implementer, variant, architecture, part_num, revision)
-                short_id = cpu_detect.cpu_id(midr)
+                short_id = cpu_detector.cpu_id(midr)
 
                 # Override both full and short format keys.
                 cpu_descriptions[midr] = cpu_descriptions[short_id] = self._CpuDescription(
@@ -495,7 +445,7 @@ class CpuProbeFactory(Base.ProbeFactory):
 
         # For cores without a user override, load the default JSON files.
         for midr, locations in self._midr_core_map.items():
-            cpu_id = cpu_detect.cpu_id(midr)
+            cpu_id = cpu_detector.cpu_id(midr)
             desc = None
             if midr in cpu_descriptions:
                 desc = cpu_descriptions[midr]
@@ -515,12 +465,12 @@ class CpuProbeFactory(Base.ProbeFactory):
         self._cpu_descriptions = cpu_descriptions
 
     # FIXME: To move into cpu_cli_renderer
-    def _list_cpus(self, args: argparse.Namespace, cpu_detect: Type[CPUDetect] = CPUDetect) -> None:
+    def _list_cpus(self, args: argparse.Namespace, cpu_detector: CpuDetector) -> None:
         # List the available CPUs and their corresponding core indices.
         #
-        # This method outputs a table of detected CPUs, showing the product name and the indices of the cores
-        # where each CPU is present. It is used for informational purposes to help users understand the
-        # CPU topology on the system.
+        # This method outputs a table of detected CPUs, showing the product name and the indices of
+        # the cores where each CPU is present. It is used for informational purposes to help users
+        # understand the CPU topology on the system.
         if not args.cpu_list_cores:
             return
 
@@ -528,7 +478,7 @@ class CpuProbeFactory(Base.ProbeFactory):
         for column in ("CPU", "Cores indices"):
             table.add_column(column)
         for midr, locations in self._midr_core_map.items():
-            cpu_id = cpu_detect.cpu_id(midr)
+            cpu_id = cpu_detector.cpu_id(midr)
             if midr in self._cpu_descriptions:
                 spec = unwrap(self._cpu_descriptions[midr].content)
             elif cpu_id in self._cpu_descriptions:
@@ -549,7 +499,7 @@ class CpuProbeFactory(Base.ProbeFactory):
         capture_data: bool = True,
         base_csv_dir: Optional[str] = None,
         perf_factory_instance: "PerfFactory" = perf_factory,
-        cpu_detect: Type[CPUDetect] = CPUDetect,
+        cpu_detector: Optional[CpuDetector] = None,
     ) -> Tuple["CpuProbe", ...]:
         """Create CpuProbe instances based on CLI configuration and detected CPUs.
 
@@ -563,16 +513,21 @@ class CpuProbeFactory(Base.ProbeFactory):
             capture_data (bool, optional): Flag indicating whether telemetry capture should be performed.
                 Defaults to True.
             perf_factory_instance (PerfFactory): The factory used to create Perf instances.
-            cpu_detect (Type[CPUDetect], optional): The CPU detection utility class.
-                Defaults to CPUDetect.
+            cpu_detector (Optional[CpuDetector]): Detector instance to use. When omitted, the
+                detector resolved during CLI processing (or a new environment-appropriate one) is used.
 
         Returns:
             Tuple[CpuProbe, ...]: A tuple of instantiated CpuProbe objects.
         """
+        detector = (
+            cpu_detector or self._cpu_detector or CpuDetectorFactory.create(perf_factory_instance)
+        )
+        self._cpu_detector = detector
+
         cpu_probes = []
         # Instantiate a CpuProbe for each detected CPU configuration.
         for midr, locations in self._midr_core_map.items():
-            cpu_id = cpu_detect.cpu_id(midr)
+            cpu_id = detector.cpu_id(midr)
             spec = None
             if midr in self._cpu_descriptions:
                 spec = unwrap(self._cpu_descriptions[midr].content)
