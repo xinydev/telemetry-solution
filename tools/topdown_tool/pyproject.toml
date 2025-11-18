@@ -30,7 +30,14 @@ dependencies = ["rich==14.1.0", "pydantic==2.11.7", "jsonschema==4.25.1"]
 
 [project.optional-dependencies]
 test = ["pytest==8.4.1", "tox==4.28.4", "pytest-mock==3.14.1"]
-lint = ["flake8==7.3.0", "mypy==1.17.1", "pylint==3.3.7"]
+lint = [
+  "flake8==7.3.0",
+  "mypy==1.17.1",
+  "pylint==3.3.7"
+]
+remote = [
+  "devlib @ git+https://github.com/ARM-software/devlib.git@refs/pull/727/head"
+]
 
 [project.urls]
 "Source code" = "https://gitlab.arm.com/telemetry-solution/telemetry-solution"
@@ -74,3 +81,6 @@ line_length = 100
 
 [tool.black]
 line_length = 100
+
+[tool.hatch.metadata]
+allow-direct-references = true
