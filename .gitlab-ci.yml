@@ -21,7 +21,7 @@ stages:
 ###
 variables:
   DOCKER_REGISTRY_KEY: "oss-android--docker"
-  ARTIFACTORY_REGISTRY_URL: "${DOCKER_REGISTRY_KEY}.artifactory.eu02.arm.com"
+  ARTIFACTORY_REGISTRY_URL: "${DOCKER_REGISTRY_KEY}.${ARTIFACTORY_HOST}"
   REGISTRY_IMAGE_X86_64: "${ARTIFACTORY_REGISTRY_URL}/telemetry-solution-x86_64:$CI_COMMIT_REF_SLUG" # Not in use at the moment
   REGISTRY_IMAGE_AARCH64: "${ARTIFACTORY_REGISTRY_URL}/telemetry-solution-aarch64:$CI_COMMIT_REF_SLUG"    
 
@@ -35,7 +35,7 @@ check-docker-tag:
   variables:
     GIT_STRATEGY: none
   script: 
-    - curl -u ${ARTIFACTORY_USER}:${ARTIFACTORY_API_KEY}  -X GET ${ARTIFACTORY_AWS_EU_WEST_1_URL}/artifactory/api/docker/${DOCKER_REGISTRY_KEY}/v2/telemetry-solution-x86_64/tags/list > tags
+    - curl -u ${ARTIFACTORY_USER}:${ARTIFACTORY_API_KEY}  -X GET ${ARTIFACTORY_URL}/artifactory/api/docker/${DOCKER_REGISTRY_KEY}/v2/telemetry-solution-x86_64/tags/list > tags
     - cat tags | jq ".tags | index(\"$CI_COMMIT_REF_SLUG\")" > docker-image-index || true
     - |-
         if [[ "$(cat docker-image-index)" == null ]]; then
@@ -44,6 +44,9 @@ check-docker-tag:
           echo "DOCKER_IMAGE_NOT_PRESENT_IN_REGISTRY=0" >> build.env
         fi
   artifacts:
+    paths:
+      - tags
+      - docker-image-index
     reports:
       dotenv: build.env
  
@@ -71,7 +74,7 @@ check-docker-change:
 # if the dockerfile has changed.
 .build-docker:
   image:
-    name: mirrors--gcr-io.artifactory.eu02.arm.com/kaniko-project/executor:debug
+    name: mirrors--gcr-io.${ARTIFACTORY_HOST}/kaniko-project/executor:debug
     entrypoint: [""]
   stage: prepare
   script:
@@ -80,7 +83,7 @@ check-docker-change:
         mkdir -p /kaniko/.docker
         echo "{\"auths\":{\"${ARTIFACTORY_REGISTRY_URL}\":{\"auth\":\"$(printf "%s:%s" "${ARTIFACTORY_USER}" "${ARTIFACTORY_API_KEY}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
         /kaniko/executor \
-          --registry-mirror mirrors--dockerhub.artifactory.eu02.arm.com \
+          --registry-mirror mirrors--dockerhub.${ARTIFACTORY_HOST} \
           --context "${CI_PROJECT_DIR}" \
           --dockerfile "${CI_PROJECT_DIR}/.ci/Dockerfile" \
           --destination "${REGISTRY_IMAGE}"
