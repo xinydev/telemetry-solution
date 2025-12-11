@@ -4,7 +4,8 @@ Arm Telemetry Solution provides a standardized solution with a set of key compon
 
 This repo contains Arm telemetry specifications, telemetry tools and test suites.
 - **data** Contains the telemetry specification JSON for all supported Arm products.
-- **tools** Contains telemetry tools, validation tests and other utilities for telemetry data collection and validation.
+- **tools** Contains telemetry tools and utilities for telemetry data collection and validation.
+- **benchmarks** Contains validation test suites such as `ustress`.
 
 ## Content
 
@@ -140,15 +141,24 @@ High level schema structure is as follows:
 
 ## Tools
 
-The tools folder contains a collection of telemetry tools used for performance analysis on Arm-based platforms. `topdown_tool` performs topdown analysis, `ustress` is a validation test suite that stresses microarchitectural CPU features, `spe_parser` processes Arm SPE data and `perf_json_generator` generate CPU definition for Linux perf from Arm CPU JSON specification.
-
+The tools folder contains a collection of telemetry tools used for performance analysis on Arm-based platforms. `topdown_tool` performs topdown analysis, `spe_parser` processes Arm SPE data, `perf_json_generator` generates CPU definitions for Linux perf from Arm CPU JSON specifications, and `ustress_charts` provides visualization support for ustress results.
 
 | Name                | Description | Folder |
 |---------------------|-------------|--------|
 | Arm Top-Down tool       | Tool to support the Arm topdown methodology by collecting derived metrics based on Performance Monitoring Unit (PMU) events. | [tools/topdown_tool](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/topdown_tool) |
 | Perf JSON Generator | Tool to generate JSON files for Linux perf tool which enable and document Arm PMU events and metrics. | [tools/perf_json_generator](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/perf_json_generator) |
 | SPE Parser          | Tool to parse SPE raw data and generate a Parquet or CSV file for further processing and analysis. | [tools/spe_parser](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/spe_parser) |
-| UStress Test    | Validation test suite to stress test major CPU resources. | [tools/ustress](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/ustress) |
+| UStress Charts      | Visualization tooling for metrics generated from the ustress suite workloads. | [tools/ustress_charts](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/ustress_charts) |
+
+
+## Benchmarks
+
+The benchmarks folder contains validation test suites used to stress major CPU resources and validate the telemetry solution.
+
+| Name           | Description | Folder |
+|----------------|-------------|--------|
+| UStress Suite  | Validation workload suite to stress test major CPU resources. | [benchmarks/ustress](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/benchmarks/ustress) |
+
 
 
 ## Support

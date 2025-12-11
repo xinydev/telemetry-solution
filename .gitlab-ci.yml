@@ -115,13 +115,13 @@ build-ustress:
         USE_C_FLAG: [0, 1]
   script:
     - |
-      cd tools/ustress
+      cd benchmarks/ustress
       CC="$COMPILER" make CPU=NEOVERSE-"$UARCH" USE_C="$USE_C_FLAG"
       find . -type f -perm /111 -print | xargs zip "ustress-${UARCH}-${COMPILER}-USE_C-${USE_C_FLAG}.zip"
       make clean
   artifacts:
     paths:
-      - tools/ustress/ustress-*.zip
+      - benchmarks/ustress/ustress-*.zip
     expire_in: 7 days
 
 spe-parser:
