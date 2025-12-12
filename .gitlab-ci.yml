@@ -138,6 +138,20 @@ build-random-pointer-access:
       - benchmarks/random_pointer_access/artifacts/*
     expire_in: 7 days
 
+build-matmul:
+  extends: .build-base
+  script:
+    - |
+      cd benchmarks/matmul
+      make
+      mkdir -p artifacts
+      cp matmul_baseline matmul_ikj matmul_ikj_blocked artifacts/
+      make clean
+  artifacts:
+    paths:
+      - benchmarks/matmul/artifacts/*
+    expire_in: 7 days
+
 spe-parser:
   extends: .build-base
   parallel:

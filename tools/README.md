@@ -7,7 +7,7 @@ This folder contains the tools for Telemetry solution and methodologies.
 
 Tool to support the Arm topdown methodology by collecting derived metrics based on Performance Monitoring Unit (PMU) events. The CLI can operate on the host or on remote Linux/Android devices.
 
-The `ustress` validation workload suite now resides in `../benchmarks/ustress`.
+The `ustress` validation workload suite resides in `../benchmarks/ustress`.
 
 ## ustress_charts
 

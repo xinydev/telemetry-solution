@@ -1,10 +1,10 @@
-# Random Pointer Access Benchmark
+# Random pointer access benchmark
 
-This microbenchmark models pointer-chasing workloads that issue random memory accesses into a large array of cache-line-sized payloads. It is useful for evaluating memory latency, software prefetch effectiveness, and the impact of irregular access patterns on Arm Neoverse platforms.
+This microbenchmark performs random lookups into an array of 64-byte payloads through a pointer table. It is useful for evaluating irregular memory accesses and the effect of software prefetching.
 
 ## Building
 
-Use the provided `Makefile` to build the binary with an optimizing C++ compiler:
+From the random pointer access benchmark directory, use the provided `Makefile` to build the binary with an optimizing C++ compiler:
 
 ```sh
 make
@@ -33,4 +33,4 @@ Example:
 
 ## Notes
 
-- The program allocates its working set on the heap; ensure the system has enough free memory for the requested capacity.
+On 64-bit systems, the program allocates `72` bytes for each array entry and `68` bytes for each lookup entry; ensure the system has sufficient memory for the requested `array_size` and `num_lookups`.
