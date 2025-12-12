@@ -158,6 +158,7 @@ The benchmarks folder contains validation test suites used to stress major CPU r
 | Name           | Description | Folder |
 |----------------|-------------|--------|
 | UStress Suite  | Validation workload suite to stress test major CPU resources. | [benchmarks/ustress](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/benchmarks/ustress) |
+| Random Pointer Access | Pointer-chasing microbenchmark with optional software prefetch tuning. | [benchmarks/random_pointer_access](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/benchmarks/random_pointer_access) |
 
 
 

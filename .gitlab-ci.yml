@@ -124,6 +124,20 @@ build-ustress:
       - benchmarks/ustress/ustress-*.zip
     expire_in: 7 days
 
+build-random-pointer-access:
+  extends: .build-base
+  script:
+    - |
+      cd benchmarks/random_pointer_access
+      make
+      mkdir -p artifacts
+      cp random_pointer_access artifacts/
+      make clean
+  artifacts:
+    paths:
+      - benchmarks/random_pointer_access/artifacts/*
+    expire_in: 7 days
+
 spe-parser:
   extends: .build-base
   parallel:
