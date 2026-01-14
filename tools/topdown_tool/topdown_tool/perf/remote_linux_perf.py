@@ -317,7 +317,9 @@ class RemoteLinuxPerf(LinuxPerfBase):
 
         try:
             status = target.execute("cat /proc/self/status", check_exit_code=False)
-            status_value = status.decode() if isinstance(status, (bytes, bytearray)) else str(status)
+            status_value = (
+                status.decode() if isinstance(status, (bytes, bytearray)) else str(status)
+            )
         except Exception:  # pylint: disable=broad-exception-caught
             status_value = None
 

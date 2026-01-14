@@ -235,6 +235,44 @@ Where <core-list> accepts integers and ranges (e.g., `0,2-3`).
 
 You can combine SME with other CPU probe options (metric groups, stages, CSV, etc.).
 
+## Programmatic configuration reference
+
+When embedding the CPU probe directly, rely on the factory types exposed by
+``topdown_tool``:
+
+- Instantiate ``CpuProbeFactoryConfig`` and set whatever fields you would
+  normally drive through CLI flags (metric groups, stages, CSV options, SME
+  overrides, etc.).
+- Pass that config to ``CpuProbeFactory.configure``. The return value indicates
+  whether capture data is required for the requested options. Forward it to
+  ``CpuProbeFactory.create(capture_data=...)`` to obtain the probe instances.
+- Use the standard ``Probe`` lifecycle (`start_capture`, `stop_capture`,
+  `output`) around your workload.
+
+Override any of the following ``CpuProbeFactoryConfig`` fields to tune behaviour:
+
+- `spec_overrides`: list of telemetry specification JSON paths to load instead
+  of the default mapping lookup.
+- `sme_overrides`: list of `(spec_path, [core, ...])` tuples that describe SME
+  or auxiliary specs per core.
+- `core_filter`: explicit list of core indices to capture (default: all cores).
+- `list_cores`, `list_groups`, `list_metrics`, `list_events`: trigger the
+  corresponding informational listings without capturing metrics.
+- `descriptions`, `show_sample_events`: include verbose text/sample events in
+  listings.
+- `csv_outputs`: choose CSV targets (`"metrics"`, `"events"`); combine with
+  `csv_output_path` and optional `interval_ms` (equivalent to `-I`).
+- `dump_events`: enable raw event dumps (mirrors `--cpu-dump-events`).
+- `collect_by`: scheduling mode (`CollectBy.METRIC`, `GROUP`, or `NONE`).
+- `metric_group`: list of metric-group names to capture explicitly.
+- `node`, `level`, `stages`: refine which portion of the methodology tree is
+  captured (same semantics as CLI options).
+- `multiplex`: keep ``True`` (default) to allow multiplexing, or set ``False``
+  to capture events in separate passes.
+
+Fields not listed here—such as `pid_tracking_applicable`—are managed internally
+and do not need to be set by callers.
+
 ## CSV output
 
 CSV is the easiest way to post-process both metrics and raw events.

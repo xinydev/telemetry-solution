@@ -11,6 +11,7 @@ and manages CLI options for customizing perf execution (e.g. binary path, argume
 import sys
 import shutil
 import logging
+from dataclasses import dataclass
 from typing import Type, Optional, Any, Dict
 import argparse
 
@@ -19,6 +20,15 @@ from topdown_tool.perf.linux_perf import LinuxPerf
 from topdown_tool.perf.remote_linux_perf import RemoteLinuxPerf
 from topdown_tool.perf.windows_perf import WindowsPerf
 from topdown_tool.common import remote_target_manager
+
+
+@dataclass
+class PerfFactoryConfig:
+    """Configuration for ``PerfFactory``."""
+
+    perf_path: Optional[str] = None
+    perf_args: Optional[str] = None
+    interval: Optional[int] = None
 
 
 class PerfFactory:
@@ -43,6 +53,7 @@ class PerfFactory:
         self._perf_path: Optional[str] = None
         self._perf_args: Optional[str] = None
         self._interval: Optional[int] = None
+        self._config = PerfFactoryConfig()
 
     @property
     def _current_impl(self) -> Type[Perf]:
@@ -180,15 +191,47 @@ class PerfFactory:
         )
 
     # pylint: disable=import-error, import-outside-toplevel
-    def process_cli_arguments(self, args: argparse.Namespace) -> None:
-        """Persist CLI-supplied perf configuration for subsequent probe creation.
+    def process_cli_arguments(self, args: argparse.Namespace) -> PerfFactoryConfig:
+        """Build a perf configuration from CLI arguments without applying it.
 
         Args:
-            args (argparse.Namespace): Parsed namespace containing perf-related options.
+            args: Parsed namespace containing perf-related CLI options.
+
+        Returns:
+            PerfFactoryConfig: Configuration object reflecting the CLI input.
         """
-        self._perf_path = args.perf_path
-        self._perf_args = args.perf_args
-        self._interval = args.interval
+
+        return PerfFactoryConfig(
+            perf_path=getattr(args, "perf_path", None),
+            perf_args=getattr(args, "perf_args", None),
+            interval=getattr(args, "interval", None),
+        )
+
+    def configure_from_cli_arguments(self, args: argparse.Namespace) -> PerfFactoryConfig:
+        """Apply CLI-derived perf configuration to the factory.
+
+        Args:
+            args: Parsed namespace containing perf-related CLI options.
+
+        Returns:
+            PerfFactoryConfig: The configuration that was applied.
+        """
+
+        config = self.process_cli_arguments(args)
+        self.configure(config)
+        return config
+
+    def configure(self, config: PerfFactoryConfig) -> None:
+        """Apply explicit configuration to the factory.
+
+        Args:
+            config (PerfFactoryConfig): Configuration values to apply.
+        """
+
+        self._config = config
+        self._perf_path = config.perf_path
+        self._perf_args = config.perf_args
+        self._interval = config.interval
         if self._perf_path is not None:
             self._impl_class.update_perf_path(self._perf_path)
             # Ensure remote Linux runs pick up the same override even on non-Linux hosts.

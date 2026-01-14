@@ -96,9 +96,42 @@ class RemoteTargetManager:
         return self._target_os
 
     def is_target_linuxlike(self) -> bool:
-        """True if the configured target runs Linux/Android."""
+        """True if the configured target runs Linux/Android or is marked as such."""
 
-        return self._target_os in ("linux", "android")
+        if self._target_os is not None:
+            if isinstance(self._target_os, str):
+                return self._target_os.lower() in ("linux", "android")
+            return False
+
+        return self._target_type in ("adb", "ssh")
+
+    def set_target(
+        self,
+        target: "Target",
+        target_type: Optional[str] = None,
+        target_os: Optional[str] = None,
+    ) -> None:
+        """Inject an already constructed target without going through CLI parsing."""
+
+        self._target = target
+        self._target_type = target_type
+        if isinstance(target_os, str):
+            # Caller supplied an OS string explicitly; just normalise it.
+            self._target_os = self._normalize_os_name(target_os)
+        elif target_os is not None:
+            # Non-string sentinel provided; treat as unknown to trigger fallback logic.
+            self._target_os = None
+        else:
+            # Derive OS from the injected target when possible, but don't explode if
+            # the stub lacks the attribute (common in tests/custom callers).
+            try:
+                os_name = getattr(target, "os", None)
+                self._target_os = (
+                    self._normalize_os_name(os_name) if isinstance(os_name, str) else None
+                )
+            except Exception:  # pylint: disable=broad-exception-caught
+                self._target_os = None
+        self._current_settings = None
 
     # Internal helpers ---------------------------------------------------
     def _load_target_config(self, configuration: str) -> Dict[str, Any]:
@@ -140,7 +173,10 @@ class RemoteTargetManager:
         self._target = target
         self._target_type = target_type
         try:
-            self._target_os = getattr(target, "os", None)
+            os_name = getattr(target, "os", None)
+            self._target_os = (
+                self._normalize_os_name(os_name) if isinstance(os_name, str) else None
+            )
         except Exception:  # pylint: disable=broad-exception-caught
             self._target_os = None
 
@@ -156,6 +192,12 @@ class RemoteTargetManager:
             previous.disconnect()
         except Exception:  # pylint: disable=broad-exception-caught
             pass
+
+    @staticmethod
+    def _normalize_os_name(os_value: Optional[str]) -> Optional[str]:
+        """Normalise OS identifiers reported by devlib or supplied explicitly."""
+
+        return os_value.strip().lower() if os_value is not None else None
 
 
 REMOTE_TARGET_MANAGER = RemoteTargetManager()
@@ -189,6 +231,14 @@ def is_target_linuxlike() -> bool:
     return REMOTE_TARGET_MANAGER.is_target_linuxlike()
 
 
+def set_remote_target(
+    target: "Target",
+    target_type: Optional[str] = None,
+    target_os: Optional[str] = None,
+) -> None:
+    REMOTE_TARGET_MANAGER.set_target(target, target_type, target_os)
+
+
 __all__ = [
     "REMOTE_TARGET_MANAGER",
     "RemoteTargetManager",
@@ -199,4 +249,5 @@ __all__ = [
     "get_target_os",
     "get_target_type",
     "is_target_linuxlike",
+    "set_remote_target",
 ]

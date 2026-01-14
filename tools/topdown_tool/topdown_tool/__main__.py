@@ -218,8 +218,8 @@ def extend_arg_parser(
     )
 
     # Add Probe specific options for selected probes only
-    for probe in selected_factories:
-        probe.add_cli_arguments(parser)
+    for probe_factory in selected_factories:
+        probe_factory.add_cli_arguments(parser)
 
     return parser
 
@@ -420,7 +420,7 @@ def main(
     args, _ = parser.parse_known_args(_args)
     # Remote targets need to be configured before privilege checks run.
     remote_target_manager.configure_from_args(args)
-    perf_factory.process_cli_arguments(args)
+    perf_factory.configure_from_cli_arguments(args)
 
     # Get available probe types on the system
     available_factories = tuple(pt for pt in PROBE_FACTORY if pt.is_available())
@@ -462,7 +462,7 @@ def main(
         parser.error("Cannot specify a command and a PID")
 
     # Handle Perf specific arguments
-    perf_factory.process_cli_arguments(args)
+    perf_factory.configure_from_cli_arguments(args)
 
     if not perf_factory.is_perf_runnable():
         console.print(
@@ -498,8 +498,9 @@ def main(
     # FIXME: Split between printing static information and creating instances
     try:
         for factory in selected_factories:
-            # Probes detects if user wants to just query information, like listing metrics
-            capture_data &= factory.process_cli_arguments(args)
+            # Probes detect if user wants to just query information, like listing metrics
+            capture_flag = factory.configure_from_cli_arguments(args)
+            capture_data &= capture_flag
     except (FileNotFoundError, PermissionError, ValueError) as e:
         handle_exception(
             exception=e, log_warning_str=get_warning_text(factory), print_additional_error_str=False
@@ -524,7 +525,7 @@ def main(
     probes: List[Probe] = []
     try:
         for factory in selected_factories:
-            probes.extend(factory.create(args, capture_data, base_csv_dir))
+            probes.extend(factory.create(capture_data, base_csv_dir))
     except Exception as e:  # pylint: disable=broad-exception-caught
         handle_exception(
             exception=e, log_warning_str=get_warning_text(factory), print_additional_error_str=True

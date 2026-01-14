@@ -9,7 +9,9 @@ from typing import Callable, List, Optional, Tuple
 class FakeProcess:
     """Record interactions with a background process used during tests."""
 
-    def __init__(self, *, pid: Optional[int] = None, wait_impl: Optional[Callable[[], None]] = None) -> None:
+    def __init__(
+        self, *, pid: Optional[int] = None, wait_impl: Optional[Callable[[], None]] = None
+    ) -> None:
         self.pid = pid or 4242
         self.signals: List[int] = []
         self.wait_count = 0

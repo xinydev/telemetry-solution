@@ -9,7 +9,7 @@ from signal import SIGINT
 from types import SimpleNamespace
 
 
-from topdown_tool.perf.perf_factory import PerfFactory
+from topdown_tool.perf.perf_factory import PerfFactory, PerfFactoryConfig
 from topdown_tool.perf.perf import Uncore
 from topdown_tool.perf.remote_linux_perf import RemoteLinuxPerf
 from topdown_tool.common import remote_target_manager
@@ -39,14 +39,26 @@ def remote_linux_target(monkeypatch):
 
 def test_perf_factory_create_instance():
     factory = PerfFactory()
-    factory._perf_path = "/bin/true"
-    factory._perf_args = "--dry-run"
-    factory._interval = 100
+    factory.configure(PerfFactoryConfig(perf_path="/bin/true", perf_args="--dry-run", interval=100))
 
     perf_instance = factory.create()
 
     assert perf_instance is not None
     assert hasattr(perf_instance, "start")
+
+
+def test_process_cli_arguments_returns_config() -> None:
+    factory = PerfFactory()
+    args = SimpleNamespace(perf_path="/usr/bin/perf", perf_args="--foo", interval=250)
+
+    config = factory.process_cli_arguments(args)
+
+    assert isinstance(config, PerfFactoryConfig)
+    assert config.perf_path == "/usr/bin/perf"
+    assert config.perf_args == "--foo"
+    assert config.interval == 250
+    # Ensure calling the helper didn't mutate factory state.
+    assert factory._perf_path is None
 
 
 def test_perf_command_valid():
@@ -57,7 +69,7 @@ def test_perf_command_valid():
     args.perf_args = ""
     args.interval = 0
 
-    factory.process_cli_arguments(args)
+    factory.configure_from_cli_arguments(args)
 
     assert factory.is_perf_runnable()
 
@@ -74,7 +86,7 @@ def test_perf_command_nonexisting(tmp_path):
     args.perf_args = ""
     args.interval = 0
 
-    factory.process_cli_arguments(args)
+    factory.configure_from_cli_arguments(args)
 
     assert not factory.is_perf_runnable()
 
@@ -95,7 +107,7 @@ def test_perf_command_permissionerror(tmp_path):
     args.perf_args = ""
     args.interval = 0
 
-    factory.process_cli_arguments(args)
+    factory.configure_from_cli_arguments(args)
 
     assert not factory.is_perf_runnable()
 
@@ -253,7 +265,7 @@ def test_remote_linux_perf_end_to_end_flow(monkeypatch, tmp_path):
 def test_perf_factory_remote_cli_override(monkeypatch, tmp_path):
     factory = PerfFactory()
     args = SimpleNamespace(perf_path="/custom/perf", perf_args="--foo", interval=99)
-    factory.process_cli_arguments(args)
+    factory.configure_from_cli_arguments(args)
     remote_target = RecordingTarget()
     remote_target.pull_impl = lambda *_args, **_kwargs: None
 

@@ -28,6 +28,7 @@ _PERF_SEPARATOR: str = ";"
 
 class LinuxPerfBase(Perf, ABC):
     """Abstraction containing core logic for Linux-based perf runners."""
+
     _PMU_PROBE_EVENTS: Tuple[str, ...] = ("r8", "instructions")
 
     class _Recorder(ABC):
@@ -352,11 +353,11 @@ class LinuxPerfBase(Perf, ABC):
             time = None
 
         if count_str == "<not counted>":
-            logging.info("Perf event %s was not counted", event)
+            logging.debug("Perf event %s was not counted", event)
         elif count_str == "<not supported>":
-            logging.info("Perf event %s was not supported.", event)
+            logging.debug("Perf event %s was not supported.", event)
         if count_str == "0":
-            logging.info("Perf counted 0 %s events", event)
+            logging.debug("Perf counted 0 %s events", event)
 
         count = None if count_str in ("<not counted>", "<not supported>") else float(count_str)
         return self._strip_modifier(event), count, time

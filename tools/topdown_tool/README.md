@@ -264,6 +264,60 @@ Metric selection is probe-specific. For the CPU probe, see [README.CPU.md](./REA
 ## Other options
 See `topdown-tool --help` for full usage information.
 
+### Embedding via the Python API
+
+You can drive the tool programmatically without invoking the CLI. The
+``topdown_tool`` package re-exports the core probe interfaces so you can load
+factories, configure them, create probes, and manage capture lifecycles
+directly. It also exposes the optional devlib ``Target`` helpers to integrate
+with remote devices. **This API surface is experimental and will evolve.**
+
+- ``load_probe_factories()`` returns the available probe factories discovered via entry points.
+- ``ProbeFactory.configure(config, **kwargs)`` applies a configuration object and indicates
+  whether capture is required.
+- ``ProbeFactory.create(capture_data=True, base_csv_dir=None, **kwargs)`` builds the probe
+  instances for the configured factory.
+- ``Probe`` instances expose ``start_capture``, ``stop_capture``, ``need_capture``, and ``output``.
+- ``Target`` plus ``set_remote_target()/get_remote_target()`` allow embedding scenarios to supply a
+  pre-configured devlib target.
+
+Basic embedding example:
+
+```python
+from topdown_tool import Target
+from topdown_tool.cpu_probe import CpuProbeFactory, CpuProbeFactoryConfig
+from topdown_tool.perf import PerfFactoryConfig, perf_factory
+
+# Configure perf first (optional overrides shown here).
+perf_factory.configure(PerfFactoryConfig(perf_path="/usr/bin/perf"))
+
+# Optionally provide a devlib target:
+# from topdown_tool import set_remote_target
+# set_remote_target(my_devlib_target)
+
+# Configure the CPU probe factory programmatically.
+factory = CpuProbeFactory()
+config = CpuProbeFactoryConfig()  # override fields as needed
+should_capture_data = factory.configure(config)
+probes = factory.create(capture_data=should_capture_data, base_csv_dir="output")
+
+# Drive capture lifecycle around your workload.
+for probe in probes:
+    if probe.need_capture():
+        probe.start_capture()
+
+# ... run workload here ...
+
+for probe in probes:
+    probe.stop_capture()
+    probe.output()
+```
+
+Factories may expose additional helpers such as
+``CpuProbeFactoryConfigBuilder.config_from_namespace`` when you want to reuse
+CLI parsing logic. Refer to [README.CPU.md](./README.CPU.md#programmatic-configuration-reference)
+for detailed configuration options.
+
 # Known Issues
 
 ## General

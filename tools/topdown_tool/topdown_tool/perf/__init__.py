@@ -8,7 +8,7 @@ from topdown_tool.perf.perf import (
     PerfRecordLocation,
     Uncore,
 )
-from topdown_tool.perf.perf_factory import PerfFactory
+from topdown_tool.perf.perf_factory import PerfFactory, PerfFactoryConfig
 
 __all__ = [
     "PerfEvent",
@@ -17,6 +17,7 @@ __all__ = [
     "Cpu",
     "Uncore",
     "PerfRecordLocation",
+    "PerfFactoryConfig",
 ]
 
 perf_factory = PerfFactory()
