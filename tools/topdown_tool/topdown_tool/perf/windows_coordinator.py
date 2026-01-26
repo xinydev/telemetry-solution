@@ -26,27 +26,14 @@ Key responsibilities:
   * Parse JSON output and filter results per perf instance registration.
 
 """
+from json import load
 import logging
 from pathlib import Path
 import os
 import time
 from subprocess import Popen, TimeoutExpired, list2cmdline
-from typing import Dict, List, Optional, Sequence, Tuple, TYPE_CHECKING
+from typing import Dict, Optional, TYPE_CHECKING
 from dataclasses import dataclass
-
-from collections import defaultdict
-from topdown_tool.perf.perf import (
-    Cpu,
-    PerfRecords,
-    PerfTimedResults,
-    PerfResults,
-    PerfEvent,
-    Uncore,
-)
-from topdown_tool.perf.windows_perf_parser import (
-    parse_windows_perf_json,
-    ParsedCounters,
-)
 
 from topdown_tool.common.win32 import (
     send_console_ctrl_c,
@@ -301,6 +288,11 @@ class WperfCoordinator:
                     pst.stopped = True
             self._finalize_capture()
 
+    def wait(self, windows_perf_instance: "WindowsPerf") -> None:
+        if self._wperf_process:
+            self._wperf_process.wait()
+            self.stop(windows_perf_instance)
+
     # pylint: disable=too-many-branches
     def _launch_combined_wperf(self) -> None:
         """Launch a single ``wperf stat --json`` for all active instances.
@@ -311,48 +303,11 @@ class WperfCoordinator:
         unique output JSON path, spawns the process, and signals waiting
         threads that a process is running.
         """
-
-        # Build per-core group lists from the instances that target those cores
-        per_core_groups: Dict[int, List[str]] = defaultdict(list)
-
-        for perf_inst, st in self._registered.items():
-            if not st.active:
-                continue
-            # Pull per-instance event groups from the instance.
-            events_groups = perf_inst.get_events_groups()
-            if not events_groups:
-                continue
-            # NOTE: if an instance registers no cores (meaning “all cores”), we may
-            # want to fan these groups to `all_cores`. Here we assume instances
-            # enumerate their cores explicitly.
-            for core in list(perf_inst.get_cores() or []):
-                for group in events_groups:
-                    names = [ev.perf_name() for ev in group if ev is not None]
-                    if names:
-                        per_core_groups[core].append("{" + ",".join(names) + "}")
-
-        if not per_core_groups:
-            logging.warning("No event groups to launch; skipping wperf run")
-            return
-
-        # Compose the core-targeted wperf expression:
-        #   core_<id>/{g1},{g2}/ segments joined by commas
-        events_text = ",".join(
-            f"core_{core}/" + ",".join(groups) + "/"
-            for core, groups in sorted(per_core_groups.items())
-        )
-
-        # Unique run id and files
+        # Unique run id
         self._run_seq += 1
         run_id = f"{int(time.time() * 1000)}-{os.getpid()}-{self._run_seq}"
         self._output_file = Path(f"wperf-{run_id}.json")
-        cmdfile = Path(f"wperf-{run_id}.cmdline")  # holds the long -e @file events list
         clifile = Path(f"wperf-{run_id}.cli.txt")
-
-        # Write long event list to file so we can use -e @file
-        # Keep it as a single line with comma separation (what wperf expects).
-        with open(cmdfile, "w", encoding="utf-8", newline="\n") as f:
-            f.write(events_text)
 
         cmd = [
             self.perf_path,
@@ -360,20 +315,42 @@ class WperfCoordinator:
             "--json",
             "-o",
             str(self._output_file),
-            "-e",
-            f"@{cmdfile}",
         ]
 
+        timeout: Optional[int] = None
+        for perf_inst, st in self._registered.items():
+            if not st.active:
+                continue
+            # Pull per-instance event groups from the instance.
+            events_groups = perf_inst.get_events_groups()
+            if not events_groups:
+                continue
+
+            cmdfile, additional_arguments = perf_inst.prepare_perf_command_line(run_id)
+
+            if cmdfile != "":
+                cmd.extend(["-e", f"@{cmdfile}"])
+                cmd.extend(additional_arguments)
+
+            instance_timeout: Optional[int] = perf_inst.get_timeout()
+            if instance_timeout is not None:
+                if timeout is None:
+                    timeout = instance_timeout
+                else:
+                    timeout = max(timeout, instance_timeout)
+
+        # Timeout (ms)
         # Interval (ms) - default to "infinite" if not set
-        if self._interval is not None:
+        if timeout is not None:
+            cmd.extend(["--timeout", str(timeout / 1000)])
+        elif self._interval is not None:
             cmd.extend(["-I", str(self._interval)])
         else:
             cmd.extend(["-I", "365d"])  # effectively "infinite" until stop()
 
         logging.info(
-            "Running coordinated wperf:\n%s\n  with events: %s\n  (cli: %s)",
+            "Running coordinated wperf:\n%s\n  (cli: %s)",
             " ".join(map(str, cmd)),
-            events_text,
             f"wperf-{run_id}.cli.txt",
         )
         # Write the *exact* CLI we are about to execute (useful for repro)
@@ -465,32 +442,15 @@ class WperfCoordinator:
         with swallow_keyboard_interrupt():
             wait_for_json_stable(Path(out_path), timeout=30.0, interval=0.2)
 
-        # ------------------------------------------------------------------ 3
-        # CPU / regular uncore counters
-        try:
-            cpu_records: ParsedCounters = parse_windows_perf_json(out_path)
-
-            logging.debug("CPU/uncore JSON parsed successfully")
-        except Exception as exc:  # pylint: disable=broad-except
-            logging.error("Could not parse CPU part of wperf output (%s): %s", out_path, exc)
-            cpu_records = {}
-
         # ------------------------------------------------------------------ 4
         # deliver the final result to every perf instance
+        with open(out_path, encoding="utf-8") as f:
+            data = load(f)
+
         for perf_instance, st in self._registered.items():
             if not st.active:
                 continue
-            try:
-                cores = list(perf_instance.get_cores() or [])
-                events_groups = perf_instance.get_events_groups()
-                filtered = self._filter_instance_results(cpu_records, cores, events_groups)
-                perf_instance.set_results(filtered)
-
-            except Exception:  # pylint: disable=broad-except
-                logging.exception(
-                    "Failed to dispatch result to perf instances %s",
-                    perf_instance,
-                )
+            perf_instance.parse_perf_data(data)
 
         # ------------------------------------------------------------------ 5
         # tidy up artifacts
@@ -503,53 +463,6 @@ class WperfCoordinator:
             st.stopped = False
         self._run_started = False
         self._capture_finalized = False
-
-    def _filter_instance_results(
-        self,
-        records: ParsedCounters,  # Dict[Optional[float], Dict[int, List[Tuple[str, Optional[str], float]]]]
-        cores: Sequence[int],
-        events: Sequence[Tuple[PerfEvent, ...]],
-    ) -> PerfRecords:
-        """Filter combined counters down to one instance's registration.
-
-        Returns group-ordered tuples keyed by timestamp and core.
-
-        Args:
-            records: Parsed counters keyed by ``timestamp → core_id → [(token, note, value)]``.
-            cores: Core filter; empty means “all cores”.
-            events: Event groups in instance order.
-
-        Returns:
-            PerfRecords: Results limited to the requested cores and groups.
-        """
-        requested_groups: List[Tuple[PerfEvent, ...]] = [tuple(g) for g in (events or [])]
-        out = PerfRecords({})
-        core_allow = set(cores) if cores else None
-        if not requested_groups:
-            return out
-
-        # records: timestamp -> core_id -> [(event_idx, event_note, value), ...]
-        for ts, core_map in records.items():
-            ts = ts if self._interval else None
-            for core_id, core_records in core_map.items():
-                if core_id >= 0 and core_allow is not None and core_id not in core_allow:
-                    continue
-
-                loc = Uncore() if core_id == -1 else Cpu(core_id)
-                out.setdefault(loc, PerfTimedResults())
-                out[loc].setdefault(ts, PerfResults())
-
-                idx = 0
-                for g in events:
-                    # in case of partial results set None to the values
-                    if idx + len(g) > len(core_records):
-                        out[loc][ts][g] = tuple(None for _ in g)
-                    else:
-                        group_records = core_records[idx : idx + len(g)]
-                        out[loc][ts][g] = tuple(e[2] for e in group_records)
-                    idx += len(g)
-
-        return out
 
     def cleanup(self) -> None:
         """Reset the coordinator to an empty state.

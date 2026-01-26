@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2025 Arm Limited
 
-# pylint: disable=no-member
+# pylint: disable=no-member, duplicate-code
 
 """This module loads a JSON file using TelemetrySpecification.load_from_json_file,
 validates the configuration against a comprehensive Pydantic model, and returns a TelemetrySpecification instance.

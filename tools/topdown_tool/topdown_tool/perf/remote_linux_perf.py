@@ -36,6 +36,7 @@ class RemoteLinuxPerf(LinuxPerfBase):
             perf_args: Optional[str],
             interval: Optional[int],
             pid: Optional[int],
+            timeout: Optional[int],
         ) -> None:
             """Initialise the remote recorder.
 
@@ -55,6 +56,7 @@ class RemoteLinuxPerf(LinuxPerfBase):
             self._perf_args = perf_args
             self._interval = interval
             self._pid = pid
+            self._timeout = timeout
             self._target = target
             self._perf_path = RemoteLinuxPerf._perf_path
             self._remote_output_filename = self._compute_remote_output_filename(target)
@@ -70,6 +72,7 @@ class RemoteLinuxPerf(LinuxPerfBase):
                 cores=self._cores,
                 pid=self._pid,
                 interval=self._interval,
+                timeout=self._timeout,
             )
             if self._perf_args:
                 base_command += shlex.split(self._perf_args)
@@ -273,6 +276,7 @@ class RemoteLinuxPerf(LinuxPerfBase):
         self._perf_on_target = self._resolve_perf_on_target(self._target)
         RemoteLinuxPerf._perf_path = self._perf_on_target
 
+    # pylint: disable=too-many-arguments
     def _recorder_kwargs(
         self,
         *,
@@ -280,12 +284,14 @@ class RemoteLinuxPerf(LinuxPerfBase):
         cli_path: Path,
         output_basename: str,
         pid: Optional[int],
+        timeout: Optional[int],
     ) -> Dict[str, Any]:
         kwargs = super()._recorder_kwargs(
             events=events,
             cli_path=cli_path,
             output_basename=output_basename,
             pid=pid,
+            timeout=timeout,
         )
         kwargs["target"] = self._target
         return kwargs

@@ -130,6 +130,7 @@ class Perf(ABC):
     @abstractmethod
     def disable(self) -> None: ...
 
+    # pylint: disable=too-many-arguments, too-many-positional-arguments
     @abstractmethod
     def start(
         self,
@@ -137,10 +138,14 @@ class Perf(ABC):
         output_filename: str,
         pid: Optional[int] = None,
         cores: Optional[Sequence[int]] = None,
+        timeout: Optional[int] = None,
     ) -> None: ...
 
     @abstractmethod
     def stop(self) -> None: ...
+
+    @abstractmethod
+    def wait(self) -> None: ...
 
     @abstractmethod
     def get_perf_result(self) -> PerfRecords: ...
@@ -175,6 +180,7 @@ class Perf(ABC):
             MIDR value as an integer.
         """
 
+    # pylint: disable=too-many-locals
     @final
     def _extract_recorders_events(
         self,
@@ -195,23 +201,42 @@ class Perf(ABC):
         Raises:
             ValueError: If any single group exceeds _MAX_EVENT_COUNT.
         """
-        count: int = 0
-        current: List[PerfEventGroup] = []
-        recorders_events: List[List[PerfEventGroup]] = []
+        max_arg_length = 2 ** 17 - 1
 
+        # Calculate each group size
+        groups_string_lengths: List[int] = []
+        groups_fds: List[int] = []
         for group in events_groups:
-            if len(group) > self.max_event_count:
-                raise ValueError("Can't create Perf recording group. Too many events.")
+            assert len(group) >= 1
+            group_string_length = 1 if len(group) >= 2 else -1  # "{" + "}" - ","
+            for event in group:
+                group_string_length += len(event.perf_name()) + 1
+            groups_string_lengths.append(group_string_length)
+            groups_fds.append(len(group))
 
-            if count + len(group) > self.max_event_count:
-                recorders_events.append(current)
-                current = []
-                count = 0
-            count += len(group)
-            current.append(tuple(group))
+        # Try to assign to perf instances
+        bins: List[List[int]] = []
+        bins_lengths: List[int] = []
+        bins_fds: List[int] = []
+        for group_index, (group_length, group_fds) in enumerate(zip(groups_string_lengths, groups_fds)):
+            found = False
+            for bin_index, group_bin in enumerate(bins):
+                if bins_lengths[bin_index] + group_length + 1 <= max_arg_length and bins_fds[bin_index] <= self.max_event_count:
+                    found = True
+                    group_bin.append(group_index)
+                    bins_lengths[bin_index] += group_length + 1
+                    bins_fds[bin_index] += group_fds
+                    break
+            if not found:
+                bins.append([group_index])
+                bins_lengths.append(group_length)
+                bins_fds.append(group_fds)
 
-        if len(current) != 0:
-            recorders_events.append(current)
+        # Map groups indices to groups
+        recorders_events = [
+            [events_groups[group_index] for group_index in bin_group]
+            for bin_group in bins
+        ]
 
         return recorders_events
 

@@ -15,20 +15,44 @@ Notes
 - Functional only on Windows (``sys.platform == "win32"``).
 - On non-Windows platforms, this class should not be instantiated.
 """
+from abc import ABC, abstractmethod
 from functools import cache
 import logging
 from subprocess import PIPE, run
 from json import loads
-from typing import Dict, Optional, Sequence, Tuple
+from pathlib import Path
+from threading import Event
+from typing import Dict, Optional, Sequence, Tuple, Type
 
 from topdown_tool.perf.windows_coordinator import WperfCoordinator
 from topdown_tool.perf.perf import (
     Perf,
+    PerfEvent,
     PerfEventGroup,
     PerfRecords,
 )
+from topdown_tool.probe.probe import Probe
 
 
+class WindowsPerfParser(ABC):
+    @abstractmethod
+    def __init__(self, perf_groups: Sequence[Sequence[PerfEvent]], perf_instance: "WindowsPerf") -> None:
+        raise NotImplementedError("Use derived class")
+
+    @abstractmethod
+    def prepare_perf_command_line(self, run_id: str) -> Tuple[Optional[Path], Tuple[str, ...]]:
+        raise NotImplementedError("Use derived class")
+
+    @abstractmethod
+    def before_capture(self) -> Tuple[Tuple[PerfEvent, ...], ...]:
+        raise NotImplementedError("Use derived class")
+
+    @abstractmethod
+    def parse_perf_data(self, data: dict) -> PerfRecords:
+        raise NotImplementedError("Use derived class")
+
+
+# pylint: disable=too-many-public-methods
 class WindowsPerf(Perf):
     """
     Windows-specific Perf implementation using `wperf` for collecting
@@ -39,6 +63,8 @@ class WindowsPerf(Perf):
     probe's event groups and cores, receives the combined JSON output via a
     callback, and converts it to the Linux-parity shape (group-aligned tuples).
     """
+
+    _perf_parsers: Dict[Type["Probe"], Type[WindowsPerfParser]] = {}
 
     @staticmethod
     def have_perf_privilege() -> bool:
@@ -67,10 +93,14 @@ class WindowsPerf(Perf):
         self._interval = interval
         self._cores: Optional[Tuple[int, ...]] = None
         # Run-scoped / lifecycle
+        self._special_parser: Optional[Type[WindowsPerfParser]] = None
+        self._special_parser_instance: Optional[WindowsPerfParser] = None
+        self._timeout: Optional[int] = None
         self._events_groups: Sequence[PerfEventGroup] = []
         self._coordinator = WperfCoordinator.get_instance()
         self._collected_result: Optional[PerfRecords] = None
         self._active = False
+        self._results_ready = Event()
 
     def get_events_groups(self) -> Sequence[PerfEventGroup]:
         return self._events_groups
@@ -81,8 +111,12 @@ class WindowsPerf(Perf):
     def get_interval(self) -> Optional[int]:
         return self._interval
 
+    def get_timeout(self) -> Optional[int]:
+        return self._timeout
+
     def set_results(self, result: PerfRecords) -> None:
         self._collected_result = result
+        self._results_ready.set()
 
     def __str__(self) -> str:
         return f"WindowsPerf({self._cores})"
@@ -116,12 +150,14 @@ class WindowsPerf(Perf):
         self._coordinator.deactivate(self)
         self._events_groups = []
 
+    # pylint: disable=too-many-arguments, too-many-positional-arguments
     def start(
         self,
         events_groups: Sequence[PerfEventGroup],
         output_filename: str,
         pid: Optional[int] = None,
         cores: Optional[Sequence[int]] = None,
+        timeout: Optional[int] = None,
     ) -> None:
         """
         Provide per-run parameters and request the shared run to start.
@@ -139,8 +175,13 @@ class WindowsPerf(Perf):
             raise RuntimeError("Probe not active; call enable() before start()")
         if not self._coordinator:
             raise RuntimeError("Probe not properly registered with coordinator")
-        self._events_groups = events_groups
+        if self._special_parser is None:
+            self._events_groups = events_groups
+        else:
+            self._special_parser_instance = self._special_parser(events_groups, self)
+            self._events_groups = self._special_parser_instance.before_capture()
         self._cores = tuple(sorted(cores)) if cores is not None else None
+        self._timeout = timeout
         self._coordinator.start(self, pid)
 
     def stop(self) -> None:
@@ -154,6 +195,15 @@ class WindowsPerf(Perf):
             # pylint: disable=broad-exception-raised
             raise Exception("Probe not properly registered with coordinator")
         self._coordinator.stop(self)
+
+    def wait(self) -> None:
+        """
+        Waits for perf process.
+        """
+        if not self._coordinator:
+            # pylint: disable=broad-exception-raised
+            raise Exception("Probe not properly registered with coordinator")
+        self._coordinator.wait(self)
 
     # pylint: disable=too-many-locals
     def get_perf_result(self) -> PerfRecords:
@@ -169,6 +219,7 @@ class WindowsPerf(Perf):
         PerfRecords
             Group-aligned results keyed by location and timestamp (possibly empty).
         """
+        self._results_ready.wait()
 
         if self._collected_result is None:
             logging.warning("No result from WperfCoordinator. returning empty record")
@@ -296,3 +347,23 @@ class WindowsPerf(Perf):
             Absolute or relative path to `wperf`.
         """
         WperfCoordinator.set_perf_path(perf_path)
+
+    @classmethod
+    def register_parser_for_class(cls, probe_class: Type["Probe"], parser_class: Type[WindowsPerfParser]) -> None:
+        cls._perf_parsers[probe_class] = parser_class
+
+    def use_parser_for_class(self, probe_class: Type["Probe"]) -> None:
+        if probe_class not in self._perf_parsers:
+            raise RuntimeError("JSON parser not registered")
+        self._special_parser = self._perf_parsers[probe_class]
+
+    def prepare_perf_command_line(self, run_id: str) -> Tuple[Optional[Path], Tuple[str, ...]]:
+        if self._special_parser is None or self._special_parser_instance is None:
+            raise RuntimeError("JSON parser not registered")
+        return self._special_parser_instance.prepare_perf_command_line(run_id)
+
+    def parse_perf_data(self, data: dict) -> None:
+        if self._special_parser is None or self._special_parser_instance is None:
+            raise RuntimeError("JSON parser not registered")
+        result = self._special_parser_instance.parse_perf_data(data)
+        self.set_results(result)

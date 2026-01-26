@@ -8,6 +8,7 @@ import logging
 import shlex
 from abc import ABC
 from pathlib import Path
+from resource import getrlimit, RLIMIT_NOFILE
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 
 from topdown_tool.perf.perf import (
@@ -91,6 +92,7 @@ class LinuxPerfBase(Perf, ABC):
         self._perf_args = perf_args
         self._interval = interval
         self._cores: Optional[Sequence[int]] = None
+        self._timeout: Optional[int] = None
         self._recorders: List["LinuxPerfBase._Recorder"] = []
         self._events_groups: Sequence[PerfEventGroup] = []
         self._flat_events: List[PerfEvent] = []
@@ -101,7 +103,8 @@ class LinuxPerfBase(Perf, ABC):
     def max_event_count(self) -> int:
         """Return the maximum number of events supported per recording."""
 
-        return 1000
+        soft, _ = getrlimit(RLIMIT_NOFILE)
+        return soft - 5
 
     def enable(self) -> None:
         """Enable perf collection (no-op for Linux perf)."""
@@ -113,12 +116,14 @@ class LinuxPerfBase(Perf, ABC):
 
         return
 
+    # pylint: disable=too-many-arguments, too-many-positional-arguments
     def start(
         self,
         events_groups: Sequence[PerfEventGroup],
         output_filename: str,
         pid: Optional[int] = None,
         cores: Optional[Sequence[int]] = None,
+        timeout: Optional[int] = None,
     ) -> None:
         """Begin recording perf events using the supplied configuration.
 
@@ -134,6 +139,7 @@ class LinuxPerfBase(Perf, ABC):
         self._output_filename = output_filename
         self._output_path = Path(output_filename).parent
         self._cores = tuple(sorted(cores)) if cores else None
+        self._timeout = timeout
 
         self._before_start()
 
@@ -143,6 +149,7 @@ class LinuxPerfBase(Perf, ABC):
                 cli_path=self._output_path / f"perf-cli-{index}",
                 output_basename=f"{self._output_filename}-{index}",
                 pid=pid,
+                timeout=timeout,
             )
             self._recorders.append(
                 self._Recorder(**recorder_kwargs)  # pylint: disable=protected-access
@@ -155,6 +162,11 @@ class LinuxPerfBase(Perf, ABC):
         """Stop all active recorders."""
         for recorder in self._recorders:
             recorder.stop()
+
+    def wait(self) -> None:
+        """Wait for all active recorders."""
+        for recorder in self._recorders:
+            recorder.wait()
 
     def get_perf_result(self) -> PerfRecords:  # pylint: disable=too-many-locals
         """Aggregate recorder outputs into a ``PerfRecords`` structure.
@@ -209,6 +221,7 @@ class LinuxPerfBase(Perf, ABC):
     def _before_start(self) -> None:
         """Hook executed immediately before recorders are created."""
 
+    # pylint: disable=too-many-arguments
     def _recorder_kwargs(
         self,
         *,
@@ -216,6 +229,7 @@ class LinuxPerfBase(Perf, ABC):
         cli_path: Path,
         output_basename: str,
         pid: Optional[int],
+        timeout: Optional[int],
     ) -> Dict[str, Any]:
         """Return keyword arguments used to instantiate a recorder."""
         return {
@@ -226,8 +240,10 @@ class LinuxPerfBase(Perf, ABC):
             "perf_args": self._perf_args,
             "interval": self._interval,
             "pid": pid,
+            "timeout": timeout,
         }
 
+    # pylint: disable=too-many-arguments
     @staticmethod
     def _compose_stat_command(
         perf_path: str,
@@ -236,6 +252,7 @@ class LinuxPerfBase(Perf, ABC):
         cores: Optional[Sequence[int]],
         pid: Optional[int],
         interval: Optional[int],
+        timeout: Optional[int],
     ) -> List[str]:
         """Create the common ``perf stat`` CLI prefix shared by local and remote runners."""
 
@@ -253,6 +270,8 @@ class LinuxPerfBase(Perf, ABC):
             command.extend(["-p", str(pid)])
         if interval is not None:
             command.extend(["-I", str(interval)])
+        if timeout is not None:
+            command.extend(["--timeout", str(timeout)])
         return command
 
     @staticmethod

@@ -13,6 +13,7 @@ supporting use cases such as system-wide performance data capture and detailed m
 import re
 from os.path import join
 import logging
+from sys import platform
 from typing import (
     Any,
     Dict,
@@ -48,6 +49,7 @@ from topdown_tool.cpu_probe.cpu_telemetry_database import (
 from topdown_tool.perf import Cpu, PerfRecordLocation
 import topdown_tool.probe as Base
 from topdown_tool.perf.perf import Perf
+from topdown_tool.perf.windows_perf import WindowsPerf
 from topdown_tool.perf import perf_factory, PerfFactory
 from topdown_tool.common import simple_maths
 from topdown_tool.cpu_probe.cpu_model import TelemetrySpecification
@@ -158,6 +160,8 @@ class CpuProbe(Base.Probe):
 
         # Instantiate the platform Perf once up-front and enable it
         self._perf_instance = self._perf_factory.create()
+        if platform == "win32":
+            cast(WindowsPerf, self._perf_instance).use_parser_for_class(self.__class__)
         self._perf_instance.enable()
 
         # Declare the perf records
@@ -319,7 +323,8 @@ class CpuProbe(Base.Probe):
         else:
             self._pid = set()
 
-        self._pid_tracking = self._conf.pid_tracking_applicable and len(self._pid) == 1
+        # FIXME: PID tracking is not possible yet, due to Windows Perf limitations
+        self._pid_tracking = self._conf.pid_tracking_applicable and len(self._pid) == 1 and platform != "win32"
 
         index = self._capture_it.index()
         schedule_unit = next(self._capture_it)

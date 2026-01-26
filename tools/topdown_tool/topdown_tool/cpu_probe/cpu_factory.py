@@ -35,6 +35,7 @@ from dataclasses import dataclass, field, replace
 import json
 import os
 from typing import Dict, List, Optional, Sequence, Tuple, Union
+from sys import platform
 from rich import get_console
 from rich.table import Table
 from topdown_tool.common import ArgsError, range_decode, unwrap
@@ -49,6 +50,7 @@ from topdown_tool.cpu_probe.cpu_detector import (
 )
 from topdown_tool.cpu_probe.cpu_model import TelemetrySpecification
 from topdown_tool.cpu_probe.cpu_probe import CpuProbe
+from topdown_tool.cpu_probe.windows_perf_parser import WindowsPerfParser
 from topdown_tool.perf.event_scheduler import CollectBy
 from topdown_tool.perf import perf_factory, PerfFactory
 import topdown_tool.probe as Base
@@ -615,6 +617,9 @@ class CpuProbeFactory(Base.ProbeFactory[CpuProbeFactoryConfig]):
         """
         if self._factory_config is None:
             raise RuntimeError("CpuProbeFactory must be configured before calling create().")
+
+        if platform == "win32":
+            perf_factory_instance.register_parser_for_class(CpuProbe, WindowsPerfParser)
 
         self._cpu_detector = (
             cpu_detector or self._cpu_detector or CpuDetectorFactory.create(perf_factory_instance)

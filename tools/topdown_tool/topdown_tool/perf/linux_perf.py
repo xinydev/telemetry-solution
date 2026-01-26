@@ -46,6 +46,7 @@ class LinuxPerf(LinuxPerfBase):
             perf_args: Optional[str],
             interval: Optional[int],
             pid: Optional[int],
+            timeout: Optional[int],
         ) -> None:
             """Initialise the local recorder.
 
@@ -70,6 +71,7 @@ class LinuxPerf(LinuxPerfBase):
                 cores=cores,
                 pid=pid,
                 interval=self._interval,
+                timeout=timeout,
             )
             cmd.extend(["-e", Perf.build_event_string(self._events)])
 
@@ -145,9 +147,8 @@ class LinuxPerf(LinuxPerfBase):
 
         def stop(self) -> None:
             """Stop the local ``perf`` process by sending ``SIGINT``."""
-            if self._events is None:
+            if self._events is None or self._process is None:
                 return
-            assert self._process is not None
             self._process.send_signal(SIGINT)
 
         def wait(self) -> None:
@@ -203,6 +204,7 @@ class LinuxPerf(LinuxPerfBase):
         cli_path: Path,
         output_basename: str,
         pid: Optional[int],
+        timeout: Optional[int],
     ) -> LinuxPerfBase._Recorder:  # pylint: disable=protected-access
         return self._Recorder(
             events=events,
@@ -212,6 +214,7 @@ class LinuxPerf(LinuxPerfBase):
             perf_args=self._perf_args,
             interval=self._interval,
             pid=pid,
+            timeout=timeout,
         )
 
     @classmethod

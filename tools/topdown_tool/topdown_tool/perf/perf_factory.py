@@ -12,14 +12,15 @@ import sys
 import shutil
 import logging
 from dataclasses import dataclass
-from typing import Type, Optional, Any, Dict
+from typing import Type, Optional, Any, Dict, cast
 import argparse
 
 from topdown_tool.perf.perf import Perf
 from topdown_tool.perf.linux_perf import LinuxPerf
 from topdown_tool.perf.remote_linux_perf import RemoteLinuxPerf
-from topdown_tool.perf.windows_perf import WindowsPerf
+from topdown_tool.perf.windows_perf import WindowsPerf, WindowsPerfParser
 from topdown_tool.common import remote_target_manager
+from topdown_tool.probe import Probe
 
 
 @dataclass
@@ -39,6 +40,14 @@ class PerfFactory:
     This class also encapsulates configuration passed via CLI (perf path, args, interval) and provides
     utility methods to query PMU capabilities or MIDR values in a unified way.
     """
+
+    @staticmethod
+    def get_platform_class() -> Type[Perf]:
+        if sys.platform == "linux":
+            return LinuxPerf
+        if sys.platform == "win32":
+            return WindowsPerf
+        raise Exception("Unsupported platform")  # pylint: disable=broad-exception-raised
 
     def __init__(self) -> None:
         """
@@ -237,3 +246,9 @@ class PerfFactory:
             # Ensure remote Linux runs pick up the same override even on non-Linux hosts.
             LinuxPerf.update_perf_path(self._perf_path)
             RemoteLinuxPerf.update_perf_path(self._perf_path)
+
+    def register_parser_for_class(
+        self, probe_class: Type["Probe"], parser_class: Type[WindowsPerfParser]
+    ) -> None:
+        assert self._impl_class is WindowsPerf
+        cast(WindowsPerf, self._impl_class).register_parser_for_class(probe_class, parser_class)
