@@ -148,8 +148,8 @@ class RemoteTargetManager:
         except Exception as exc:  # pylint: disable=broad-exception-caught
             raise RuntimeError(
                 "devlib is required for --target-type/--target-config but is not available. "
-                "Install devlib including PR #727 (background command support) from: "
-                "https://github.com/ARM-software/devlib"
+                'Install the remote extra (python3 -m pip install -e ".[remote]") or fetch it from: '
+                "https://gitlab.arm.com/tooling/workload-automation/devlib"
             ) from exc
 
         target: Target

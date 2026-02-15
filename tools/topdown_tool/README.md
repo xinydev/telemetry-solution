@@ -128,13 +128,13 @@ topdown-tool --help
 
 ## Remote targets (devlib)
 
-The tool can collect metrics from a remote Linux or Android target through [devlib](https://github.com/ARM-software/devlib). Install the optional remote dependencies before using these options:
+The tool can collect metrics from a remote Linux or Android target through [devlib](https://gitlab.arm.com/tooling/workload-automation/devlib). Install the optional remote dependencies before using these options:
 
 ```bash
 pip install ".[remote]"
 ```
 
-The extra pulls in devlib (including PR [#727](https://github.com/ARM-software/devlib/pull/727)) which adds the background command support required by topdown-tool. After installation, make sure the devlib perf binary matches the version you intend to use (for example, copy a recent `perf` into the relevant `devlib/bin/<abi>/` directory).
+The extra pulls in devlib from its public GitLab repository. If you need a newer perf than the one bundled in devlib, copy your preferred `perf` into the relevant `devlib/bin/<abi>/` directory.
 
 Once the dependencies are installed, provide the remote type with `--target-type` and the connection details with `--target-config`. The configuration argument accepts either an inline JSON object or a path to a JSON file. Supported target types are:
 - `ssh` for Linux hosts reachable over SSH.
@@ -145,10 +145,10 @@ Once the dependencies are installed, provide the remote type with `--target-type
 - **SSH targets** (`--target-type ssh`): the JSON must include `host` and `username`. Add either `password` or a `keyfile` path; optional fields such as `port`, `password`, and `keyfile_password` are forwarded directly to devlib.
 - **ADB targets** (`--target-type adb`): provide the Android `device` identifier as shown by `adb devices`. Optional keys like `adb_server_host` and `adb_server_port` are also supported.
 
-Refer to the [devlib connection documentation](https://github.com/ARM-software/devlib#targets) for the full list of available keys.
+Refer to the [devlib connection documentation](https://devlib.readthedocs.io/en/latest/connection.html) for the full list of available keys. The devlib source repository lives at https://gitlab.arm.com/tooling/workload-automation/devlib.
 
 > [!note]
-> The optional `remote` dependency group installs devlib from [PR #727](https://github.com/ARM-software/devlib/pull/727), which adds support for background ADB commands required by topdown-tool. After installing the extra, replace the legacy perf binary shipped with devlib by copying a recent build into the corresponding ABI directory (for example, `cp perf ~/.local/lib/python3.10/site-packages/devlib/bin/arm64/`).
+> The optional `remote` dependency group installs devlib from its GitLab repository. If you need a newer perf than the bundled one, copy your preferred binary into the corresponding ABI directory (for example, `cp perf ~/.local/lib/python3.10/site-packages/devlib/bin/arm64/`).
 
 ### Examples
 

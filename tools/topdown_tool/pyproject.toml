@@ -36,7 +36,7 @@ lint = [
   "pylint==3.3.7"
 ]
 remote = [
-  "devlib @ git+https://github.com/ARM-software/devlib.git@refs/pull/727/head"
+  "devlib @ git+https://gitlab.arm.com/tooling/workload-automation/devlib.git"
 ]
 
 [project.urls]
