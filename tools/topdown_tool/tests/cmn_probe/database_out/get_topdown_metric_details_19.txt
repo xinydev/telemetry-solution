@@ -1,0 +1,1 @@
+TopdownMetricDetails(title='IO Target Proportion', description='Proportion of the traffic serviced by I/O targets', formula='(cmn_hni_rxreq_rate + cmn_hnp_rxreq_rate) / total_target_rate', units='None', base_metrics=['cmn_hni_rxreq_rate', 'cmn_hnp_rxreq_rate'], topdown_metrics=['total_target_rate'])

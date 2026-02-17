@@ -1,0 +1,1 @@
+MetricDetails(title='SNF Ingress Request rate', description='This metric represents the rate at which SNF receives requests at the CHI interface', sample_events=['SYS_CMN_CYCLES'], formula='CMN_SNF_WP_RXREQ_COUNT / SYS_CMN_CYCLES * 1000', units='Requests per 1K clks')

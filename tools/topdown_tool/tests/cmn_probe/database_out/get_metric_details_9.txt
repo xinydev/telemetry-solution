@@ -1,0 +1,1 @@
+MetricDetails(title='CCG RA REQ tracker average buffer occupancy', description='This metric represents the average buffer occupancy of CCG RA Req tracker', sample_events=['PMU_CCGRA_REQ_TRK_OCC'], formula='(PMU_CCGRA_REQ_TRK_OCC << 8) / SYS_CMN_CYCLES', units='None')

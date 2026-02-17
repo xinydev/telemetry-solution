@@ -56,9 +56,11 @@ remote = [
 [project.scripts]
 topdown-tool = "topdown_tool.__main__:main"
 validate-cpu-spec = "topdown_tool.cpu_probe.cpu_model:main"
+validate-cmn-spec = "topdown_tool.cmn_probe.cmn_model:main"
 
 [project.entry-points."topdown_tool.probe_factories"]
 cpu_probe_factory = "topdown_tool.cpu_probe.cpu_factory:CpuProbeFactory"
+cmn_probe_factory = "topdown_tool.cmn_probe.cmn_factory:CmnProbeFactory"
 
 [tool.setuptools.packages.find]
 include = ["topdown_tool*"]
@@ -67,6 +69,11 @@ include = ["topdown_tool*"]
 topdown_tool = [
   "cpu_probe/metrics/*.json",
   "cpu_probe/schemas/*.json",
+  "cmn_probe/metrics/*.json",
+  "cmn_probe/schemas/*.json",
+  "cmn_probe/cmn-tools/**/*.json",
+  "cmn_probe/cmn-tools/**/*.csv",
+  "cmn_probe/cmn-tools/**/*.regdefs"
 ]
 
 [tool.setuptools.cmdclass]
@@ -100,3 +107,11 @@ line_length = 100
 
 [tool.black]
 line_length = 100
+
+[tool.pytest.ini_options]
+filterwarnings = [
+  "ignore:the imp module is deprecated.*:DeprecationWarning:past\\.builtins\\.misc",
+]
+
+[tool.check-wheel-contents]
+ignore = ["W002"]

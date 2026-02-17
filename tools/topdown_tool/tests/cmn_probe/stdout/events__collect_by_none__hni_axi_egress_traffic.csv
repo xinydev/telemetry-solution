@@ -1,0 +1,13 @@
+Group,Metric,Event,CMN,X,Y,Port,Node,Value
+HNI_AXI_Egress_Traffic,cmn_hni_axi_ar_stall_rate,SYS_CMN_CYCLES,0,,,,,3342861650.0
+HNI_AXI_Egress_Traffic,cmn_hni_axi_ar_stall_rate,PMU_HNI_ARVALID_NO_ARREADY,0,,,,,488255810.0
+HNI_AXI_Egress_Traffic,cmn_hni_axi_ar_stall_rate,SYS_CMN_CYCLES,1,,,,,5863234722.0
+HNI_AXI_Egress_Traffic,cmn_hni_axi_ar_stall_rate,PMU_HNI_ARVALID_NO_ARREADY,1,,,,,7872010998.0
+HNI_AXI_Egress_Traffic,cmn_hni_axi_aw_stall_rate,SYS_CMN_CYCLES,0,,,,,3342861650.0
+HNI_AXI_Egress_Traffic,cmn_hni_axi_aw_stall_rate,PMU_HNI_AWVALID_NO_AWREADY,0,,,,,5669901676.0
+HNI_AXI_Egress_Traffic,cmn_hni_axi_aw_stall_rate,SYS_CMN_CYCLES,1,,,,,5863234722.0
+HNI_AXI_Egress_Traffic,cmn_hni_axi_aw_stall_rate,PMU_HNI_AWVALID_NO_AWREADY,1,,,,,1464557126.0
+HNI_AXI_Egress_Traffic,cmn_hni_axi_w_stall_rate,SYS_CMN_CYCLES,0,,,,,3342861650.0
+HNI_AXI_Egress_Traffic,cmn_hni_axi_w_stall_rate,PMU_HNI_WVALID_NO_WREADY,0,,,,,5957787104.0
+HNI_AXI_Egress_Traffic,cmn_hni_axi_w_stall_rate,SYS_CMN_CYCLES,1,,,,,5863234722.0
+HNI_AXI_Egress_Traffic,cmn_hni_axi_w_stall_rate,PMU_HNI_WVALID_NO_WREADY,1,,,,,2174774278.0

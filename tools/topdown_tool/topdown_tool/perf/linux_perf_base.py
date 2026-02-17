@@ -8,8 +8,10 @@ import logging
 import shlex
 from abc import ABC
 from pathlib import Path
-from resource import getrlimit, RLIMIT_NOFILE
+from sys import platform
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
+if platform == "linux":
+    from resource import getrlimit, RLIMIT_NOFILE
 
 from topdown_tool.perf.perf import (
     Cpu,
@@ -99,6 +101,7 @@ class LinuxPerfBase(Perf, ABC):
         self._output_filename: Optional[str] = None
         self._output_path: Optional[Path] = None
 
+    # pylint: disable=possibly-used-before-assignment
     @property
     def max_event_count(self) -> int:
         """Return the maximum number of events supported per recording."""

@@ -1,0 +1,22 @@
+run,time,level,stage,group,metric,node,nodeid,value,interrupted,units
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_ar_stall_rate,Global,,1342.6054680128495,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_ar_stall_rate,XP 0x000 Port #0 Node 0x000,0,928.7489742765239,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_ar_stall_rate,XP 0x100 Port #1 Node 0x102,258,20.629182650006825,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_ar_stall_rate,XP 0x100 Port #2 Node 0x104,260,389.7159923388788,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_ar_stall_rate,XP 0x340 Port #1 Node 0x342,834,706.3471319782514,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_ar_stall_rate,XP 0x340 Port #2 Node 0x344,836,96.98313012548707,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_ar_stall_rate,XP 0x380 Port #2 Node 0x384,900,380.30153690306247,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_aw_stall_rate,Global,,249.78654197565996,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_aw_stall_rate,XP 0x000 Port #0 Node 0x000,0,1138.8463581281133,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_aw_stall_rate,XP 0x100 Port #1 Node 0x102,258,1224.1680274317355,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_aw_stall_rate,XP 0x100 Port #2 Node 0x104,260,596.0443618071478,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_aw_stall_rate,XP 0x340 Port #1 Node 0x342,834,1403.0532035725653,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_aw_stall_rate,XP 0x340 Port #2 Node 0x344,836,1170.0468402295014,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_aw_stall_rate,XP 0x380 Port #2 Node 0x384,900,387.1646385709885,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_w_stall_rate,Global,,370.91714405357556,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_w_stall_rate,XP 0x000 Port #0 Node 0x000,0,338.32061959875944,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_w_stall_rate,XP 0x100 Port #1 Node 0x102,258,1100.2242771886763,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_w_stall_rate,XP 0x100 Port #2 Node 0x104,260,310.32540538976565,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_w_stall_rate,XP 0x340 Port #1 Node 0x342,834,1347.2222048967462,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_w_stall_rate,XP 0x340 Port #2 Node 0x344,836,133.89934041941297,,Stalls per 1K clks
+1,,,,HNI_AXI_Egress_Traffic,cmn_hni_axi_w_stall_rate,XP 0x380 Port #2 Node 0x384,900,515.7596445274974,,Stalls per 1K clks

@@ -1,0 +1,1 @@
+TopdownMetricDetails(title='Bandwidth Metrics for IO', description='Total bandwidth delivered by all local HN-I and HN-P instances', formula='(cmn_hni_rxreq_rate + cmn_hnp_rxreq_rate) * 64 * SYS_FREQUENCY', units='Bytes per second', base_metrics=['cmn_hni_rxreq_rate', 'cmn_hnp_rxreq_rate'], topdown_metrics=[])

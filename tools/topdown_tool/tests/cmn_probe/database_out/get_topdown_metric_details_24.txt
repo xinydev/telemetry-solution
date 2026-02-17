@@ -1,0 +1,1 @@
+TopdownMetricDetails(title='Total Requestor Rate', description='Total Requestor Rate across all requester node types', formula='cmn_rnf_txreq_rate + cmn_rni_txreq_rate + cmn_rnd_txreq_rate + cmn_ccg_txreq_rate', units='Requests per 1K clks', base_metrics=['cmn_ccg_txreq_rate', 'cmn_rnd_txreq_rate', 'cmn_rnf_txreq_rate', 'cmn_rni_txreq_rate'], topdown_metrics=[])

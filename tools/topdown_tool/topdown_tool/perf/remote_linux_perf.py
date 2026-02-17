@@ -7,7 +7,7 @@ import shlex
 from importlib.resources import as_file, files
 from pathlib import Path
 from signal import SIGINT
-from typing import Any, Dict, Optional, Sequence, Set
+from typing import Any, Dict, Optional, Sequence, Set, Union
 
 from topdown_tool.common import remote_target_manager
 from topdown_tool.common.devlib_types import Target
@@ -574,3 +574,15 @@ class RemoteLinuxPerf(LinuxPerfBase):
             check_exit_code=False,
             as_root=True,
         )
+
+    @classmethod
+    def get_cmn_version(cls) -> Dict[int, Union[int, str]]:
+        raise RuntimeError("get_cmn_version not available for remote targets")
+
+    @classmethod
+    def get_cmn_frequency(cls, cmn_index: int) -> float:
+        raise RuntimeError("get_cmn_frequency not available for remote targets")
+
+    @classmethod
+    def get_cmn_mux_interval(cls, cmn_index: int) -> int:
+        raise RuntimeError("get_cmn_mux_interval not available for remote targets")

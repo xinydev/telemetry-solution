@@ -1,0 +1,48 @@
+Regular Metrics CMN-700 R0P0 at index 0
+                                      RND CHI Egress Traffic                                      
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                             ┃ Global             ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ RND Egress Request rate                            │ 1707.9919284125922 │ Requests per 1K clks │
+│ RND Egress replayed request rate on CHI interface. │ 1962.7329835801013 │ Requests per 1K clks │
+│ RND Egress retried request rate on CHI interface.  │ 332.88225134893037 │ Requests per 1K clks │
+│ RND retry ratio compared to request count.         │ 83.07628395238474  │ Percentage           │
+└────────────────────────────────────────────────────┴────────────────────┴──────────────────────┘
+                        CCG RA Tracker Effectiveness                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric                                      ┃ Global             ┃ Units ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ CCG RA REQ tracker average buffer occupancy │ 221.37169646132378 │ None  │
+│ CCG RA SNP tracker average buffer occupancy │ 546.8936677484095  │ None  │
+└─────────────────────────────────────────────┴────────────────────┴───────┘
+                        CCG HA Tracker Effectiveness                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric                                      ┃ Global             ┃ Units ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ CCG HA REQ tracker average buffer occupancy │ 584.2565148767075  │ None  │
+│ CCG HA SNP tracker average buffer occupancy │ 133.75613877170179 │ None  │
+└─────────────────────────────────────────────┴────────────────────┴───────┘
+Regular Metrics CMN-700 R0P0 at index 1
+                                      RND CHI Egress Traffic                                      
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                             ┃ Global             ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ RND Egress Request rate                            │ 1235.7602940256295 │ Requests per 1K clks │
+│ RND Egress replayed request rate on CHI interface. │ 826.3806277138499  │ Requests per 1K clks │
+│ RND Egress retried request rate on CHI interface.  │ 349.5126320477538  │ Requests per 1K clks │
+│ RND retry ratio compared to request count.         │ 135.6070740477362  │ Percentage           │
+└────────────────────────────────────────────────────┴────────────────────┴──────────────────────┘
+                        CCG RA Tracker Effectiveness                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric                                      ┃ Global             ┃ Units ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ CCG RA REQ tracker average buffer occupancy │ 130.28233926330606 │ None  │
+│ CCG RA SNP tracker average buffer occupancy │ 368.21663391970884 │ None  │
+└─────────────────────────────────────────────┴────────────────────┴───────┘
+                       CCG HA Tracker Effectiveness                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric                                      ┃ Global            ┃ Units ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ CCG HA REQ tracker average buffer occupancy │ 158.5520210514267 │ None  │
+│ CCG HA SNP tracker average buffer occupancy │ 33.42933289171499 │ None  │
+└─────────────────────────────────────────────┴───────────────────┴───────┘

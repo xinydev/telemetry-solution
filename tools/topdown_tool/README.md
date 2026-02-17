@@ -33,6 +33,11 @@ Run all commands in this section from the `tools/topdown_tool` directory of the 
 cd tools/topdown_tool
 ```
 
+If you cloned the repository without updating submodules, make sure they are initialized and up to date:
+```sh
+git submodule update --init --recursive
+```
+
 We recommend installing in a Python virtual environment to avoid conflicts with the system Python and to keep your environment reproducible.
 
 About pip vs pip3:
@@ -238,7 +243,9 @@ topdown-tool --probe-list
 topdown-tool --probe CPU -- ./a.out
 ```
 
-Each probe has its own quickstart. For the CPU probe, see [README.CPU.md](./README.CPU.md).
+Each probe has its own quickstart:
+- CPU: [README.CPU.md](./README.CPU.md)
+- CMN: [README.CMN.md](./README.CMN.md)
 
 ## CSV output overview
 
@@ -252,7 +259,7 @@ Example:
 topdown-tool --cpu-generate-csv metrics --csv-output-path out -I 1000 -- sleep 10
 ```
 
-See [README.CPU.md](./README.CPU.md) for CSV file names, folder layout, and column details.
+See [README.CPU.md](./README.CPU.md) and [README.CMN.md](./README.CMN.md) for CSV file names, folder layout, and column details.
 
 First, install and configure [Linux Perf](https://perf.wiki.kernel.org/index.php/Main_Page) or [WindowsPerf](https://gitlab.com/Linaro/WindowsPerf/windowsperf).
 
@@ -263,6 +270,7 @@ Metric selection is probe-specific. For the CPU probe, see [README.CPU.md](./REA
 - Topdown stages (1, 2) and the combined view
 - Selecting metric groups, stages, and methodology nodes
 - Examples with output and CSV guidance
+For CMN, see [README.CMN.md](./README.CMN.md).
 
 
 ## Other options

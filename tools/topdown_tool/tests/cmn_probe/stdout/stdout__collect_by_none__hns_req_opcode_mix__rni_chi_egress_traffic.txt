@@ -1,0 +1,52 @@
+Regular Metrics CMN-700 R0P0 at index 0
+                                    HNS Req Opcode Mix                                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                      ┃ Global             ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS Ingress Evict request rate              │ 71816.53498103937  │ Requests per 1K clks │
+│ HNS Ingress MakeReadUnique request rate     │ 64232.67982867314  │ Requests per 1K clks │
+│ HNS Ingress MakeUnique request rate         │ 62641.006526249745 │ Requests per 1K clks │
+│ HNS Ingress ReadNotSharedDirty request rate │ 57766.674062027065 │ Requests per 1K clks │
+│ HNS Ingress ReadOnce request rate           │ 51296.07351832823  │ Requests per 1K clks │
+│ HNS Ingress ReadPreferUnique request rate   │ 61372.13524107407  │ Requests per 1K clks │
+│ HNS Ingress ReadUnique request rate         │ 66463.39385538135  │ Requests per 1K clks │
+│ HNS Ingress WriteBackFull request rate      │ 70707.54754328525  │ Requests per 1K clks │
+│ HNS Ingress WriteEvictOrEvict request rate  │ 66660.74862475986  │ Requests per 1K clks │
+│ HNS Ingress WriteNoSnoopFull request rate   │ 70278.40363001561  │ Requests per 1K clks │
+│ HNS Ingress WriteUniqueFull request rate    │ 61148.579895910436 │ Requests per 1K clks │
+└─────────────────────────────────────────────┴────────────────────┴──────────────────────┘
+                                      RNI CHI Egress Traffic                                      
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                             ┃ Global             ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ RNI Egress Request rate                            │ 22785.793865564254 │ Requests per 1K clks │
+│ RNI Egress replayed request rate on CHI interface. │ 1962.7329835801013 │ Requests per 1K clks │
+│ RNI Egress retried request rate on CHI interface.  │ 332.88225134893037 │ Requests per 1K clks │
+│ RNI retry ratio compared to request count.         │ 83.07628395238474  │ Percentage           │
+└────────────────────────────────────────────────────┴────────────────────┴──────────────────────┘
+Regular Metrics CMN-700 R0P0 at index 1
+                                    HNS Req Opcode Mix                                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                      ┃ Global             ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS Ingress Evict request rate              │ 33867.40122665005  │ Requests per 1K clks │
+│ HNS Ingress MakeReadUnique request rate     │ 40033.56274468454  │ Requests per 1K clks │
+│ HNS Ingress MakeUnique request rate         │ 35238.036149356805 │ Requests per 1K clks │
+│ HNS Ingress ReadNotSharedDirty request rate │ 35331.818854650315 │ Requests per 1K clks │
+│ HNS Ingress ReadOnce request rate           │ 36696.84538343133  │ Requests per 1K clks │
+│ HNS Ingress ReadPreferUnique request rate   │ 35989.41043179339  │ Requests per 1K clks │
+│ HNS Ingress ReadUnique request rate         │ 35585.84926697738  │ Requests per 1K clks │
+│ HNS Ingress WriteBackFull request rate      │ 37165.37490275833  │ Requests per 1K clks │
+│ HNS Ingress WriteEvictOrEvict request rate  │ 34746.402536398404 │ Requests per 1K clks │
+│ HNS Ingress WriteNoSnoopFull request rate   │ 33674.94272967638  │ Requests per 1K clks │
+│ HNS Ingress WriteUniqueFull request rate    │ 36375.28561081543  │ Requests per 1K clks │
+└─────────────────────────────────────────────┴────────────────────┴──────────────────────┘
+                                      RNI CHI Egress Traffic                                      
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                             ┃ Global             ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ RNI Egress Request rate                            │ 12290.904687407463 │ Requests per 1K clks │
+│ RNI Egress replayed request rate on CHI interface. │ 826.3806277138499  │ Requests per 1K clks │
+│ RNI Egress retried request rate on CHI interface.  │ 349.5126320477538  │ Requests per 1K clks │
+│ RNI retry ratio compared to request count.         │ 135.6070740477362  │ Percentage           │
+└────────────────────────────────────────────────────┴────────────────────┴──────────────────────┘

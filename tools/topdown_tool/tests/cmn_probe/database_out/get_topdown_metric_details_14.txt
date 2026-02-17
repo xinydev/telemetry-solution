@@ -1,0 +1,1 @@
+TopdownMetricDetails(title='CCG Request Proportion', description='Proportion of the traffic generated through CCGs by remote requestors', formula='cmn_ccg_txreq_rate / total_requestor_rate', units='None', base_metrics=['cmn_ccg_txreq_rate'], topdown_metrics=['total_requestor_rate'])

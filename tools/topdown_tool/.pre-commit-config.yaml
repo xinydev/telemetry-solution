@@ -9,13 +9,14 @@ repos:
         exclude: '^tools/topdown_tool/tests/cpu_probe/fixtures/v1.0.schema-invalid.json'
       - id: check-vcs-permalinks
       - id: end-of-file-fixer
+        exclude: '^tools/topdown_tool/tests/cmn_probe/.*\.(txt|csv)$'
       - id: mixed-line-ending
       - id: name-tests-test
         args: ["--pytest-test-first"]
       - id: requirements-txt-fixer
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
-        exclude: 'fixtures/.*'
+        exclude: '(fixtures/.*)|(^tools/topdown_tool/tests/cmn_probe/.*\.(txt|csv)$)'
   - repo: https://github.com/PyCQA/flake8
     rev: 7.1.1
     hooks:

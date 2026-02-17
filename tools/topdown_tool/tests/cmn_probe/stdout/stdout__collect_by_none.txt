@@ -1,0 +1,456 @@
+Topdown Metrics CMN-700 R0P0 at index 0
+     CMN Requestor Target Characterization Level One     
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric                 ┃ Value                ┃ Units ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ CCG Request Proportion │ 0.038079464719361314 │ None  │
+│ RND Request Proportion │ 0.017952384771988093 │ None  │
+│ RNF Request Proportion │ 0.7044709186979622   │ None  │
+│ RNI Request Proportion │ 0.23949723181068847  │ None  │
+└────────────────────────┴──────────────────────┴───────┘
+            CMN Requestor Target Characterization Level Two            
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric                                ┃ Value               ┃ Units ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ Local Destination Request Proportion  │ 0.8987613801209952  │ None  │
+│ Remote Destination Request Proportion │ 0.10123861987900473 │ None  │
+└───────────────────────────────────────┴─────────────────────┴───────┘
+          CMN Requestor Target Characterization Level Three          
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric                           ┃ Value                  ┃ Units ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ CCG Target Proportion            │ 0.1018395437481065     │ None  │
+│ IO Target Proportion             │ 0.13691566876480318    │ None  │
+│ Peer CPU Cache Target Proportion │ 0.04673188591238511    │ None  │
+│ SLC Target Proportion            │ -0.0059357177114815925 │ None  │
+│ SNF Target Proportion            │ 0.7671805051985718     │ None  │
+└──────────────────────────────────┴────────────────────────┴───────┘
+                           CMN Requestor Bandwidth                           
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
+┃ Metric                        ┃ Value                  ┃ Units            ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━┩
+│ Bandwidth Metrics for CCG-C2C │ -7906531904137164.0    │ Bytes per second │
+│ Bandwidth Metrics for RND     │ -3983971267091595.0    │ Bytes per second │
+│ Bandwidth Metrics for RNF     │ 5.857474997010469e+16  │ Bytes per second │
+│ Bandwidth Metrics for RNI     │ -3.583789496479868e+16 │ Bytes per second │
+└───────────────────────────────┴────────────────────────┴──────────────────┘
+                                 CMN Completer Bandwidth                                  
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                    ┃ Value                   ┃ Units            ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━┩
+│ Bandwidth Metrics for CCG-C2C Destination │ -7799696599413381.0     │ Bytes per second │
+│ Bandwidth Metrics for CCG-CXL             │ -7799696599413381.0     │ Bytes per second │
+│ Bandwidth Metrics for CMN                 │ -1.4397005436356724e+16 │ Bytes per second │
+│ Bandwidth Metrics for DRAM                │ 98450478091188.72       │ Bytes per second │
+│ Bandwidth Metrics for IO                  │ 850513472517296.6       │ Bytes per second │
+│ Bandwidth Metrics for peer CPU cache      │ 290296201473489.06      │ Bytes per second │
+│ Bandwidth Metrics for SLC                 │ -36872389611936.23      │ Bytes per second │
+└───────────────────────────────────────────┴─────────────────────────┴──────────────────┘
+                         HNF/HNS Transaction Mix Shared Read Rate                          
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                      ┃ Value              ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS Ingress ReadNotSharedDirty request rate │ 57766.674062027065 │ Requests per 1K clks │
+│ HNS Ingress ReadOnce request rate           │ 51296.07351832823  │ Requests per 1K clks │
+└─────────────────────────────────────────────┴────────────────────┴──────────────────────┘
+                        HNF/HNS Transaction Mix Data Update Rate                         
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                    ┃ Value              ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS Ingress MakeReadUnique request rate   │ 64232.67982867314  │ Requests per 1K clks │
+│ HNS Ingress MakeUnique request rate       │ 62641.006526249745 │ Requests per 1K clks │
+│ HNS Ingress ReadPreferUnique request rate │ 61372.13524107407  │ Requests per 1K clks │
+│ HNS Ingress ReadUnique request rate       │ 66463.39385538135  │ Requests per 1K clks │
+│ HNS Ingress WriteNoSnoopFull request rate │ 70278.40363001561  │ Requests per 1K clks │
+│ HNS Ingress WriteUniqueFull request rate  │ 61148.579895910436 │ Requests per 1K clks │
+└───────────────────────────────────────────┴────────────────────┴──────────────────────┘
+                         HNF/HNS Transaction Mix Writeback Rate                          
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                     ┃ Value             ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS Ingress Evict request rate             │ 71816.53498103937 │ Requests per 1K clks │
+│ HNS Ingress WriteBackFull request rate     │ 70707.54754328525 │ Requests per 1K clks │
+│ HNS Ingress WriteEvictOrEvict request rate │ 66660.74862475986 │ Requests per 1K clks │
+└────────────────────────────────────────────┴───────────────────┴──────────────────────┘
+                            HNF/HNS Transaction Mix RFO Rate                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                    ┃ Value              ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS Ingress MakeReadUnique request rate   │ 64232.67982867314  │ Requests per 1K clks │
+│ HNS Ingress MakeUnique request rate       │ 62641.006526249745 │ Requests per 1K clks │
+│ HNS Ingress ReadPreferUnique request rate │ 61372.13524107407  │ Requests per 1K clks │
+│ HNS Ingress ReadUnique request rate       │ 66463.39385538135  │ Requests per 1K clks │
+└───────────────────────────────────────────┴────────────────────┴──────────────────────┘
+                                           HNF/HNS Ratio Analysis                                            
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┓
+┃ Metric                                                                 ┃ Value               ┃ Units      ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━┩
+│ HNS POCQ address hazard ratio                                          │ -71.13652035809001  │ Percentage │
+│ HNS POCQ driven ratio of retries compared to request count.            │ -203.87740026693336 │ Percentage │
+│ HNS retry ratio driven by memory controller                            │ 50.168430994075095  │ Percentage │
+│ HNS SF hit ratio                                                       │ 1476.1061577800501  │ Percentage │
+│ HNS SF miss ratio                                                      │ -1376.1061577800501 │ Percentage │
+│ HNS SLC hit ratio with filters = hbt_lbt_filter.all_requests_selected  │ -249.81057444315428 │ Percentage │
+│ HNS SLC miss ratio with filters = hbt_lbt_filter.all_requests_selected │ 349.8105744431543   │ Percentage │
+└────────────────────────────────────────────────────────────────────────┴─────────────────────┴────────────┘
+                                                    HNF/HNS Rate Analysis                                                    
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                                                ┃ Value               ┃ Units                       ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS Egress Request rate                                               │ 1074.4297838350565  │ Requests per 1K clks        │
+│ HNS Egress Request rate excluding retries                             │ 715.4831256627087   │ Requests per 1K clks        │
+│ HNS Egress request rate retried by memory controller                  │ 358.9466581723476   │ Requests per 1K clks        │
+│ HNS Ingress Request rate                                              │ 69424.10195528134   │ Requests per 1K clks        │
+│ HNS Ingress request rate retried by HNS POCQ                          │ 2553.573585074931   │ Retry responses per 1K clks │
+│ HNS POCQ address hazard rate                                          │ 890.9881089455198   │ Addr hazard per 1K clks     │
+│ HNS SF hit rate                                                       │ 1583.3962940105523  │ Hits per 1K clks            │
+│ HNS SF lookup rate                                                    │ 107.26845665299967  │ Accesses per 1K clks        │
+│ HNS SF miss rate                                                      │ -1476.1278373575526 │ Misses per 1K clks          │
+│ HNS SF snoop sent rate                                                │ 1585.2394387904146  │ Snoops per 1K clks          │
+│ HNS SLC hit rate with filters = hbt_lbt_filter.all_requests_selected  │ -267.96794776116445 │ Hits per 1K clks            │
+│ HNS SLC lookup rate                                                   │ 107.26845665299967  │ Accesses per 1K clks        │
+│ HNS SLC miss rate with filters = hbt_lbt_filter.all_requests_selected │ 375.2364044141641   │ Misses per 1K clks          │
+└───────────────────────────────────────────────────────────────────────┴─────────────────────┴─────────────────────────────┘
+                                       HNF/HNS Queue Occupancy Analysis                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric                                                                         ┃ Value             ┃ Units ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ HNS POCQ average buffer occupancy with filters = occupancy_filter.all_requests │ 6588.612155394466 │ None  │
+└────────────────────────────────────────────────────────────────────────────────┴───────────────────┴───────┘
+                           RNI/RND First Order Egress Request Analysis                            
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                             ┃ Value              ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ RND Egress replayed request rate on CHI interface. │ 1962.7329835801013 │ Requests per 1K clks │
+│ RND Egress Request rate                            │ 1707.9919284125922 │ Requests per 1K clks │
+│ RND Egress retried request rate on CHI interface.  │ 332.88225134893037 │ Requests per 1K clks │
+│ RND retry ratio compared to request count.         │ 83.07628395238474  │ Percentage           │
+│ RNI Egress replayed request rate on CHI interface. │ 1962.7329835801013 │ Requests per 1K clks │
+│ RNI Egress Request rate                            │ 22785.793865564254 │ Requests per 1K clks │
+│ RNI Egress retried request rate on CHI interface.  │ 332.88225134893037 │ Requests per 1K clks │
+│ RNI retry ratio compared to request count.         │ 83.07628395238474  │ Percentage           │
+└────────────────────────────────────────────────────┴────────────────────┴──────────────────────┘
+          RNI/RND First Order Queue Occupancy Analysis           
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric                            ┃ Value             ┃ Units ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ RNI RRT average buffer occupancy. │ 3132.897817805891 │ None  │
+│ RNI WRT average buffer occupancy. │ 10471.7357105054  │ None  │
+└───────────────────────────────────┴───────────────────┴───────┘
+                       HNI/HNP First Order Ingress Request Analysis                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                      ┃ Value              ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNI Ingress request rate on CHI interface.  │ 6181.057213061748  │ Requests per 1K clks │
+│ HNI Ingress request rate retried by HNI RRT │ 30.393574319774796 │ None                 │
+└─────────────────────────────────────────────┴────────────────────┴──────────────────────┘
+                            HNI/HNP First Order Egress Request Analysis                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                                 ┃ Value              ┃ Units              ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ HNI Egress read request stall rate on AXI interfaces.  │ 146.05923341158913 │ Stalls per 1K clks │
+│ HNI Egress write data stall rate on AXI interfaces.    │ 1782.241602490489  │ Stalls per 1K clks │
+│ HNI Egress write request stall rate on AXI interfaces. │ 1696.1221461259097 │ Stalls per 1K clks │
+└────────────────────────────────────────────────────────┴────────────────────┴────────────────────┘
+              HNI/HNP First Order Queue Occupancy Analysis              
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric                                  ┃ Value              ┃ Units ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ HNI RDT read average buffer occupancy.  │ 10011.078226847947 │ None  │
+│ HNI RDT write average buffer occupancy. │ 5711.183352268258  │ None  │
+│ HNI RRT read average buffer occupancy.  │ 6463.1137087423285 │ None  │
+│ HNI RRT write average buffer occupancy. │ 651.7313402880434  │ None  │
+│ HNI WDB average buffer occupancy.       │ 10424.33691002438  │ None  │
+└─────────────────────────────────────────┴────────────────────┴───────┘
+                                            CCG First Order CXS Link Utilization Analysis                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                                                                   ┃ Value              ┃ Units              ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ Average size of CXS flits received at CCG LA.                                            │ 577.5186998408983  │ Bytes              │
+│ Average size of CXS flits transmitted at CCG LA.                                         │ 95.0689977708171   │ Bytes              │
+│ Average stall rate of CXS flits transmitted at CCG LA due to CXS Lcredit unavailability. │ 2321.636980698857  │ Stalls per 1K clks │
+│ Rate of CXS flits received at CCG LA.                                                    │ 2411.6049923872856 │ Flit per 1K clks   │
+│ Rate of CXS flits transmitted at CCG LA.                                                 │ 2165.7291009934556 │ Flit per 1K clks   │
+└──────────────────────────────────────────────────────────────────────────────────────────┴────────────────────┴────────────────────┘
+                    CCG First Order CHI Ingress Request Analysis                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                         ┃ Value              ┃ Units                       ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ CCG Egress Retry response rate │ 2566.3869714739762 │ Retry responses per 1K clks │
+│ CCG Ingress request rate       │ 4597.5457165569505 │ Requests per 1K clks        │
+└────────────────────────────────┴────────────────────┴─────────────────────────────┘
+                     CCG First Order CHI Egress Request Analysis                      
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                          ┃ Value              ┃ Units                       ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ CCG Egress request rate         │ 3622.8846030765285 │ Requests per 1K clks        │
+│ CCG Ingress Retry response rate │ 6752.442240019117  │ Retry responses per 1K clks │
+└─────────────────────────────────┴────────────────────┴─────────────────────────────┘
+                  CCG First Order Queue Occupancy Analysis                  
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric                                      ┃ Value              ┃ Units ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ CCG HA REQ tracker average buffer occupancy │ 584.2565148767075  │ None  │
+│ CCG HA SNP tracker average buffer occupancy │ 133.75613877170179 │ None  │
+│ CCG RA REQ tracker average buffer occupancy │ 221.37169646132378 │ None  │
+│ CCG RA SNP tracker average buffer occupancy │ 546.8936677484095  │ None  │
+└─────────────────────────────────────────────┴────────────────────┴───────┘
+                                                 Stage Two HNF/HNS POCQ Effectiveness                                                 
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                                                         ┃ Value               ┃ Units                       ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS Ingress request rate retried by HNS POCQ                                   │ 2553.573585074931   │ Retry responses per 1K clks │
+│ HNS POCQ address hazard rate                                                   │ 890.9881089455198   │ Addr hazard per 1K clks     │
+│ HNS POCQ address hazard ratio                                                  │ -71.13652035809001  │ Percentage                  │
+│ HNS POCQ average buffer occupancy with filters = occupancy_filter.all_requests │ 6588.612155394466   │ None                        │
+│ HNS POCQ driven ratio of retries compared to request count.                    │ -203.87740026693336 │ Percentage                  │
+└────────────────────────────────────────────────────────────────────────────────┴─────────────────────┴─────────────────────────────┘
+                                          Stage Two HNF/HNS SLC Effectiveness                                          
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                                                 ┃ Value               ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS SLC hit rate with filters = hbt_lbt_filter.all_requests_selected   │ -267.96794776116445 │ Hits per 1K clks     │
+│ HNS SLC hit ratio with filters = hbt_lbt_filter.all_requests_selected  │ -249.81057444315428 │ Percentage           │
+│ HNS SLC lookup rate                                                    │ 107.26845665299967  │ Accesses per 1K clks │
+│ HNS SLC miss ratio with filters = hbt_lbt_filter.all_requests_selected │ 349.8105744431543   │ Percentage           │
+└────────────────────────────────────────────────────────────────────────┴─────────────────────┴──────────────────────┘
+                           Stage Two HNF/HNS SF Effectiveness                           
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                          ┃ Value               ┃ Units                        ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS Egress forwarded snoop rate │ 2109.7107665224494  │ Forwarded snoops per 1K clks │
+│ HNS SF hit rate                 │ 1583.3962940105523  │ Hits per 1K clks             │
+│ HNS SF hit ratio                │ 1476.1061577800501  │ Percentage                   │
+│ HNS SF lookup rate              │ 107.26845665299967  │ Accesses per 1K clks         │
+│ HNS SF miss rate                │ -1476.1278373575526 │ Misses per 1K clks           │
+│ HNS SF miss ratio               │ -1376.1061577800501 │ Percentage                   │
+│ HNS SF snoop sent rate          │ 1585.2394387904146  │ Snoops per 1K clks           │
+└─────────────────────────────────┴─────────────────────┴──────────────────────────────┘
+Topdown Metrics CMN-700 R0P0 at index 1
+     CMN Requestor Target Characterization Level One     
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric                 ┃ Value                ┃ Units ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ CCG Request Proportion │ 0.04250548255564924  │ None  │
+│ RND Request Proportion │ 0.024035998131660793 │ None  │
+│ RNF Request Proportion │ 0.6943958438640647   │ None  │
+│ RNI Request Proportion │ 0.23906267544862517  │ None  │
+└────────────────────────┴──────────────────────┴───────┘
+            CMN Requestor Target Characterization Level Two            
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric                                ┃ Value               ┃ Units ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ Local Destination Request Proportion  │ 0.8876584108730106  │ None  │
+│ Remote Destination Request Proportion │ 0.11234158912698934 │ None  │
+└───────────────────────────────────────┴─────────────────────┴───────┘
+         CMN Requestor Target Characterization Level Three         
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric                           ┃ Value                ┃ Units ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ CCG Target Proportion            │ 0.10865809517289152  │ None  │
+│ IO Target Proportion             │ 0.17624871902151798  │ None  │
+│ Peer CPU Cache Target Proportion │ 0.006883007586781433 │ None  │
+│ SLC Target Proportion            │ 0.032788337629210976 │ None  │
+│ SNF Target Proportion            │ 0.6823048481763794   │ None  │
+└──────────────────────────────────┴──────────────────────┴───────┘
+                           CMN Requestor Bandwidth                            
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
+┃ Metric                        ┃ Value                   ┃ Units            ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━┩
+│ Bandwidth Metrics for CCG-C2C │ -4992718302190188.0     │ Bytes per second │
+│ Bandwidth Metrics for RND     │ -2226563005353958.2     │ Bytes per second │
+│ Bandwidth Metrics for RNF     │ 3.593225705961918e+16   │ Bytes per second │
+│ Bandwidth Metrics for RNI     │ -2.1856795206864516e+16 │ Bytes per second │
+└───────────────────────────────┴─────────────────────────┴──────────────────┘
+                               CMN Completer Bandwidth                                
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                    ┃ Value               ┃ Units            ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━┩
+│ Bandwidth Metrics for CCG-C2C Destination │ -4681968592154207.0 │ Bytes per second │
+│ Bandwidth Metrics for CCG-CXL             │ -4681968592154207.0 │ Bytes per second │
+│ Bandwidth Metrics for CMN                 │ -8415231223762972.0 │ Bytes per second │
+│ Bandwidth Metrics for DRAM                │ 58412514141472.914  │ Bytes per second │
+│ Bandwidth Metrics for IO                  │ 726718380878902.1   │ Bytes per second │
+│ Bandwidth Metrics for peer CPU cache      │ 28380394233857.18   │ Bytes per second │
+│ Bandwidth Metrics for SLC                 │ 135194671291210.16  │ Bytes per second │
+└───────────────────────────────────────────┴─────────────────────┴──────────────────┘
+                         HNF/HNS Transaction Mix Shared Read Rate                          
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                      ┃ Value              ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS Ingress ReadNotSharedDirty request rate │ 35331.818854650315 │ Requests per 1K clks │
+│ HNS Ingress ReadOnce request rate           │ 36696.84538343133  │ Requests per 1K clks │
+└─────────────────────────────────────────────┴────────────────────┴──────────────────────┘
+                        HNF/HNS Transaction Mix Data Update Rate                         
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                    ┃ Value              ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS Ingress MakeReadUnique request rate   │ 40033.56274468454  │ Requests per 1K clks │
+│ HNS Ingress MakeUnique request rate       │ 35238.036149356805 │ Requests per 1K clks │
+│ HNS Ingress ReadPreferUnique request rate │ 35989.41043179339  │ Requests per 1K clks │
+│ HNS Ingress ReadUnique request rate       │ 35585.84926697738  │ Requests per 1K clks │
+│ HNS Ingress WriteNoSnoopFull request rate │ 33674.94272967638  │ Requests per 1K clks │
+│ HNS Ingress WriteUniqueFull request rate  │ 36375.28561081543  │ Requests per 1K clks │
+└───────────────────────────────────────────┴────────────────────┴──────────────────────┘
+                          HNF/HNS Transaction Mix Writeback Rate                          
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                     ┃ Value              ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS Ingress Evict request rate             │ 33867.40122665005  │ Requests per 1K clks │
+│ HNS Ingress WriteBackFull request rate     │ 37165.37490275833  │ Requests per 1K clks │
+│ HNS Ingress WriteEvictOrEvict request rate │ 34746.402536398404 │ Requests per 1K clks │
+└────────────────────────────────────────────┴────────────────────┴──────────────────────┘
+                            HNF/HNS Transaction Mix RFO Rate                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                    ┃ Value              ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS Ingress MakeReadUnique request rate   │ 40033.56274468454  │ Requests per 1K clks │
+│ HNS Ingress MakeUnique request rate       │ 35238.036149356805 │ Requests per 1K clks │
+│ HNS Ingress ReadPreferUnique request rate │ 35989.41043179339  │ Requests per 1K clks │
+│ HNS Ingress ReadUnique request rate       │ 35585.84926697738  │ Requests per 1K clks │
+└───────────────────────────────────────────┴────────────────────┴──────────────────────┘
+                                           HNF/HNS Ratio Analysis                                            
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┓
+┃ Metric                                                                 ┃ Value               ┃ Units      ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━┩
+│ HNS POCQ address hazard ratio                                          │ -231.81683129670404 │ Percentage │
+│ HNS POCQ driven ratio of retries compared to request count.            │ -497.24857555514393 │ Percentage │
+│ HNS retry ratio driven by memory controller                            │ 121.26352574193903  │ Percentage │
+│ HNS SF hit ratio                                                       │ 54.24707895717395   │ Percentage │
+│ HNS SF miss ratio                                                      │ 45.75292104282605   │ Percentage │
+│ HNS SLC hit ratio with filters = hbt_lbt_filter.all_requests_selected  │ 85.94796071378067   │ Percentage │
+│ HNS SLC miss ratio with filters = hbt_lbt_filter.all_requests_selected │ 14.052039286219328  │ Percentage │
+└────────────────────────────────────────────────────────────────────────┴─────────────────────┴────────────┘
+                                                   HNF/HNS Rate Analysis                                                    
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                                                ┃ Value              ┃ Units                       ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS Egress Request rate                                               │ 939.2847984297362  │ Requests per 1K clks        │
+│ HNS Egress Request rate excluding retries                             │ 424.50955044675084 │ Requests per 1K clks        │
+│ HNS Egress request rate retried by memory controller                  │ 514.7752479829853  │ Requests per 1K clks        │
+│ HNS Ingress Request rate                                              │ 29080.114596851716 │ Requests per 1K clks        │
+│ HNS Ingress request rate retried by HNS POCQ                          │ 1395.6957392980864 │ Retry responses per 1K clks │
+│ HNS POCQ address hazard rate                                          │ 650.6720775965551  │ Addr hazard per 1K clks     │
+│ HNS SF hit rate                                                       │ 620.1288286067016  │ Hits per 1K clks            │
+│ HNS SF lookup rate                                                    │ 1143.1561671666607 │ Accesses per 1K clks        │
+│ HNS SF miss rate                                                      │ 523.0273385599588  │ Misses per 1K clks          │
+│ HNS SF snoop sent rate                                                │ 164.48715354704845 │ Snoops per 1K clks          │
+│ HNS SLC hit rate with filters = hbt_lbt_filter.all_requests_selected  │ 982.5194134535622  │ Hits per 1K clks            │
+│ HNS SLC lookup rate                                                   │ 1143.1561671666607 │ Accesses per 1K clks        │
+│ HNS SLC miss rate with filters = hbt_lbt_filter.all_requests_selected │ 160.63675371309824 │ Misses per 1K clks          │
+└───────────────────────────────────────────────────────────────────────┴────────────────────┴─────────────────────────────┘
+                                       HNF/HNS Queue Occupancy Analysis                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric                                                                         ┃ Value              ┃ Units ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ HNS POCQ average buffer occupancy with filters = occupancy_filter.all_requests │ 4347.9964001864155 │ None  │
+└────────────────────────────────────────────────────────────────────────────────┴────────────────────┴───────┘
+                           RNI/RND First Order Egress Request Analysis                            
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                             ┃ Value              ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ RND Egress replayed request rate on CHI interface. │ 826.3806277138499  │ Requests per 1K clks │
+│ RND Egress Request rate                            │ 1235.7602940256295 │ Requests per 1K clks │
+│ RND Egress retried request rate on CHI interface.  │ 349.5126320477538  │ Requests per 1K clks │
+│ RND retry ratio compared to request count.         │ 135.6070740477362  │ Percentage           │
+│ RNI Egress replayed request rate on CHI interface. │ 826.3806277138499  │ Requests per 1K clks │
+│ RNI Egress Request rate                            │ 12290.904687407463 │ Requests per 1K clks │
+│ RNI Egress retried request rate on CHI interface.  │ 349.5126320477538  │ Requests per 1K clks │
+│ RNI retry ratio compared to request count.         │ 135.6070740477362  │ Percentage           │
+└────────────────────────────────────────────────────┴────────────────────┴──────────────────────┘
+          RNI/RND First Order Queue Occupancy Analysis           
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric                            ┃ Value             ┃ Units ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ RNI RRT average buffer occupancy. │ 17446.07748730548 │ None  │
+│ RNI WRT average buffer occupancy. │ 4728.076102354614 │ None  │
+└───────────────────────────────────┴───────────────────┴───────┘
+                       HNI/HNP First Order Ingress Request Analysis                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                      ┃ Value              ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNI Ingress request rate on CHI interface.  │ 5281.383581968766  │ Requests per 1K clks │
+│ HNI Ingress request rate retried by HNI RRT │ 1175.4769295077865 │ None                 │
+└─────────────────────────────────────────────┴────────────────────┴──────────────────────┘
+                            HNI/HNP First Order Egress Request Analysis                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                                 ┃ Value              ┃ Units              ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ HNI Egress read request stall rate on AXI interfaces.  │ 1342.6054680128495 │ Stalls per 1K clks │
+│ HNI Egress write data stall rate on AXI interfaces.    │ 370.91714405357556 │ Stalls per 1K clks │
+│ HNI Egress write request stall rate on AXI interfaces. │ 249.78654197565996 │ Stalls per 1K clks │
+└────────────────────────────────────────────────────────┴────────────────────┴────────────────────┘
+              HNI/HNP First Order Queue Occupancy Analysis              
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric                                  ┃ Value              ┃ Units ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ HNI RDT read average buffer occupancy.  │ 4647.525293909596  │ None  │
+│ HNI RDT write average buffer occupancy. │ 2975.4221820437638 │ None  │
+│ HNI RRT read average buffer occupancy.  │ 3329.735065702526  │ None  │
+│ HNI RRT write average buffer occupancy. │ 321.332369481762   │ None  │
+│ HNI WDB average buffer occupancy.       │ 3321.0852202863593 │ None  │
+└─────────────────────────────────────────┴────────────────────┴───────┘
+                                            CCG First Order CXS Link Utilization Analysis                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                                                                   ┃ Value              ┃ Units              ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ Average size of CXS flits received at CCG LA.                                            │ 249.2961386388788  │ Bytes              │
+│ Average size of CXS flits transmitted at CCG LA.                                         │ 299.50922394745635 │ Bytes              │
+│ Average stall rate of CXS flits transmitted at CCG LA due to CXS Lcredit unavailability. │ 1120.8788294523952 │ Stalls per 1K clks │
+│ Rate of CXS flits received at CCG LA.                                                    │ 464.68070530709343 │ Flit per 1K clks   │
+│ Rate of CXS flits transmitted at CCG LA.                                                 │ 674.6511309120331  │ Flit per 1K clks   │
+└──────────────────────────────────────────────────────────────────────────────────────────┴────────────────────┴────────────────────┘
+                    CCG First Order CHI Ingress Request Analysis                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                         ┃ Value              ┃ Units                       ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ CCG Egress Retry response rate │ 3598.4292163563837 │ Retry responses per 1K clks │
+│ CCG Ingress request rate       │ 3255.995748962274  │ Requests per 1K clks        │
+└────────────────────────────────┴────────────────────┴─────────────────────────────┘
+                     CCG First Order CHI Egress Request Analysis                      
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                          ┃ Value              ┃ Units                       ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ CCG Egress request rate         │ 2185.3299926613445 │ Requests per 1K clks        │
+│ CCG Ingress Retry response rate │ 3445.6981938987774 │ Retry responses per 1K clks │
+└─────────────────────────────────┴────────────────────┴─────────────────────────────┘
+                  CCG First Order Queue Occupancy Analysis                  
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric                                      ┃ Value              ┃ Units ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ CCG HA REQ tracker average buffer occupancy │ 158.5520210514267  │ None  │
+│ CCG HA SNP tracker average buffer occupancy │ 33.42933289171499  │ None  │
+│ CCG RA REQ tracker average buffer occupancy │ 130.28233926330606 │ None  │
+│ CCG RA SNP tracker average buffer occupancy │ 368.21663391970884 │ None  │
+└─────────────────────────────────────────────┴────────────────────┴───────┘
+                                                 Stage Two HNF/HNS POCQ Effectiveness                                                 
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                                                         ┃ Value               ┃ Units                       ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS Ingress request rate retried by HNS POCQ                                   │ 1395.6957392980864  │ Retry responses per 1K clks │
+│ HNS POCQ address hazard rate                                                   │ 650.6720775965551   │ Addr hazard per 1K clks     │
+│ HNS POCQ address hazard ratio                                                  │ -231.81683129670404 │ Percentage                  │
+│ HNS POCQ average buffer occupancy with filters = occupancy_filter.all_requests │ 4347.9964001864155  │ None                        │
+│ HNS POCQ driven ratio of retries compared to request count.                    │ -497.24857555514393 │ Percentage                  │
+└────────────────────────────────────────────────────────────────────────────────┴─────────────────────┴─────────────────────────────┘
+                                         Stage Two HNF/HNS SLC Effectiveness                                          
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                                                 ┃ Value              ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS SLC hit rate with filters = hbt_lbt_filter.all_requests_selected   │ 982.5194134535622  │ Hits per 1K clks     │
+│ HNS SLC hit ratio with filters = hbt_lbt_filter.all_requests_selected  │ 85.94796071378067  │ Percentage           │
+│ HNS SLC lookup rate                                                    │ 1143.1561671666607 │ Accesses per 1K clks │
+│ HNS SLC miss ratio with filters = hbt_lbt_filter.all_requests_selected │ 14.052039286219328 │ Percentage           │
+└────────────────────────────────────────────────────────────────────────┴────────────────────┴──────────────────────┘
+                          Stage Two HNF/HNS SF Effectiveness                           
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                          ┃ Value              ┃ Units                        ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS Egress forwarded snoop rate │ 206.25286507163648 │ Forwarded snoops per 1K clks │
+│ HNS SF hit rate                 │ 620.1288286067016  │ Hits per 1K clks             │
+│ HNS SF hit ratio                │ 54.24707895717395  │ Percentage                   │
+│ HNS SF lookup rate              │ 1143.1561671666607 │ Accesses per 1K clks         │
+│ HNS SF miss rate                │ 523.0273385599588  │ Misses per 1K clks           │
+│ HNS SF miss ratio               │ 45.75292104282605  │ Percentage                   │
+│ HNS SF snoop sent rate          │ 164.48715354704845 │ Snoops per 1K clks           │
+└─────────────────────────────────┴────────────────────┴──────────────────────────────┘

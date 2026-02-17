@@ -1,0 +1,1 @@
+MetricDetails(title='HNF Egress forwarded snoop rate', description='This metric represents the rate at which HNF transmits forwarded snoops at the CHI interface', sample_events=['PMU_HNF_SNP_FWDED'], formula='PMU_HNF_SNP_FWDED / SYS_CMN_CYCLES * 1000', units='Forwarded snoops per 1K clks')

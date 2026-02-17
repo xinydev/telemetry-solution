@@ -1,0 +1,86 @@
+Regular Metrics CMN-700 R0P0 at index 0
+                                                      HNS Analysis Rate                                                      
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                                                ┃ Global              ┃ Units                       ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS Egress request rate retried by memory controller                  │ 358.9466581723476   │ Requests per 1K clks        │
+│ HNS Egress Request rate excluding retries                             │ 715.4831256627087   │ Requests per 1K clks        │
+│ HNS POCQ address hazard rate                                          │ 890.9881089455198   │ Addr hazard per 1K clks     │
+│ HNS Ingress request rate retried by HNS POCQ                          │ 2553.573585074931   │ Retry responses per 1K clks │
+│ HNS SF hit rate                                                       │ 1583.3962940105523  │ Hits per 1K clks            │
+│ HNS SF lookup rate                                                    │ 107.26845665299967  │ Accesses per 1K clks        │
+│ HNS SF miss rate                                                      │ -1476.1278373575526 │ Misses per 1K clks          │
+│ HNS SF snoop sent rate                                                │ 1585.2394387904146  │ Snoops per 1K clks          │
+│ HNS SLC hit rate with filters = hbt_lbt_filter.all_requests_selected  │ -267.96794776116445 │ Hits per 1K clks            │
+│ HNS SLC lookup rate                                                   │ 107.26845665299967  │ Accesses per 1K clks        │
+│ HNS SLC miss rate with filters = hbt_lbt_filter.all_requests_selected │ 375.2364044141641   │ Misses per 1K clks          │
+│ HNS SLC miss rate with filters = hbt_lbt_filter.hbt_requests_selected │ 1175.9645027487154  │ Misses per 1K clks          │
+│ HNS SLC miss rate with filters = hbt_lbt_filter.lbt_requests_selected │ 2250.414871940632   │ Misses per 1K clks          │
+│ HNS Egress Request rate                                               │ 1074.4297838350565  │ Requests per 1K clks        │
+└───────────────────────────────────────────────────────────────────────┴─────────────────────┴─────────────────────────────┘
+                        RNF CHI Egress Traffic                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                  ┃ Global            ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ RNF Egress Request rate │ 67023.44330403264 │ Requests per 1K clks │
+└─────────────────────────┴───────────────────┴──────────────────────┘
+                                                         CCG LA Effectiveness                                                         
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                                                                   ┃ Global             ┃ Units              ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ Average size of CXS flits received at CCG LA.                                            │ 577.5186998408983  │ Bytes              │
+│ Rate of CXS flits received at CCG LA.                                                    │ 2411.6049923872856 │ Flit per 1K clks   │
+│ Average size of CXS flits transmitted at CCG LA.                                         │ 95.0689977708171   │ Bytes              │
+│ Rate of CXS flits transmitted at CCG LA.                                                 │ 2165.7291009934556 │ Flit per 1K clks   │
+│ Average stall rate of CXS flits transmitted at CCG LA due to CXS Lcredit unavailability. │ 2321.636980698857  │ Stalls per 1K clks │
+└──────────────────────────────────────────────────────────────────────────────────────────┴────────────────────┴────────────────────┘
+                                                            CCG Req Opcode Mix                                                            
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                                                                    ┃ Global              ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ CCG Ingress request rate for CHI request opcodes which cause read or write data movement. │ -56683.84156550422  │ Requests per 1K clks │
+│ CCG Egress request rate for CHI request opcodes which cause read or write data movement.  │ -57460.260931229386 │ Requests per 1K clks │
+└───────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────┴──────────────────────┘
+Regular Metrics CMN-700 R0P0 at index 1
+                                                     HNS Analysis Rate                                                      
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                                                ┃ Global             ┃ Units                       ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ HNS Egress request rate retried by memory controller                  │ 514.7752479829853  │ Requests per 1K clks        │
+│ HNS Egress Request rate excluding retries                             │ 424.50955044675084 │ Requests per 1K clks        │
+│ HNS POCQ address hazard rate                                          │ 650.6720775965551  │ Addr hazard per 1K clks     │
+│ HNS Ingress request rate retried by HNS POCQ                          │ 1395.6957392980864 │ Retry responses per 1K clks │
+│ HNS SF hit rate                                                       │ 620.1288286067016  │ Hits per 1K clks            │
+│ HNS SF lookup rate                                                    │ 1143.1561671666607 │ Accesses per 1K clks        │
+│ HNS SF miss rate                                                      │ 523.0273385599588  │ Misses per 1K clks          │
+│ HNS SF snoop sent rate                                                │ 164.48715354704845 │ Snoops per 1K clks          │
+│ HNS SLC hit rate with filters = hbt_lbt_filter.all_requests_selected  │ 982.5194134535622  │ Hits per 1K clks            │
+│ HNS SLC lookup rate                                                   │ 1143.1561671666607 │ Accesses per 1K clks        │
+│ HNS SLC miss rate with filters = hbt_lbt_filter.all_requests_selected │ 160.63675371309824 │ Misses per 1K clks          │
+│ HNS SLC miss rate with filters = hbt_lbt_filter.hbt_requests_selected │ 1362.5113478784588 │ Misses per 1K clks          │
+│ HNS SLC miss rate with filters = hbt_lbt_filter.lbt_requests_selected │ 803.4000061988307  │ Misses per 1K clks          │
+│ HNS Egress Request rate                                               │ 939.2847984297362  │ Requests per 1K clks        │
+└───────────────────────────────────────────────────────────────────────┴────────────────────┴─────────────────────────────┘
+                        RNF CHI Egress Traffic                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                  ┃ Global            ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ RNF Egress Request rate │ 35700.90193397514 │ Requests per 1K clks │
+└─────────────────────────┴───────────────────┴──────────────────────┘
+                                                         CCG LA Effectiveness                                                         
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                                                                   ┃ Global             ┃ Units              ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ Average size of CXS flits received at CCG LA.                                            │ 249.2961386388788  │ Bytes              │
+│ Rate of CXS flits received at CCG LA.                                                    │ 464.68070530709343 │ Flit per 1K clks   │
+│ Average size of CXS flits transmitted at CCG LA.                                         │ 299.50922394745635 │ Bytes              │
+│ Rate of CXS flits transmitted at CCG LA.                                                 │ 674.6511309120331  │ Flit per 1K clks   │
+│ Average stall rate of CXS flits transmitted at CCG LA due to CXS Lcredit unavailability. │ 1120.8788294523952 │ Stalls per 1K clks │
+└──────────────────────────────────────────────────────────────────────────────────────────┴────────────────────┴────────────────────┘
+                                                            CCG Req Opcode Mix                                                            
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                                                                    ┃ Global              ┃ Units                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ CCG Ingress request rate for CHI request opcodes which cause read or write data movement. │ -34025.93453600441  │ Requests per 1K clks │
+│ CCG Egress request rate for CHI request opcodes which cause read or write data movement.  │ -36284.289986847296 │ Requests per 1K clks │
+└───────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────┴──────────────────────┘

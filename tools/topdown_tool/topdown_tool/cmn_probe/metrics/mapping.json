@@ -1,0 +1,10 @@
+{
+    "0x43C": {
+        "product_version": "700",
+        "revisions": {
+            "0x0": "R0P0"
+        },
+        "windows_revision": "R0P0",
+        "linux_default_revision": "R0P0"
+    }
+}

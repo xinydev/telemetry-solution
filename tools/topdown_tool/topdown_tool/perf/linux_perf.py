@@ -15,12 +15,13 @@ Limitations:
 
 import logging
 import os
+from os.path import isdir, join
 from pathlib import Path
 from select import select
 import shlex
 from signal import SIGINT
 from subprocess import DEVNULL, PIPE, Popen
-from typing import Optional, Sequence, Tuple
+from typing import cast, Dict, IO, Optional, Sequence, Tuple, Union
 
 from topdown_tool.perf.linux_perf_base import LinuxPerfBase
 from topdown_tool.perf.perf import Perf, PerfEventGroup
@@ -243,3 +244,64 @@ class LinuxPerf(LinuxPerfBase):
         pmu_max = LinuxPerfBase._binary_search_pmu_max(check_pmu_availability)
         logging.info("Detected %d PMU counters on core %d", pmu_max, core)
         return pmu_max
+
+    @classmethod
+    def get_cmn_version(cls) -> Dict[int, Union[int, str]]:
+        """
+        Returns a mapping between CMN index and CMN version.
+
+        Returns
+        -------
+        Dict[int, Optional[str]]
+            Mapping between CMN index and CMN version
+        """
+        sysfs_path = "/sys/bus/event_source/devices"
+        search = "arm_cmn_"
+        cmns: Dict[int, Union[int, str]] = {}
+        for name in os.listdir(sysfs_path):
+            cmn_dir = join(sysfs_path, name)
+            if name.startswith(search) and isdir(cmn_dir):
+                index = int(name[len(search):])
+                with open(join(cmn_dir, "identifier"), encoding="ascii") as f:
+                    identifier = int(f.read(), 16)
+                cmns[index] = identifier
+        return cmns
+
+    @classmethod
+    def get_cmn_frequency(cls, cmn_index: int) -> float:
+        """
+        Get approximate CMN frequency. Frequency is measured using dtc_cycles
+        event with Perf. We assume that frequency is a constant.
+
+        Args:
+            cmn_index: CMN at given index to test.
+
+        Returns:
+            Frequency of a given CMN.
+        """
+        cmdline = [
+            cls._perf_path,
+            "stat",
+            "-e",
+            f"arm_cmn_{cmn_index}/dtc_cycles/",
+            "-x",
+            "\\t",
+            "--timeout",
+            "100",
+        ]
+        with Popen(cmdline, stdin=DEVNULL, stdout=DEVNULL, stderr=PIPE, text=True) as process:
+            lines = cast(IO[str], process.stderr).readlines()
+        assert len(lines) == 1
+        row = lines[0].split("\t")
+        value = float(row[0])
+        run_time_ns = float(row[3])
+        return value * 1.0e9 / run_time_ns
+
+    @classmethod
+    def get_cmn_mux_interval(cls, cmn_index: int) -> int:
+        with open(
+            f"/sys/bus/event_source/devices/arm_cmn_{cmn_index}/perf_event_mux_interval_ms",
+            encoding="utf-8",
+        ) as f:
+            mux_interval = int(f.read().strip())
+        return mux_interval

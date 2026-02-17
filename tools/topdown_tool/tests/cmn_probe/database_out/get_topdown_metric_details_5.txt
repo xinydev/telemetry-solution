@@ -1,0 +1,1 @@
+TopdownMetricDetails(title='Bandwidth Metrics for peer CPU cache', description='Total bandwidth delivered by all peer CPU caches', formula='(cmn_hnf_fwded_snp_rate + cmn_hns_fwded_snp_rate) * 64 * SYS_FREQUENCY', units='Bytes per second', base_metrics=['cmn_hnf_fwded_snp_rate', 'cmn_hns_fwded_snp_rate'], topdown_metrics=[])

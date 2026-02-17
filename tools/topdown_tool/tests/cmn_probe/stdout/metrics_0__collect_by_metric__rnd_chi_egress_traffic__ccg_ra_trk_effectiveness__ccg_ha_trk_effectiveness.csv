@@ -1,0 +1,9 @@
+run,time,level,stage,group,metric,node,nodeid,value,interrupted,units
+1,,,,RND_CHI_Egress_Traffic,cmn_rnd_txreq_rate,Global,,1707.9919284125922,,Requests per 1K clks
+1,,,,RND_CHI_Egress_Traffic,cmn_rnd_txreq_replay_rate,Global,,1962.7329835801013,,Requests per 1K clks
+1,,,,RND_CHI_Egress_Traffic,cmn_rnd_txreq_retry_rate,Global,,332.88225134893037,,Requests per 1K clks
+1,,,,RND_CHI_Egress_Traffic,cmn_rnd_txreq_retry_ratio,Global,,83.07628395238474,,Percentage
+1,,,,CCG_RA_TRK_Effectiveness,cmn_ccgra_reqtrk_avg_occupancy,Global,,221.37169646132378,,None
+1,,,,CCG_RA_TRK_Effectiveness,cmn_ccgra_snptrk_avg_occupancy,Global,,546.8936677484095,,None
+1,,,,CCG_HA_TRK_Effectiveness,cmn_ccgha_reqtrk_avg_occupancy,Global,,584.2565148767075,,None
+1,,,,CCG_HA_TRK_Effectiveness,cmn_ccgha_snptrk_avg_occupancy,Global,,133.75613877170179,,None

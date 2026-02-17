@@ -1,0 +1,1 @@
+TopdownMetricDetails(title='CCG Target Proportion', description='Proportion of the traffic serviced through CCGs', formula='cmn_ccg_rxreq_rate / total_target_rate', units='None', base_metrics=['cmn_ccg_rxreq_rate'], topdown_metrics=['total_target_rate'])

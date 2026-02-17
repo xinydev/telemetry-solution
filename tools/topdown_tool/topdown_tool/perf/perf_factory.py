@@ -12,7 +12,7 @@ import sys
 import shutil
 import logging
 from dataclasses import dataclass
-from typing import Type, Optional, Any, Dict, cast
+from typing import Type, Optional, Any, Dict, Union, cast
 import argparse
 
 from topdown_tool.perf.perf import Perf
@@ -252,3 +252,14 @@ class PerfFactory:
     ) -> None:
         assert self._impl_class is WindowsPerf
         cast(WindowsPerf, self._impl_class).register_parser_for_class(probe_class, parser_class)
+
+    def get_cmn_version(self) -> Dict[int, Union[int, str]]:
+        """Get a mapping between CMN index (required) and CMN version (if resolution is supported by
+        perf implementation). If perf implementation doesn't support version resolution, reported
+        versions will be None, but CMN indices will still be resolved correctly.
+
+        Returns:
+            Dict[int, Optional[str]]: mapping between CMN index and (optional, if supported by perf
+            implementation) CMN version
+        """
+        return self._current_impl.get_cmn_version()

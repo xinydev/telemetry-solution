@@ -1,0 +1,1 @@
+TopdownMetricDetails(title='Remote Destination Request Proportion', description='Proportion of the traffic that targeted remote destinations', formula='cmn_ccg_rxreq_rate / total_requestor_destination_rate', units='None', base_metrics=['cmn_ccg_rxreq_rate'], topdown_metrics=['total_requestor_destination_rate'])

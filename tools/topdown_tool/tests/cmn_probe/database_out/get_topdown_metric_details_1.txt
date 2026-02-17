@@ -1,0 +1,1 @@
+TopdownMetricDetails(title='Bandwidth Metrics for CCG-C2C Destination', description='Total bandwidth delivered by all remote completers', formula='cmn_ccg_rxreq_withdata_rate * 64 * SYS_FREQUENCY', units='Bytes per second', base_metrics=['cmn_ccg_rxreq_withdata_rate'], topdown_metrics=[])

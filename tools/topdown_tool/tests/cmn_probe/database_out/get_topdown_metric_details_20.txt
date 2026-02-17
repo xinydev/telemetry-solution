@@ -1,0 +1,1 @@
+TopdownMetricDetails(title='Peer CPU Cache Target Proportion', description='Proportion of the traffic serviced by peer CPU caches', formula='(cmn_hnf_fwded_snp_rate + cmn_hns_fwded_snp_rate) / total_target_rate', units='None', base_metrics=['cmn_hnf_fwded_snp_rate', 'cmn_hns_fwded_snp_rate'], topdown_metrics=['total_target_rate'])

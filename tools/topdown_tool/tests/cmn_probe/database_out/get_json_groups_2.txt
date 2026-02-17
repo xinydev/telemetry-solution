@@ -1,0 +1,1 @@
+[JsonGroup(name='SNF_Ingress_Traffic', title='SNF Ingress Traffic', description='This metric group monitors the SNF Ingress Traffic', metrics=['cmn_snf_rxreq_rate', 'cmn_snf_rxreq_withdata_rate', 'cmn_snf_txrsp_retry_rate'])]

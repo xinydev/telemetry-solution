@@ -1,0 +1,33 @@
+run,time,level,stage,group,metric,node,nodeid,value,interrupted,units
+1,,,,RND_CHI_Egress_Traffic,cmn_rnd_txreq_rate,Global,,1235.7602940256295,,Requests per 1K clks
+1,,,,RND_CHI_Egress_Traffic,cmn_rnd_txreq_rate,XP 0x000 Port #2,4,28.86818727636809,,Requests per 1K clks
+1,,,,RND_CHI_Egress_Traffic,cmn_rnd_txreq_rate,XP 0x3C0 Port #1,962,1206.8921067492615,,Requests per 1K clks
+1,,,,RND_CHI_Egress_Traffic,cmn_rnd_txreq_replay_rate,Global,,826.3806277138499,,Requests per 1K clks
+1,,,,RND_CHI_Egress_Traffic,cmn_rnd_txreq_replay_rate,XP 0x000 Port #2 Node 0x004,4,424.0860852235893,,Requests per 1K clks
+1,,,,RND_CHI_Egress_Traffic,cmn_rnd_txreq_replay_rate,XP 0x3C0 Port #1 Node 0x3C2,962,1192.6787296713653,,Requests per 1K clks
+1,,,,RND_CHI_Egress_Traffic,cmn_rnd_txreq_retry_rate,Global,,349.5126320477538,,Requests per 1K clks
+1,,,,RND_CHI_Egress_Traffic,cmn_rnd_txreq_retry_rate,XP 0x000 Port #2 Node 0x004,4,259.5028192016496,,Requests per 1K clks
+1,,,,RND_CHI_Egress_Traffic,cmn_rnd_txreq_retry_rate,XP 0x3C0 Port #1 Node 0x3C2,962,1091.7172099527622,,Requests per 1K clks
+1,,,,RND_CHI_Egress_Traffic,cmn_rnd_txreq_retry_ratio,Global,,135.6070740477362,,Percentage
+1,,,,RND_CHI_Egress_Traffic,cmn_rnd_txreq_retry_ratio,XP 0x000 Port #2 Node 0x004,4,85.46588913816979,,Percentage
+1,,,,RND_CHI_Egress_Traffic,cmn_rnd_txreq_retry_ratio,XP 0x3C0 Port #1 Node 0x3C2,962,-873.2891065461581,,Percentage
+1,,,,CCG_RA_TRK_Effectiveness,cmn_ccgra_reqtrk_avg_occupancy,Global,,130.28233926330606,,None
+1,,,,CCG_RA_TRK_Effectiveness,cmn_ccgra_reqtrk_avg_occupancy,XP 0x080 Port #2 Node 0x084,132,162.96299133289244,,None
+1,,,,CCG_RA_TRK_Effectiveness,cmn_ccgra_reqtrk_avg_occupancy,XP 0x180 Port #2 Node 0x184,388,354.64479273153,,None
+1,,,,CCG_RA_TRK_Effectiveness,cmn_ccgra_reqtrk_avg_occupancy,XP 0x2C0 Port #2 Node 0x2C4,708,258.2580852931441,,None
+1,,,,CCG_RA_TRK_Effectiveness,cmn_ccgra_reqtrk_avg_occupancy,XP 0x3C0 Port #2 Node 0x3C4,964,373.20286438841293,,None
+1,,,,CCG_RA_TRK_Effectiveness,cmn_ccgra_snptrk_avg_occupancy,Global,,368.21663391970884,,None
+1,,,,CCG_RA_TRK_Effectiveness,cmn_ccgra_snptrk_avg_occupancy,XP 0x080 Port #2 Node 0x084,132,198.08710256304147,,None
+1,,,,CCG_RA_TRK_Effectiveness,cmn_ccgra_snptrk_avg_occupancy,XP 0x180 Port #2 Node 0x184,388,346.1123102552127,,None
+1,,,,CCG_RA_TRK_Effectiveness,cmn_ccgra_snptrk_avg_occupancy,XP 0x2C0 Port #2 Node 0x2C4,708,350.18798426061034,,None
+1,,,,CCG_RA_TRK_Effectiveness,cmn_ccgra_snptrk_avg_occupancy,XP 0x3C0 Port #2 Node 0x3C4,964,84.05000863685362,,None
+1,,,,CCG_HA_TRK_Effectiveness,cmn_ccgha_reqtrk_avg_occupancy,Global,,158.5520210514267,,None
+1,,,,CCG_HA_TRK_Effectiveness,cmn_ccgha_reqtrk_avg_occupancy,XP 0x080 Port #2 Node 0x084,132,297.88193704724074,,None
+1,,,,CCG_HA_TRK_Effectiveness,cmn_ccgha_reqtrk_avg_occupancy,XP 0x180 Port #2 Node 0x184,388,83.77547104586137,,None
+1,,,,CCG_HA_TRK_Effectiveness,cmn_ccgha_reqtrk_avg_occupancy,XP 0x2C0 Port #2 Node 0x2C4,708,203.1436496572173,,None
+1,,,,CCG_HA_TRK_Effectiveness,cmn_ccgha_reqtrk_avg_occupancy,XP 0x3C0 Port #2 Node 0x3C4,964,267.8682763278942,,None
+1,,,,CCG_HA_TRK_Effectiveness,cmn_ccgha_snptrk_avg_occupancy,Global,,33.42933289171499,,None
+1,,,,CCG_HA_TRK_Effectiveness,cmn_ccgha_snptrk_avg_occupancy,XP 0x080 Port #2 Node 0x084,132,292.8460966117194,,None
+1,,,,CCG_HA_TRK_Effectiveness,cmn_ccgha_snptrk_avg_occupancy,XP 0x180 Port #2 Node 0x184,388,240.00822468590914,,None
+1,,,,CCG_HA_TRK_Effectiveness,cmn_ccgha_snptrk_avg_occupancy,XP 0x2C0 Port #2 Node 0x2C4,708,72.17485101801456,,None
+1,,,,CCG_HA_TRK_Effectiveness,cmn_ccgha_snptrk_avg_occupancy,XP 0x3C0 Port #2 Node 0x3C4,964,332.0111314240508,,None

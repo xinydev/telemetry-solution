@@ -1,0 +1,1562 @@
+run,time,level,stage,group,metric,node,nodeid,value,interrupted,units
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,Global,,358.9466581723476,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x088 Port #0 Node 0x088,136,567.3542265800919,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x088 Port #0 Node 0x089,137,730.5673891708919,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x090 Port #0 Node 0x090,144,1930.4474218967453,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x090 Port #0 Node 0x091,145,2058.3802784659065,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x098 Port #0 Node 0x098,152,1277.8158288423333,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x098 Port #0 Node 0x099,153,44.00604972688595,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x0A0 Port #0 Node 0x0A0,160,144.84405778504174,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x0A0 Port #0 Node 0x0A1,161,792.8259071086594,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x0A8 Port #0 Node 0x0A8,168,1617.804443088454,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x0A8 Port #0 Node 0x0A9,169,2084.745211037974,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x0B0 Port #0 Node 0x0B0,176,61.12187921387653,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x0B0 Port #0 Node 0x0B1,177,1601.015555040993,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x0B8 Port #0 Node 0x0B8,184,1554.9214727447663,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x0B8 Port #0 Node 0x0B9,185,954.4300560569116,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x0C0 Port #0 Node 0x0C0,192,1603.3461055739474,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x0C0 Port #0 Node 0x0C1,193,398.72456402735065,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x108 Port #0 Node 0x108,264,153.65282317322345,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x108 Port #0 Node 0x109,265,41.167335178229706,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x110 Port #0 Node 0x110,272,2462.529565350095,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x110 Port #0 Node 0x111,273,1906.0080221985856,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x118 Port #0 Node 0x118,280,201.27767955936795,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x118 Port #0 Node 0x119,281,942.8854083745882,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x120 Port #0 Node 0x120,288,2146.484526513384,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x120 Port #0 Node 0x121,289,881.8983477823559,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x128 Port #0 Node 0x128,296,1848.1822650363051,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x128 Port #0 Node 0x129,297,1719.021629267846,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x130 Port #0 Node 0x130,304,822.6189223236325,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x130 Port #0 Node 0x131,305,2402.972053001356,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x138 Port #0 Node 0x138,312,1084.9884654963212,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x138 Port #0 Node 0x139,313,2252.1636101811155,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x140 Port #0 Node 0x140,320,1982.1773988163704,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x140 Port #0 Node 0x141,321,849.9488143638849,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x188 Port #0 Node 0x188,392,992.1908051444485,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x188 Port #0 Node 0x189,393,1169.6769784056125,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x190 Port #0 Node 0x190,400,2049.665997993067,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x190 Port #0 Node 0x191,401,1331.8166691104311,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x198 Port #0 Node 0x198,408,215.43585987173594,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x198 Port #0 Node 0x199,409,524.2879997740858,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x1A0 Port #0 Node 0x1A0,416,509.00924960505023,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x1A0 Port #0 Node 0x1A1,417,1495.4581599271391,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x1A8 Port #0 Node 0x1A8,424,962.1597561478501,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x1A8 Port #0 Node 0x1A9,425,772.721188147287,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x1B0 Port #0 Node 0x1B0,432,1653.3692018034906,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x1B0 Port #0 Node 0x1B1,433,1384.2956492082167,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x1B8 Port #0 Node 0x1B8,440,1406.4875631332213,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x1B8 Port #0 Node 0x1B9,441,428.7548412301179,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x1C0 Port #0 Node 0x1C0,448,626.3080088881334,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x1C0 Port #0 Node 0x1C1,449,1327.421374438275,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x200 Port #0 Node 0x200,512,2120.767133153716,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x200 Port #0 Node 0x201,513,624.9583963488288,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x208 Port #0 Node 0x208,520,2528.2747498688736,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x208 Port #0 Node 0x209,521,555.9340171915281,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x210 Port #0 Node 0x210,528,867.3747996720116,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x210 Port #0 Node 0x211,529,2403.636281507492,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x218 Port #0 Node 0x218,536,1224.122918159057,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x218 Port #0 Node 0x219,537,1368.3338226097392,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x220 Port #0 Node 0x220,544,2027.8410630604471,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x220 Port #0 Node 0x221,545,996.726020055302,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x228 Port #0 Node 0x228,552,1913.0691693447739,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x228 Port #0 Node 0x229,553,1484.5420306281596,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x230 Port #0 Node 0x230,560,1858.2808044119922,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x230 Port #0 Node 0x231,561,122.47139273622047,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x238 Port #0 Node 0x238,568,1094.0978583424176,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x238 Port #0 Node 0x239,569,724.1684022430304,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x240 Port #0 Node 0x240,576,2383.8154965222684,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x240 Port #0 Node 0x241,577,2435.3166640922755,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x280 Port #0 Node 0x280,640,1198.8767934802206,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x280 Port #0 Node 0x281,641,133.65363176187682,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x288 Port #0 Node 0x288,648,1732.401557210721,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x288 Port #0 Node 0x289,649,1277.8154154240872,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x290 Port #0 Node 0x290,656,2313.8670869014277,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x290 Port #0 Node 0x291,657,1242.2336269884217,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x298 Port #0 Node 0x298,664,1183.9937306409315,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x298 Port #0 Node 0x299,665,1255.5628450851384,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x2A0 Port #0 Node 0x2A0,672,1970.2628040260058,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x2A0 Port #0 Node 0x2A1,673,88.69554442972536,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x2A8 Port #0 Node 0x2A8,680,554.3979039635099,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x2A8 Port #0 Node 0x2A9,681,1618.563728474973,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x2B0 Port #0 Node 0x2B0,688,601.1316442007105,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x2B0 Port #0 Node 0x2B1,689,130.7468743135092,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x2B8 Port #0 Node 0x2B8,696,1360.7266259433738,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x2B8 Port #0 Node 0x2B9,697,633.6207584301312,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x300 Port #0 Node 0x300,768,2242.4489837920755,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x300 Port #0 Node 0x301,769,264.6303085860583,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x308 Port #0 Node 0x308,776,285.38707487340974,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x308 Port #0 Node 0x309,777,1666.256793487101,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x310 Port #0 Node 0x310,784,1835.793565073206,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x310 Port #0 Node 0x311,785,1316.532281256689,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x318 Port #0 Node 0x318,792,848.9462523822965,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x318 Port #0 Node 0x319,793,1717.2040075304942,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x320 Port #0 Node 0x320,800,887.3352649817261,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x320 Port #0 Node 0x321,801,2324.7702973289365,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x328 Port #0 Node 0x328,808,2229.3533332436896,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x328 Port #0 Node 0x329,809,751.9908848157088,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x330 Port #0 Node 0x330,816,2055.9390598770365,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x330 Port #0 Node 0x331,817,1068.903823764289,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x338 Port #0 Node 0x338,824,183.4960857563459,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,XP 0x338 Port #0 Node 0x339,825,1351.0333764485886,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,Global,,715.4831256627087,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x088 Port #0 Node 0x088,136,1981.8354032091038,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x088 Port #0 Node 0x089,137,1419.9729695663593,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x090 Port #0 Node 0x090,144,195.70771407784704,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x090 Port #0 Node 0x091,145,-1893.6509562099286,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x098 Port #0 Node 0x098,152,-1139.5816246239206,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x098 Port #0 Node 0x099,153,1022.2691280089322,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x0A0 Port #0 Node 0x0A0,160,1067.136932813238,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x0A0 Port #0 Node 0x0A1,161,1591.7852621869647,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x0A8 Port #0 Node 0x0A8,168,-1095.5473858752127,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x0A8 Port #0 Node 0x0A9,169,-343.13731948793037,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x0B0 Port #0 Node 0x0B0,176,2386.391300998054,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x0B0 Port #0 Node 0x0B1,177,-295.2589479735124,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x0B8 Port #0 Node 0x0B8,184,988.8457603383017,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x0B8 Port #0 Node 0x0B9,185,134.34261570472114,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x0C0 Port #0 Node 0x0C0,192,-369.1836866775506,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x0C0 Port #0 Node 0x0C1,193,-167.0089403789714,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x108 Port #0 Node 0x108,264,859.598916993768,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x108 Port #0 Node 0x109,265,437.1240766126232,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x110 Port #0 Node 0x110,272,-987.0896403983694,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x110 Port #0 Node 0x111,273,-312.1348566728749,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x118 Port #0 Node 0x118,280,345.90042456588054,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x118 Port #0 Node 0x119,281,-486.77424625096285,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x120 Port #0 Node 0x120,288,-345.76187620567543,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x120 Port #0 Node 0x121,289,206.38929702639652,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x128 Port #0 Node 0x128,296,-1468.2156690510956,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x128 Port #0 Node 0x129,297,278.03358837779,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x130 Port #0 Node 0x130,304,-477.6195353463102,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x130 Port #0 Node 0x131,305,-2126.8163556813665,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x138 Port #0 Node 0x138,312,-11.095687432951346,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x138 Port #0 Node 0x139,313,-618.2797250972083,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x140 Port #0 Node 0x140,320,106.24727469651637,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x140 Port #0 Node 0x141,321,803.2194021550368,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x188 Port #0 Node 0x188,392,-649.1653742236086,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x188 Port #0 Node 0x189,393,546.7095367228255,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x190 Port #0 Node 0x190,400,-1568.7896476361802,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x190 Port #0 Node 0x191,401,41.73954252638604,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x198 Port #0 Node 0x198,408,76.62455668783062,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x198 Port #0 Node 0x199,409,-323.46483498651526,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x1A0 Port #0 Node 0x1A0,416,1556.3272198237698,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x1A0 Port #0 Node 0x1A1,417,802.9623343819808,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x1A8 Port #0 Node 0x1A8,424,765.3279476881731,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x1A8 Port #0 Node 0x1A9,425,691.8906703781773,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x1B0 Port #0 Node 0x1B0,432,23.178716355192265,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x1B0 Port #0 Node 0x1B1,433,-1329.3379204012228,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x1B8 Port #0 Node 0x1B8,440,-164.94409333392542,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x1B8 Port #0 Node 0x1B9,441,108.18685960275981,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x1C0 Port #0 Node 0x1C0,448,-140.90956950013174,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x1C0 Port #0 Node 0x1C1,449,-1093.0912776482987,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x200 Port #0 Node 0x200,512,-1599.157677375012,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x200 Port #0 Node 0x201,513,-261.563005456717,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x208 Port #0 Node 0x208,520,-2386.2395830829555,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x208 Port #0 Node 0x209,521,16.31677517973261,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x210 Port #0 Node 0x210,528,-73.70683976706006,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x210 Port #0 Node 0x211,529,-1926.870301078718,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x218 Port #0 Node 0x218,536,-970.7730387226763,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x218 Port #0 Node 0x219,537,1087.7529358715758,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x220 Port #0 Node 0x220,544,-1244.0083202366452,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x220 Port #0 Node 0x221,545,-136.0308740267489,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x228 Port #0 Node 0x228,552,-1123.9661982421558,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x228 Port #0 Node 0x229,553,-117.10957586294366,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x230 Port #0 Node 0x230,560,-1119.9220566008169,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x230 Port #0 Node 0x231,561,223.4987708809307,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x238 Port #0 Node 0x238,568,-773.4096958514572,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x238 Port #0 Node 0x239,569,546.617355821471,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x240 Port #0 Node 0x240,576,-1568.1532246481095,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x240 Port #0 Node 0x241,577,-2238.6680441890257,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x280 Port #0 Node 0x280,640,1229.4548127649853,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x280 Port #0 Node 0x281,641,482.5566400571797,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x288 Port #0 Node 0x288,648,-286.8922433568257,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x288 Port #0 Node 0x289,649,-765.4479454750992,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x290 Port #0 Node 0x290,656,-625.9271836751007,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x290 Port #0 Node 0x291,657,-1084.9073762894136,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x298 Port #0 Node 0x298,664,597.2152523871277,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x298 Port #0 Node 0x299,665,-29.16041350380145,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x2A0 Port #0 Node 0x2A0,672,478.712044813461,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x2A0 Port #0 Node 0x2A1,673,743.9565247936599,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x2A8 Port #0 Node 0x2A8,680,619.3058878162068,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x2A8 Port #0 Node 0x2A9,681,-891.1403557487938,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x2B0 Port #0 Node 0x2B0,688,1624.5615034651523,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x2B0 Port #0 Node 0x2B1,689,914.8466015636633,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x2B8 Port #0 Node 0x2B8,696,-193.7412863018127,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x2B8 Port #0 Node 0x2B9,697,267.0127757156806,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x300 Port #0 Node 0x300,768,-691.377942009655,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x300 Port #0 Node 0x301,769,564.7473696675421,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x308 Port #0 Node 0x308,776,830.790660451054,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x308 Port #0 Node 0x309,777,813.0022581102033,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x310 Port #0 Node 0x310,784,262.72447500182966,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x310 Port #0 Node 0x311,785,159.06553177275524,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x318 Port #0 Node 0x318,792,40.995738486514995,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x318 Port #0 Node 0x319,793,-1305.0596036482693,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x320 Port #0 Node 0x320,800,-110.57810543849459,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x320 Port #0 Node 0x321,801,-42.142868221902035,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x328 Port #0 Node 0x328,808,-16.436333821951617,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x328 Port #0 Node 0x329,809,769.6545521110633,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x330 Port #0 Node 0x330,816,63.348312964133584,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x330 Port #0 Node 0x331,817,1166.3540757063638,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x338 Port #0 Node 0x338,824,1473.0626426014371,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,XP 0x338 Port #0 Node 0x339,825,-92.11536828034747,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,Global,,890.9881089455198,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x088 Port #0 Node 0x088,136,1087.5960158267392,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x088 Port #0 Node 0x089,137,1033.3910175433077,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x090 Port #0 Node 0x090,144,1062.8609772109473,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x090 Port #0 Node 0x091,145,1963.1323294519234,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x098 Port #0 Node 0x098,152,2529.706527340131,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x098 Port #0 Node 0x099,153,1018.5857365649578,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x0A0 Port #0 Node 0x0A0,160,2257.2949628352108,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x0A0 Port #0 Node 0x0A1,161,1614.7039959012363,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x0A8 Port #0 Node 0x0A8,168,1016.5023305705756,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x0A8 Port #0 Node 0x0A9,169,230.68852041782824,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x0B0 Port #0 Node 0x0B0,176,1985.1260197980373,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x0B0 Port #0 Node 0x0B1,177,1992.5355391240914,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x0B8 Port #0 Node 0x0B8,184,2372.40244985909,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x0B8 Port #0 Node 0x0B9,185,763.8346726075248,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x0C0 Port #0 Node 0x0C0,192,1849.3718691588688,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x0C0 Port #0 Node 0x0C1,193,1182.595854064137,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x108 Port #0 Node 0x108,264,208.5446808724495,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x108 Port #0 Node 0x109,265,1239.172302568968,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x110 Port #0 Node 0x110,272,1309.339309929264,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x110 Port #0 Node 0x111,273,253.3226357124292,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x118 Port #0 Node 0x118,280,506.01399193412624,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x118 Port #0 Node 0x119,281,7.988173845004924,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x120 Port #0 Node 0x120,288,1287.6668078680434,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x120 Port #0 Node 0x121,289,732.3358925129313,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x128 Port #0 Node 0x128,296,726.2527433643568,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x128 Port #0 Node 0x129,297,1840.180795397261,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x130 Port #0 Node 0x130,304,101.49410999405255,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x130 Port #0 Node 0x131,305,197.34835272049025,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x138 Port #0 Node 0x138,312,1214.1082919180938,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x138 Port #0 Node 0x139,313,1747.7460378894232,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x140 Port #0 Node 0x140,320,990.3487989100596,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x140 Port #0 Node 0x141,321,101.46886336142569,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x188 Port #0 Node 0x188,392,1341.4979593905719,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x188 Port #0 Node 0x189,393,244.62705598360614,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x190 Port #0 Node 0x190,400,2433.663507432322,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x190 Port #0 Node 0x191,401,730.392766927701,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x198 Port #0 Node 0x198,408,667.3749576205166,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x198 Port #0 Node 0x199,409,922.6181412563096,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x1A0 Port #0 Node 0x1A0,416,2242.1610616161756,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x1A0 Port #0 Node 0x1A1,417,2178.836220158857,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x1A8 Port #0 Node 0x1A8,424,2157.409034860895,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x1A8 Port #0 Node 0x1A9,425,1207.431915107824,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x1B0 Port #0 Node 0x1B0,432,394.45432209256995,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x1B0 Port #0 Node 0x1B1,433,200.34421286923435,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x1B8 Port #0 Node 0x1B8,440,2488.9806366949106,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x1B8 Port #0 Node 0x1B9,441,1057.9170035349803,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x1C0 Port #0 Node 0x1C0,448,1719.5456545442137,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x1C0 Port #0 Node 0x1C1,449,1537.2489663160304,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x200 Port #0 Node 0x200,512,472.71593187232264,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x200 Port #0 Node 0x201,513,2169.4410308604906,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x208 Port #0 Node 0x208,520,1483.7923830918937,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x208 Port #0 Node 0x209,521,1968.818242896771,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x210 Port #0 Node 0x210,528,1603.9603038911287,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x210 Port #0 Node 0x211,529,2195.9500088793684,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x218 Port #0 Node 0x218,536,2355.9936248034674,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x218 Port #0 Node 0x219,537,1544.7406984372208,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x220 Port #0 Node 0x220,544,41.86499851108107,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x220 Port #0 Node 0x221,545,319.0019377559343,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x228 Port #0 Node 0x228,552,282.59774376244377,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x228 Port #0 Node 0x229,553,1943.8852487359147,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x230 Port #0 Node 0x230,560,1467.1192246319856,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x230 Port #0 Node 0x231,561,800.992973789388,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x238 Port #0 Node 0x238,568,1793.7689488286182,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x238 Port #0 Node 0x239,569,122.17162023441801,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x240 Port #0 Node 0x240,576,543.6275228440878,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x240 Port #0 Node 0x241,577,248.04606855327083,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x280 Port #0 Node 0x280,640,998.450678328252,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x280 Port #0 Node 0x281,641,2499.2062887197258,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x288 Port #0 Node 0x288,648,643.1095393971808,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x288 Port #0 Node 0x289,649,2485.685149428784,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x290 Port #0 Node 0x290,656,2398.101353072748,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x290 Port #0 Node 0x291,657,1812.097381894342,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x298 Port #0 Node 0x298,664,1094.2273120995,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x298 Port #0 Node 0x299,665,1564.6517581725225,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x2A0 Port #0 Node 0x2A0,672,2357.7519584156285,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x2A0 Port #0 Node 0x2A1,673,226.56706836790568,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x2A8 Port #0 Node 0x2A8,680,2568.9545189523474,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x2A8 Port #0 Node 0x2A9,681,2416.926614955782,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x2B0 Port #0 Node 0x2B0,688,873.9586832736557,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x2B0 Port #0 Node 0x2B1,689,200.66248867942232,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x2B8 Port #0 Node 0x2B8,696,703.7088465805937,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x2B8 Port #0 Node 0x2B9,697,1706.689922390297,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x300 Port #0 Node 0x300,768,1663.5924606691394,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x300 Port #0 Node 0x301,769,372.78296216656173,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x308 Port #0 Node 0x308,776,2469.978946930095,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x308 Port #0 Node 0x309,777,262.2892299476408,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x310 Port #0 Node 0x310,784,1871.8886346971613,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x310 Port #0 Node 0x311,785,797.7998066417136,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x318 Port #0 Node 0x318,792,1545.0982035107554,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x318 Port #0 Node 0x319,793,1773.6924631625122,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x320 Port #0 Node 0x320,800,560.6003969682682,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x320 Port #0 Node 0x321,801,257.5289366223098,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x328 Port #0 Node 0x328,808,1411.3795436314274,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x328 Port #0 Node 0x329,809,2526.4646797452715,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x330 Port #0 Node 0x330,816,1498.3276642633416,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x330 Port #0 Node 0x331,817,598.7822989922422,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x338 Port #0 Node 0x338,824,1380.735216487347,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,XP 0x338 Port #0 Node 0x339,825,2269.375995862706,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,Global,,2553.573585074931,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x088 Port #0 Node 0x088,136,875.3828104133476,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x088 Port #0 Node 0x089,137,1457.290805917738,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x090 Port #0 Node 0x090,144,910.7149612368793,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x090 Port #0 Node 0x091,145,3.005809707978791,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x098 Port #0 Node 0x098,152,736.169324865718,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x098 Port #0 Node 0x099,153,1314.5479532483791,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x0A0 Port #0 Node 0x0A0,160,930.7036682179174,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x0A0 Port #0 Node 0x0A1,161,552.0420469689495,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x0A8 Port #0 Node 0x0A8,168,1991.4094243176353,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x0A8 Port #0 Node 0x0A9,169,524.0046581048307,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x0B0 Port #0 Node 0x0B0,176,2019.4523802682652,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x0B0 Port #0 Node 0x0B1,177,1646.746139793132,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x0B8 Port #0 Node 0x0B8,184,907.773507168626,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x0B8 Port #0 Node 0x0B9,185,1848.2090391027698,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x0C0 Port #0 Node 0x0C0,192,1065.8301009854836,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x0C0 Port #0 Node 0x0C1,193,2296.75262809635,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x108 Port #0 Node 0x108,264,346.12787639596155,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x108 Port #0 Node 0x109,265,974.190236679403,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x110 Port #0 Node 0x110,272,1601.2223580954958,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x110 Port #0 Node 0x111,273,1959.771261846867,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x118 Port #0 Node 0x118,280,328.44007349212313,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x118 Port #0 Node 0x119,281,954.4277334959405,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x120 Port #0 Node 0x120,288,1703.975568956017,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x120 Port #0 Node 0x121,289,2087.8942238007367,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x128 Port #0 Node 0x128,296,896.3763421079661,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x128 Port #0 Node 0x129,297,1445.5211109320062,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x130 Port #0 Node 0x130,304,933.7672140873673,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x130 Port #0 Node 0x131,305,1055.6912434590286,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x138 Port #0 Node 0x138,312,76.03313107498779,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x138 Port #0 Node 0x139,313,2515.774659714081,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x140 Port #0 Node 0x140,320,523.8576200124824,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x140 Port #0 Node 0x141,321,863.4504954759345,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x188 Port #0 Node 0x188,392,1005.1391483700797,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x188 Port #0 Node 0x189,393,464.47999665197034,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x190 Port #0 Node 0x190,400,2357.443659087716,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x190 Port #0 Node 0x191,401,1729.8707554947719,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x198 Port #0 Node 0x198,408,2118.604545898572,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x198 Port #0 Node 0x199,409,1571.3508053795765,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x1A0 Port #0 Node 0x1A0,416,656.5290071158046,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x1A0 Port #0 Node 0x1A1,417,1998.6283398835844,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x1A8 Port #0 Node 0x1A8,424,2320.3571209714883,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x1A8 Port #0 Node 0x1A9,425,1300.5882298479207,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x1B0 Port #0 Node 0x1B0,432,1460.998715277373,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x1B0 Port #0 Node 0x1B1,433,790.038836934816,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x1B8 Port #0 Node 0x1B8,440,2513.408738886935,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x1B8 Port #0 Node 0x1B9,441,210.46159538190878,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x1C0 Port #0 Node 0x1C0,448,952.5791029969787,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x1C0 Port #0 Node 0x1C1,449,771.1829725289408,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x200 Port #0 Node 0x200,512,551.4080991057467,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x200 Port #0 Node 0x201,513,2137.6775990714423,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x208 Port #0 Node 0x208,520,2542.3011071965843,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x208 Port #0 Node 0x209,521,1296.508766972154,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x210 Port #0 Node 0x210,528,1128.7805859389964,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x210 Port #0 Node 0x211,529,986.9899557464486,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x218 Port #0 Node 0x218,536,2183.9098893009823,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x218 Port #0 Node 0x219,537,589.2436092890653,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x220 Port #0 Node 0x220,544,933.1166373576963,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x220 Port #0 Node 0x221,545,2034.4291801606569,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x228 Port #0 Node 0x228,552,1616.5244296006088,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x228 Port #0 Node 0x229,553,836.1018614096698,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x230 Port #0 Node 0x230,560,475.57123699690055,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x230 Port #0 Node 0x231,561,2491.503182011735,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x238 Port #0 Node 0x238,568,2510.5310690916567,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x238 Port #0 Node 0x239,569,341.4606637998315,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x240 Port #0 Node 0x240,576,285.319839664917,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x240 Port #0 Node 0x241,577,1598.592666854759,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x280 Port #0 Node 0x280,640,1368.2516834042474,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x280 Port #0 Node 0x281,641,1476.901586399784,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x288 Port #0 Node 0x288,648,1543.4802639828065,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x288 Port #0 Node 0x289,649,6.955280964140409,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x290 Port #0 Node 0x290,656,2070.8098386303245,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x290 Port #0 Node 0x291,657,1345.4487277390017,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x298 Port #0 Node 0x298,664,2547.7091228109903,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x298 Port #0 Node 0x299,665,2275.0706269881075,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x2A0 Port #0 Node 0x2A0,672,2326.6825284259075,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x2A0 Port #0 Node 0x2A1,673,2.921771530688385,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x2A8 Port #0 Node 0x2A8,680,188.8730597032037,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x2A8 Port #0 Node 0x2A9,681,2520.6676507237444,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x2B0 Port #0 Node 0x2B0,688,2449.129150768175,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x2B0 Port #0 Node 0x2B1,689,132.81348751002002,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x2B8 Port #0 Node 0x2B8,696,936.3282090959402,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x2B8 Port #0 Node 0x2B9,697,827.9850594474947,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x300 Port #0 Node 0x300,768,596.0478663542657,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x300 Port #0 Node 0x301,769,1270.8007027452063,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x308 Port #0 Node 0x308,776,1902.9846377279778,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x308 Port #0 Node 0x309,777,1405.7926495402523,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x310 Port #0 Node 0x310,784,403.50684270765436,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x310 Port #0 Node 0x311,785,1769.005393926488,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x318 Port #0 Node 0x318,792,1317.8828510596602,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x318 Port #0 Node 0x319,793,1005.3118219834193,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x320 Port #0 Node 0x320,800,902.9703062943094,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x320 Port #0 Node 0x321,801,2260.5226327568776,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x328 Port #0 Node 0x328,808,1869.0537246732902,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x328 Port #0 Node 0x329,809,1164.2200484127125,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x330 Port #0 Node 0x330,816,395.24749640775593,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x330 Port #0 Node 0x331,817,959.3718908468737,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x338 Port #0 Node 0x338,824,170.1247402805318,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,XP 0x338 Port #0 Node 0x339,825,531.0294537615698,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,Global,,1583.3962940105523,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x088 Port #0 Node 0x088,136,2021.2148199432663,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x088 Port #0 Node 0x089,137,2472.634891725178,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x090 Port #0 Node 0x090,144,2035.8261539181558,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x090 Port #0 Node 0x091,145,1829.6005023121434,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x098 Port #0 Node 0x098,152,1760.4171802922206,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x098 Port #0 Node 0x099,153,122.65822667234823,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x0A0 Port #0 Node 0x0A0,160,1324.2852769572442,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x0A0 Port #0 Node 0x0A1,161,530.5021378913483,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x0A8 Port #0 Node 0x0A8,168,131.18915705051688,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x0A8 Port #0 Node 0x0A9,169,1707.3630211408838,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x0B0 Port #0 Node 0x0B0,176,905.4608550730778,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x0B0 Port #0 Node 0x0B1,177,2484.8581974668323,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x0B8 Port #0 Node 0x0B8,184,388.75460909367877,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x0B8 Port #0 Node 0x0B9,185,2281.2939799647406,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x0C0 Port #0 Node 0x0C0,192,4.22635797685495,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x0C0 Port #0 Node 0x0C1,193,1164.4977667562162,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x108 Port #0 Node 0x108,264,584.6148535641611,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x108 Port #0 Node 0x109,265,427.2036008430083,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x110 Port #0 Node 0x110,272,1671.1035007984851,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x110 Port #0 Node 0x111,273,2386.937564107686,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x118 Port #0 Node 0x118,280,642.1877967938038,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x118 Port #0 Node 0x119,281,1128.3306056055296,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x120 Port #0 Node 0x120,288,674.5866877260685,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x120 Port #0 Node 0x121,289,1011.3264741303307,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x128 Port #0 Node 0x128,296,1360.8621385811764,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x128 Port #0 Node 0x129,297,2276.179259168563,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x130 Port #0 Node 0x130,304,588.9746816174699,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x130 Port #0 Node 0x131,305,2501.012049960249,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x138 Port #0 Node 0x138,312,1142.0705370801093,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x138 Port #0 Node 0x139,313,2074.1417838814837,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x140 Port #0 Node 0x140,320,2128.3120807587115,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x140 Port #0 Node 0x141,321,154.8146642562967,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x188 Port #0 Node 0x188,392,2190.4901335058244,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x188 Port #0 Node 0x189,393,669.7456151079421,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x190 Port #0 Node 0x190,400,2137.7982083105358,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x190 Port #0 Node 0x191,401,1187.728691075205,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x198 Port #0 Node 0x198,408,1466.0914010605254,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x198 Port #0 Node 0x199,409,880.0796365592935,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x1A0 Port #0 Node 0x1A0,416,734.0382441492904,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x1A0 Port #0 Node 0x1A1,417,746.4251665934185,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x1A8 Port #0 Node 0x1A8,424,1198.4367752700743,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x1A8 Port #0 Node 0x1A9,425,1244.8595801145407,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x1B0 Port #0 Node 0x1B0,432,933.0906297004544,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x1B0 Port #0 Node 0x1B1,433,1384.7667060944625,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x1B8 Port #0 Node 0x1B8,440,1379.23803277949,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x1B8 Port #0 Node 0x1B9,441,2386.777846459784,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x1C0 Port #0 Node 0x1C0,448,891.5460452872766,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x1C0 Port #0 Node 0x1C1,449,877.4277368014916,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x200 Port #0 Node 0x200,512,1379.7142499151887,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x200 Port #0 Node 0x201,513,2279.8950970645164,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x208 Port #0 Node 0x208,520,1418.8737251510245,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x208 Port #0 Node 0x209,521,1669.6960797046447,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x210 Port #0 Node 0x210,528,79.03001669243476,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x210 Port #0 Node 0x211,529,1571.9002819036798,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x218 Port #0 Node 0x218,536,1256.5715353490623,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x218 Port #0 Node 0x219,537,1665.6321514233173,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x220 Port #0 Node 0x220,544,2192.8110425987866,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x220 Port #0 Node 0x221,545,692.357378295928,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x228 Port #0 Node 0x228,552,1275.5294679933882,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x228 Port #0 Node 0x229,553,1605.1360312802656,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x230 Port #0 Node 0x230,560,2121.6154799586157,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x230 Port #0 Node 0x231,561,2096.323986964881,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x238 Port #0 Node 0x238,568,850.6859588400855,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x238 Port #0 Node 0x239,569,1581.870341538065,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x240 Port #0 Node 0x240,576,2169.685185146684,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x240 Port #0 Node 0x241,577,2229.2753647163354,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x280 Port #0 Node 0x280,640,132.7254036971587,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x280 Port #0 Node 0x281,641,1272.9259513327452,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x288 Port #0 Node 0x288,648,2560.343079708369,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x288 Port #0 Node 0x289,649,1179.1977834320485,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x290 Port #0 Node 0x290,656,318.1450826719078,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x290 Port #0 Node 0x291,657,2297.9765160188426,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x298 Port #0 Node 0x298,664,1378.5900622001511,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x298 Port #0 Node 0x299,665,2522.432006720948,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x2A0 Port #0 Node 0x2A0,672,446.7767387262347,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x2A0 Port #0 Node 0x2A1,673,939.0752632553608,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x2A8 Port #0 Node 0x2A8,680,2208.2420904257283,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x2A8 Port #0 Node 0x2A9,681,255.71700701403543,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x2B0 Port #0 Node 0x2B0,688,1046.185416019236,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x2B0 Port #0 Node 0x2B1,689,2352.0508675553474,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x2B8 Port #0 Node 0x2B8,696,897.5155798027118,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x2B8 Port #0 Node 0x2B9,697,1021.1938504843596,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x300 Port #0 Node 0x300,768,484.05306513358096,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x300 Port #0 Node 0x301,769,222.3199180259225,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x308 Port #0 Node 0x308,776,1980.3217904635687,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x308 Port #0 Node 0x309,777,1419.3027797007394,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x310 Port #0 Node 0x310,784,1922.6528665941053,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x310 Port #0 Node 0x311,785,1072.6273012225918,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x318 Port #0 Node 0x318,792,1993.4057264978346,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x318 Port #0 Node 0x319,793,1213.3728088926443,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x320 Port #0 Node 0x320,800,2068.696901051828,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x320 Port #0 Node 0x321,801,1954.8188139942915,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x328 Port #0 Node 0x328,808,961.4792368089777,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x328 Port #0 Node 0x329,809,43.9386960570145,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x330 Port #0 Node 0x330,816,2074.769400043822,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x330 Port #0 Node 0x331,817,204.2333962579636,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x338 Port #0 Node 0x338,824,1840.384260593016,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,XP 0x338 Port #0 Node 0x339,825,1620.8569241864977,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,Global,,107.26845665299967,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x088 Port #0 Node 0x088,136,1676.7927078286352,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x088 Port #0 Node 0x089,137,1070.0866037934893,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x090 Port #0 Node 0x090,144,730.6840820050091,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x090 Port #0 Node 0x091,145,1258.5272369857125,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x098 Port #0 Node 0x098,152,701.4144034348535,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x098 Port #0 Node 0x099,153,797.1870484080607,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x0A0 Port #0 Node 0x0A0,160,2568.8346551823342,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x0A0 Port #0 Node 0x0A1,161,217.24689683164124,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x0A8 Port #0 Node 0x0A8,168,557.3518335704979,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x0A8 Port #0 Node 0x0A9,169,1571.8931215714535,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x0B0 Port #0 Node 0x0B0,176,1930.297650816629,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x0B0 Port #0 Node 0x0B1,177,753.5601097939544,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x0B8 Port #0 Node 0x0B8,184,768.5753791216576,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x0B8 Port #0 Node 0x0B9,185,996.2685192191547,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x0C0 Port #0 Node 0x0C0,192,1713.3063122728995,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x0C0 Port #0 Node 0x0C1,193,1167.722934031685,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x108 Port #0 Node 0x108,264,2117.3981256448346,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x108 Port #0 Node 0x109,265,2129.463673735944,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x110 Port #0 Node 0x110,272,314.9078903699171,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x110 Port #0 Node 0x111,273,2378.9052945101694,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x118 Port #0 Node 0x118,280,839.3343272223067,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x118 Port #0 Node 0x119,281,208.22193464093854,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x120 Port #0 Node 0x120,288,996.4852167902312,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x120 Port #0 Node 0x121,289,355.31245093556294,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x128 Port #0 Node 0x128,296,380.0247168470164,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x128 Port #0 Node 0x129,297,288.90217697163746,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x130 Port #0 Node 0x130,304,63.9773871586938,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x130 Port #0 Node 0x131,305,1999.9936796666414,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x138 Port #0 Node 0x138,312,1866.7336077160116,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x138 Port #0 Node 0x139,313,915.1755909491498,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x140 Port #0 Node 0x140,320,612.611753166632,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x140 Port #0 Node 0x141,321,2392.868340213841,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x188 Port #0 Node 0x188,392,1025.0000403097747,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x188 Port #0 Node 0x189,393,125.0467670416453,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x190 Port #0 Node 0x190,400,1746.3655416310753,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x190 Port #0 Node 0x191,401,225.78135233326213,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x198 Port #0 Node 0x198,408,197.6232094439206,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x198 Port #0 Node 0x199,409,515.4739383246686,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x1A0 Port #0 Node 0x1A0,416,578.1608508985108,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x1A0 Port #0 Node 0x1A1,417,599.3347364525241,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x1A8 Port #0 Node 0x1A8,424,80.1424109190998,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x1A8 Port #0 Node 0x1A9,425,2507.0509603650517,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x1B0 Port #0 Node 0x1B0,432,1806.8915810500264,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x1B0 Port #0 Node 0x1B1,433,2490.206077179413,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x1B8 Port #0 Node 0x1B8,440,1408.481840700766,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x1B8 Port #0 Node 0x1B9,441,815.3216487436744,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x1C0 Port #0 Node 0x1C0,448,2559.043146161912,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x1C0 Port #0 Node 0x1C1,449,1215.7998575860895,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x200 Port #0 Node 0x200,512,215.84302479284477,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x200 Port #0 Node 0x201,513,1388.6229446558161,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x208 Port #0 Node 0x208,520,702.5766914404011,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x208 Port #0 Node 0x209,521,1391.2609042614731,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x210 Port #0 Node 0x210,528,1475.2221845615418,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x210 Port #0 Node 0x211,529,1221.3784085261202,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x218 Port #0 Node 0x218,536,1782.5523332681148,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x218 Port #0 Node 0x219,537,2167.7677764498567,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x220 Port #0 Node 0x220,544,1518.5773883283505,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x220 Port #0 Node 0x221,545,1984.9355829607844,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x228 Port #0 Node 0x228,552,1881.4576080347208,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x228 Port #0 Node 0x229,553,246.0864810244241,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x230 Port #0 Node 0x230,560,2504.944039786989,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x230 Port #0 Node 0x231,561,1081.9841227949114,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x238 Port #0 Node 0x238,568,1292.7071869695835,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x238 Port #0 Node 0x239,569,1811.8366621603977,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x240 Port #0 Node 0x240,576,1041.8585321950131,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x240 Port #0 Node 0x241,577,1184.1228427745432,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x280 Port #0 Node 0x280,640,2444.7728155306695,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x280 Port #0 Node 0x281,641,303.4226385049468,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x288 Port #0 Node 0x288,648,963.919489159834,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x288 Port #0 Node 0x289,649,991.20472425175,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x290 Port #0 Node 0x290,656,1306.9123342271732,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x290 Port #0 Node 0x291,657,318.2804427458133,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x298 Port #0 Node 0x298,664,1239.5638006735935,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x298 Port #0 Node 0x299,665,1406.7967228018545,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x2A0 Port #0 Node 0x2A0,672,2495.535746147317,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x2A0 Port #0 Node 0x2A1,673,2016.100309745095,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x2A8 Port #0 Node 0x2A8,680,2472.8097215749267,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x2A8 Port #0 Node 0x2A9,681,28.08125786479976,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x2B0 Port #0 Node 0x2B0,688,364.54019567336866,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x2B0 Port #0 Node 0x2B1,689,2299.441392077952,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x2B8 Port #0 Node 0x2B8,696,83.08622583887072,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x2B8 Port #0 Node 0x2B9,697,1983.9388776379662,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x300 Port #0 Node 0x300,768,1683.0582898936307,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x300 Port #0 Node 0x301,769,31.988701057969298,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x308 Port #0 Node 0x308,776,248.65319628169473,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x308 Port #0 Node 0x309,777,556.8533337298,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x310 Port #0 Node 0x310,784,2319.176506153044,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x310 Port #0 Node 0x311,785,1930.9431223395081,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x318 Port #0 Node 0x318,792,2493.506977173285,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x318 Port #0 Node 0x319,793,1073.3864298571852,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x320 Port #0 Node 0x320,800,298.06391658476207,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x320 Port #0 Node 0x321,801,522.5099722568536,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x328 Port #0 Node 0x328,808,663.7433014914034,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x328 Port #0 Node 0x329,809,1377.8480973030996,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x330 Port #0 Node 0x330,816,976.7581616786324,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x330 Port #0 Node 0x331,817,843.9294345310402,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x338 Port #0 Node 0x338,824,1375.2271333155531,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,XP 0x338 Port #0 Node 0x339,825,2419.480211512792,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,Global,,-1476.1278373575526,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x088 Port #0 Node 0x088,136,-344.42211211463086,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x088 Port #0 Node 0x089,137,-1402.5482879316887,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x090 Port #0 Node 0x090,144,-1305.1420719131465,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x090 Port #0 Node 0x091,145,-571.0732653264307,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x098 Port #0 Node 0x098,152,-1059.002776857367,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x098 Port #0 Node 0x099,153,674.5288217357127,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x0A0 Port #0 Node 0x0A0,160,1244.5493782250905,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x0A0 Port #0 Node 0x0A1,161,-313.25524105970703,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x0A8 Port #0 Node 0x0A8,168,426.162676519981,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x0A8 Port #0 Node 0x0A9,169,-135.46989956943028,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x0B0 Port #0 Node 0x0B0,176,1024.8367957435512,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x0B0 Port #0 Node 0x0B1,177,-1731.2980876728777,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x0B8 Port #0 Node 0x0B8,184,379.8207700279789,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x0B8 Port #0 Node 0x0B9,185,-1285.025460745586,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x0C0 Port #0 Node 0x0C0,192,1709.0799542960444,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x0C0 Port #0 Node 0x0C1,193,3.2251672754689085,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x108 Port #0 Node 0x108,264,1532.7832720806737,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x108 Port #0 Node 0x109,265,1702.260072892936,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x110 Port #0 Node 0x110,272,-1356.195610428568,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x110 Port #0 Node 0x111,273,-8.032269597516846,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x118 Port #0 Node 0x118,280,197.14653042850279,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x118 Port #0 Node 0x119,281,-920.108670964591,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x120 Port #0 Node 0x120,288,321.89852906416274,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x120 Port #0 Node 0x121,289,-656.0140231947679,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x128 Port #0 Node 0x128,296,-980.83742173416,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x128 Port #0 Node 0x129,297,-1987.2770821969254,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x130 Port #0 Node 0x130,304,-524.9972944587761,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x130 Port #0 Node 0x131,305,-501.01837029360763,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x138 Port #0 Node 0x138,312,724.6630706359026,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x138 Port #0 Node 0x139,313,-1158.9661929323338,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x140 Port #0 Node 0x140,320,-1515.7003275920797,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x140 Port #0 Node 0x141,321,2238.0536759575434,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x188 Port #0 Node 0x188,392,-1165.4900931960494,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x188 Port #0 Node 0x189,393,-544.6988480662967,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x190 Port #0 Node 0x190,400,-391.4326666794601,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x190 Port #0 Node 0x191,401,-961.9473387419429,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x198 Port #0 Node 0x198,408,-1268.468191616605,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x198 Port #0 Node 0x199,409,-364.6056982346248,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x1A0 Port #0 Node 0x1A0,416,-155.87739325077962,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x1A0 Port #0 Node 0x1A1,417,-147.0904301408944,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x1A8 Port #0 Node 0x1A8,424,-1118.2943643509745,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x1A8 Port #0 Node 0x1A9,425,1262.191380250511,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x1B0 Port #0 Node 0x1B0,432,873.8009513495721,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x1B0 Port #0 Node 0x1B1,433,1105.4393710849506,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x1B8 Port #0 Node 0x1B8,440,29.243807921276073,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x1B8 Port #0 Node 0x1B9,441,-1571.4561977161095,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x1C0 Port #0 Node 0x1C0,448,1667.4971008746354,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x1C0 Port #0 Node 0x1C1,449,338.3721207845978,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x200 Port #0 Node 0x200,512,-1163.871225122344,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x200 Port #0 Node 0x201,513,-891.2721524087005,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x208 Port #0 Node 0x208,520,-716.2970337106234,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x208 Port #0 Node 0x209,521,-278.4351754431716,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x210 Port #0 Node 0x210,528,1396.192167869107,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x210 Port #0 Node 0x211,529,-350.52187337755964,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x218 Port #0 Node 0x218,536,525.9807979190524,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x218 Port #0 Node 0x219,537,502.13562502653974,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x220 Port #0 Node 0x220,544,-674.2336542704362,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x220 Port #0 Node 0x221,545,1292.5782046648567,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x228 Port #0 Node 0x228,552,605.9281400413325,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x228 Port #0 Node 0x229,553,-1359.0495502558415,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x230 Port #0 Node 0x230,560,383.3285598283734,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x230 Port #0 Node 0x231,561,-1014.3398641699695,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x238 Port #0 Node 0x238,568,442.02122812949796,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x238 Port #0 Node 0x239,569,229.96632062233266,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x240 Port #0 Node 0x240,576,-1127.826652951671,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x240 Port #0 Node 0x241,577,-1045.1525219417922,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x280 Port #0 Node 0x280,640,2312.047411833511,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x280 Port #0 Node 0x281,641,-969.5033128277984,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x288 Port #0 Node 0x288,648,-1596.4235905485348,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x288 Port #0 Node 0x289,649,-187.99305918029842,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x290 Port #0 Node 0x290,656,988.7672515552656,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x290 Port #0 Node 0x291,657,-1979.6960732730292,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x298 Port #0 Node 0x298,664,-139.02626152655765,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x298 Port #0 Node 0x299,665,-1115.6352839190938,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x2A0 Port #0 Node 0x2A0,672,2048.759007421082,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x2A0 Port #0 Node 0x2A1,673,1077.0250464897345,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x2A8 Port #0 Node 0x2A8,680,264.5676311491982,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x2A8 Port #0 Node 0x2A9,681,-227.63574914923564,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x2B0 Port #0 Node 0x2B0,688,-681.6452203458674,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x2B0 Port #0 Node 0x2B1,689,-52.60947547739524,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x2B8 Port #0 Node 0x2B8,696,-814.4293539638411,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x2B8 Port #0 Node 0x2B9,697,962.7450271536065,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x300 Port #0 Node 0x300,768,1199.0052247600495,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x300 Port #0 Node 0x301,769,-190.3312169679532,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x308 Port #0 Node 0x308,776,-1731.6685941818741,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x308 Port #0 Node 0x309,777,-862.4494459709393,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x310 Port #0 Node 0x310,784,396.523639558939,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x310 Port #0 Node 0x311,785,858.3158211169164,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x318 Port #0 Node 0x318,792,500.1012506754505,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x318 Port #0 Node 0x319,793,-139.98637903545904,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x320 Port #0 Node 0x320,800,-1770.6329844670659,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x320 Port #0 Node 0x321,801,-1432.3088417374377,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x328 Port #0 Node 0x328,808,-297.7359353175744,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x328 Port #0 Node 0x329,809,1333.909401246085,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x330 Port #0 Node 0x330,816,-1098.0112383651892,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x330 Port #0 Node 0x331,817,639.6960382730766,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x338 Port #0 Node 0x338,824,-465.157127277463,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,XP 0x338 Port #0 Node 0x339,825,798.6232873262942,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,Global,,1585.2394387904146,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x088 Port #0 Node 0x088,136,1530.9699029871606,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x088 Port #0 Node 0x089,137,696.6645185570273,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x090 Port #0 Node 0x090,144,2171.7473099731783,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x090 Port #0 Node 0x091,145,1938.252202570214,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x098 Port #0 Node 0x098,152,2450.0671112129335,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x098 Port #0 Node 0x099,153,320.96786237025395,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x0A0 Port #0 Node 0x0A0,160,662.5895181752437,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x0A0 Port #0 Node 0x0A1,161,1978.8919855537545,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x0A8 Port #0 Node 0x0A8,168,1762.4591134365373,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x0A8 Port #0 Node 0x0A9,169,2007.9503206481788,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x0B0 Port #0 Node 0x0B0,176,1592.8451301596642,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x0B0 Port #0 Node 0x0B1,177,407.92556222002185,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x0B8 Port #0 Node 0x0B8,184,1229.1621138433893,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x0B8 Port #0 Node 0x0B9,185,1560.5604611246774,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x0C0 Port #0 Node 0x0C0,192,382.5915852664737,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x0C0 Port #0 Node 0x0C1,193,2229.558982795474,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x108 Port #0 Node 0x108,264,2090.317500277046,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x108 Port #0 Node 0x109,265,2036.3957317826778,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x110 Port #0 Node 0x110,272,2486.9755217060806,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x110 Port #0 Node 0x111,273,1411.556552452597,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x118 Port #0 Node 0x118,280,1845.749167034777,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x118 Port #0 Node 0x119,281,1543.9582981246024,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x120 Port #0 Node 0x120,288,928.4670043105134,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x120 Port #0 Node 0x121,289,2279.0073145862916,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x128 Port #0 Node 0x128,296,1678.557569979003,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x128 Port #0 Node 0x129,297,1133.5513726689826,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x130 Port #0 Node 0x130,304,2123.429873922542,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x130 Port #0 Node 0x131,305,224.29102981273545,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x138 Port #0 Node 0x138,312,1300.0884239406078,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x138 Port #0 Node 0x139,313,1166.511498912915,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x140 Port #0 Node 0x140,320,1299.3445116102846,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x140 Port #0 Node 0x141,321,2460.7639750810504,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x188 Port #0 Node 0x188,392,1804.0694187867452,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x188 Port #0 Node 0x189,393,2115.2641192913266,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x190 Port #0 Node 0x190,400,993.6639112779317,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x190 Port #0 Node 0x191,401,2374.8719831106378,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x198 Port #0 Node 0x198,408,2175.618876718993,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x198 Port #0 Node 0x199,409,910.180578367639,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x1A0 Port #0 Node 0x1A0,416,1562.7514940679641,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x1A0 Port #0 Node 0x1A1,417,2199.0759450065784,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x1A8 Port #0 Node 0x1A8,424,1469.7861205234144,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x1A8 Port #0 Node 0x1A9,425,2411.0501115114953,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x1B0 Port #0 Node 0x1B0,432,940.9840829039396,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x1B0 Port #0 Node 0x1B1,433,163.57560056366677,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x1B8 Port #0 Node 0x1B8,440,2421.855574549428,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x1B8 Port #0 Node 0x1B9,441,2146.6917064904555,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x1C0 Port #0 Node 0x1C0,448,2413.944713506166,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x1C0 Port #0 Node 0x1C1,449,2550.5365362637726,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x200 Port #0 Node 0x200,512,387.93043618780933,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x200 Port #0 Node 0x201,513,869.4797847825979,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x208 Port #0 Node 0x208,520,262.8285481093721,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x208 Port #0 Node 0x209,521,1403.422560428129,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x210 Port #0 Node 0x210,528,634.8573372756841,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x210 Port #0 Node 0x211,529,66.513729636403,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x218 Port #0 Node 0x218,536,648.6798734252134,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x218 Port #0 Node 0x219,537,1456.4153320553962,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x220 Port #0 Node 0x220,544,1351.6657699549128,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x220 Port #0 Node 0x221,545,1971.8892225168815,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x228 Port #0 Node 0x228,552,1555.6807736868202,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x228 Port #0 Node 0x229,553,586.8948055328583,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x230 Port #0 Node 0x230,560,226.85060089160436,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x230 Port #0 Node 0x231,561,1349.0568597117983,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x238 Port #0 Node 0x238,568,1478.257175854107,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x238 Port #0 Node 0x239,569,2531.535279660766,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x240 Port #0 Node 0x240,576,2117.0624216530173,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x240 Port #0 Node 0x241,577,362.39735856253577,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x280 Port #0 Node 0x280,640,483.93234700574584,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x280 Port #0 Node 0x281,641,222.70013657310648,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x288 Port #0 Node 0x288,648,1224.5610098760742,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x288 Port #0 Node 0x289,649,820.0398392197894,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x290 Port #0 Node 0x290,656,1849.0808616025136,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x290 Port #0 Node 0x291,657,1338.8198641125337,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x298 Port #0 Node 0x298,664,646.5380617830833,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x298 Port #0 Node 0x299,665,391.28435422985575,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x2A0 Port #0 Node 0x2A0,672,973.4054605580222,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x2A0 Port #0 Node 0x2A1,673,229.5677202195909,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x2A8 Port #0 Node 0x2A8,680,2211.4124836724845,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x2A8 Port #0 Node 0x2A9,681,1839.029955666876,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x2B0 Port #0 Node 0x2B0,688,458.99465985976417,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x2B0 Port #0 Node 0x2B1,689,12.825312109461663,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x2B8 Port #0 Node 0x2B8,696,2365.932322685266,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x2B8 Port #0 Node 0x2B9,697,906.400191584357,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x300 Port #0 Node 0x300,768,228.33811503984916,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x300 Port #0 Node 0x301,769,990.0575981061018,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x308 Port #0 Node 0x308,776,1151.0286870532018,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x308 Port #0 Node 0x309,777,777.0053247641881,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x310 Port #0 Node 0x310,784,2075.3735823916013,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x310 Port #0 Node 0x311,785,2217.0303207133925,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x318 Port #0 Node 0x318,792,1718.2515698787595,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x318 Port #0 Node 0x319,793,2038.170279646482,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x320 Port #0 Node 0x320,800,1356.105131063381,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x320 Port #0 Node 0x321,801,2279.3179215179307,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x328 Port #0 Node 0x328,808,2293.672771052311,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x328 Port #0 Node 0x329,809,837.5405048545757,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x330 Port #0 Node 0x330,816,601.7662441997861,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x330 Port #0 Node 0x331,817,1802.6853160375333,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x338 Port #0 Node 0x338,824,1054.219677921759,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,XP 0x338 Port #0 Node 0x339,825,1531.772872502815,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,Global,,-267.96794776116445,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x088 Port #0 Node 0x088,136,1517.0464927856049,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x088 Port #0 Node 0x089,137,-432.0361478316041,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x090 Port #0 Node 0x090,144,-359.089730799957,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x090 Port #0 Node 0x091,145,734.4070449340911,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x098 Port #0 Node 0x098,152,-1624.5460801526142,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x098 Port #0 Node 0x099,153,-1168.6707854032788,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x0A0 Port #0 Node 0x0A0,160,558.0245254840266,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x0A0 Port #0 Node 0x0A1,161,-228.84984127297042,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x0A8 Port #0 Node 0x0A8,168,-614.5697211250127,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x0A8 Port #0 Node 0x0A9,169,-229.8908206386585,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x0B0 Port #0 Node 0x0B0,176,1183.6941495918625,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x0B0 Port #0 Node 0x0B1,177,-1537.3828384432243,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x0B8 Port #0 Node 0x0B8,184,631.7951297804981,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x0B8 Port #0 Node 0x0B9,185,-579.4235678284801,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x0C0 Port #0 Node 0x0C0,192,540.2590322575869,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x0C0 Port #0 Node 0x0C1,193,-358.05611817647315,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x108 Port #0 Node 0x108,264,-85.80830080120127,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x108 Port #0 Node 0x109,265,2032.0051145401128,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x110 Port #0 Node 0x110,272,-2230.603733181719,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x110 Port #0 Node 0x111,273,817.1851748635784,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x118 Port #0 Node 0x118,280,-457.5423682281317,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x118 Port #0 Node 0x119,281,-441.86608799679163,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x120 Port #0 Node 0x120,288,-104.81108723120504,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x120 Port #0 Node 0x121,289,-1165.941107972566,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x128 Port #0 Node 0x128,296,-1897.4926521413174,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x128 Port #0 Node 0x129,297,-231.77582476379183,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x130 Port #0 Node 0x130,304,-1117.0530697852842,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x130 Port #0 Node 0x131,305,-8.454993044656813,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x138 Port #0 Node 0x138,312,1134.7509993421354,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x138 Port #0 Node 0x139,313,-431.692488380427,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x140 Port #0 Node 0x140,320,386.1311837419296,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x140 Port #0 Node 0x141,321,2147.768465380552,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x188 Port #0 Node 0x188,392,-699.1510940932898,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x188 Port #0 Node 0x189,393,-2210.1876971187244,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x190 Port #0 Node 0x190,400,-716.4655438253031,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x190 Port #0 Node 0x191,401,-1372.1160718691424,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x198 Port #0 Node 0x198,408,-305.8356650805456,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x198 Port #0 Node 0x199,409,-1975.8104598794869,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x1A0 Port #0 Node 0x1A0,416,-165.13206641381646,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x1A0 Port #0 Node 0x1A1,417,549.2834954746033,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x1A8 Port #0 Node 0x1A8,424,-1822.5674269229778,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x1A8 Port #0 Node 0x1A9,425,161.24180789833164,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x1B0 Port #0 Node 0x1B0,432,78.42062742859848,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x1B0 Port #0 Node 0x1B1,433,1217.5394748986994,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x1B8 Port #0 Node 0x1B8,440,-545.7736702923377,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x1B8 Port #0 Node 0x1B9,441,163.63164356502756,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x1C0 Port #0 Node 0x1C0,448,719.5625149488313,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x1C0 Port #0 Node 0x1C1,449,-189.94073655426334,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x200 Port #0 Node 0x200,512,-1973.1928008447492,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x200 Port #0 Node 0x201,513,-340.98930597382036,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x208 Port #0 Node 0x208,520,-423.7182714396811,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x208 Port #0 Node 0x209,521,843.4988758807891,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x210 Port #0 Node 0x210,528,-436.7063895689491,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x210 Port #0 Node 0x211,529,713.189783968475,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x218 Port #0 Node 0x218,536,-308.33835435576583,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x218 Port #0 Node 0x219,537,1640.0507068547095,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x220 Port #0 Node 0x220,544,-50.04713491508091,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x220 Port #0 Node 0x221,545,133.03465669899919,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x228 Port #0 Node 0x228,552,232.5486410722382,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x228 Port #0 Node 0x229,553,-1641.6289013935113,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x230 Port #0 Node 0x230,560,232.33734366482085,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x230 Port #0 Node 0x231,561,878.2701814775971,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x238 Port #0 Node 0x238,568,-920.8552851716134,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x238 Port #0 Node 0x239,569,236.5918152789841,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x240 Port #0 Node 0x240,576,-1113.149900176096,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x240 Port #0 Node 0x241,577,818.9174876561224,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x280 Port #0 Node 0x280,640,940.1630246947252,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x280 Port #0 Node 0x281,641,-459.655740165017,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x288 Port #0 Node 0x288,648,-510.51819210047177,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x288 Port #0 Node 0x289,649,-741.1156976837495,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x290 Port #0 Node 0x290,656,-968.3113370845007,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x290 Port #0 Node 0x291,657,-1361.666583479457,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x298 Port #0 Node 0x298,664,-1155.5371039659988,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x298 Port #0 Node 0x299,665,81.07962529648812,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x2A0 Port #0 Node 0x2A0,672,668.9857769016555,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x2A0 Port #0 Node 0x2A1,673,548.5559074812444,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x2A8 Port #0 Node 0x2A8,680,1187.1588463734356,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x2A8 Port #0 Node 0x2A9,681,-2169.3961914337674,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x2B0 Port #0 Node 0x2B0,688,-471.7600317081624,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x2B0 Port #0 Node 0x2B1,689,719.202361246389,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x2B8 Port #0 Node 0x2B8,696,-1603.749561696638,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x2B8 Port #0 Node 0x2B9,697,-23.577809748722327,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x300 Port #0 Node 0x300,768,742.4628237306799,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x300 Port #0 Node 0x301,769,-1475.1007526739852,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x308 Port #0 Node 0x308,776,-1149.013939000437,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x308 Port #0 Node 0x309,777,-172.765131335902,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x310 Port #0 Node 0x310,784,467.5208033213101,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x310 Port #0 Node 0x311,785,-111.74001771805302,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x318 Port #0 Node 0x318,792,1924.08746440344,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x318 Port #0 Node 0x319,793,-1003.1856693800056,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x320 Port #0 Node 0x320,800,-1018.0049389719734,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x320 Port #0 Node 0x321,801,-707.2677052010215,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x328 Port #0 Node 0x328,808,242.1408507887247,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x328 Port #0 Node 0x329,809,816.0662838080661,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x330 Port #0 Node 0x330,816,888.2302957407765,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x330 Port #0 Node 0x331,817,-1114.1456757565782,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x338 Port #0 Node 0x338,824,97.72883780577638,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,XP 0x338 Port #0 Node 0x339,825,2220.3874844775582,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,Global,,107.26845665299967,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x088 Port #0 Node 0x088,136,1676.7927078286352,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x088 Port #0 Node 0x089,137,1070.0866037934893,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x090 Port #0 Node 0x090,144,730.6840820050091,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x090 Port #0 Node 0x091,145,1258.5272369857125,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x098 Port #0 Node 0x098,152,701.4144034348535,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x098 Port #0 Node 0x099,153,797.1870484080607,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x0A0 Port #0 Node 0x0A0,160,2568.8346551823342,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x0A0 Port #0 Node 0x0A1,161,217.24689683164124,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x0A8 Port #0 Node 0x0A8,168,557.3518335704979,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x0A8 Port #0 Node 0x0A9,169,1571.8931215714535,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x0B0 Port #0 Node 0x0B0,176,1930.297650816629,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x0B0 Port #0 Node 0x0B1,177,753.5601097939544,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x0B8 Port #0 Node 0x0B8,184,768.5753791216576,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x0B8 Port #0 Node 0x0B9,185,996.2685192191547,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x0C0 Port #0 Node 0x0C0,192,1713.3063122728995,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x0C0 Port #0 Node 0x0C1,193,1167.722934031685,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x108 Port #0 Node 0x108,264,2117.3981256448346,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x108 Port #0 Node 0x109,265,2129.463673735944,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x110 Port #0 Node 0x110,272,314.9078903699171,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x110 Port #0 Node 0x111,273,2378.9052945101694,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x118 Port #0 Node 0x118,280,839.3343272223067,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x118 Port #0 Node 0x119,281,208.22193464093854,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x120 Port #0 Node 0x120,288,996.4852167902312,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x120 Port #0 Node 0x121,289,355.31245093556294,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x128 Port #0 Node 0x128,296,380.0247168470164,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x128 Port #0 Node 0x129,297,288.90217697163746,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x130 Port #0 Node 0x130,304,63.9773871586938,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x130 Port #0 Node 0x131,305,1999.9936796666414,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x138 Port #0 Node 0x138,312,1866.7336077160116,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x138 Port #0 Node 0x139,313,915.1755909491498,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x140 Port #0 Node 0x140,320,612.611753166632,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x140 Port #0 Node 0x141,321,2392.868340213841,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x188 Port #0 Node 0x188,392,1025.0000403097747,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x188 Port #0 Node 0x189,393,125.0467670416453,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x190 Port #0 Node 0x190,400,1746.3655416310753,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x190 Port #0 Node 0x191,401,225.78135233326213,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x198 Port #0 Node 0x198,408,197.6232094439206,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x198 Port #0 Node 0x199,409,515.4739383246686,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x1A0 Port #0 Node 0x1A0,416,578.1608508985108,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x1A0 Port #0 Node 0x1A1,417,599.3347364525241,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x1A8 Port #0 Node 0x1A8,424,80.1424109190998,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x1A8 Port #0 Node 0x1A9,425,2507.0509603650517,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x1B0 Port #0 Node 0x1B0,432,1806.8915810500264,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x1B0 Port #0 Node 0x1B1,433,2490.206077179413,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x1B8 Port #0 Node 0x1B8,440,1408.481840700766,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x1B8 Port #0 Node 0x1B9,441,815.3216487436744,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x1C0 Port #0 Node 0x1C0,448,2559.043146161912,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x1C0 Port #0 Node 0x1C1,449,1215.7998575860895,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x200 Port #0 Node 0x200,512,215.84302479284477,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x200 Port #0 Node 0x201,513,1388.6229446558161,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x208 Port #0 Node 0x208,520,702.5766914404011,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x208 Port #0 Node 0x209,521,1391.2609042614731,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x210 Port #0 Node 0x210,528,1475.2221845615418,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x210 Port #0 Node 0x211,529,1221.3784085261202,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x218 Port #0 Node 0x218,536,1782.5523332681148,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x218 Port #0 Node 0x219,537,2167.7677764498567,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x220 Port #0 Node 0x220,544,1518.5773883283505,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x220 Port #0 Node 0x221,545,1984.9355829607844,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x228 Port #0 Node 0x228,552,1881.4576080347208,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x228 Port #0 Node 0x229,553,246.0864810244241,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x230 Port #0 Node 0x230,560,2504.944039786989,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x230 Port #0 Node 0x231,561,1081.9841227949114,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x238 Port #0 Node 0x238,568,1292.7071869695835,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x238 Port #0 Node 0x239,569,1811.8366621603977,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x240 Port #0 Node 0x240,576,1041.8585321950131,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x240 Port #0 Node 0x241,577,1184.1228427745432,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x280 Port #0 Node 0x280,640,2444.7728155306695,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x280 Port #0 Node 0x281,641,303.4226385049468,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x288 Port #0 Node 0x288,648,963.919489159834,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x288 Port #0 Node 0x289,649,991.20472425175,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x290 Port #0 Node 0x290,656,1306.9123342271732,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x290 Port #0 Node 0x291,657,318.2804427458133,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x298 Port #0 Node 0x298,664,1239.5638006735935,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x298 Port #0 Node 0x299,665,1406.7967228018545,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x2A0 Port #0 Node 0x2A0,672,2495.535746147317,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x2A0 Port #0 Node 0x2A1,673,2016.100309745095,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x2A8 Port #0 Node 0x2A8,680,2472.8097215749267,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x2A8 Port #0 Node 0x2A9,681,28.08125786479976,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x2B0 Port #0 Node 0x2B0,688,364.54019567336866,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x2B0 Port #0 Node 0x2B1,689,2299.441392077952,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x2B8 Port #0 Node 0x2B8,696,83.08622583887072,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x2B8 Port #0 Node 0x2B9,697,1983.9388776379662,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x300 Port #0 Node 0x300,768,1683.0582898936307,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x300 Port #0 Node 0x301,769,31.988701057969298,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x308 Port #0 Node 0x308,776,248.65319628169473,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x308 Port #0 Node 0x309,777,556.8533337298,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x310 Port #0 Node 0x310,784,2319.176506153044,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x310 Port #0 Node 0x311,785,1930.9431223395081,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x318 Port #0 Node 0x318,792,2493.506977173285,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x318 Port #0 Node 0x319,793,1073.3864298571852,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x320 Port #0 Node 0x320,800,298.06391658476207,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x320 Port #0 Node 0x321,801,522.5099722568536,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x328 Port #0 Node 0x328,808,663.7433014914034,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x328 Port #0 Node 0x329,809,1377.8480973030996,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x330 Port #0 Node 0x330,816,976.7581616786324,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x330 Port #0 Node 0x331,817,843.9294345310402,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x338 Port #0 Node 0x338,824,1375.2271333155531,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,XP 0x338 Port #0 Node 0x339,825,2419.480211512792,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,Global,,375.2364044141641,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x088 Port #0 Node 0x088,136,159.7462150430306,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x088 Port #0 Node 0x089,137,1502.1227516250935,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x090 Port #0 Node 0x090,144,1089.7738128049662,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x090 Port #0 Node 0x091,145,524.1201920516214,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x098 Port #0 Node 0x098,152,2325.9604835874675,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x098 Port #0 Node 0x099,153,1965.8578338113396,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x0A0 Port #0 Node 0x0A0,160,2010.810129698308,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x0A0 Port #0 Node 0x0A1,161,446.09673810461163,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x0A8 Port #0 Node 0x0A8,168,1171.9215546955106,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x0A8 Port #0 Node 0x0A9,169,1801.7839422101122,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x0B0 Port #0 Node 0x0B0,176,746.6035012247664,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x0B0 Port #0 Node 0x0B1,177,2290.942948237179,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x0B8 Port #0 Node 0x0B8,184,136.78024934115953,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x0B8 Port #0 Node 0x0B9,185,1575.6920870476347,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x0C0 Port #0 Node 0x0C0,192,1173.0472800153127,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x0C0 Port #0 Node 0x0C1,193,1525.7790522081582,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x108 Port #0 Node 0x108,264,2203.206426446036,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x108 Port #0 Node 0x109,265,97.45855919583151,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x110 Port #0 Node 0x110,272,2545.511623551636,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x110 Port #0 Node 0x111,273,1561.7201196465908,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x118 Port #0 Node 0x118,280,1296.8766954504385,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x118 Port #0 Node 0x119,281,650.0880226377301,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x120 Port #0 Node 0x120,288,1101.2963040214363,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x120 Port #0 Node 0x121,289,1521.2535589081288,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x128 Port #0 Node 0x128,296,2277.5173689883336,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x128 Port #0 Node 0x129,297,520.6780017354293,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x130 Port #0 Node 0x130,304,1181.030456943978,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x130 Port #0 Node 0x131,305,2008.4486727112983,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x138 Port #0 Node 0x138,312,731.9826083738762,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x138 Port #0 Node 0x139,313,1346.8680793295769,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x140 Port #0 Node 0x140,320,226.48056942470234,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x140 Port #0 Node 0x141,321,245.0998748332884,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x188 Port #0 Node 0x188,392,1724.1511344030644,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x188 Port #0 Node 0x189,393,2335.23446416037,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x190 Port #0 Node 0x190,400,2462.8310854563783,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x190 Port #0 Node 0x191,401,1597.8974242024044,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x198 Port #0 Node 0x198,408,503.4588745244661,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x198 Port #0 Node 0x199,409,2491.2843982041554,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x1A0 Port #0 Node 0x1A0,416,743.2929173123273,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x1A0 Port #0 Node 0x1A1,417,50.05124097792082,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x1A8 Port #0 Node 0x1A8,424,1902.7098378420776,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x1A8 Port #0 Node 0x1A9,425,2345.8091524667198,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x1B0 Port #0 Node 0x1B0,432,1728.470953621428,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x1B0 Port #0 Node 0x1B1,433,1272.6666022807135,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x1B8 Port #0 Node 0x1B8,440,1954.2555109931036,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x1B8 Port #0 Node 0x1B9,441,651.6900051786469,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x1C0 Port #0 Node 0x1C0,448,1839.4806312130804,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x1C0 Port #0 Node 0x1C1,449,1405.7405941403526,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x200 Port #0 Node 0x200,512,2189.035825637594,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x200 Port #0 Node 0x201,513,1729.6122506296365,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x208 Port #0 Node 0x208,520,1126.294962880082,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x208 Port #0 Node 0x209,521,547.762028380684,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x210 Port #0 Node 0x210,528,1911.9285741304907,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x210 Port #0 Node 0x211,529,508.18862455764514,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x218 Port #0 Node 0x218,536,2090.8906876238802,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x218 Port #0 Node 0x219,537,527.7170695951477,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x220 Port #0 Node 0x220,544,1568.6245232434312,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x220 Port #0 Node 0x221,545,1851.9009262617853,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x228 Port #0 Node 0x228,552,1648.9089669624825,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x228 Port #0 Node 0x229,553,1887.7153824179354,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x230 Port #0 Node 0x230,560,2272.6066961221686,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x230 Port #0 Node 0x231,561,203.71394131731415,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x238 Port #0 Node 0x238,568,2213.562472141197,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x238 Port #0 Node 0x239,569,1575.2448468814137,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x240 Port #0 Node 0x240,576,2155.0084323711094,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x240 Port #0 Node 0x241,577,365.20535511842075,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x280 Port #0 Node 0x280,640,1504.6097908359443,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x280 Port #0 Node 0x281,641,763.0783786699637,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x288 Port #0 Node 0x288,648,1474.4376812603057,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x288 Port #0 Node 0x289,649,1732.3204219354996,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x290 Port #0 Node 0x290,656,2275.223671311674,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x290 Port #0 Node 0x291,657,1679.9470262252703,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x298 Port #0 Node 0x298,664,2395.1009046395925,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x298 Port #0 Node 0x299,665,1325.7170975053664,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x2A0 Port #0 Node 0x2A0,672,1826.549969245661,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x2A0 Port #0 Node 0x2A1,673,1467.5444022638508,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x2A8 Port #0 Node 0x2A8,680,1285.650875201491,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x2A8 Port #0 Node 0x2A9,681,2197.4774492985675,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x2B0 Port #0 Node 0x2B0,688,836.3002273815309,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x2B0 Port #0 Node 0x2B1,689,1580.239030831563,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x2B8 Port #0 Node 0x2B8,696,1686.8357875355086,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x2B8 Port #0 Node 0x2B9,697,2007.5166873866888,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x300 Port #0 Node 0x300,768,940.5954661629505,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x300 Port #0 Node 0x301,769,1507.0894537319546,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x308 Port #0 Node 0x308,776,1397.6671352821318,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x308 Port #0 Node 0x309,777,729.618465065702,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x310 Port #0 Node 0x310,784,1851.655702831734,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x310 Port #0 Node 0x311,785,2042.6831400575613,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x318 Port #0 Node 0x318,792,569.4195127698449,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x318 Port #0 Node 0x319,793,2076.572099237191,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x320 Port #0 Node 0x320,800,1316.0688555567353,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x320 Port #0 Node 0x321,801,1229.7776774578751,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x328 Port #0 Node 0x328,808,421.60245070267865,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x328 Port #0 Node 0x329,809,561.7818134950336,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x330 Port #0 Node 0x330,816,88.52786593785596,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x330 Port #0 Node 0x331,817,1958.0751102876184,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x338 Port #0 Node 0x338,824,1277.4982955097767,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,XP 0x338 Port #0 Node 0x339,825,199.09272703523342,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,Global,,1175.9645027487154,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x088 Port #0 Node 0x088,136,461.8203304943835,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x088 Port #0 Node 0x089,137,1824.504560635945,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x090 Port #0 Node 0x090,144,2158.92790238567,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x090 Port #0 Node 0x091,145,693.0604136728183,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x098 Port #0 Node 0x098,152,2495.8172845711397,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x098 Port #0 Node 0x099,153,235.13617801083691,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x0A0 Port #0 Node 0x0A0,160,1467.036042607387,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x0A0 Port #0 Node 0x0A1,161,1755.3016649671995,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x0A8 Port #0 Node 0x0A8,168,581.4880780363734,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x0A8 Port #0 Node 0x0A9,169,316.18307326598455,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x0B0 Port #0 Node 0x0B0,176,1079.4318125609536,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x0B0 Port #0 Node 0x0B1,177,477.713406416326,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x0B8 Port #0 Node 0x0B8,184,947.262153670045,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x0B8 Port #0 Node 0x0B9,185,976.9766924096306,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x0C0 Port #0 Node 0x0C0,192,447.504101762632,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x0C0 Port #0 Node 0x0C1,193,1119.2653306486675,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x108 Port #0 Node 0x108,264,753.1119087743281,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x108 Port #0 Node 0x109,265,1380.9841152115882,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x110 Port #0 Node 0x110,272,2446.7314236591274,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x110 Port #0 Node 0x111,273,349.2446174073641,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x118 Port #0 Node 0x118,280,2009.0912102210393,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x118 Port #0 Node 0x119,281,385.30880809859417,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x120 Port #0 Node 0x120,288,2410.9434035357103,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x120 Port #0 Node 0x121,289,2568.4976935853747,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x128 Port #0 Node 0x128,296,1544.8969256624785,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x128 Port #0 Node 0x129,297,513.0759557458802,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x130 Port #0 Node 0x130,304,2083.4197951327124,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x130 Port #0 Node 0x131,305,1382.0026617015394,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x138 Port #0 Node 0x138,312,201.55928319677844,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x138 Port #0 Node 0x139,313,1050.9463435317464,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x140 Port #0 Node 0x140,320,1104.161081868285,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x140 Port #0 Node 0x141,321,879.543503094123,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x188 Port #0 Node 0x188,392,1836.2976361884434,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x188 Port #0 Node 0x189,393,2521.6079205670985,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x190 Port #0 Node 0x190,400,1568.8141248681352,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x190 Port #0 Node 0x191,401,1545.2928726499945,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x198 Port #0 Node 0x198,408,1765.3470965512436,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x198 Port #0 Node 0x199,409,1833.3630660425329,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x1A0 Port #0 Node 0x1A0,416,2111.192461704181,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x1A0 Port #0 Node 0x1A1,417,1116.505057276301,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x1A8 Port #0 Node 0x1A8,424,1747.5174193942487,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x1A8 Port #0 Node 0x1A9,425,80.9775068016949,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x1B0 Port #0 Node 0x1B0,432,2067.9080284402435,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x1B0 Port #0 Node 0x1B1,433,1749.9895223004519,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x1B8 Port #0 Node 0x1B8,440,1989.844544718146,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x1B8 Port #0 Node 0x1B9,441,755.4205607043295,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x1C0 Port #0 Node 0x1C0,448,681.8195207091505,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x1C0 Port #0 Node 0x1C1,449,2429.3583433224044,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x200 Port #0 Node 0x200,512,571.0894634242492,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x200 Port #0 Node 0x201,513,1762.96098763166,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x208 Port #0 Node 0x208,520,318.6959669718907,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x208 Port #0 Node 0x209,521,961.4127626251,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x210 Port #0 Node 0x210,528,54.00392086223491,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x210 Port #0 Node 0x211,529,1443.1272146724948,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x218 Port #0 Node 0x218,536,328.7840943103344,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x218 Port #0 Node 0x219,537,1909.2200211157408,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x220 Port #0 Node 0x220,544,20.731155894531263,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x220 Port #0 Node 0x221,545,1161.3245304363702,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x228 Port #0 Node 0x228,552,1596.1300019700186,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x228 Port #0 Node 0x229,553,2403.776584053366,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x230 Port #0 Node 0x230,560,1502.8235482015834,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x230 Port #0 Node 0x231,561,1912.554504910486,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x238 Port #0 Node 0x238,568,2090.9888023633885,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x238 Port #0 Node 0x239,569,1406.4717323853351,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x240 Port #0 Node 0x240,576,806.5494939044216,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x240 Port #0 Node 0x241,577,2195.1027617311056,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x280 Port #0 Node 0x280,640,2093.964802880789,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x280 Port #0 Node 0x281,641,1508.7003268591748,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x288 Port #0 Node 0x288,648,244.4550536514127,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x288 Port #0 Node 0x289,649,155.2161472192545,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x290 Port #0 Node 0x290,656,1261.380481600248,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x290 Port #0 Node 0x291,657,1908.9921648417608,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x298 Port #0 Node 0x298,664,1814.578345472359,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x298 Port #0 Node 0x299,665,1294.504808477491,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x2A0 Port #0 Node 0x2A0,672,2458.514014183028,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x2A0 Port #0 Node 0x2A1,673,74.11502836200236,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x2A8 Port #0 Node 0x2A8,680,420.6950323534927,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x2A8 Port #0 Node 0x2A9,681,599.0637566469435,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x2B0 Port #0 Node 0x2B0,688,294.5088301814704,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x2B0 Port #0 Node 0x2B1,689,468.47099280940927,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x2B8 Port #0 Node 0x2B8,696,230.21591455931178,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x2B8 Port #0 Node 0x2B9,697,774.0158214444801,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x300 Port #0 Node 0x300,768,913.602607514433,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x300 Port #0 Node 0x301,769,658.1700322536531,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x308 Port #0 Node 0x308,776,1246.7044509604518,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x308 Port #0 Node 0x309,777,516.9511714611342,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x310 Port #0 Node 0x310,784,816.3513970133943,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x310 Port #0 Node 0x311,785,1768.323067752445,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x318 Port #0 Node 0x318,792,1358.9277528132222,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x318 Port #0 Node 0x319,793,2230.147123199071,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x320 Port #0 Node 0x320,800,975.6595951256314,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x320 Port #0 Node 0x321,801,1792.4693856235422,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x328 Port #0 Node 0x328,808,2422.4124136277073,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x328 Port #0 Node 0x329,809,837.1047392882682,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x330 Port #0 Node 0x330,816,1809.5539167766635,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x330 Port #0 Node 0x331,817,836.0032135939578,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x338 Port #0 Node 0x338,824,1002.2438595387277,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,XP 0x338 Port #0 Node 0x339,825,390.12857262579206,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,Global,,2250.414871940632,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x088 Port #0 Node 0x088,136,1252.202018590868,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x088 Port #0 Node 0x089,137,1225.904256611996,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x090 Port #0 Node 0x090,144,1173.5774347705953,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x090 Port #0 Node 0x091,145,150.86140223601535,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x098 Port #0 Node 0x098,152,1407.4899300723378,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x098 Port #0 Node 0x099,153,1632.8006873990732,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x0A0 Port #0 Node 0x0A0,160,940.8615208469665,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x0A0 Port #0 Node 0x0A1,161,2328.724016442619,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x0A8 Port #0 Node 0x0A8,168,2429.262260375029,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x0A8 Port #0 Node 0x0A9,169,281.7152597386135,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x0B0 Port #0 Node 0x0B0,176,589.1166139047364,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x0B0 Port #0 Node 0x0B1,177,2078.6234745909987,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x0B8 Port #0 Node 0x0B8,184,47.852564284256275,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x0B8 Port #0 Node 0x0B9,185,749.4423246621649,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x0C0 Port #0 Node 0x0C0,192,1668.240288077731,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x0C0 Port #0 Node 0x0C1,193,2427.201114948924,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x108 Port #0 Node 0x108,264,2212.988747530129,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x108 Port #0 Node 0x109,265,1064.8386498436153,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x110 Port #0 Node 0x110,272,1898.8103351510224,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x110 Port #0 Node 0x111,273,517.3272767660008,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x118 Port #0 Node 0x118,280,752.9659811078332,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x118 Port #0 Node 0x119,281,1137.0196861123463,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x120 Port #0 Node 0x120,288,2401.545485437604,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x120 Port #0 Node 0x121,289,2199.156635154195,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x128 Port #0 Node 0x128,296,390.8185706698331,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x128 Port #0 Node 0x129,297,1017.8568568639388,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x130 Port #0 Node 0x130,304,1837.387491043789,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x130 Port #0 Node 0x131,305,1907.282538599825,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x138 Port #0 Node 0x138,312,1936.1045067479834,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x138 Port #0 Node 0x139,313,2464.429791164106,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x140 Port #0 Node 0x140,320,2514.6878968203782,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x140 Port #0 Node 0x141,321,1085.1531537358119,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x188 Port #0 Node 0x188,392,1103.522238798007,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x188 Port #0 Node 0x189,393,2289.1251476111793,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x190 Port #0 Node 0x190,400,826.6236235053282,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x190 Port #0 Node 0x191,401,518.9705197641069,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x198 Port #0 Node 0x198,408,1486.158059816804,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x198 Port #0 Node 0x199,409,833.8804796184131,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x1A0 Port #0 Node 0x1A0,416,2246.6956638782826,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x1A0 Port #0 Node 0x1A1,417,2033.0498475759534,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x1A8 Port #0 Node 0x1A8,424,969.8922795683154,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x1A8 Port #0 Node 0x1A9,425,564.836913307495,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x1B0 Port #0 Node 0x1B0,432,118.12019740631503,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x1B0 Port #0 Node 0x1B1,433,2348.988471000587,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x1B8 Port #0 Node 0x1B8,440,1612.6743462446314,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x1B8 Port #0 Node 0x1B9,441,2558.9167203494644,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x1C0 Port #0 Node 0x1C0,448,1047.3119496285465,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x1C0 Port #0 Node 0x1C1,449,868.3949208606944,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x200 Port #0 Node 0x200,512,1712.1269101878624,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x200 Port #0 Node 0x201,513,778.4165043144994,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x208 Port #0 Node 0x208,520,1506.9483159735314,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x208 Port #0 Node 0x209,521,2382.508486404156,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x210 Port #0 Node 0x210,528,503.95562017949504,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x210 Port #0 Node 0x211,529,244.70756784086473,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x218 Port #0 Node 0x218,536,347.6599439884088,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x218 Port #0 Node 0x219,537,1131.0765852364843,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x220 Port #0 Node 0x220,544,1655.7397498038845,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x220 Port #0 Node 0x221,545,260.7021280704214,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x228 Port #0 Node 0x228,552,2055.079252831178,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x228 Port #0 Node 0x229,553,1958.1569030833207,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x230 Port #0 Node 0x230,560,1189.9456174023835,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x230 Port #0 Node 0x231,561,2564.2421408615583,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x238 Port #0 Node 0x238,568,1816.0289457387505,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x238 Port #0 Node 0x239,569,1449.3754415472145,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x240 Port #0 Node 0x240,576,198.03072256968815,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x240 Port #0 Node 0x241,577,2218.107183107623,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x280 Port #0 Node 0x280,640,1257.9664665452128,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x280 Port #0 Node 0x281,641,1622.3334806572088,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x288 Port #0 Node 0x288,648,631.2488618845473,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x288 Port #0 Node 0x289,649,655.8527464036689,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x290 Port #0 Node 0x290,656,1521.3225853962579,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x290 Port #0 Node 0x291,657,2007.1454072889915,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x298 Port #0 Node 0x298,664,1071.6451487006648,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x298 Port #0 Node 0x299,665,56.71111934889678,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x2A0 Port #0 Node 0x2A0,672,902.4385211993443,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x2A0 Port #0 Node 0x2A1,673,1132.3377041344202,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x2A8 Port #0 Node 0x2A8,680,817.5653922141827,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x2A8 Port #0 Node 0x2A9,681,2351.834703060475,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x2B0 Port #0 Node 0x2B0,688,1279.7184454223525,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x2B0 Port #0 Node 0x2B1,689,1563.9027149089463,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x2B8 Port #0 Node 0x2B8,696,676.5991999698821,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x2B8 Port #0 Node 0x2B9,697,1690.8830241299397,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x300 Port #0 Node 0x300,768,1726.5633299541428,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x300 Port #0 Node 0x301,769,561.5140219757524,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x308 Port #0 Node 0x308,776,1445.273722889489,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x308 Port #0 Node 0x309,777,1196.6715906415093,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x310 Port #0 Node 0x310,784,2275.5507312125824,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x310 Port #0 Node 0x311,785,1848.0322552385617,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x318 Port #0 Node 0x318,792,2014.4199123526394,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x318 Port #0 Node 0x319,793,2257.222886864014,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x320 Port #0 Node 0x320,800,133.61325138897087,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x320 Port #0 Node 0x321,801,1356.0219023721786,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x328 Port #0 Node 0x328,808,2102.471547394132,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x328 Port #0 Node 0x329,809,2362.106863142242,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x330 Port #0 Node 0x330,816,1710.7060090267273,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x330 Port #0 Node 0x331,817,1509.3320257510507,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x338 Port #0 Node 0x338,824,1483.2225952276547,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,XP 0x338 Port #0 Node 0x339,825,2322.7667540473894,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,Global,,1074.4297838350565,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x088 Port #0 Node 0x088,136,2549.189629789196,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x088 Port #0 Node 0x089,137,2150.540358737251,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x090 Port #0 Node 0x090,144,2126.155135974592,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x090 Port #0 Node 0x091,145,164.72932225597788,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x098 Port #0 Node 0x098,152,138.23420421841269,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x098 Port #0 Node 0x099,153,1066.275177735818,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x0A0 Port #0 Node 0x0A0,160,1211.9809905982797,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x0A0 Port #0 Node 0x0A1,161,2384.611169295624,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x0A8 Port #0 Node 0x0A8,168,522.2570572132412,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x0A8 Port #0 Node 0x0A9,169,1741.6078915500436,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x0B0 Port #0 Node 0x0B0,176,2447.51318021193,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x0B0 Port #0 Node 0x0B1,177,1305.7566070674807,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x0B8 Port #0 Node 0x0B8,184,2543.7672330830683,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x0B8 Port #0 Node 0x0B9,185,1088.7726717616329,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x0C0 Port #0 Node 0x0C0,192,1234.1624188963967,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x0C0 Port #0 Node 0x0C1,193,231.71562364837922,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x108 Port #0 Node 0x108,264,1013.2517401669913,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x108 Port #0 Node 0x109,265,478.29141179085286,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x110 Port #0 Node 0x110,272,1475.439924951725,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x110 Port #0 Node 0x111,273,1593.8731655257106,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x118 Port #0 Node 0x118,280,547.1781041252485,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x118 Port #0 Node 0x119,281,456.1111621236254,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x120 Port #0 Node 0x120,288,1800.7226503077088,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x120 Port #0 Node 0x121,289,1088.2876448087525,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x128 Port #0 Node 0x128,296,379.96659598520927,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x128 Port #0 Node 0x129,297,1997.055217645636,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x130 Port #0 Node 0x130,304,344.9993869773222,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x130 Port #0 Node 0x131,305,276.1556973199893,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x138 Port #0 Node 0x138,312,1073.8927780633699,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x138 Port #0 Node 0x139,313,1633.883885083907,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x140 Port #0 Node 0x140,320,2088.424673512887,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x140 Port #0 Node 0x141,321,1653.1682165189216,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x188 Port #0 Node 0x188,392,343.02543092083994,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x188 Port #0 Node 0x189,393,1716.3865151284378,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x190 Port #0 Node 0x190,400,480.8763503568866,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x190 Port #0 Node 0x191,401,1373.5562116368171,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x198 Port #0 Node 0x198,408,292.06041655956653,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x198 Port #0 Node 0x199,409,200.82316478757056,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x1A0 Port #0 Node 0x1A0,416,2065.3364694288202,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x1A0 Port #0 Node 0x1A1,417,2298.42049430912,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x1A8 Port #0 Node 0x1A8,424,1727.4877038360232,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x1A8 Port #0 Node 0x1A9,425,1464.6118585254642,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x1B0 Port #0 Node 0x1B0,432,1676.5479181586832,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x1B0 Port #0 Node 0x1B1,433,54.95772880699385,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x1B8 Port #0 Node 0x1B8,440,1241.543469799296,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x1B8 Port #0 Node 0x1B9,441,536.9417008328777,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x1C0 Port #0 Node 0x1C0,448,485.3984393880016,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x1C0 Port #0 Node 0x1C1,449,234.33009678997635,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x200 Port #0 Node 0x200,512,521.6094557787039,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x200 Port #0 Node 0x201,513,363.3953908921119,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x208 Port #0 Node 0x208,520,142.0351667859183,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x208 Port #0 Node 0x209,521,572.2507923712608,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x210 Port #0 Node 0x210,528,793.6679599049515,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x210 Port #0 Node 0x211,529,476.7659804287743,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x218 Port #0 Node 0x218,536,253.3498794363805,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x218 Port #0 Node 0x219,537,2456.086758481315,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x220 Port #0 Node 0x220,544,783.8327428238019,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x220 Port #0 Node 0x221,545,860.6951460285532,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x228 Port #0 Node 0x228,552,789.1029711026181,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x228 Port #0 Node 0x229,553,1367.4324547652159,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x230 Port #0 Node 0x230,560,738.3587478111755,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x230 Port #0 Node 0x231,561,345.97016361715123,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x238 Port #0 Node 0x238,568,320.6881624909604,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x238 Port #0 Node 0x239,569,1270.7857580645014,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x240 Port #0 Node 0x240,576,815.662271874159,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x240 Port #0 Node 0x241,577,196.64861990324965,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x280 Port #0 Node 0x280,640,2428.331606245206,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x280 Port #0 Node 0x281,641,616.2102718190566,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x288 Port #0 Node 0x288,648,1445.5093138538953,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x288 Port #0 Node 0x289,649,512.3674699489882,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x290 Port #0 Node 0x290,656,1687.939903226327,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x290 Port #0 Node 0x291,657,157.32625069900814,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x298 Port #0 Node 0x298,664,1781.2089830280593,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x298 Port #0 Node 0x299,665,1226.402431581337,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x2A0 Port #0 Node 0x2A0,672,2448.9748488394666,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x2A0 Port #0 Node 0x2A1,673,832.6520692233853,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x2A8 Port #0 Node 0x2A8,680,1173.7037917797165,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x2A8 Port #0 Node 0x2A9,681,727.4233727261791,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x2B0 Port #0 Node 0x2B0,688,2225.693147665863,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x2B0 Port #0 Node 0x2B1,689,1045.5934758771725,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x2B8 Port #0 Node 0x2B8,696,1166.9853396415613,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x2B8 Port #0 Node 0x2B9,697,900.6335341458118,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x300 Port #0 Node 0x300,768,1551.07104178242,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x300 Port #0 Node 0x301,769,829.3776782536004,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x308 Port #0 Node 0x308,776,1116.1777353244638,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x308 Port #0 Node 0x309,777,2479.2590515973047,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x310 Port #0 Node 0x310,784,2098.5180400750355,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x310 Port #0 Node 0x311,785,1475.5978130294445,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x318 Port #0 Node 0x318,792,889.9419908688114,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x318 Port #0 Node 0x319,793,412.14440388222465,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x320 Port #0 Node 0x320,800,776.7571595432314,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x320 Port #0 Node 0x321,801,2282.6274291070345,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x328 Port #0 Node 0x328,808,2212.916999421738,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x328 Port #0 Node 0x329,809,1521.645436926772,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x330 Port #0 Node 0x330,816,2119.2873728411705,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x330 Port #0 Node 0x331,817,2235.2578994706523,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x338 Port #0 Node 0x338,824,1656.558728357783,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,XP 0x338 Port #0 Node 0x339,825,1258.9180081682412,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,Global,,67023.44330403264,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x088 Port #1,140,1111.5314879992118,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x090 Port #1,148,109.65091839801387,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x098 Port #1,156,2268.3472042583635,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x0A0 Port #1,164,1574.4231359380367,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x0A8 Port #1,172,1438.6632506912154,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x0B0 Port #1,180,300.6949049177671,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x0B8 Port #1,188,2517.7091555673564,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x0C0 Port #1,196,766.3180173789125,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x108 Port #1,268,1427.5617353174039,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x110 Port #1,276,2503.295253035674,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x118 Port #1,284,1747.4590651994229,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x120 Port #1,292,723.9557532989736,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x128 Port #1,300,2244.6804790739698,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x130 Port #1,308,2492.840370465227,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x138 Port #1,316,35.82165418063293,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x140 Port #1,324,1506.9927443751674,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x188 Port #1,396,1259.8582361313097,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x190 Port #1,404,623.9395453293737,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x198 Port #1,412,1131.8465602667104,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x1A0 Port #1,420,1583.5550334546451,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x1A8 Port #1,428,2393.6263506448136,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x1B0 Port #1,436,2503.791516469131,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x1B8 Port #1,444,1282.0812252280916,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x1C0 Port #1,452,2324.3288366421025,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x200 Port #1,516,1450.580521631818,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x208 Port #1,524,2292.712962260942,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x210 Port #1,532,1254.5193271758644,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x218 Port #1,540,734.7660624842192,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x220 Port #1,548,832.8179450681125,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x228 Port #1,556,2409.7038015318403,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x230 Port #1,564,628.8553192143025,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x238 Port #1,572,1226.7437894116856,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x240 Port #1,580,1151.4782599513205,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x280 Port #1,644,263.7436897814781,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x288 Port #1,652,1032.3059274678628,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x290 Port #1,660,657.6061034413434,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x298 Port #1,668,1510.7370674463898,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x2A0 Port #1,676,1516.339040235183,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x2A8 Port #1,684,2309.4119913697295,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x2B0 Port #1,692,1459.128990875228,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x2B8 Port #1,700,68.01153736051266,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x300 Port #1,772,1636.9984465255989,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x308 Port #1,780,1105.3786907394147,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x310 Port #1,788,545.4236755505572,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x318 Port #1,796,809.3730657384519,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x320 Port #1,804,1769.3146696633405,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x328 Port #1,812,75.0061295537014,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x330 Port #1,820,2512.193598559486,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,XP 0x338 Port #1,828,1897.3202567327307,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,Global,,34634.36024640744,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x008 Port #0,,667.4769594488004,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x008 Port #1,,875.8007319866199,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x010 Port #0,,2414.336495200153,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x018 Port #0,,2395.753650768048,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x018 Port #1,,1001.5692321577231,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x020 Port #0,,1073.1250771326418,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x028 Port #0,,2476.256350004793,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x028 Port #1,,2357.3208774583895,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x030 Port #0,,1659.5290193957023,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x038 Port #0,,533.8422689434366,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x038 Port #1,,1122.439058762722,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x040 Port #0,,1182.466335093467,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x040 Port #1,,2114.4171497495267,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x080 Port #0,,1774.6515414420455,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x180 Port #0,,920.0406639622671,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x2C0 Port #0,,865.796454962472,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x380 Port #0,,801.9552606970736,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x380 Port #1,,643.565125705995,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x388 Port #0,,1655.0027638744787,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x390 Port #0,,700.9318761367226,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x390 Port #1,,1037.3862621565568,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x398 Port #0,,346.783195170521,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x3A0 Port #0,,1254.8454064798045,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x3A0 Port #1,,199.7513974292056,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x3A8 Port #0,,405.44502881236497,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x3B0 Port #0,,542.8600929386354,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x3B0 Port #1,,1000.4515658014146,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x3B8 Port #0,,1193.3022815945733,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_rate,XP 0x3C0 Port #0,,1417.2581231412912,,Requests per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,Global,,67535.79511494291,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x008 Port #0,,2104.432821501901,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x008 Port #1,,3561.7888021180893,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x010 Port #0,,1844.124517088525,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x018 Port #0,,510.873835296175,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x018 Port #1,,2873.5530092907075,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x020 Port #0,,3106.102341387655,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x028 Port #0,,2955.0201462869395,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x028 Port #1,,2599.418218818598,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x030 Port #0,,1790.8559326707402,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x038 Port #0,,1396.7871844172791,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x038 Port #1,,4037.3195660071665,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x040 Port #0,,2421.6205812765243,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x040 Port #1,,2904.4204177579413,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x080 Port #0,,2076.3986645992363,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x180 Port #0,,1389.4047418923246,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x2C0 Port #0,,1146.2306649753214,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x380 Port #0,,2470.9326842766586,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x380 Port #1,,2487.0635103908653,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x388 Port #0,,3898.5964280035337,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x390 Port #0,,1101.5900361895026,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x390 Port #1,,1929.9407153149757,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x398 Port #0,,2366.2249246839156,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x3A0 Port #0,,2322.353145545225,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x3A0 Port #1,,1420.3136740642558,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x3A8 Port #0,,3253.3362569761152,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x3B0 Port #0,,3092.392705513254,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x3B0 Port #1,,3429.744659040855,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x3B8 Port #0,,1520.720366635574,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_rxreq_withdata_rate,XP 0x3C0 Port #0,,1524.2345629230572,,Requests
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,Global,,33719.01781576872,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x008 Port #0,,368.11087291034016,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x008 Port #1,,1932.596874297804,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x010 Port #0,,471.1459703993433,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x018 Port #0,,1940.0807137800632,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x018 Port #1,,768.9999165834458,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x020 Port #0,,1568.0407539450518,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x028 Port #0,,1336.187479371155,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x028 Port #1,,1295.3248681410432,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x030 Port #0,,926.1088510797329,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x038 Port #0,,2543.356724918604,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x038 Port #1,,1323.2167995944433,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x040 Port #0,,1141.7035628740423,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x040 Port #1,,108.06768925061556,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x080 Port #0,,2349.0967674357685,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x180 Port #0,,722.763432940756,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x2C0 Port #0,,88.14333312298461,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x380 Port #0,,1856.1724934084546,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x380 Port #1,,317.16910809036926,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x388 Port #0,,1.3964245274703486,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x390 Port #0,,933.8850729882884,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x390 Port #1,,1304.3023003958301,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x398 Port #0,,2315.0996039575853,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x3A0 Port #0,,1452.2004863707118,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x3A0 Port #1,,1269.8591920488245,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x3A8 Port #0,,69.8981975517892,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x3B0 Port #0,,131.80401109330984,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x3B0 Port #1,,1638.1068968259576,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x3B8 Port #0,,2213.920538410556,,Retry responses per 1K clks
+1,,,,SNF_Ingress_Traffic,cmn_snf_txrsp_retry_rate,XP 0x3C0 Port #0,,1332.2588794543742,,Retry responses per 1K clks
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_rxcxs_avg_size,Global,,577.5186998408983,,Bytes
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_rxcxs_avg_size,XP 0x080 Port #2 Node 0x084,132,535.2984878019107,,Bytes
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_rxcxs_avg_size,XP 0x180 Port #2 Node 0x184,388,276.65853197125284,,Bytes
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_rxcxs_avg_size,XP 0x2C0 Port #2 Node 0x2C4,708,246.575160096141,,Bytes
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_rxcxs_avg_size,XP 0x3C0 Port #2 Node 0x3C4,964,65.22875708242368,,Bytes
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_rxcxs_rate,Global,,2411.6049923872856,,Flit per 1K clks
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_rxcxs_rate,XP 0x080 Port #2 Node 0x084,132,1197.3443728967964,,Flit per 1K clks
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_rxcxs_rate,XP 0x180 Port #2 Node 0x184,388,2545.052996734101,,Flit per 1K clks
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_rxcxs_rate,XP 0x2C0 Port #2 Node 0x2C4,708,18.271757672053226,,Flit per 1K clks
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_rxcxs_rate,XP 0x3C0 Port #2 Node 0x3C4,964,1994.524786271068,,Flit per 1K clks
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_txcxs_avg_size,Global,,95.0689977708171,,Bytes
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_txcxs_avg_size,XP 0x080 Port #2 Node 0x084,132,487.91203724748823,,Bytes
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_txcxs_avg_size,XP 0x180 Port #2 Node 0x184,388,391.1176312977236,,Bytes
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_txcxs_avg_size,XP 0x2C0 Port #2 Node 0x2C4,708,292.33753962865916,,Bytes
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_txcxs_avg_size,XP 0x3C0 Port #2 Node 0x3C4,964,287.23922272284284,,Bytes
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_txcxs_rate,Global,,2165.7291009934556,,Flit per 1K clks
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_txcxs_rate,XP 0x080 Port #2 Node 0x084,132,1102.6414646864014,,Flit per 1K clks
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_txcxs_rate,XP 0x180 Port #2 Node 0x184,388,2275.6855145351287,,Flit per 1K clks
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_txcxs_rate,XP 0x2C0 Port #2 Node 0x2C4,708,661.372651781745,,Flit per 1K clks
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_txcxs_rate,XP 0x3C0 Port #2 Node 0x3C4,964,2255.2652707000307,,Flit per 1K clks
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_txcxs_stall_rate,Global,,2321.636980698857,,Stalls per 1K clks
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_txcxs_stall_rate,XP 0x080 Port #2 Node 0x084,132,707.3324700709644,,Stalls per 1K clks
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_txcxs_stall_rate,XP 0x180 Port #2 Node 0x184,388,2377.2346683865903,,Stalls per 1K clks
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_txcxs_stall_rate,XP 0x2C0 Port #2 Node 0x2C4,708,1083.2813706184938,,Stalls per 1K clks
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_txcxs_stall_rate,XP 0x3C0 Port #2 Node 0x3C4,964,1118.263581742906,,Stalls per 1K clks
+1,,,,CCG_Req_Opcode_Mix,cmn_ccg_rxreq_withdata_rate,Global,,-56683.84156550422,,Requests per 1K clks
+1,,,,CCG_Req_Opcode_Mix,cmn_ccg_rxreq_withdata_rate,XP 0x080 Port #2,132,-15356.447185901336,,Requests per 1K clks
+1,,,,CCG_Req_Opcode_Mix,cmn_ccg_rxreq_withdata_rate,XP 0x180 Port #2,388,-12468.311947639233,,Requests per 1K clks
+1,,,,CCG_Req_Opcode_Mix,cmn_ccg_rxreq_withdata_rate,XP 0x2C0 Port #2,708,-15833.995718608337,,Requests per 1K clks
+1,,,,CCG_Req_Opcode_Mix,cmn_ccg_rxreq_withdata_rate,XP 0x3C0 Port #2,964,-13025.086713355307,,Requests per 1K clks
+1,,,,CCG_Req_Opcode_Mix,cmn_ccg_txreq_withdata_rate,Global,,-57460.260931229386,,Requests per 1K clks
+1,,,,CCG_Req_Opcode_Mix,cmn_ccg_txreq_withdata_rate,XP 0x080 Port #2,132,-12783.106319102377,,Requests per 1K clks
+1,,,,CCG_Req_Opcode_Mix,cmn_ccg_txreq_withdata_rate,XP 0x180 Port #2,388,-14529.588731259639,,Requests per 1K clks
+1,,,,CCG_Req_Opcode_Mix,cmn_ccg_txreq_withdata_rate,XP 0x2C0 Port #2,708,-14084.55380138152,,Requests per 1K clks
+1,,,,CCG_Req_Opcode_Mix,cmn_ccg_txreq_withdata_rate,XP 0x3C0 Port #2,964,-16063.012079485852,,Requests per 1K clks

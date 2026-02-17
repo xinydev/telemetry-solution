@@ -1,0 +1,1 @@
+TopdownMetricDetails(title='Bandwidth Metrics for CCG-C2C', description='Bandwidth requested by all remote requestor instances', formula='cmn_ccg_txreq_withdata_rate * 64 * SYS_FREQUENCY', units='Bytes per second', base_metrics=['cmn_ccg_txreq_withdata_rate'], topdown_metrics=[])

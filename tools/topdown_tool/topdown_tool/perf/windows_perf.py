@@ -22,7 +22,7 @@ from subprocess import PIPE, run
 from json import loads
 from pathlib import Path
 from threading import Event
-from typing import Dict, Optional, Sequence, Tuple, Type
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 
 from topdown_tool.perf.windows_coordinator import WperfCoordinator
 from topdown_tool.perf.perf import (
@@ -347,6 +347,90 @@ class WindowsPerf(Perf):
             Absolute or relative path to `wperf`.
         """
         WperfCoordinator.set_perf_path(perf_path)
+
+    @classmethod
+    def get_cmn_version(cls) -> Dict[int, Union[int, str]]:
+        """
+        Returns a mapping between CMN index and CMN version. On Windows,
+        contrary to Linux, we are currently limited to a single CMN.
+
+        Returns
+        -------
+        Dict[int, Optional[str]]
+            Mapping between CMN index and CMN version
+        """
+        # Windows Perf currently supports only a single CMN
+        version = None
+        try:
+            result = run(
+                [WperfCoordinator.get_perf_path(), "cmnlist"], stdout=PIPE, check=True, text=True
+            )
+        except FileNotFoundError:
+            return {}
+        for line in result.stdout.splitlines():
+            line = line.strip()
+            if line.startswith("CMN"):
+                new_version, _ = line.split("_", 1)
+                if version is None:
+                    version = new_version
+                else:
+                    assert version == new_version
+        return {0: version} if version is not None else {}
+
+    @classmethod
+    def get_cmn_frequency(cls, cmn_index: int) -> float:
+        """
+        Get approximate CMN frequency. Frequency is measured using cycles event
+        with Windows Perf. We assume that frequency is a constant.
+
+        Args:
+            cmn_index: CMN at given index to test.
+
+        Returns:
+            Frequency of a given CMN.
+        """
+        timeout = 0.1
+        cmdline = [
+            WperfCoordinator.get_perf_path(),
+            "stat",
+            "-e",
+            f"arm_cmn_{cmn_index}/type=1,eventid=1/",
+            "--json",
+            "--timeout",
+            str(timeout),
+        ]
+        try:
+            result = run(cmdline, stdout=PIPE, check=True, text=True)
+        except FileNotFoundError as e:
+            raise RuntimeError("Couldn't detect CMN frequency. Couldn't run wperf.") from e
+        test_json = loads(result.stdout)
+        for cmn in test_json["counting"]:
+            if cmn["mesh"] == cmn_index:
+                for event in cmn["CMN_DTC"]:
+                    if event["event"] == "cycles":
+                        return event["value"] / timeout
+        raise RuntimeError("Couldn't detect CMN frequency")
+
+    @classmethod
+    def get_cmn_mux_interval(cls, cmn_index: int) -> int:
+        mux_interval: Optional[int] = None
+        try:
+            result = run(
+                [WperfCoordinator.get_perf_path(), "test", "--json"],
+                stdout=PIPE,
+                check=True,
+                text=True,
+            )
+        except FileNotFoundError as e:
+            raise ValueError("Unknown mux interval for CMN. Couldn't run wperf.") from e
+        test_json = loads(result.stdout)
+        for test in test_json["Test_Results"]:
+            if test["Test_Name"] == "config.count.period":
+                mux_interval = int(test["Result"])
+                break
+        if mux_interval is None:
+            raise ValueError("Unknown mux interval for CMN")
+        return mux_interval
 
     @classmethod
     def register_parser_for_class(cls, probe_class: Type["Probe"], parser_class: Type[WindowsPerfParser]) -> None:

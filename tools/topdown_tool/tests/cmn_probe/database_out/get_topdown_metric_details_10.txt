@@ -1,0 +1,1 @@
+TopdownMetricDetails(title='Bandwidth Metrics for DRAM', description='Total bandwidth delivered by all local SN-F instances', formula='(cmn_hns_memreq_rate + cmn_hnf_memreq_rate) * 64 * SYS_FREQUENCY', units='Bytes per second', base_metrics=['cmn_hnf_memreq_rate', 'cmn_hns_memreq_rate'], topdown_metrics=[])

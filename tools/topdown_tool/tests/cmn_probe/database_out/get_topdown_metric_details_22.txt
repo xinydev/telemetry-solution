@@ -1,0 +1,1 @@
+TopdownMetricDetails(title='SNF Target Proportion', description='Proportion of the traffic serviced by memory controllers', formula='cmn_snf_rxreq_rate / total_target_rate', units='None', base_metrics=['cmn_snf_rxreq_rate'], topdown_metrics=['total_target_rate'])

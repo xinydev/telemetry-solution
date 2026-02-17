@@ -1,0 +1,3 @@
+[submodule "tools/topdown_tool/topdown_tool/cmn_probe/cmn-tools"]
+	path = tools/topdown_tool/topdown_tool/cmn_probe/cmn-tools
+	url = https://github.com/ArmDeveloperEcosystem/cmn-tools

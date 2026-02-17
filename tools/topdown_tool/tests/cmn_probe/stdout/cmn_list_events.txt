@@ -1,0 +1,914 @@
+CMN-700 R0P0 Events & Watchpoints
+                                                            DN Events                                                            
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━━━┓
+┃ Event                             ┃ Title                                                                   ┃ Type ┃ Event ID ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━╇━━━━━━━━━━┩
+│ PMU_DN_TLBI_COUNT                 │ Number of TLBI DVM op requests                                          │ 0x1  │ 0x1      │
+│ PMU_DN_BPI_COUNT                  │ Number of BPI DVM op requests                                           │ 0x1  │ 0x2      │
+│ PMU_DN_PICI_COUNT                 │ Number of PICI DVM op requests                                          │ 0x1  │ 0x3      │
+│ PMU_DN_VICI_COUNT                 │ Number of VICI DVM op requests                                          │ 0x1  │ 0x4      │
+│ PMU_DN_DVMSYNC_COUNT              │ Number of DVM sync requests                                             │ 0x1  │ 0x5      │
+│ PMU_DN_DVMOP_VMID_FILTERED        │ Number of DVM op requests that were filtered using VMID filtering       │ 0x1  │ 0x6      │
+│ PMU_DN_DVMOP_RND_FILTERED         │ Number of DVM op requests to RNDs, BPI or PICI/VICI, that were filtered │ 0x1  │ 0x7      │
+│ PMU_DN_NUM_RETRY                  │ Number of retried REQ                                                   │ 0x1  │ 0x8      │
+│ PMU_DN_TXSNP_FLITV                │ PMU_DN_TXSNP_FLITV                                                      │ 0x1  │ 0x9      │
+│ PMU_DN_TXSNP_STALL_CRD            │ Number of SNPs stalled to RNs due to lack of Crds                       │ 0x1  │ 0xA      │
+│ PMU_DN_TRKR_FULL                  │ DVM tracker full counter                                                │ 0x1  │ 0xB      │
+│ PMU_DN_LOC_OCCUPANCY_CNT_OVERFLOW │ DVM RNF tracker occupancy counter                                       │ 0x1  │ 0xC      │
+│ PMU_DN_REM_OCCUPANCY_CNT_OVERFLOW │ DVM CXHA tracker occupancy counter                                      │ 0x1  │ 0xD      │
+│ PMU_DN_PDN_OCCUPANCY_CNT_OVERFLOW │ DVM Peer DN tracker occupancy counter                                   │ 0x1  │ 0xE      │
+│ PMU_DN_LOC_RCB_ALLOC              │ DVM RNF tracker Alloc                                                   │ 0x1  │ 0xF      │
+│ PMU_DN_REM_RCB_ALLOC              │ DVM CXHA tracker Alloc                                                  │ 0x1  │ 0x10     │
+│ PMU_DN_PDN_RCB_ALLOC              │ DVM Peer DN tracker Alloc                                               │ 0x1  │ 0x11     │
+│ PMU_DN_TXSNP_STALL_CNT_LIMIT      │ TXSNP stall due to number outstanding limit                             │ 0x1  │ 0x12     │
+│ PMU_DN_RXSNP_STARV_MAXCNT_HIT     │ RXSNP stall starvation threshold hit                                    │ 0x1  │ 0x13     │
+│ PMU_DN_TXSNP_SYNC_HZD_ON_OP       │ TXSNP SYNC stall due to outstanding early completed Op                  │ 0x1  │ 0x14     │
+└───────────────────────────────────┴─────────────────────────────────────────────────────────────────────────┴──────┴──────────┘
+                                          DN Watchpoints                                           
+┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃ Watchpoint            ┃ Direction ┃ Channel ┃ Group   ┃ Mask               ┃ Values             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ CMN_DN_WP_TXSNP_COUNT │ Upload    │ SNP     │ Primary │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+└───────────────────────┴───────────┴─────────┴─────────┴────────────────────┴────────────────────┘
+                                                HN-I Events                                                 
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━━━┓
+┃ Event                         ┃ Title                                                  ┃ Type ┃ Event ID ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━╇━━━━━━━━━━┩
+│ PMU_HNI_RRT_RD_OCC_CNT_OVFL   │ RRT read occupancy count overflow                      │ 0x4  │ 0x20     │
+│ PMU_HNI_RRT_WR_OCC_CNT_OVFL   │ RRT write occupancy count overflow                     │ 0x4  │ 0x21     │
+│ PMU_HNI_RDT_RD_OCC_CNT_OVFL   │ RDT read occupancy count overflow                      │ 0x4  │ 0x22     │
+│ PMU_HNI_RDT_WR_OCC_CNT_OVFL   │ RDT write occupancy count overflow                     │ 0x4  │ 0x23     │
+│ PMU_HNI_WDB_OCC_CNT_OVFL      │ WDB occupancy count overflow                           │ 0x4  │ 0x24     │
+│ PMU_HNI_RRT_RD_ALLOC          │ RRT read allocation                                    │ 0x4  │ 0x25     │
+│ PMU_HNI_RRT_WR_ALLOC          │ RRT write allocation                                   │ 0x4  │ 0x26     │
+│ PMU_HNI_RDT_RD_ALLOC          │ RDT read allocation                                    │ 0x4  │ 0x27     │
+│ PMU_HNI_RDT_WR_ALLOC          │ RDT write allocation                                   │ 0x4  │ 0x28     │
+│ PMU_HNI_WDB_ALLOC             │ WDB allocation                                         │ 0x4  │ 0x29     │
+│ PMU_HNI_TXRSP_RETRYACK        │ RETRYACK TXRSP flit sent                               │ 0x4  │ 0x2A     │
+│ PMU_HNI_ARVALID_NO_ARREADY    │ ARVALID set without ARREADY event                      │ 0x4  │ 0x2B     │
+│ PMU_HNI_ARREADY_NO_ARVALID    │ ARREADY set without ARVALID event                      │ 0x4  │ 0x2C     │
+│ PMU_HNI_AWVALID_NO_AWREADY    │ AWVALID set without AWREADY event                      │ 0x4  │ 0x2D     │
+│ PMU_HNI_AWREADY_NO_AWVALID    │ AWREADY set without AWVALID event                      │ 0x4  │ 0x2E     │
+│ PMU_HNI_WVALID_NO_WREADY      │ WVALID set without WREADY event                        │ 0x4  │ 0x2F     │
+│ PMU_HNI_TXDAT_STALL           │ TXDAT stall (TXDAT valid but no link credit available) │ 0x4  │ 0x30     │
+│ PMU_HNI_NONPCIE_SERIALIZATION │ Non-PCIe serialization event                           │ 0x4  │ 0x31     │
+│ PMU_HNI_PCIE_SERIALIZATION    │ PCIe serialization event NOTE                          │ 0x4  │ 0x32     │
+└───────────────────────────────┴────────────────────────────────────────────────────────┴──────┴──────────┘
+                                              HN-I Watchpoints                                              
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃ Watchpoint                   ┃ Direction ┃ Channel ┃ Group     ┃ Mask               ┃ Values             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ CMN_HNI_WP_RXREQ_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNI_WP_64B_RXREQ_COUNT   │ Download  │ REQ     │ Primary   │ 0xFFFFFF8FFFFFFFFF │ 0x0000006000000000 │
+│ CMN_HNI_WP_TXRSP_RETRY_COUNT │ Upload    │ RSP     │ Primary   │ 0x003FFFFFFFF07FFF │ 0x0000000000018000 │
+│ CMN_HNI_WP_RXDAT_COUNT       │ Download  │ DAT     │ Secondary │ 0x00FFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNI_WP_RXRSP_COUNT       │ Download  │ RSP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNI_WP_TXRSP_COUNT       │ Upload    │ RSP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNI_WP_TXDAT_COUNT       │ Upload    │ DAT     │ Secondary │ 0x00FFFFFFFFFFFFFF │ 0x0000000000000000 │
+└──────────────────────────────┴───────────┴─────────┴───────────┴────────────────────┴────────────────────┘
+                                          HN-F Events                                          
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━━━┓
+┃ Event                               ┃ Title                               ┃ Type ┃ Event ID ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━╇━━━━━━━━━━┩
+│ PMU_HNF_CACHE_MISS                  │ PMU_HNF_CACHE_MISS                  │ 0x5  │ 0x1      │
+│ PMU_HNF_SLCSF_CACHE_ACCESS          │ PMU_HNF_SLCSF_CACHE_ACCESS          │ 0x5  │ 0x2      │
+│ PMU_HNF_CACHE_FILL                  │ PMU_HNF_CACHE_FILL                  │ 0x5  │ 0x3      │
+│ PMU_HNF_POCQ_RETRY                  │ PMU_HNF_POCQ_RETRY                  │ 0x5  │ 0x4      │
+│ PMU_HNF_POCQ_REQS_RECVD             │ PMU_HNF_POCQ_REQS_RECVD             │ 0x5  │ 0x5      │
+│ PMU_HNF_SF_HIT                      │ PMU_HNF_SF_HIT                      │ 0x5  │ 0x6      │
+│ PMU_HNF_SF_EVICTIONS                │ PMU_HNF_SF_EVICTIONS                │ 0x5  │ 0x7      │
+│ PMU_HNF_DIR_SNOOPS_SENT             │ PMU_HNF_DIR_SNOOPS_SENT             │ 0x5  │ 0x8      │
+│ PMU_HNF_BRD_SNOOPS_SENTEVENT        │ PMU_HNF_BRD_SNOOPS_SENTEVENT        │ 0x5  │ 0x9      │
+│ PMU_HNF_SLC_EVICTION                │ PMU_HNF_SLC_EVICTION                │ 0x5  │ 0xA      │
+│ PMU_HNF_SLC_FILL_INVALID_WAY        │ PMU_HNF_SLC_FILL_INVALID_WAY        │ 0x5  │ 0xB      │
+│ PMU_HNF_MC_RETRIES                  │ PMU_HNF_MC_RETRIES                  │ 0x5  │ 0xC      │
+│ PMU_HNF_MC_REQS                     │ PMU_HNF_MC_REQS                     │ 0x5  │ 0xD      │
+│ PMU_HNF_QOS_HH_RETRY                │ PMU_HNF_QOS_HH_RETRY                │ 0x5  │ 0xE      │
+│ PMU_HNF_POCQ_OCCUPANCY              │ PMU_HNF_POCQ_OCCUPANCY              │ 0x5  │ 0xF      │
+│ PMU_HNF_POCQ_ADDRHAZ                │ PMU_HNF_POCQ_ADDRHAZ                │ 0x5  │ 0x10     │
+│ PMU_HNF_POCQ_ATOMICS_ADDRHAZ        │ PMU_HNF_POCQ_ATOMICS_ADDRHAZ        │ 0x5  │ 0x11     │
+│ PMU_HNF_LD_ST_SWP_ADQ_FULL          │ PMU_HNF_LD_ST_SWP_ADQ_FULL          │ 0x5  │ 0x12     │
+│ PMU_HNF_CMP_ADQ_FULL                │ PMU_HNF_CMP_ADQ_FULL                │ 0x5  │ 0x13     │
+│ PMU_HNF_TXDAT_STALL                 │ PMU_HNF_TXDAT_STALL                 │ 0x5  │ 0x14     │
+│ PMU_HNF_TXRSP_STALL                 │ PMU_HNF_TXRSP_STALL                 │ 0x5  │ 0x15     │
+│ PMU_HNF_SEQ_FULL                    │ PMU_HNF_SEQ_FULL                    │ 0x5  │ 0x16     │
+│ PMU_HNF_SEQ_HIT                     │ PMU_HNF_SEQ_HIT                     │ 0x5  │ 0x17     │
+│ PMU_HNF_SNP_SENT                    │ PMU_HNF_SNP_SENT                    │ 0x5  │ 0x18     │
+│ PMU_HNF_SFBI_DIR_SNP_SENT           │ PMU_HNF_SFBI_DIR_SNP_SENT           │ 0x5  │ 0x19     │
+│ PMU_HNF_SFBI_BRD_SNP_SENT           │ PMU_HNF_SFBI_BRD_SNP_SENT           │ 0x5  │ 0x1A     │
+│ PMU_HNF_SNP_SENT_UNTRK              │ PMU_HNF_SNP_SENT_UNTRK              │ 0x5  │ 0x1B     │
+│ PMU_HNF_INTV_DIRTY                  │ PMU_HNF_INTV_DIRTY                  │ 0x5  │ 0x1C     │
+│ PMU_HNF_STASH_SNP_SENT              │ PMU_HNF_STASH_SNP_SENT              │ 0x5  │ 0x1D     │
+│ PMU_HNF_STASH_DATA_PULL             │ PMU_HNF_STASH_DATA_PULL             │ 0x5  │ 0x1E     │
+│ PMU_HNF_SNP_FWDED                   │ PMU_HNF_SNP_FWDED                   │ 0x5  │ 0x1F     │
+│ PMU_HNF_ATOMIC_FWD                  │ PMU_HNF_ATOMIC_FWD                  │ 0x5  │ 0x20     │
+│ PMU_HNF_MPAM_REQ_OVER_HARDLIM       │ PMU_HNF_MPAM_REQ_OVER_HARDLIM       │ 0x5  │ 0x21     │
+│ PMU_HNF_MPAM_REQ_OVER_SOFTLIM       │ PMU_HNF_MPAM_REQ_OVER_SOFTLIM       │ 0x5  │ 0x22     │
+│ PMU_HNF_SNP_SENT_CLUSTER            │ PMU_HNF_SNP_SENT_CLUSTER            │ 0x5  │ 0x23     │
+│ PMU_HNF_SF_IMPRECISE_EVICT          │ PMU_HNF_SF_IMPRECISE_EVICT          │ 0x5  │ 0x24     │
+│ PMU_HNF_SF_EVICT_SHARED_LINE        │ PMU_HNF_SF_EVICT_SHARED_LINE        │ 0x5  │ 0x25     │
+│ PMU_HNF_POCQ_CLASS_OCCUPANCY        │ PMU_HNF_POCQ_CLASS_OCCUPANCY        │ 0x5  │ 0x26     │
+│ PMU_HNF_POCQ_CLASS_RETRY            │ PMU_HNF_POCQ_CLASS_RETRY            │ 0x5  │ 0x27     │
+│ PMU_HNF_CLASS_MC_REQS               │ PMU_HNF_CLASS_MC_REQS               │ 0x5  │ 0x28     │
+│ PMU_HNF_CLASS_PCRDGNT_BELOW_CONDMIN │ PMU_HNF_CLASS_PCRDGNT_BELOW_CONDMIN │ 0x5  │ 0x29     │
+│ PMU_HNF_NUM_SN_CBUSY_THROTTLE       │ PMU_HNF_NUM_SN_CBUSY_THROTTLE       │ 0x5  │ 0x2A     │
+│ PMU_HNF_NUM_SN_CBUSY_THROTTLE_MIN   │ PMU_HNF_NUM_SN_CBUSY_THROTTLE_MIN   │ 0x5  │ 0x2B     │
+│ PMU_HNF_SF_PRECISE_TO_IMPRECISE     │ PMU_HNF_SF_PRECISE_TO_IMPRECISE     │ 0x5  │ 0x2C     │
+│ PMU_HNF_SNP_INTV_CLN                │ PMU_HNF_SNP_INTV_CLN                │ 0x5  │ 0x2D     │
+│ PMU_HNF_NC_EXCL                     │ PMU_HNF_NC_EXCL                     │ 0x5  │ 0x2E     │
+│ PMU_HNF_EXCL_MON_OVFL               │ PMU_HNF_EXCL_MON_OVFL               │ 0x5  │ 0x2F     │
+└─────────────────────────────────────┴─────────────────────────────────────┴──────┴──────────┘
+                                                      HN-F Watchpoints                                                      
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃ Watchpoint                                   ┃ Direction ┃ Channel ┃ Group     ┃ Mask               ┃ Values             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ CMN_HNF_WP_RXREQ_COUNT                       │ Download  │ REQ     │ Secondary │ 0xFFFFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNF_WP_64B_RXREQ_COUNT                   │ Download  │ REQ     │ Primary   │ 0xFFFFFF8FFFFFFFFF │ 0x0000006000000000 │
+│ CMN_HNF_WP_RXREQ_SINGLE_COUNT                │ Download  │ REQ     │ Primary   │ 0xFFFFFEFFFFFFFFFF │ 0x0000010000000000 │
+│ CMN_HNF_WP_RXDAT_COUNT                       │ Download  │ DAT     │ Secondary │ 0x00FFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNF_WP_TXRSP_RETRY_COUNT                 │ Upload    │ RSP     │ Primary   │ 0x003FFFFFFFF07FFF │ 0x0000000000018000 │
+│ CMN_HNF_WP_TXRSP_COUNT                       │ Upload    │ RSP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNF_WP_TXSNP_COUNT                       │ Upload    │ SNP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNF_WP_TXDAT_COUNT                       │ Upload    │ DAT     │ Secondary │ 0x00FFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNF_WP_RXRSP_COUNT                       │ Download  │ RSP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNF_WP_RXRSP_RETRY_COUNT                 │ Download  │ RSP     │ Primary   │ 0x003FFFFFFFF07FFF │ 0x0000000000018000 │
+│ CMN_HNF_WP_RXREQ_READNOTSHAREDDIRTY_COUNT    │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000104C0000000 │
+│ CMN_HNF_WP_RXREQ_MAKEREADUNIQUE_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010820000000 │
+│ CMN_HNF_WP_RXREQ_READUNIQUE_COUNT            │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000100E0000000 │
+│ CMN_HNF_WP_RXREQ_READPREFERUNIQUE_COUNT      │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010980000000 │
+│ CMN_HNF_WP_RXREQ_READONCE_COUNT              │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010060000000 │
+│ CMN_HNF_WP_RXREQ_WRITEBACKFULL_COUNT         │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010360000000 │
+│ CMN_HNF_WP_RXREQ_WRITEEVICTOREVICT_COUNT     │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010840000000 │
+│ CMN_HNF_WP_RXREQ_EVICT_COUNT                 │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000101A0000000 │
+│ CMN_HNF_WP_RXREQ_WRITEUNIQUEFULL_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010320000000 │
+│ CMN_HNF_WP_RXREQ_WRITENOSNPFULL_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000103A0000000 │
+│ CMN_HNF_WP_RXREQ_MAKEUNIQUE_COUNT            │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010180000000 │
+│ CMN_HNF_WP_TXSNP_SNPUNIQUE_COUNT             │ Upload    │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x00000000E0000000 │
+│ CMN_HNF_WP_TXSNP_SNPUNIQUEFWD_COUNT          │ Upload    │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x00000002E0000000 │
+│ CMN_HNF_WP_TXSNP_SNPMAKEINVALID_COUNT        │ Upload    │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000140000000 │
+│ CMN_HNF_WP_TXSNP_SNPCLEANINVALID_COUNT       │ Upload    │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000120000000 │
+│ CMN_HNF_WP_TXSNP_SNPNOTSHAREDDIRTYFWD_COUNT  │ Upload    │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000280000000 │
+│ CMN_HNF_WP_TXSNP_SNPNOTSHAREDDIRTY_COUNT     │ Upload    │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000080000000 │
+│ CMN_HNF_WP_TXSNP_SNPONCE_COUNT               │ Upload    │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000060000000 │
+│ CMN_HNF_WP_TXSNP_SNPPREFERUNIQUE_COUNT       │ Upload    │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x00000002A0000000 │
+│ CMN_HNF_WP_RXREQ_CLEANUNIQUE_COUNT           │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010160000000 │
+│ CMN_HNF_WP_RXREQ_STASHONCEUNIQUE_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010460000000 │
+│ CMN_HNF_WP_RXREQ_STASHONCESEPUNIQUE_COUNT    │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010900000000 │
+│ CMN_HNF_WP_RXREQ_STASHONCESHARED_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010440000000 │
+│ CMN_HNF_WP_RXREQ_STASHONCESEPSHARED_COUNT    │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000108E0000000 │
+│ CMN_HNF_WP_RXREQ_CLEANSHARED_COUNT           │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010100000000 │
+│ CMN_HNF_WP_RXREQ_CLEANSHAREDPERSIST_COUNT    │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000104E0000000 │
+│ CMN_HNF_WP_RXREQ_CLEANSHAREDPERSISTSEP_COUNT │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010260000000 │
+│ CMN_HNF_WP_RXREQ_CLEANINVALID_COUNT          │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010120000000 │
+│ CMN_HNF_WP_RXREQ_CLEANINVALIDPOPA_COUNT      │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000109A0000000 │
+│ CMN_HNF_WP_RXREQ_MAKEINVALID_COUNT           │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010140000000 │
+│ CMN_HNF_WP_RXREQ_ATOMICSTOREADD_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010500000000 │
+│ CMN_HNF_WP_RXREQ_ATOMICSTORECLR_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010520000000 │
+│ CMN_HNF_WP_RXREQ_ATOMICSTOREEOR_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010540000000 │
+│ CMN_HNF_WP_RXREQ_ATOMICSTORESET_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010560000000 │
+│ CMN_HNF_WP_RXREQ_ATOMICSTORESMAX_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010580000000 │
+│ CMN_HNF_WP_RXREQ_ATOMICSTORESMIN_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000105A0000000 │
+│ CMN_HNF_WP_RXREQ_ATOMICSTOREUMAX_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000105C0000000 │
+│ CMN_HNF_WP_RXREQ_ATOMICSTOREUMIN_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000105E0000000 │
+│ CMN_HNF_WP_RXREQ_ATOMICLOADADD_COUNT         │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010600000000 │
+│ CMN_HNF_WP_RXREQ_ATOMICLOADCLR_COUNT         │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010620000000 │
+│ CMN_HNF_WP_RXREQ_ATOMICLOADEOR_COUNT         │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010640000000 │
+│ CMN_HNF_WP_RXREQ_ATOMICLOADSET_COUNT         │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010660000000 │
+│ CMN_HNF_WP_RXREQ_ATOMICLOADSMAX_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010680000000 │
+│ CMN_HNF_WP_RXREQ_ATOMICLOADSMIN_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000106A0000000 │
+│ CMN_HNF_WP_RXREQ_ATOMICLOADUMAX_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000106C0000000 │
+│ CMN_HNF_WP_RXREQ_ATOMICLOADUMIN_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000106E0000000 │
+│ CMN_HNF_WP_RXREQ_ATOMICSWP_COUNT             │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010700000000 │
+│ CMN_HNF_WP_RXREQ_ATOMICCMP_COUNT             │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010720000000 │
+└──────────────────────────────────────────────┴───────────┴─────────┴───────────┴────────────────────┴────────────────────┘
+                                                      XP Events                                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━━━┓
+┃ Event                                           ┃ Title                                          ┃ Type ┃ Event ID ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━╇━━━━━━━━━━┩
+│ CMN_XP_TXREQ_EASTPORT_COUNT                     │ XP TX REQ eastport count                       │ 0x6  │ 0x1      │
+│ CMN_XP_TXREQ_EASTPORT_STALL_COUNT               │ XP TX REQ eastport stall count                 │ 0x6  │ 0x2      │
+│ CMN_XP_TXREQ_EASTPORT_PARTIAL_DAT_FLIT_COUNT    │ XP TX REQ eastport partial DAT flit count      │ 0x6  │ 0x3      │
+│ CMN_XP_TXREQ_WESTPORT_COUNT                     │ XP TX REQ westport count                       │ 0x6  │ 0x5      │
+│ CMN_XP_TXREQ_WESTPORT_STALL_COUNT               │ XP TX REQ westport stall count                 │ 0x6  │ 0x6      │
+│ CMN_XP_TXREQ_WESTPORT_PARTIAL_DAT_FLIT_COUNT    │ XP TX REQ westport partial DAT flit count      │ 0x6  │ 0x7      │
+│ CMN_XP_TXREQ_NORTHPORT_COUNT                    │ XP TX REQ northport count                      │ 0x6  │ 0x9      │
+│ CMN_XP_TXREQ_NORTHPORT_STALL_COUNT              │ XP TX REQ northport stall count                │ 0x6  │ 0xA      │
+│ CMN_XP_TXREQ_NORTHPORT_PARTIAL_DAT_FLIT_COUNT   │ XP TX REQ northport partial DAT flit count     │ 0x6  │ 0xB      │
+│ CMN_XP_TXREQ_SOUTHPORT_COUNT                    │ XP TX REQ southport count                      │ 0x6  │ 0xD      │
+│ CMN_XP_TXREQ_SOUTHPORT_STALL_COUNT              │ XP TX REQ southport stall count                │ 0x6  │ 0xE      │
+│ CMN_XP_TXREQ_SOUTHPORT_PARTIAL_DAT_FLIT_COUNT   │ XP TX REQ southport partial DAT flit count     │ 0x6  │ 0xF      │
+│ CMN_XP_TXREQ_DEVICEPORT0_COUNT                  │ XP TX REQ device port 0 count                  │ 0x6  │ 0x11     │
+│ CMN_XP_TXREQ_DEVICEPORT0_STALL_COUNT            │ XP TX REQ device port 0 stall count            │ 0x6  │ 0x12     │
+│ CMN_XP_TXREQ_DEVICEPORT0_PARTIAL_DAT_FLIT_COUNT │ XP TX REQ device port 0 partial DAT flit count │ 0x6  │ 0x13     │
+│ CMN_XP_TXREQ_DEVICEPORT1_COUNT                  │ XP TX REQ device port 1 count                  │ 0x6  │ 0x15     │
+│ CMN_XP_TXREQ_DEVICEPORT1_STALL_COUNT            │ XP TX REQ device port 1 stall count            │ 0x6  │ 0x16     │
+│ CMN_XP_TXREQ_DEVICEPORT1_PARTIAL_DAT_FLIT_COUNT │ XP TX REQ device port 1 partial DAT flit count │ 0x6  │ 0x17     │
+│ CMN_XP_TXREQ_DEVICEPORT2_COUNT                  │ XP TX REQ device port 2 count                  │ 0x6  │ 0x19     │
+│ CMN_XP_TXREQ_DEVICEPORT2_STALL_COUNT            │ XP TX REQ device port 2 stall count            │ 0x6  │ 0x1A     │
+│ CMN_XP_TXREQ_DEVICEPORT2_PARTIAL_DAT_FLIT_COUNT │ XP TX REQ device port 2 partial DAT flit count │ 0x6  │ 0x1B     │
+│ CMN_XP_TXREQ_DEVICEPORT3_COUNT                  │ XP TX REQ device port 3 count                  │ 0x6  │ 0x1D     │
+│ CMN_XP_TXREQ_DEVICEPORT3_STALL_COUNT            │ XP TX REQ device port 3 stall count            │ 0x6  │ 0x1E     │
+│ CMN_XP_TXREQ_DEVICEPORT3_PARTIAL_DAT_FLIT_COUNT │ XP TX REQ device port 3 partial DAT flit count │ 0x6  │ 0x1F     │
+│ CMN_XP_TXRSP_EASTPORT_COUNT                     │ XP TX RSP eastport count                       │ 0x6  │ 0x21     │
+│ CMN_XP_TXRSP_EASTPORT_STALL_COUNT               │ XP TX RSP eastport stall count                 │ 0x6  │ 0x22     │
+│ CMN_XP_TXRSP_EASTPORT_PARTIAL_DAT_FLIT_COUNT    │ XP TX RSP eastport partial DAT flit count      │ 0x6  │ 0x23     │
+│ CMN_XP_TXRSP_WESTPORT_COUNT                     │ XP TX RSP westport count                       │ 0x6  │ 0x25     │
+│ CMN_XP_TXRSP_WESTPORT_STALL_COUNT               │ XP TX RSP westport stall count                 │ 0x6  │ 0x26     │
+│ CMN_XP_TXRSP_WESTPORT_PARTIAL_DAT_FLIT_COUNT    │ XP TX RSP westport partial DAT flit count      │ 0x6  │ 0x27     │
+│ CMN_XP_TXRSP_NORTHPORT_COUNT                    │ XP TX RSP northport count                      │ 0x6  │ 0x29     │
+│ CMN_XP_TXRSP_NORTHPORT_STALL_COUNT              │ XP TX RSP northport stall count                │ 0x6  │ 0x2A     │
+│ CMN_XP_TXRSP_NORTHPORT_PARTIAL_DAT_FLIT_COUNT   │ XP TX RSP northport partial DAT flit count     │ 0x6  │ 0x2B     │
+│ CMN_XP_TXRSP_SOUTHPORT_COUNT                    │ XP TX RSP southport count                      │ 0x6  │ 0x2D     │
+│ CMN_XP_TXRSP_SOUTHPORT_STALL_COUNT              │ XP TX RSP southport stall count                │ 0x6  │ 0x2E     │
+│ CMN_XP_TXRSP_SOUTHPORT_PARTIAL_DAT_FLIT_COUNT   │ XP TX RSP southport partial DAT flit count     │ 0x6  │ 0x2F     │
+│ CMN_XP_TXRSP_DEVICEPORT0_COUNT                  │ XP TX RSP device port 0 count                  │ 0x6  │ 0x31     │
+│ CMN_XP_TXRSP_DEVICEPORT0_STALL_COUNT            │ XP TX RSP device port 0 stall count            │ 0x6  │ 0x32     │
+│ CMN_XP_TXRSP_DEVICEPORT0_PARTIAL_DAT_FLIT_COUNT │ XP TX RSP device port 0 partial DAT flit count │ 0x6  │ 0x33     │
+│ CMN_XP_TXRSP_DEVICEPORT1_COUNT                  │ XP TX RSP device port 1 count                  │ 0x6  │ 0x35     │
+│ CMN_XP_TXRSP_DEVICEPORT1_STALL_COUNT            │ XP TX RSP device port 1 stall count            │ 0x6  │ 0x36     │
+│ CMN_XP_TXRSP_DEVICEPORT1_PARTIAL_DAT_FLIT_COUNT │ XP TX RSP device port 1 partial DAT flit count │ 0x6  │ 0x37     │
+│ CMN_XP_TXRSP_DEVICEPORT2_COUNT                  │ XP TX RSP device port 2 count                  │ 0x6  │ 0x39     │
+│ CMN_XP_TXRSP_DEVICEPORT2_STALL_COUNT            │ XP TX RSP device port 2 stall count            │ 0x6  │ 0x3A     │
+│ CMN_XP_TXRSP_DEVICEPORT2_PARTIAL_DAT_FLIT_COUNT │ XP TX RSP device port 2 partial DAT flit count │ 0x6  │ 0x3B     │
+│ CMN_XP_TXRSP_DEVICEPORT3_COUNT                  │ XP TX RSP device port 3 count                  │ 0x6  │ 0x3D     │
+│ CMN_XP_TXRSP_DEVICEPORT3_STALL_COUNT            │ XP TX RSP device port 3 stall count            │ 0x6  │ 0x3E     │
+│ CMN_XP_TXRSP_DEVICEPORT3_PARTIAL_DAT_FLIT_COUNT │ XP TX RSP device port 3 partial DAT flit count │ 0x6  │ 0x3F     │
+│ CMN_XP_TXSNP_EASTPORT_COUNT                     │ XP TX SNP eastport count                       │ 0x6  │ 0x41     │
+│ CMN_XP_TXSNP_EASTPORT_STALL_COUNT               │ XP TX SNP eastport stall count                 │ 0x6  │ 0x42     │
+│ CMN_XP_TXSNP_EASTPORT_PARTIAL_DAT_FLIT_COUNT    │ XP TX SNP eastport partial DAT flit count      │ 0x6  │ 0x43     │
+│ CMN_XP_TXSNP_WESTPORT_COUNT                     │ XP TX SNP westport count                       │ 0x6  │ 0x45     │
+│ CMN_XP_TXSNP_WESTPORT_STALL_COUNT               │ XP TX SNP westport stall count                 │ 0x6  │ 0x46     │
+│ CMN_XP_TXSNP_WESTPORT_PARTIAL_DAT_FLIT_COUNT    │ XP TX SNP westport partial DAT flit count      │ 0x6  │ 0x47     │
+│ CMN_XP_TXSNP_NORTHPORT_COUNT                    │ XP TX SNP northport count                      │ 0x6  │ 0x49     │
+│ CMN_XP_TXSNP_NORTHPORT_STALL_COUNT              │ XP TX SNP northport stall count                │ 0x6  │ 0x4A     │
+│ CMN_XP_TXSNP_NORTHPORT_PARTIAL_DAT_FLIT_COUNT   │ XP TX SNP northport partial DAT flit count     │ 0x6  │ 0x4B     │
+│ CMN_XP_TXSNP_SOUTHPORT_COUNT                    │ XP TX SNP southport count                      │ 0x6  │ 0x4D     │
+│ CMN_XP_TXSNP_SOUTHPORT_STALL_COUNT              │ XP TX SNP southport stall count                │ 0x6  │ 0x4E     │
+│ CMN_XP_TXSNP_SOUTHPORT_PARTIAL_DAT_FLIT_COUNT   │ XP TX SNP southport partial DAT flit count     │ 0x6  │ 0x4F     │
+│ CMN_XP_TXSNP_DEVICEPORT0_COUNT                  │ XP TX SNP device port 0 count                  │ 0x6  │ 0x51     │
+│ CMN_XP_TXSNP_DEVICEPORT0_STALL_COUNT            │ XP TX SNP device port 0 stall count            │ 0x6  │ 0x52     │
+│ CMN_XP_TXSNP_DEVICEPORT0_PARTIAL_DAT_FLIT_COUNT │ XP TX SNP device port 0 partial DAT flit count │ 0x6  │ 0x53     │
+│ CMN_XP_TXSNP_DEVICEPORT1_COUNT                  │ XP TX SNP device port 1 count                  │ 0x6  │ 0x55     │
+│ CMN_XP_TXSNP_DEVICEPORT1_STALL_COUNT            │ XP TX SNP device port 1 stall count            │ 0x6  │ 0x56     │
+│ CMN_XP_TXSNP_DEVICEPORT1_PARTIAL_DAT_FLIT_COUNT │ XP TX SNP device port 1 partial DAT flit count │ 0x6  │ 0x57     │
+│ CMN_XP_TXSNP_DEVICEPORT2_COUNT                  │ XP TX SNP device port 2 count                  │ 0x6  │ 0x59     │
+│ CMN_XP_TXSNP_DEVICEPORT2_STALL_COUNT            │ XP TX SNP device port 2 stall count            │ 0x6  │ 0x5A     │
+│ CMN_XP_TXSNP_DEVICEPORT2_PARTIAL_DAT_FLIT_COUNT │ XP TX SNP device port 2 partial DAT flit count │ 0x6  │ 0x5B     │
+│ CMN_XP_TXSNP_DEVICEPORT3_COUNT                  │ XP TX SNP device port 3 count                  │ 0x6  │ 0x5D     │
+│ CMN_XP_TXSNP_DEVICEPORT3_STALL_COUNT            │ XP TX SNP device port 3 stall count            │ 0x6  │ 0x5E     │
+│ CMN_XP_TXSNP_DEVICEPORT3_PARTIAL_DAT_FLIT_COUNT │ XP TX SNP device port 3 partial DAT flit count │ 0x6  │ 0x5F     │
+│ CMN_XP_TXDAT_EASTPORT_COUNT                     │ XP TX DAT eastport count                       │ 0x6  │ 0x61     │
+│ CMN_XP_TXDAT_EASTPORT_STALL_COUNT               │ XP TX DAT eastport stall count                 │ 0x6  │ 0x62     │
+│ CMN_XP_TXDAT_EASTPORT_PARTIAL_DAT_FLIT_COUNT    │ XP TX DAT eastport partial DAT flit count      │ 0x6  │ 0x63     │
+│ CMN_XP_TXDAT_WESTPORT_COUNT                     │ XP TX DAT westport count                       │ 0x6  │ 0x65     │
+│ CMN_XP_TXDAT_WESTPORT_STALL_COUNT               │ XP TX DAT westport stall count                 │ 0x6  │ 0x66     │
+│ CMN_XP_TXDAT_WESTPORT_PARTIAL_DAT_FLIT_COUNT    │ XP TX DAT westport partial DAT flit count      │ 0x6  │ 0x67     │
+│ CMN_XP_TXDAT_NORTHPORT_COUNT                    │ XP TX DAT northport count                      │ 0x6  │ 0x69     │
+│ CMN_XP_TXDAT_NORTHPORT_STALL_COUNT              │ XP TX DAT northport stall count                │ 0x6  │ 0x6A     │
+│ CMN_XP_TXDAT_NORTHPORT_PARTIAL_DAT_FLIT_COUNT   │ XP TX DAT northport partial DAT flit count     │ 0x6  │ 0x6B     │
+│ CMN_XP_TXDAT_SOUTHPORT_COUNT                    │ XP TX DAT southport count                      │ 0x6  │ 0x6D     │
+│ CMN_XP_TXDAT_SOUTHPORT_STALL_COUNT              │ XP TX DAT southport stall count                │ 0x6  │ 0x6E     │
+│ CMN_XP_TXDAT_SOUTHPORT_PARTIAL_DAT_FLIT_COUNT   │ XP TX DAT southport partial DAT flit count     │ 0x6  │ 0x6F     │
+│ CMN_XP_TXDAT_DEVICEPORT0_COUNT                  │ XP TX DAT device port 0 count                  │ 0x6  │ 0x71     │
+│ CMN_XP_TXDAT_DEVICEPORT0_STALL_COUNT            │ XP TX DAT device port 0 stall count            │ 0x6  │ 0x72     │
+│ CMN_XP_TXDAT_DEVICEPORT0_PARTIAL_DAT_FLIT_COUNT │ XP TX DAT device port 0 partial DAT flit count │ 0x6  │ 0x73     │
+│ CMN_XP_TXDAT_DEVICEPORT1_COUNT                  │ XP TX DAT device port 1 count                  │ 0x6  │ 0x75     │
+│ CMN_XP_TXDAT_DEVICEPORT1_STALL_COUNT            │ XP TX DAT device port 1 stall count            │ 0x6  │ 0x76     │
+│ CMN_XP_TXDAT_DEVICEPORT1_PARTIAL_DAT_FLIT_COUNT │ XP TX DAT device port 1 partial DAT flit count │ 0x6  │ 0x77     │
+│ CMN_XP_TXDAT_DEVICEPORT2_COUNT                  │ XP TX DAT device port 2 count                  │ 0x6  │ 0x79     │
+│ CMN_XP_TXDAT_DEVICEPORT2_STALL_COUNT            │ XP TX DAT device port 2 stall count            │ 0x6  │ 0x7A     │
+│ CMN_XP_TXDAT_DEVICEPORT2_PARTIAL_DAT_FLIT_COUNT │ XP TX DAT device port 2 partial DAT flit count │ 0x6  │ 0x7B     │
+│ CMN_XP_TXDAT_DEVICEPORT3_COUNT                  │ XP TX DAT device port 3 count                  │ 0x6  │ 0x7D     │
+│ CMN_XP_TXDAT_DEVICEPORT3_STALL_COUNT            │ XP TX DAT device port 3 stall count            │ 0x6  │ 0x7E     │
+│ CMN_XP_TXDAT_DEVICEPORT3_PARTIAL_DAT_FLIT_COUNT │ XP TX DAT device port 3 partial DAT flit count │ 0x6  │ 0x7F     │
+│ CMN_XP_TXPUB_EASTPORT_COUNT                     │ XP TX PUB eastport count                       │ 0x6  │ 0x81     │
+│ CMN_XP_TXPUB_EASTPORT_STALL_COUNT               │ XP TX PUB eastport stall count                 │ 0x6  │ 0x82     │
+│ CMN_XP_TXPUB_EASTPORT_PARTIAL_DAT_FLIT_COUNT    │ XP TX PUB eastport partial DAT flit count      │ 0x6  │ 0x83     │
+│ CMN_XP_TXPUB_WESTPORT_COUNT                     │ XP TX PUB westport count                       │ 0x6  │ 0x85     │
+│ CMN_XP_TXPUB_WESTPORT_STALL_COUNT               │ XP TX PUB westport stall count                 │ 0x6  │ 0x86     │
+│ CMN_XP_TXPUB_WESTPORT_PARTIAL_DAT_FLIT_COUNT    │ XP TX PUB westport partial DAT flit count      │ 0x6  │ 0x87     │
+│ CMN_XP_TXPUB_NORTHPORT_COUNT                    │ XP TX PUB northport count                      │ 0x6  │ 0x89     │
+│ CMN_XP_TXPUB_NORTHPORT_STALL_COUNT              │ XP TX PUB northport stall count                │ 0x6  │ 0x8A     │
+│ CMN_XP_TXPUB_NORTHPORT_PARTIAL_DAT_FLIT_COUNT   │ XP TX PUB northport partial DAT flit count     │ 0x6  │ 0x8B     │
+│ CMN_XP_TXPUB_SOUTHPORT_COUNT                    │ XP TX PUB southport count                      │ 0x6  │ 0x8D     │
+│ CMN_XP_TXPUB_SOUTHPORT_STALL_COUNT              │ XP TX PUB southport stall count                │ 0x6  │ 0x8E     │
+│ CMN_XP_TXPUB_SOUTHPORT_PARTIAL_DAT_FLIT_COUNT   │ XP TX PUB southport partial DAT flit count     │ 0x6  │ 0x8F     │
+│ CMN_XP_TXPUB_DEVICEPORT0_COUNT                  │ XP TX PUB device port 0 count                  │ 0x6  │ 0x91     │
+│ CMN_XP_TXPUB_DEVICEPORT0_STALL_COUNT            │ XP TX PUB device port 0 stall count            │ 0x6  │ 0x92     │
+│ CMN_XP_TXPUB_DEVICEPORT0_PARTIAL_DAT_FLIT_COUNT │ XP TX PUB device port 0 partial DAT flit count │ 0x6  │ 0x93     │
+│ CMN_XP_TXPUB_DEVICEPORT1_COUNT                  │ XP TX PUB device port 1 count                  │ 0x6  │ 0x95     │
+│ CMN_XP_TXPUB_DEVICEPORT1_STALL_COUNT            │ XP TX PUB device port 1 stall count            │ 0x6  │ 0x96     │
+│ CMN_XP_TXPUB_DEVICEPORT1_PARTIAL_DAT_FLIT_COUNT │ XP TX PUB device port 1 partial DAT flit count │ 0x6  │ 0x97     │
+│ CMN_XP_TXPUB_DEVICEPORT2_COUNT                  │ XP TX PUB device port 2 count                  │ 0x6  │ 0x99     │
+│ CMN_XP_TXPUB_DEVICEPORT2_STALL_COUNT            │ XP TX PUB device port 2 stall count            │ 0x6  │ 0x9A     │
+│ CMN_XP_TXPUB_DEVICEPORT2_PARTIAL_DAT_FLIT_COUNT │ XP TX PUB device port 2 partial DAT flit count │ 0x6  │ 0x9B     │
+│ CMN_XP_TXPUB_DEVICEPORT3_COUNT                  │ XP TX PUB device port 3 count                  │ 0x6  │ 0x9D     │
+│ CMN_XP_TXPUB_DEVICEPORT3_STALL_COUNT            │ XP TX PUB device port 3 stall count            │ 0x6  │ 0x9E     │
+│ CMN_XP_TXPUB_DEVICEPORT3_PARTIAL_DAT_FLIT_COUNT │ XP TX PUB device port 3 partial DAT flit count │ 0x6  │ 0x9F     │
+│ CMN_XP_TXRSP2_EASTPORT_COUNT                    │ XP TX RSP2 eastport count                      │ 0x6  │ 0xA1     │
+│ CMN_XP_TXRSP2_EASTPORT_STALL_COUNT              │ XP TX RSP2 eastport stall count                │ 0x6  │ 0xA2     │
+│ CMN_XP_TXRSP2_EASTPORT_PARTIAL_DAT_FLIT_COUNT   │ XP TX RSP2 eastport partial DAT flit count     │ 0x6  │ 0xA3     │
+│ CMN_XP_TXRSP2_WESTPORT_COUNT                    │ XP TX RSP2 westport count                      │ 0x6  │ 0xA5     │
+│ CMN_XP_TXRSP2_WESTPORT_STALL_COUNT              │ XP TX RSP2 westport stall count                │ 0x6  │ 0xA6     │
+│ CMN_XP_TXRSP2_WESTPORT_PARTIAL_DAT_FLIT_COUNT   │ XP TX RSP2 westport partial DAT flit count     │ 0x6  │ 0xA7     │
+│ CMN_XP_TXRSP2_NORTHPORT_COUNT                   │ XP TX RSP2 northport count                     │ 0x6  │ 0xA9     │
+│ CMN_XP_TXRSP2_NORTHPORT_STALL_COUNT             │ XP TX RSP2 northport stall count               │ 0x6  │ 0xAA     │
+│ CMN_XP_TXRSP2_NORTHPORT_PARTIAL_DAT_FLIT_COUNT  │ XP TX RSP2 northport partial DAT flit count    │ 0x6  │ 0xAB     │
+│ CMN_XP_TXRSP2_SOUTHPORT_COUNT                   │ XP TX RSP2 southport count                     │ 0x6  │ 0xAD     │
+│ CMN_XP_TXRSP2_SOUTHPORT_STALL_COUNT             │ XP TX RSP2 southport stall count               │ 0x6  │ 0xAE     │
+│ CMN_XP_TXRSP2_SOUTHPORT_PARTIAL_DAT_FLIT_COUNT  │ XP TX RSP2 southport partial DAT flit count    │ 0x6  │ 0xAF     │
+│ CMN_XP_TXDAT2_EASTPORT_COUNT                    │ XP TX DAT2 eastport count                      │ 0x6  │ 0xC1     │
+│ CMN_XP_TXDAT2_EASTPORT_STALL_COUNT              │ XP TX DAT2 eastport stall count                │ 0x6  │ 0xC2     │
+│ CMN_XP_TXDAT2_EASTPORT_PARTIAL_DAT_FLIT_COUNT   │ XP TX DAT2 eastport partial DAT flit count     │ 0x6  │ 0xC3     │
+│ CMN_XP_TXDAT2_WESTPORT_COUNT                    │ XP TX DAT2 westport count                      │ 0x6  │ 0xC5     │
+│ CMN_XP_TXDAT2_WESTPORT_STALL_COUNT              │ XP TX DAT2 westport stall count                │ 0x6  │ 0xC6     │
+│ CMN_XP_TXDAT2_WESTPORT_PARTIAL_DAT_FLIT_COUNT   │ XP TX DAT2 westport partial DAT flit count     │ 0x6  │ 0xC7     │
+│ CMN_XP_TXDAT2_NORTHPORT_COUNT                   │ XP TX DAT2 northport count                     │ 0x6  │ 0xC9     │
+│ CMN_XP_TXDAT2_NORTHPORT_STALL_COUNT             │ XP TX DAT2 northport stall count               │ 0x6  │ 0xCA     │
+│ CMN_XP_TXDAT2_NORTHPORT_PARTIAL_DAT_FLIT_COUNT  │ XP TX DAT2 northport partial DAT flit count    │ 0x6  │ 0xCB     │
+│ CMN_XP_TXDAT2_SOUTHPORT_COUNT                   │ XP TX DAT2 southport count                     │ 0x6  │ 0xCD     │
+│ CMN_XP_TXDAT2_SOUTHPORT_STALL_COUNT             │ XP TX DAT2 southport stall count               │ 0x6  │ 0xCE     │
+│ CMN_XP_TXDAT2_SOUTHPORT_PARTIAL_DAT_FLIT_COUNT  │ XP TX DAT2 southport partial DAT flit count    │ 0x6  │ 0xCF     │
+│ CMN_XP_TXREQ2_EASTPORT_COUNT                    │ XP TX REQ2 eastport count                      │ 0x6  │ 0xE1     │
+│ CMN_XP_TXREQ2_EASTPORT_STALL_COUNT              │ XP TX REQ2 eastport stall count                │ 0x6  │ 0xE2     │
+│ CMN_XP_TXREQ2_EASTPORT_PARTIAL_DAT_FLIT_COUNT   │ XP TX REQ2 eastport partial DAT flit count     │ 0x6  │ 0xE3     │
+│ CMN_XP_TXREQ2_WESTPORT_COUNT                    │ XP TX REQ2 westport count                      │ 0x6  │ 0xE5     │
+│ CMN_XP_TXREQ2_WESTPORT_STALL_COUNT              │ XP TX REQ2 westport stall count                │ 0x6  │ 0xE6     │
+│ CMN_XP_TXREQ2_WESTPORT_PARTIAL_DAT_FLIT_COUNT   │ XP TX REQ2 westport partial DAT flit count     │ 0x6  │ 0xE7     │
+│ CMN_XP_TXREQ2_NORTHPORT_COUNT                   │ XP TX REQ2 northport count                     │ 0x6  │ 0xE9     │
+│ CMN_XP_TXREQ2_NORTHPORT_STALL_COUNT             │ XP TX REQ2 northport stall count               │ 0x6  │ 0xEA     │
+│ CMN_XP_TXREQ2_NORTHPORT_PARTIAL_DAT_FLIT_COUNT  │ XP TX REQ2 northport partial DAT flit count    │ 0x6  │ 0xEB     │
+│ CMN_XP_TXREQ2_SOUTHPORT_COUNT                   │ XP TX REQ2 southport count                     │ 0x6  │ 0xED     │
+│ CMN_XP_TXREQ2_SOUTHPORT_STALL_COUNT             │ XP TX REQ2 southport stall count               │ 0x6  │ 0xEE     │
+│ CMN_XP_TXREQ2_SOUTHPORT_PARTIAL_DAT_FLIT_COUNT  │ XP TX REQ2 southport partial DAT flit count    │ 0x6  │ 0xEF     │
+│ CMN_XP_TXSNP2_EASTPORT_COUNT                    │ XP TX SNP2 eastport count                      │ 0x6  │ 0x101    │
+│ CMN_XP_TXSNP2_EASTPORT_STALL_COUNT              │ XP TX SNP2 eastport stall count                │ 0x6  │ 0x102    │
+│ CMN_XP_TXSNP2_EASTPORT_PARTIAL_DAT_FLIT_COUNT   │ XP TX SNP2 eastport partial DAT flit count     │ 0x6  │ 0x103    │
+│ CMN_XP_TXSNP2_WESTPORT_COUNT                    │ XP TX SNP2 westport count                      │ 0x6  │ 0x105    │
+│ CMN_XP_TXSNP2_WESTPORT_STALL_COUNT              │ XP TX SNP2 westport stall count                │ 0x6  │ 0x106    │
+│ CMN_XP_TXSNP2_WESTPORT_PARTIAL_DAT_FLIT_COUNT   │ XP TX SNP2 westport partial DAT flit count     │ 0x6  │ 0x107    │
+│ CMN_XP_TXSNP2_NORTHPORT_COUNT                   │ XP TX SNP2 northport count                     │ 0x6  │ 0x109    │
+│ CMN_XP_TXSNP2_NORTHPORT_STALL_COUNT             │ XP TX SNP2 northport stall count               │ 0x6  │ 0x10A    │
+│ CMN_XP_TXSNP2_NORTHPORT_PARTIAL_DAT_FLIT_COUNT  │ XP TX SNP2 northport partial DAT flit count    │ 0x6  │ 0x10B    │
+│ CMN_XP_TXSNP2_SOUTHPORT_COUNT                   │ XP TX SNP2 southport count                     │ 0x6  │ 0x10D    │
+│ CMN_XP_TXSNP2_SOUTHPORT_STALL_COUNT             │ XP TX SNP2 southport stall count               │ 0x6  │ 0x10E    │
+│ CMN_XP_TXSNP2_SOUTHPORT_PARTIAL_DAT_FLIT_COUNT  │ XP TX SNP2 southport partial DAT flit count    │ 0x6  │ 0x10F    │
+└─────────────────────────────────────────────────┴────────────────────────────────────────────────┴──────┴──────────┘
+                                                    SBSX Events                                                    
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━━━┓
+┃ Event                              ┃ Title                                                    ┃ Type ┃ Event ID ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━╇━━━━━━━━━━┩
+│ PMU_SBSX_REQTRKR_RD_ALLOC          │ SBSX Read request                                        │ 0x7  │ 0x1      │
+│ PMU_SBSX_REQTRKR_WR_ALLOC          │ SBSX Write request                                       │ 0x7  │ 0x2      │
+│ PMU_SBSX_REQTRKR_CMO_ALLOC         │ CMO request                                              │ 0x7  │ 0x3      │
+│ PMU_SBSX_TXRSP_RETRYACK            │ RETRYACK TXRSP flit sent                                 │ 0x7  │ 0x4      │
+│ PMU_SBSX_TXDAT_FLITV               │ TXDAT dispatched                                         │ 0x7  │ 0x5      │
+│ PMU_SBSX_TXRSP_FLITV               │ TXRSP dispatched                                         │ 0x7  │ 0x6      │
+│ PMU_SBSX_RD_REQ_TRKR_OCC_CNT_OVFL  │ Read request tracker occupancy count overflow            │ 0x7  │ 0x11     │
+│ PMU_SBSX_WR_REQ_TRKR_OCC_CNT_OVFL  │ Write request tracker occupancy count overflow           │ 0x7  │ 0x12     │
+│ PMU_SBSX_CMO_REQ_TRKR_OCC_CNT_OVFL │ CMO request tracker occupancy count overflow             │ 0x7  │ 0x13     │
+│ PMU_SBSX_WDB_OCC_CNT_OVFL          │ WDB occupancy count overflow                             │ 0x7  │ 0x14     │
+│ PMU_SBSX_RD_AXI_TRKR_OCC_CNT_OVFL  │ Read AXI pending tracker occupancy count overflow        │ 0x7  │ 0x15     │
+│ PMU_SBSX_CMO_AXI_TRKR_OCC_CNT_OVFL │ CMO AXI pending tracker occupancy count overflow         │ 0x7  │ 0x16     │
+│ PMU_SBSX_RDB_OCC_CNT_OVFL          │ RDB occupancy count overflow. (Only when MTU is enabled) │ 0x7  │ 0x17     │
+│ PMU_SBSX_ARVALID_NO_ARREADY        │ ARVALID set without ARREADY                              │ 0x7  │ 0x21     │
+│ PMU_SBSX_AWVALID_NO_AWREADY        │ AWVALID set without AWREADY                              │ 0x7  │ 0x22     │
+│ PMU_SBSX_WVALID_NO_WREADY          │ WVALID set without WREADY                                │ 0x7  │ 0x23     │
+│ PMU_SBSX_TXDAT_STALL               │ TXDAT stall (TXDAT valid but no link credit available)   │ 0x7  │ 0x24     │
+│ PMU_SBSX_TXRSP_STALL               │ TXRSP stall (TXRSP valid but no link credit available)   │ 0x7  │ 0x25     │
+└────────────────────────────────────┴──────────────────────────────────────────────────────────┴──────┴──────────┘
+                                              SBSX Watchpoints                                               
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃ Watchpoint                    ┃ Direction ┃ Channel ┃ Group     ┃ Mask               ┃ Values             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ CMN_SBSX_WP_RXREQ_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_SBSX_WP_64B_RXREQ_COUNT   │ Download  │ REQ     │ Primary   │ 0xFFFFFF8FFFFFFFFF │ 0x0000006000000000 │
+│ CMN_SBSX_WP_TXRSP_RETRY_COUNT │ Upload    │ RSP     │ Primary   │ 0x003FFFFFFFF07FFF │ 0x0000000000018000 │
+│ CMN_SBSX_WP_RXDAT_COUNT       │ Download  │ DAT     │ Secondary │ 0x00FFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_SBSX_WP_TXRSP_COUNT       │ Upload    │ RSP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_SBSX_WP_TXDAT_COUNT       │ Upload    │ DAT     │ Secondary │ 0x00FFFFFFFFFFFFFF │ 0x0000000000000000 │
+└───────────────────────────────┴───────────┴─────────┴───────────┴────────────────────┴────────────────────┘
+                                                     RN-I Events                                                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━━━┓
+┃ Event                                   ┃ Title                                                 ┃ Type ┃ Event ID ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━╇━━━━━━━━━━┩
+│ PMU_RNI_RDATABEATS_P0                   │ PMU_RNI_RDATABEATS_P0                                 │ 0xA  │ 0x1      │
+│ PMU_RNI_RDATABEATS_P1                   │ PMU_RNI_RDATABEATS_P1                                 │ 0xA  │ 0x2      │
+│ PMU_RNI_RDATABEATS_P2                   │ PMU_RNI_RDATABEATS_P2                                 │ 0xA  │ 0x3      │
+│ PMU_RNI_RXDATFLITV                      │ PMU_RNI_RXDATFLITV                                    │ 0xA  │ 0x4      │
+│ PMU_RNI_TXDATFLITV                      │ TXDAT flits sent                                      │ 0xA  │ 0x5      │
+│ PMU_RNI_TXREQFLITV                      │ Total TXREQ flits sent                                │ 0xA  │ 0x6      │
+│ PMU_RNI_TXREQFLITV_RETRIED              │ Retried TXREQ flits sent                              │ 0xA  │ 0x7      │
+│ PMU_RNI_RRT_OCCUPANCY_SLICE0            │ RRT occupancy count overflow                          │ 0xA  │ 0x8      │
+│ PMU_RNI_WRT_OCCUPANCY                   │ WRT occupancy count overflow                          │ 0xA  │ 0x9      │
+│ PMU_RNI_TXREQFLITV_REPLAYED             │ Replayed TXREQ flits                                  │ 0xA  │ 0xA      │
+│ PMU_RNI_WRCANCEL_SENT                   │ WriteCancel sent                                      │ 0xA  │ 0xB      │
+│ PMU_RNI_WDATABEAT_P0                    │ Port S0 WDataBeats                                    │ 0xA  │ 0xC      │
+│ PMU_RNI_WDATABEAT_P1                    │ Port S1 WDataBeats                                    │ 0xA  │ 0xD      │
+│ PMU_RNI_WDATABEAT_P2                    │ Port S2 WDataBeats                                    │ 0xA  │ 0xE      │
+│ PMU_RNI_RRTALLOC                        │ RRT allocation                                        │ 0xA  │ 0xF      │
+│ PMU_RNI_WRTALLOC                        │ WRT allocation                                        │ 0xA  │ 0x10     │
+│ PMU_RNI_PADB_OCCUPANCY                  │ PADB occupancy count overflow                         │ 0xA  │ 0x11     │
+│ PMU_RNI_RPDB_OCCUPANCY                  │ RPDB occupancy count overflow                         │ 0xA  │ 0x12     │
+│ PMU_RNI_RRT_OCCUPANCY_SLICE1            │ RRT occupancy count overflow_slice1                   │ 0xA  │ 0x13     │
+│ PMU_RNI_RRT_OCCUPANCY_SLICE2            │ RRT occupancy count overflow_slice2                   │ 0xA  │ 0x14     │
+│ PMU_RNI_RRT_OCCUPANCY_SLICE3            │ RRT occupancy count overflow_slice3                   │ 0xA  │ 0x15     │
+│ PMU_RNI_WRT_THROTTLED                   │ WRT request throttled                                 │ 0xA  │ 0x16     │
+│ PMU_RNI_LDB_FULL                        │ RNI backpressure CHI LDB full                         │ 0xA  │ 0x17     │
+│ PMU_RNI_RRT_REG_RD_REQ_OCCUPANCY_SLICE0 │ RRT normal rd req occupancy count overflow_slice0     │ 0xA  │ 0x18     │
+│ PMU_RNI_RRT_REG_RD_REQ_OCCUPANCY_SLICE1 │ RRT normal rd req occupancy count overflow_slice1     │ 0xA  │ 0x19     │
+│ PMU_RNI_RRT_REG_RD_REQ_OCCUPANCY_SLICE2 │ RRT normal rd req occupancy count overflow_slice2     │ 0xA  │ 0x1A     │
+│ PMU_RNI_RRT_REG_RD_REQ_OCCUPANCY_SLICE3 │ RRT normal rd req occupancy count overflow_slice3     │ 0xA  │ 0x1B     │
+│ PMU_RNI_RRT_BURST_REQ_OCCUPANCY_SLICE0  │ RRT PCIe RD burst req occupancy count overflow_slice0 │ 0xA  │ 0x1C     │
+│ PMU_RNI_RRT_BURST_REQ_OCCUPANCY_SLICE1  │ RRT PCIe RD burst req occupancy count overflow_slice1 │ 0xA  │ 0x1D     │
+│ PMU_RNI_RRT_BURST_REQ_OCCUPANCY_SLICE2  │ RRT PCIe RD burst req occupancy count overflow_slice2 │ 0xA  │ 0x1E     │
+│ PMU_RNI_RRT_BURST_REQ_OCCUPANCY_SLICE3  │ RRT PCIe RD burst req occupancy count overflow_slice3 │ 0xA  │ 0x1F     │
+│ PMU_RNI_RRT_BURST_ALLOC                 │ RRT PCIe RD burst allocation                          │ 0xA  │ 0x20     │
+│ PMU_RNI_AWID_HASH                       │ Compressed AWID ordering                              │ 0xA  │ 0x21     │
+│ PMU_RNI_ATOMIC_ALLOC                    │ Atomic data buffer allocation                         │ 0xA  │ 0x22     │
+│ PMU_RNI_ATOMIC_OCCUPANCY                │ Atomic data buffer occupancy                          │ 0xA  │ 0x23     │
+└─────────────────────────────────────────┴───────────────────────────────────────────────────────┴──────┴──────────┘
+                                                      RN-I Watchpoints                                                      
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃ Watchpoint                                   ┃ Direction ┃ Channel ┃ Group     ┃ Mask               ┃ Values             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ CMN_RNI_WP_64B_TXREQ_COUNT                   │ Upload    │ REQ     │ Primary   │ 0xFFFFFF8FFFFFFFFF │ 0x0000006000000000 │
+│ CMN_RNI_WP_TXREQ_SINGLE_COUNT                │ Upload    │ REQ     │ Primary   │ 0xFFFFFEFFFFFFFFFF │ 0x0000010000000000 │
+│ CMN_RNI_WP_TXRSP_COUNT                       │ Upload    │ RSP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_RNI_WP_RXRSP_COUNT                       │ Download  │ RSP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_RNI_WP_TXREQ_COUNT                       │ Upload    │ REQ     │ Secondary │ 0xFFFFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_RNI_WP_TXREQ_CLEANUNIQUE_COUNT           │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010160000000 │
+│ CMN_RNI_WP_TXREQ_STASHONCEUNIQUE_COUNT       │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010460000000 │
+│ CMN_RNI_WP_TXREQ_STASHONCESEPUNIQUE_COUNT    │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010900000000 │
+│ CMN_RNI_WP_TXREQ_STASHONCESHARED_COUNT       │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010440000000 │
+│ CMN_RNI_WP_TXREQ_STASHONCESEPSHARED_COUNT    │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000108E0000000 │
+│ CMN_RNI_WP_TXREQ_CLEANSHARED_COUNT           │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010100000000 │
+│ CMN_RNI_WP_TXREQ_CLEANSHAREDPERSIST_COUNT    │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000104E0000000 │
+│ CMN_RNI_WP_TXREQ_CLEANSHAREDPERSISTSEP_COUNT │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010260000000 │
+│ CMN_RNI_WP_TXREQ_CLEANINVALID_COUNT          │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010120000000 │
+│ CMN_RNI_WP_TXREQ_CLEANINVALIDPOPA_COUNT      │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000109A0000000 │
+│ CMN_RNI_WP_TXREQ_MAKEINVALID_COUNT           │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010140000000 │
+│ CMN_RNI_WP_TXREQ_READNOTSHAREDDIRTY_COUNT    │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000104C0000000 │
+│ CMN_RNI_WP_TXREQ_MAKEREADUNIQUE_COUNT        │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010820000000 │
+│ CMN_RNI_WP_TXREQ_READUNIQUE_COUNT            │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000100E0000000 │
+│ CMN_RNI_WP_TXREQ_READPREFERUNIQUE_COUNT      │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010980000000 │
+│ CMN_RNI_WP_TXREQ_READONCE_COUNT              │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010060000000 │
+│ CMN_RNI_WP_TXREQ_WRITEBACKFULL_COUNT         │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010360000000 │
+│ CMN_RNI_WP_TXREQ_WRITEEVICTOREVICT_COUNT     │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010840000000 │
+│ CMN_RNI_WP_TXREQ_EVICT_COUNT                 │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000101A0000000 │
+│ CMN_RNI_WP_TXREQ_WRITEUNIQUEFULL_COUNT       │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010320000000 │
+│ CMN_RNI_WP_TXREQ_WRITENOSNOOPFULL_COUNT      │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000103A0000000 │
+│ CMN_RNI_WP_TXREQ_MAKEUNIQUE_COUNT            │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010180000000 │
+└──────────────────────────────────────────────┴───────────┴─────────┴───────────┴────────────────────┴────────────────────┘
+                                                     RN-D Events                                                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━━━┓
+┃ Event                                   ┃ Title                                                 ┃ Type ┃ Event ID ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━╇━━━━━━━━━━┩
+│ PMU_RND_RDATABEATS_P0                   │ PMU_RND_RDATABEATS_P0                                 │ 0xD  │ 0x1      │
+│ PMU_RND_RDATABEATS_P1                   │ PMU_RND_RDATABEATS_P1                                 │ 0xD  │ 0x2      │
+│ PMU_RND_RDATABEATS_P2                   │ PMU_RND_RDATABEATS_P2                                 │ 0xD  │ 0x3      │
+│ PMU_RND_RXDATFLITV                      │ PMU_RND_RXDATFLITV                                    │ 0xD  │ 0x4      │
+│ PMU_RND_TXDATFLITV                      │ TXDAT flits sent                                      │ 0xD  │ 0x5      │
+│ PMU_RND_TXREQFLITV                      │ Total TXREQ flits sent                                │ 0xD  │ 0x6      │
+│ PMU_RND_TXREQFLITV_RETRIED              │ Retried TXREQ flits sent                              │ 0xD  │ 0x7      │
+│ PMU_RND_RRT_OCCUPANCY_SLICE0            │ RRT occupancy count overflow                          │ 0xD  │ 0x8      │
+│ PMU_RND_WRT_OCCUPANCY                   │ WRT occupancy count overflow                          │ 0xD  │ 0x9      │
+│ PMU_RND_TXREQFLITV_REPLAYED             │ Replayed TXREQ flits                                  │ 0xD  │ 0xA      │
+│ PMU_RND_WRCANCEL_SENT                   │ WriteCancel sent                                      │ 0xD  │ 0xB      │
+│ PMU_RND_WDATABEAT_P0                    │ Port S0 WDataBeats                                    │ 0xD  │ 0xC      │
+│ PMU_RND_WDATABEAT_P1                    │ Port S1 WDataBeats                                    │ 0xD  │ 0xD      │
+│ PMU_RND_WDATABEAT_P2                    │ Port S2 WDataBeats                                    │ 0xD  │ 0xE      │
+│ PMU_RND_RRTALLOC                        │ RRT allocation                                        │ 0xD  │ 0xF      │
+│ PMU_RND_WRTALLOC                        │ WRT allocation                                        │ 0xD  │ 0x10     │
+│ PMU_RND_PADB_OCCUPANCY                  │ PADB occupancy count overflow                         │ 0xD  │ 0x11     │
+│ PMU_RND_RPDB_OCCUPANCY                  │ RPDB occupancy count overflow                         │ 0xD  │ 0x12     │
+│ PMU_RND_RRT_OCCUPANCY_SLICE1            │ RRT occupancy count overflow_slice1                   │ 0xD  │ 0x13     │
+│ PMU_RND_RRT_OCCUPANCY_SLICE2            │ RRT occupancy count overflow_slice2                   │ 0xD  │ 0x14     │
+│ PMU_RND_RRT_OCCUPANCY_SLICE3            │ RRT occupancy count overflow_slice3                   │ 0xD  │ 0x15     │
+│ PMU_RND_WRT_THROTTLED                   │ WRT request throttled                                 │ 0xD  │ 0x16     │
+│ PMU_RND_LDB_FULL                        │ RND backpressure CHI LDB full                         │ 0xD  │ 0x17     │
+│ PMU_RND_RRT_REG_RD_REQ_OCCUPANCY_SLICE0 │ RRT normal rd req occupancy count overflow_slice0     │ 0xD  │ 0x18     │
+│ PMU_RND_RRT_REG_RD_REQ_OCCUPANCY_SLICE1 │ RRT normal rd req occupancy count overflow_slice1     │ 0xD  │ 0x19     │
+│ PMU_RND_RRT_REG_RD_REQ_OCCUPANCY_SLICE2 │ RRT normal rd req occupancy count overflow_slice2     │ 0xD  │ 0x1A     │
+│ PMU_RND_RRT_REG_RD_REQ_OCCUPANCY_SLICE3 │ RRT normal rd req occupancy count overflow_slice3     │ 0xD  │ 0x1B     │
+│ PMU_RND_RRT_BURST_REQ_OCCUPANCY_SLICE0  │ RRT PCIe RD burst req occupancy count overflow_slice0 │ 0xD  │ 0x1C     │
+│ PMU_RND_RRT_BURST_REQ_OCCUPANCY_SLICE1  │ RRT PCIe RD burst req occupancy count overflow_slice1 │ 0xD  │ 0x1D     │
+│ PMU_RND_RRT_BURST_REQ_OCCUPANCY_SLICE2  │ RRT PCIe RD burst req occupancy count overflow_slice2 │ 0xD  │ 0x1E     │
+│ PMU_RND_RRT_BURST_REQ_OCCUPANCY_SLICE3  │ RRT PCIe RD burst req occupancy count overflow_slice3 │ 0xD  │ 0x1F     │
+│ PMU_RND_RRT_BURST_ALLOC                 │ RRT PCIe RD burst allocation                          │ 0xD  │ 0x20     │
+│ PMU_RND_AWID_HASH                       │ Compressed AWID ordering                              │ 0xD  │ 0x21     │
+│ PMU_RND_ATOMIC_ALLOC                    │ Atomic data buffer allocation                         │ 0xD  │ 0x22     │
+│ PMU_RND_ATOMIC_OCCUPANCY                │ Atomic data buffer occupancy                          │ 0xD  │ 0x23     │
+└─────────────────────────────────────────┴───────────────────────────────────────────────────────┴──────┴──────────┘
+                                                      RN-D Watchpoints                                                      
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃ Watchpoint                                   ┃ Direction ┃ Channel ┃ Group     ┃ Mask               ┃ Values             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ CMN_RND_WP_64B_TXREQ_COUNT                   │ Upload    │ REQ     │ Primary   │ 0xFFFFFF8FFFFFFFFF │ 0x0000006000000000 │
+│ CMN_RND_WP_TXREQ_SINGLE_COUNT                │ Upload    │ REQ     │ Primary   │ 0xFFFFFEFFFFFFFFFF │ 0x0000010000000000 │
+│ CMN_RND_WP_TXRSP_COUNT                       │ Upload    │ RSP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_RND_WP_RXSNP_COUNT                       │ Download  │ SNP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_RND_WP_RXRSP_COUNT                       │ Download  │ RSP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_RND_WP_TXREQ_COUNT                       │ Upload    │ REQ     │ Secondary │ 0xFFFFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_RND_WP_TXREQ_CLEANUNIQUE_COUNT           │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010160000000 │
+│ CMN_RND_WP_TXREQ_STASHONCEUNIQUE_COUNT       │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010460000000 │
+│ CMN_RND_WP_TXREQ_STASHONCESEPUNIQUE_COUNT    │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010900000000 │
+│ CMN_RND_WP_TXREQ_STASHONCESHARED_COUNT       │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010440000000 │
+│ CMN_RND_WP_TXREQ_STASHONCESEPSHARED_COUNT    │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000108E0000000 │
+│ CMN_RND_WP_TXREQ_CLEANSHARED_COUNT           │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010100000000 │
+│ CMN_RND_WP_TXREQ_CLEANSHAREDPERSIST_COUNT    │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000104E0000000 │
+│ CMN_RND_WP_TXREQ_CLEANSHAREDPERSISTSEP_COUNT │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010260000000 │
+│ CMN_RND_WP_TXREQ_CLEANINVALID_COUNT          │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010120000000 │
+│ CMN_RND_WP_TXREQ_CLEANINVALIDPOPA_COUNT      │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000109A0000000 │
+│ CMN_RND_WP_TXREQ_MAKEINVALID_COUNT           │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010140000000 │
+│ CMN_RND_WP_TXREQ_READNOTSHAREDDIRTY_COUNT    │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000104C0000000 │
+│ CMN_RND_WP_TXREQ_MAKEREADUNIQUE_COUNT        │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010820000000 │
+│ CMN_RND_WP_TXREQ_READUNIQUE_COUNT            │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000100E0000000 │
+│ CMN_RND_WP_TXREQ_READPREFERUNIQUE_COUNT      │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010980000000 │
+│ CMN_RND_WP_TXREQ_READONCE_COUNT              │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010060000000 │
+│ CMN_RND_WP_TXREQ_WRITEBACKFULL_COUNT         │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010360000000 │
+│ CMN_RND_WP_TXREQ_WRITEEVICTOREVICT_COUNT     │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010840000000 │
+│ CMN_RND_WP_TXREQ_EVICT_COUNT                 │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000101A0000000 │
+│ CMN_RND_WP_TXREQ_WRITEUNIQUEFULL_COUNT       │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010320000000 │
+│ CMN_RND_WP_TXREQ_WRITENOSNOOPFULL_COUNT      │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000103A0000000 │
+│ CMN_RND_WP_TXREQ_MAKEUNIQUE_COUNT            │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010180000000 │
+└──────────────────────────────────────────────┴───────────┴─────────┴───────────┴────────────────────┴────────────────────┘
+                                                   HN-P Events                                                   
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━━━┓
+┃ Event                              ┃ Title                                                  ┃ Type ┃ Event ID ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━╇━━━━━━━━━━┩
+│ PMU_HNP_P2P_WR_RRT_WR_OCC_CNT_OVFL │ RRT write occupancy count overflow in P2P              │ 0x11 │ 0x1      │
+│ PMU_HNP_P2P_WR_RDT_WR_OCC_CNT_OVFL │ RDT write occupancy count overflow in P2P              │ 0x11 │ 0x2      │
+│ PMU_HNP_P2P_WR_WDB_OCC_CNT_OVFL    │ WDB occupancy count overflow all P2P                   │ 0x11 │ 0x3      │
+│ PMU_HNP_P2P_WR_RRT_WR_ALLOC        │ RRT write allocation to P2P                            │ 0x11 │ 0x4      │
+│ PMU_HNP_P2P_WR_RDT_WR_ALLOC        │ RDT write allocation to P2P                            │ 0x11 │ 0x5      │
+│ PMU_HNP_P2P_WR_WDB_ALLOC           │ WDB allocation to P2P                                  │ 0x11 │ 0x6      │
+│ PMU_HNP_P2P_WR_AWVALID_NO_AWREADY  │ AWVALID set without AWREADY event for a P2P Write      │ 0x11 │ 0x7      │
+│ PMU_HNP_P2P_WR_AWREADY_NO_AWVALID  │ AWREADY set without AWVALID event for a P2P Write      │ 0x11 │ 0x8      │
+│ PMU_HNP_P2P_WR_WVALID_NO_WREADY    │ WVALID set without WREADY event for P2P Write          │ 0x11 │ 0x9      │
+│ PMU_HNP_P2P_RD_RRT_RD_OCC_CNT_OVFL │ RRT read occupancy count overflow in P2P               │ 0x11 │ 0x11     │
+│ PMU_HNP_P2P_RD_RDT_RD_OCC_CNT_OVFL │ RDT read occupancy count overflow in P2P               │ 0x11 │ 0x12     │
+│ PMU_HNP_P2P_RD_RRT_RD_ALLOC        │ RRT read allocation to P2P                             │ 0x11 │ 0x13     │
+│ PMU_HNP_P2P_RD_RDT_RD_ALLOC        │ RDT read allocation to P2P                             │ 0x11 │ 0x14     │
+│ PMU_HNP_P2P_RD_ARVALID_NO_ARREADY  │ ARVALID set without ARREADY event for a P2P Read       │ 0x11 │ 0x15     │
+│ PMU_HNP_P2P_RD_ARREADY_NO_ARVALID  │ ARREADY set without ARVALID event NOTE                 │ 0x11 │ 0x16     │
+│ PMU_HNP_RRT_RD_OCC_CNT_OVFL        │ RRT read occupancy count overflow                      │ 0x11 │ 0x20     │
+│ PMU_HNP_RRT_WR_OCC_CNT_OVFL        │ RRT write occupancy count overflow                     │ 0x11 │ 0x21     │
+│ PMU_HNP_RDT_RD_OCC_CNT_OVFL        │ RDT read occupancy count overflow                      │ 0x11 │ 0x22     │
+│ PMU_HNP_RDT_WR_OCC_CNT_OVFL        │ RDT write occupancy count overflow                     │ 0x11 │ 0x23     │
+│ PMU_HNP_WDB_OCC_CNT_OVFL           │ WDB occupancy count overflow                           │ 0x11 │ 0x24     │
+│ PMU_HNP_RRT_RD_ALLOC               │ RRT read allocation                                    │ 0x11 │ 0x25     │
+│ PMU_HNP_RRT_WR_ALLOC               │ RRT write allocation                                   │ 0x11 │ 0x26     │
+│ PMU_HNP_RDT_RD_ALLOC               │ RDT read allocation                                    │ 0x11 │ 0x27     │
+│ PMU_HNP_RDT_WR_ALLOC               │ RDT write allocation                                   │ 0x11 │ 0x28     │
+│ PMU_HNP_WDB_ALLOC                  │ WDB allocation                                         │ 0x11 │ 0x29     │
+│ PMU_HNP_TXRSP_RETRYACK             │ RETRYACK TXRSP flit sent                               │ 0x11 │ 0x2A     │
+│ PMU_HNP_ARVALID_NO_ARREADY         │ ARVALID set without ARREADY event                      │ 0x11 │ 0x2B     │
+│ PMU_HNP_ARREADY_NO_ARVALID         │ ARREADY set without ARVALID event                      │ 0x11 │ 0x2C     │
+│ PMU_HNP_AWVALID_NO_AWREADY         │ AWVALID set without AWREADY event                      │ 0x11 │ 0x2D     │
+│ PMU_HNP_AWREADY_NO_AWVALID         │ AWREADY set without AWVALID event                      │ 0x11 │ 0x2E     │
+│ PMU_HNP_WVALID_NO_WREADY           │ WVALID set without WREADY event                        │ 0x11 │ 0x2F     │
+│ PMU_HNP_TXDAT_STALL                │ TXDAT stall (TXDAT valid but no link credit available) │ 0x11 │ 0x30     │
+│ PMU_HNP_NONPCIE_SERIALIZATION      │ Non-PCIe serialization event                           │ 0x11 │ 0x31     │
+│ PMU_HNP_PCIE_SERIALIZATION         │ PCIe serialization event NOTE                          │ 0x11 │ 0x32     │
+└────────────────────────────────────┴────────────────────────────────────────────────────────┴──────┴──────────┘
+                                              HN-P Watchpoints                                              
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃ Watchpoint                   ┃ Direction ┃ Channel ┃ Group     ┃ Mask               ┃ Values             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ CMN_HNP_WP_RXREQ_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNP_WP_64B_RXREQ_COUNT   │ Download  │ REQ     │ Primary   │ 0xFFFFFF8FFFFFFFFF │ 0x0000006000000000 │
+│ CMN_HNP_WP_TXRSP_RETRY_COUNT │ Upload    │ RSP     │ Primary   │ 0x003FFFFFFFF07FFF │ 0x0000000000018000 │
+│ CMN_HNP_WP_RXDAT_COUNT       │ Download  │ DAT     │ Secondary │ 0x00FFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNP_WP_RXRSP_COUNT       │ Download  │ RSP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNP_WP_TXRSP_COUNT       │ Upload    │ RSP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNP_WP_TXDAT_COUNT       │ Upload    │ DAT     │ Secondary │ 0x00FFFFFFFFFFFFFF │ 0x0000000000000000 │
+└──────────────────────────────┴───────────┴─────────┴───────────┴────────────────────┴────────────────────┘
+                                                    CCG-RA Events                                                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┓
+┃ Event                                ┃ Title                                                    ┃ Type  ┃ Event ID ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━┩
+│ PMU_CCGRA_REQ_TRK_OCC                │ CCGRA Request Tracker (RHT) occupancy count overflow     │ 0x103 │ 0x41     │
+│ PMU_CCGRA_SNP_TRK_OCC                │ CCGRA Snoop Tracker (SHT) occupancy count overflow       │ 0x103 │ 0x42     │
+│ PMU_CCGRA_RD_DAT_BUF_OCC             │ CCGRA Read Data Buffer (RDB) occupancy count overflow    │ 0x103 │ 0x43     │
+│ PMU_CCGRA_WR_DAT_BUF_OCC             │ CCGRA Write Data Buffer (WDB) occupancy count overflow   │ 0x103 │ 0x44     │
+│ PMU_CCGRA_SNP_SINK_BUFF_OCC          │ CCGRA Snoop Credit Buffer (SSB) occupancy count overflow │ 0x103 │ 0x45     │
+│ PMU_CCGRA_RN_SNP_BCASTS              │ CCGRA CCIX RX broadcast snoops                           │ 0x103 │ 0x46     │
+│ PMU_CCGRA_REQ_CHAINS                 │ CCGRA CCIX TX request chain                              │ 0x103 │ 0x47     │
+│ PMU_CCGRA_REQ_CHAIN_AVG_LEN          │ CCGRA CCIX TX request chain average length               │ 0x103 │ 0x48     │
+│ PMU_CCGRA_CHI_INT_RSP_UPLOADS_STALLS │ CCGRA CHI internal RSP stall                             │ 0x103 │ 0x49     │
+│ PMU_CCGRA_CHI_INT_DAT_UPLOAD_STALLS  │ CCGRA CHI internal DAT stall                             │ 0x103 │ 0x4A     │
+│ PMU_CCGRA_DAT_PCRD_STALLS_LNK0       │ CCGRA CCIX REQ Protocol credit Link 0 stall              │ 0x103 │ 0x4B     │
+│ PMU_CCGRA_DAT_PCRD_STALLS_LNK1       │ CCGRA CCIX REQ Protocol credit Link 1 stall              │ 0x103 │ 0x4C     │
+│ PMU_CCGRA_DAT_PCRD_STALLS_LNK2       │ CCGRA CCIX REQ Protocol credit Link 2 stall              │ 0x103 │ 0x4D     │
+│ PMU_CCGRA_REQ_PCRD_STALLS_LNK0       │ CCGRA CCIX DAT Protocol credit Link 0 stall              │ 0x103 │ 0x4E     │
+│ PMU_CCGRA_REQ_PCRD_STALLS_LNK1       │ CCGRA CCIX DAT Protocol credit Link 1 stall              │ 0x103 │ 0x4F     │
+│ PMU_CCGRA_REQ_PCRD_STALLS_LNK2       │ CCGRA CCIX DAT Protocol credit Link 2 stall              │ 0x103 │ 0x50     │
+│ PMU_CCGRA_CHI_EXT_RSP_UPLOADS_STALLS │ CCGRA CHI external RSP stall                             │ 0x103 │ 0x51     │
+│ PMU_CCGRA_CHI_EXT_DAT_UPLOAD_STALLS  │ CCGRA CHI external DAT stall                             │ 0x103 │ 0x52     │
+│ PMU_CCGRA_REQ_TRK_ALLOC              │ CCGRA Request Tracker (RHT) allocations                  │ 0x103 │ 0x56     │
+│ PMU_CCGRA_SNP_TRK_ALLOC              │ CCGRA Snoop Tracker (SHT) allocations                    │ 0x103 │ 0x57     │
+│ PMU_CCGRA_RD_DAT_BUF_ALLOC           │ CCGRA Read Data Buffer (RDB) allocations                 │ 0x103 │ 0x58     │
+│ PMU_CCGRA_WR_DAT_BUF_ALLOC           │ CCGRA Write Data Buffer (WDB) allocations                │ 0x103 │ 0x59     │
+│ PMU_CCGRA_SNP_SINK_BUFF_ALLOC        │ CCGRA Snoop Credit Buffer (SSB) allocations              │ 0x103 │ 0x5A     │
+└──────────────────────────────────────┴──────────────────────────────────────────────────────────┴───────┴──────────┘
+                                      CCG-HA Events                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┓
+┃ Event                            ┃ Title                            ┃ Type  ┃ Event ID ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━┩
+│ PMU_CCGHA_RD_DAT_BYPASS          │ PMU_CCGHA_RD_DAT_BYPASS          │ 0x104 │ 0x61     │
+│ PMU_CCGHA_CHI_RSP_UPLOAD_STALLS  │ PMU_CCGHA_CHI_RSP_UPLOAD_STALLS  │ 0x104 │ 0x62     │
+│ PMU_CCGHA_CHI_DAT_UPLOAD_STALLS  │ PMU_CCGHA_CHI_DAT_UPLOAD_STALLS  │ 0x104 │ 0x63     │
+│ PMU_CCGHA_SNP_PCRD_STALLS_LNK0   │ PMU_CCGHA_SNP_PCRD_STALLS_LNK0   │ 0x104 │ 0x64     │
+│ PMU_CCGHA_SNP_PCRD_STALLS_LNK1   │ PMU_CCGHA_SNP_PCRD_STALLS_LNK1   │ 0x104 │ 0x65     │
+│ PMU_CCGHA_SNP_PCRD_STALLS_LNK2   │ PMU_CCGHA_SNP_PCRD_STALLS_LNK2   │ 0x104 │ 0x66     │
+│ PMU_CCGHA_REQ_TRK_OCC            │ PMU_CCGHA_REQ_TRK_OCC            │ 0x104 │ 0x67     │
+│ PMU_CCGHA_RD_DAT_BUF_OCC         │ PMU_CCGHA_RD_DAT_BUF_OCC         │ 0x104 │ 0x68     │
+│ PMU_CCGHA_RD_DAT_BUF_BYP_OCC     │ PMU_CCGHA_RD_DAT_BUF_BYP_OCC     │ 0x104 │ 0x69     │
+│ PMU_CCGHA_WR_DAT_BUF_OCC         │ PMU_CCGHA_WR_DAT_BUF_OCC         │ 0x104 │ 0x6A     │
+│ PMU_CCGHA_SNP_TRK_OCC            │ PMU_CCGHA_SNP_TRK_OCC            │ 0x104 │ 0x6B     │
+│ PMU_CCGHA_SNP_DAT_BUF_OCC        │ PMU_CCGHA_SNP_DAT_BUF_OCC        │ 0x104 │ 0x6C     │
+│ PMU_CCGHA_SNP_HAZ_OCC            │ PMU_CCGHA_SNP_HAZ_OCC            │ 0x104 │ 0x6D     │
+│ PMU_CCGHA_REQ_TRK_ALLOC          │ PMU_CCGHA_REQ_TRK_ALLOC          │ 0x104 │ 0x6E     │
+│ PMU_CCGHA_RD_DAT_BUF_ALLOC       │ PMU_CCGHA_RD_DAT_BUF_ALLOC       │ 0x104 │ 0x6F     │
+│ PMU_CCGHA_RD_DAT_BUF_BYP_ALLOC   │ PMU_CCGHA_RD_DAT_BUF_BYP_ALLOC   │ 0x104 │ 0x70     │
+│ PMU_CCGHA_WR_DAT_BUF_ALLOC       │ PMU_CCGHA_WR_DAT_BUF_ALLOC       │ 0x104 │ 0x71     │
+│ PMU_CCGHA_SNP_TRK_ALLOC          │ PMU_CCGHA_SNP_TRK_ALLOC          │ 0x104 │ 0x72     │
+│ PMU_CCGHA_SNP_DAT_BUF_ALLOC      │ PMU_CCGHA_SNP_DAT_BUF_ALLOC      │ 0x104 │ 0x73     │
+│ PMU_CCGHA_SNP_HAZ_ALLOC          │ PMU_CCGHA_SNP_HAZ_ALLOC          │ 0x104 │ 0x74     │
+│ PMU_CCGHA_PB_RHU_REQ_OCC         │ PMU_CCGHA_PB_RHU_REQ_OCC         │ 0x104 │ 0x75     │
+│ PMU_CCGHA_PB_RHU_REQ_ALLOC       │ PMU_CCGHA_PB_RHU_REQ_ALLOC       │ 0x104 │ 0x76     │
+│ PMU_CCGHA_PB_RHU_PCIE_REQ_OCC    │ PMU_CCGHA_PB_RHU_PCIE_REQ_OCC    │ 0x104 │ 0x77     │
+│ PMU_CCGHA_PB_RHU_PCIE_REQ_ALLOC  │ PMU_CCGHA_PB_RHU_PCIE_REQ_ALLOC  │ 0x104 │ 0x78     │
+│ PMU_CCGHA_PB_PCIE_WR_REQ_OCC     │ PMU_CCGHA_PB_PCIE_WR_REQ_OCC     │ 0x104 │ 0x79     │
+│ PMU_CCGHA_PB_PCIE_WR_REQ_ALLOC   │ PMU_CCGHA_PB_PCIE_WR_REQ_ALLOC   │ 0x104 │ 0x7A     │
+│ PMU_CCGHA_PB_PCIE_REG_REQ_OCC    │ PMU_CCGHA_PB_PCIE_REG_REQ_OCC    │ 0x104 │ 0x7B     │
+│ PMU_CCGHA_PB_PCIE_REG_REQ_ALLOC  │ PMU_CCGHA_PB_PCIE_REG_REQ_ALLOC  │ 0x104 │ 0x7C     │
+│ PMU_CCGHA_PB_PCIE_RSVD_REQ_OCC   │ PMU_CCGHA_PB_PCIE_RSVD_REQ_OCC   │ 0x104 │ 0x7D     │
+│ PMU_CCGHA_PB_PCIE_RSVD_REQ_ALLOC │ PMU_CCGHA_PB_PCIE_RSVD_REQ_ALLOC │ 0x104 │ 0x7E     │
+│ PMU_CCGHA_PB_RHU_DAT_OCC         │ PMU_CCGHA_PB_RHU_DAT_OCC         │ 0x104 │ 0x7F     │
+│ PMU_CCGHA_PB_RHU_DAT_ALLOC       │ PMU_CCGHA_PB_RHU_DAT_ALLOC       │ 0x104 │ 0x80     │
+│ PMU_CCGHA_PB_RHU_PCIE_DAT_OCC    │ PMU_CCGHA_PB_RHU_PCIE_DAT_OCC    │ 0x104 │ 0x81     │
+│ PMU_CCGHA_PB_RHU_PCIE_DAT_ALLOC  │ PMU_CCGHA_PB_RHU_PCIE_DAT_ALLOC  │ 0x104 │ 0x82     │
+│ PMU_CCGHA_PB_PCIE_WR_DAT_OCC     │ PMU_CCGHA_PB_PCIE_WR_DAT_OCC     │ 0x104 │ 0x83     │
+│ PMU_CCGHA_PB_PCIE_WR_DAT_ALLOC   │ PMU_CCGHA_PB_PCIE_WR_DAT_ALLOC   │ 0x104 │ 0x84     │
+└──────────────────────────────────┴──────────────────────────────────┴───────┴──────────┘
+                                        CCLA Events                                         
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┓
+┃ Event                             ┃ Title                             ┃ Type  ┃ Event ID ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━┩
+│ PMU_CCLA_RX_CXS                   │ PMU_CCLA_RX_CXS                   │ 0x105 │ 0x21     │
+│ PMU_CCLA_TX_CXS                   │ PMU_CCLA_TX_CXS                   │ 0x105 │ 0x22     │
+│ PMU_CCLA_RX_CXS_AVG_SIZE          │ PMU_CCLA_RX_CXS_AVG_SIZE          │ 0x105 │ 0x23     │
+│ PMU_CCLA_TX_CXS_AVG_SIZE          │ PMU_CCLA_TX_CXS_AVG_SIZE          │ 0x105 │ 0x24     │
+│ PMU_CCLA_TX_CXS_LCRD_BACKPRESSURE │ PMU_CCLA_TX_CXS_LCRD_BACKPRESSURE │ 0x105 │ 0x25     │
+│ PMU_CCLA_LINK_CRDBUF_OCC          │ PMU_CCLA_LINK_CRDBUF_OCC          │ 0x105 │ 0x26     │
+│ PMU_CCLA_LINK_CRDBUF_ALLOC        │ PMU_CCLA_LINK_CRDBUF_ALLOC        │ 0x105 │ 0x27     │
+└───────────────────────────────────┴───────────────────────────────────┴───────┴──────────┘
+                                          HN-S Events                                           
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┓
+┃ Event                               ┃ Title                               ┃ Type  ┃ Event ID ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━┩
+│ PMU_HNS_CACHE_MISS                  │ PMU_HNS_CACHE_MISS                  │ 0x200 │ 0x1      │
+│ PMU_HNS_SLCSF_CACHE_ACCESS          │ PMU_HNS_SLCSF_CACHE_ACCESS          │ 0x200 │ 0x2      │
+│ PMU_HNS_CACHE_FILL                  │ PMU_HNS_CACHE_FILL                  │ 0x200 │ 0x3      │
+│ PMU_HNS_POCQ_RETRY                  │ PMU_HNS_POCQ_RETRY                  │ 0x200 │ 0x4      │
+│ PMU_HNS_POCQ_REQS_RECVD             │ PMU_HNS_POCQ_REQS_RECVD             │ 0x200 │ 0x5      │
+│ PMU_HNS_SF_HIT                      │ PMU_HNS_SF_HIT                      │ 0x200 │ 0x6      │
+│ PMU_HNS_SF_EVICTIONS                │ PMU_HNS_SF_EVICTIONS                │ 0x200 │ 0x7      │
+│ PMU_HNS_DIR_SNOOPS_SENT             │ PMU_HNS_DIR_SNOOPS_SENT             │ 0x200 │ 0x8      │
+│ PMU_HNS_BRD_SNOOPS_SENTEVENT        │ PMU_HNS_BRD_SNOOPS_SENTEVENT        │ 0x200 │ 0x9      │
+│ PMU_HNS_SLC_EVICTION                │ PMU_HNS_SLC_EVICTION                │ 0x200 │ 0xA      │
+│ PMU_HNS_SLC_FILL_INVALID_WAY        │ PMU_HNS_SLC_FILL_INVALID_WAY        │ 0x200 │ 0xB      │
+│ PMU_HNS_MC_RETRIES                  │ PMU_HNS_MC_RETRIES                  │ 0x200 │ 0xC      │
+│ PMU_HNS_MC_REQS                     │ PMU_HNS_MC_REQS                     │ 0x200 │ 0xD      │
+│ PMU_HNS_QOS_HH_RETRY                │ PMU_HNS_QOS_HH_RETRY                │ 0x200 │ 0xE      │
+│ PMU_HNS_POCQ_OCCUPANCY              │ PMU_HNS_POCQ_OCCUPANCY              │ 0x200 │ 0xF      │
+│ PMU_HNS_POCQ_ADDRHAZ                │ PMU_HNS_POCQ_ADDRHAZ                │ 0x200 │ 0x10     │
+│ PMU_HNS_POCQ_ATOMICS_ADDRHAZ        │ PMU_HNS_POCQ_ATOMICS_ADDRHAZ        │ 0x200 │ 0x11     │
+│ PMU_HNS_LD_ST_SWP_ADQ_FULL          │ PMU_HNS_LD_ST_SWP_ADQ_FULL          │ 0x200 │ 0x12     │
+│ PMU_HNS_CMP_ADQ_FULL                │ PMU_HNS_CMP_ADQ_FULL                │ 0x200 │ 0x13     │
+│ PMU_HNS_TXDAT_STALL                 │ PMU_HNS_TXDAT_STALL                 │ 0x200 │ 0x14     │
+│ PMU_HNS_TXRSP_STALL                 │ PMU_HNS_TXRSP_STALL                 │ 0x200 │ 0x15     │
+│ PMU_HNS_SEQ_FULL                    │ PMU_HNS_SEQ_FULL                    │ 0x200 │ 0x16     │
+│ PMU_HNS_SEQ_HIT                     │ PMU_HNS_SEQ_HIT                     │ 0x200 │ 0x17     │
+│ PMU_HNS_SNP_SENT                    │ PMU_HNS_SNP_SENT                    │ 0x200 │ 0x18     │
+│ PMU_HNS_SFBI_DIR_SNP_SENT           │ PMU_HNS_SFBI_DIR_SNP_SENT           │ 0x200 │ 0x19     │
+│ PMU_HNS_SFBI_BRD_SNP_SENT           │ PMU_HNS_SFBI_BRD_SNP_SENT           │ 0x200 │ 0x1A     │
+│ PMU_HNS_SNP_SENT_UNTRK              │ PMU_HNS_SNP_SENT_UNTRK              │ 0x200 │ 0x1B     │
+│ PMU_HNS_INTV_DIRTY                  │ PMU_HNS_INTV_DIRTY                  │ 0x200 │ 0x1C     │
+│ PMU_HNS_STASH_SNP_SENT              │ PMU_HNS_STASH_SNP_SENT              │ 0x200 │ 0x1D     │
+│ PMU_HNS_STASH_DATA_PULL             │ PMU_HNS_STASH_DATA_PULL             │ 0x200 │ 0x1E     │
+│ PMU_HNS_SNP_FWDED                   │ PMU_HNS_SNP_FWDED                   │ 0x200 │ 0x1F     │
+│ PMU_HNS_ATOMIC_FWD                  │ PMU_HNS_ATOMIC_FWD                  │ 0x200 │ 0x20     │
+│ PMU_HNS_MPAM_REQ_OVER_HARDLIM       │ PMU_HNS_MPAM_REQ_OVER_HARDLIM       │ 0x200 │ 0x21     │
+│ PMU_HNS_MPAM_REQ_OVER_SOFTLIM       │ PMU_HNS_MPAM_REQ_OVER_SOFTLIM       │ 0x200 │ 0x22     │
+│ PMU_HNS_SNP_SENT_CLUSTER            │ PMU_HNS_SNP_SENT_CLUSTER            │ 0x200 │ 0x23     │
+│ PMU_HNS_SF_IMPRECISE_EVICT          │ PMU_HNS_SF_IMPRECISE_EVICT          │ 0x200 │ 0x24     │
+│ PMU_HNS_SF_EVICT_SHARED_LINE        │ PMU_HNS_SF_EVICT_SHARED_LINE        │ 0x200 │ 0x25     │
+│ PMU_HNS_POCQ_CLASS_OCCUPANCY        │ PMU_HNS_POCQ_CLASS_OCCUPANCY        │ 0x200 │ 0x26     │
+│ PMU_HNS_POCQ_CLASS_RETRY            │ PMU_HNS_POCQ_CLASS_RETRY            │ 0x200 │ 0x27     │
+│ PMU_HNS_CLASS_MC_REQS               │ PMU_HNS_CLASS_MC_REQS               │ 0x200 │ 0x28     │
+│ PMU_HNS_CLASS_PCRDGNT_BELOW_CONDMIN │ PMU_HNS_CLASS_PCRDGNT_BELOW_CONDMIN │ 0x200 │ 0x29     │
+│ PMU_HNS_NUM_SN_CBUSY_THROTTLE       │ PMU_HNS_NUM_SN_CBUSY_THROTTLE       │ 0x200 │ 0x2A     │
+│ PMU_HNS_NUM_SN_CBUSY_THROTTLE_MIN   │ PMU_HNS_NUM_SN_CBUSY_THROTTLE_MIN   │ 0x200 │ 0x2B     │
+│ PMU_HNS_SF_PRECISE_TO_IMPRECISE     │ PMU_HNS_SF_PRECISE_TO_IMPRECISE     │ 0x200 │ 0x2C     │
+│ PMU_HNS_SNP_INTV_CLN                │ PMU_HNS_SNP_INTV_CLN                │ 0x200 │ 0x2D     │
+│ PMU_HNS_NC_EXCL                     │ PMU_HNS_NC_EXCL                     │ 0x200 │ 0x2E     │
+│ PMU_HNS_EXCL_MON_OVFL               │ PMU_HNS_EXCL_MON_OVFL               │ 0x200 │ 0x2F     │
+│ PMU_HNS_SNP_REQ_RECVD               │ PMU_HNS_SNP_REQ_RECVD               │ 0x200 │ 0x30     │
+│ PMU_HNS_SNP_REQ_BYP_POCQ            │ PMU_HNS_SNP_REQ_BYP_POCQ            │ 0x200 │ 0x31     │
+│ PMU_HNS_DIR_CCGHA_SNP_SENT          │ PMU_HNS_DIR_CCGHA_SNP_SENT          │ 0x200 │ 0x32     │
+│ PMU_HNS_BRD_CCGHA_SNP_SENT          │ PMU_HNS_BRD_CCGHA_SNP_SENT          │ 0x200 │ 0x33     │
+│ PMU_HNS_CCGHA_SNP_STALL             │ PMU_HNS_CCGHA_SNP_STALL             │ 0x200 │ 0x34     │
+│ PMU_HNS_LBT_REQ_OVER_HARDLIM        │ PMU_HNS_LBT_REQ_OVER_HARDLIM        │ 0x200 │ 0x35     │
+│ PMU_HNS_HBT_REQ_OVER_HARDLIM        │ PMU_HNS_HBT_REQ_OVER_HARDLIM        │ 0x200 │ 0x36     │
+│ PMU_HNS_SF_REUPDATE                 │ PMU_HNS_SF_REUPDATE                 │ 0x200 │ 0x37     │
+│ PMU_HNS_EXCL_SF_IMPRECISE           │ PMU_HNS_EXCL_SF_IMPRECISE           │ 0x200 │ 0x38     │
+│ PMU_HNS_SNP_POCQ_ADDRHAZ            │ PMU_HNS_SNP_POCQ_ADDRHAZ            │ 0x200 │ 0x39     │
+└─────────────────────────────────────┴─────────────────────────────────────┴───────┴──────────┘
+                                                      HN-S Watchpoints                                                      
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃ Watchpoint                                   ┃ Direction ┃ Channel ┃ Group     ┃ Mask               ┃ Values             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ CMN_HNS_WP_RXREQ_COUNT                       │ Download  │ REQ     │ Secondary │ 0xFFFFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNS_WP_64B_RXREQ_COUNT                   │ Download  │ REQ     │ Primary   │ 0xFFFFFF8FFFFFFFFF │ 0x0000006000000000 │
+│ CMN_HNS_WP_RXREQ_SINGLE_COUNT                │ Download  │ REQ     │ Primary   │ 0xFFFFFEFFFFFFFFFF │ 0x0000010000000000 │
+│ CMN_HNS_WP_RXDAT_COUNT                       │ Download  │ DAT     │ Secondary │ 0x00FFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNS_WP_TXRSP_RETRY_COUNT                 │ Upload    │ RSP     │ Primary   │ 0x003FFFFFFFF07FFF │ 0x0000000000018000 │
+│ CMN_HNS_WP_TXRSP_COUNT                       │ Upload    │ RSP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNS_WP_TXSNP_COUNT                       │ Upload    │ SNP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNS_WP_TXDAT_COUNT                       │ Upload    │ DAT     │ Secondary │ 0x00FFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNS_WP_RXRSP_COUNT                       │ Download  │ RSP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_HNS_WP_RXRSP_RETRY_COUNT                 │ Download  │ RSP     │ Primary   │ 0x003FFFFFFFF07FFF │ 0x0000000000018000 │
+│ CMN_HNS_WP_RXREQ_READNOTSHAREDDIRTY_COUNT    │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000104C0000000 │
+│ CMN_HNS_WP_RXREQ_MAKEREADUNIQUE_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010820000000 │
+│ CMN_HNS_WP_RXREQ_READUNIQUE_COUNT            │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000100E0000000 │
+│ CMN_HNS_WP_RXREQ_READPREFERUNIQUE_COUNT      │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010980000000 │
+│ CMN_HNS_WP_RXREQ_READONCE_COUNT              │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010060000000 │
+│ CMN_HNS_WP_RXREQ_WRITEBACKFULL_COUNT         │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010360000000 │
+│ CMN_HNS_WP_RXREQ_WRITEEVICTOREVICT_COUNT     │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010840000000 │
+│ CMN_HNS_WP_RXREQ_EVICT_COUNT                 │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000101A0000000 │
+│ CMN_HNS_WP_RXREQ_WRITEUNIQUEFULL_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010320000000 │
+│ CMN_HNS_WP_RXREQ_WRITENOSNPFULL_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000103A0000000 │
+│ CMN_HNS_WP_RXREQ_MAKEUNIQUE_COUNT            │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010180000000 │
+│ CMN_HNS_WP_TXSNP_SNPUNIQUE_COUNT             │ Upload    │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x00000000E0000000 │
+│ CMN_HNS_WP_TXSNP_SNPUNIQUEFWD_COUNT          │ Upload    │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x00000002E0000000 │
+│ CMN_HNS_WP_TXSNP_SNPMAKEINVALID_COUNT        │ Upload    │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000140000000 │
+│ CMN_HNS_WP_TXSNP_SNPCLEANINVALID_COUNT       │ Upload    │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000120000000 │
+│ CMN_HNS_WP_TXSNP_SNPNOTSHAREDDIRTYFWD_COUNT  │ Upload    │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000280000000 │
+│ CMN_HNS_WP_TXSNP_SNPNOTSHAREDDIRTY_COUNT     │ Upload    │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000080000000 │
+│ CMN_HNS_WP_TXSNP_SNPONCE_COUNT               │ Upload    │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000060000000 │
+│ CMN_HNS_WP_TXSNP_SNPPREFERUNIQUE_COUNT       │ Upload    │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x00000002A0000000 │
+│ CMN_HNS_WP_RXREQ_CLEANUNIQUE_COUNT           │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010160000000 │
+│ CMN_HNS_WP_RXREQ_STASHONCEUNIQUE_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010460000000 │
+│ CMN_HNS_WP_RXREQ_STASHONCESEPUNIQUE_COUNT    │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010900000000 │
+│ CMN_HNS_WP_RXREQ_STASHONCESHARED_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010440000000 │
+│ CMN_HNS_WP_RXREQ_STASHONCESEPSHARED_COUNT    │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000108E0000000 │
+│ CMN_HNS_WP_RXREQ_CLEANSHARED_COUNT           │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010100000000 │
+│ CMN_HNS_WP_RXREQ_CLEANSHAREDPERSIST_COUNT    │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000104E0000000 │
+│ CMN_HNS_WP_RXREQ_CLEANSHAREDPERSISTSEP_COUNT │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010260000000 │
+│ CMN_HNS_WP_RXREQ_CLEANINVALID_COUNT          │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010120000000 │
+│ CMN_HNS_WP_RXREQ_CLEANINVALIDPOPA_COUNT      │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000109A0000000 │
+│ CMN_HNS_WP_RXREQ_MAKEINVALID_COUNT           │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010140000000 │
+│ CMN_HNS_WP_RXREQ_ATOMICSTOREADD_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010500000000 │
+│ CMN_HNS_WP_RXREQ_ATOMICSTORECLR_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010520000000 │
+│ CMN_HNS_WP_RXREQ_ATOMICSTOREEOR_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010540000000 │
+│ CMN_HNS_WP_RXREQ_ATOMICSTORESET_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010560000000 │
+│ CMN_HNS_WP_RXREQ_ATOMICSTORESMAX_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010580000000 │
+│ CMN_HNS_WP_RXREQ_ATOMICSTORESMIN_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000105A0000000 │
+│ CMN_HNS_WP_RXREQ_ATOMICSTOREUMAX_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000105C0000000 │
+│ CMN_HNS_WP_RXREQ_ATOMICSTOREUMIN_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000105E0000000 │
+│ CMN_HNS_WP_RXREQ_ATOMICLOADADD_COUNT         │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010600000000 │
+│ CMN_HNS_WP_RXREQ_ATOMICLOADCLR_COUNT         │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010620000000 │
+│ CMN_HNS_WP_RXREQ_ATOMICLOADEOR_COUNT         │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010640000000 │
+│ CMN_HNS_WP_RXREQ_ATOMICLOADSET_COUNT         │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010660000000 │
+│ CMN_HNS_WP_RXREQ_ATOMICLOADSMAX_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010680000000 │
+│ CMN_HNS_WP_RXREQ_ATOMICLOADSMIN_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000106A0000000 │
+│ CMN_HNS_WP_RXREQ_ATOMICLOADUMAX_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000106C0000000 │
+│ CMN_HNS_WP_RXREQ_ATOMICLOADUMIN_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000106E0000000 │
+│ CMN_HNS_WP_RXREQ_ATOMICSWP_COUNT             │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010700000000 │
+│ CMN_HNS_WP_RXREQ_ATOMICCMP_COUNT             │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010720000000 │
+└──────────────────────────────────────────────┴───────────┴─────────┴───────────┴────────────────────┴────────────────────┘
+                                                  SN-F Watchpoints                                                   
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃ Watchpoint                            ┃ Direction ┃ Channel ┃ Group     ┃ Mask               ┃ Values             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ CMN_SNF_WP_RXREQ_COUNT                │ Download  │ REQ     │ Secondary │ 0xFFFFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_SNF_WP_64B_RXREQ_COUNT            │ Download  │ REQ     │ Primary   │ 0xFFFFFE8FFFFFFFFF │ 0x0000016000000000 │
+│ CMN_SNF_WP_TXRSP_RETRY_COUNT          │ Upload    │ RSP     │ Primary   │ 0x003FFFFFFFF07FFF │ 0x0000000000018000 │
+│ CMN_SNF_WP_RXREQ_READNOSNP_COUNT      │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010080000000 │
+│ CMN_SNF_WP_RXREQ_READNOSNPSEP_COUNT   │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010220000000 │
+│ CMN_SNF_WP_RXREQ_WRITENOSNPFULL_COUNT │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000103A0000000 │
+└───────────────────────────────────────┴───────────┴─────────┴───────────┴────────────────────┴────────────────────┘
+                                                      RN-F Watchpoints                                                      
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃ Watchpoint                                   ┃ Direction ┃ Channel ┃ Group     ┃ Mask               ┃ Values             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ CMN_RNF_WP_TXREQ_COUNT                       │ Upload    │ REQ     │ Secondary │ 0xFFFFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_RNF_WP_64B_TXREQ_COUNT                   │ Upload    │ REQ     │ Primary   │ 0xFFFFFF8FFFFFFFFF │ 0x0000006000000000 │
+│ CMN_RNF_WP_TXREQ_SINGLE_COUNT                │ Upload    │ REQ     │ Primary   │ 0xFFFFFEFFFFFFFFFF │ 0x0000010000000000 │
+│ CMN_RNF_WP_RXSNP_COUNT                       │ Download  │ SNP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_RNF_WP_TXREQ_READNOTSHAREDDIRTY_COUNT    │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000104C0000000 │
+│ CMN_RNF_WP_TXREQ_MAKEREADUNIQUE_COUNT        │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010820000000 │
+│ CMN_RNF_WP_TXREQ_READUNIQUE_COUNT            │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000100E0000000 │
+│ CMN_RNF_WP_TXREQ_READPREFERUNIQUE_COUNT      │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010980000000 │
+│ CMN_RNF_WP_TXREQ_READONCE_COUNT              │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010060000000 │
+│ CMN_RNF_WP_TXREQ_WRITEBACKFULL_COUNT         │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010360000000 │
+│ CMN_RNF_WP_TXREQ_WRITEEVICTOREVICT_COUNT     │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010840000000 │
+│ CMN_RNF_WP_TXREQ_EVICT_COUNT                 │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000101A0000000 │
+│ CMN_RNF_WP_TXREQ_WRITEUNIQUEFULL_COUNT       │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010320000000 │
+│ CMN_RNF_WP_TXREQ_WRITENOSNOOPFULL_COUNT      │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000103A0000000 │
+│ CMN_RNF_WP_TXREQ_MAKEUNIQUE_COUNT            │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010180000000 │
+│ CMN_RNF_WP_RXSNP_SNPUNIQUE_COUNT             │ Download  │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x00000000E0000000 │
+│ CMN_RNF_WP_RXSNP_SNPUNIQUEFWD_COUNT          │ Download  │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x00000002E0000000 │
+│ CMN_RNF_WP_RXSNP_SNPMAKEINVALID_COUNT        │ Download  │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000140000000 │
+│ CMN_RNF_WP_RXSNP_SNPCLEANINVALID_COUNT       │ Download  │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000120000000 │
+│ CMN_RNF_WP_RXSNP_SNPNOTSHAREDDIRTYFWD_COUNT  │ Download  │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000280000000 │
+│ CMN_RNF_WP_RXSNP_SNPNOTSHAREDDIRTY_COUNT     │ Download  │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000080000000 │
+│ CMN_RNF_WP_RXSNP_SNPONCE_COUNT               │ Download  │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000060000000 │
+│ CMN_RNF_WP_RXSNP_SNPPREFERUNIQUE_COUNT       │ Download  │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x00000002A0000000 │
+│ CMN_RNF_WP_TXREQ_CLEANUNIQUE_COUNT           │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010160000000 │
+│ CMN_RNF_WP_TXREQ_STASHONCEUNIQUE_COUNT       │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010460000000 │
+│ CMN_RNF_WP_TXREQ_STASHONCESEPUNIQUE_COUNT    │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010900000000 │
+│ CMN_RNF_WP_TXREQ_STASHONCESHARED_COUNT       │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010440000000 │
+│ CMN_RNF_WP_TXREQ_STASHONCESEPSHARED_COUNT    │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000108E0000000 │
+│ CMN_RNF_WP_TXREQ_CLEANSHARED_COUNT           │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010100000000 │
+│ CMN_RNF_WP_TXREQ_CLEANSHAREDPERSIST_COUNT    │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000104E0000000 │
+│ CMN_RNF_WP_TXREQ_CLEANSHAREDPERSISTSEP_COUNT │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010260000000 │
+│ CMN_RNF_WP_TXREQ_CLEANINVALID_COUNT          │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010120000000 │
+│ CMN_RNF_WP_TXREQ_CLEANINVALIDPOPA_COUNT      │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000109A0000000 │
+│ CMN_RNF_WP_TXREQ_MAKEINVALID_COUNT           │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010140000000 │
+│ CMN_RNF_WP_TXREQ_DVMOP_COUNT                 │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010280000000 │
+└──────────────────────────────────────────────┴───────────┴─────────┴───────────┴────────────────────┴────────────────────┘
+                                                      CCG Watchpoints                                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃ Watchpoint                                   ┃ Direction ┃ Channel ┃ Group     ┃ Mask               ┃ Values             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ CMN_CCG_WP_RXREQ_COUNT                       │ Download  │ REQ     │ Primary   │ 0xFFFFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_CCG_WP_64B_RXREQ_COUNT                   │ Download  │ REQ     │ Primary   │ 0xFFFFFF8FFFFFFFFF │ 0x0000006000000000 │
+│ CMN_CCG_WP_RXREQ_SINGLE_COUNT                │ Download  │ REQ     │ Primary   │ 0xFFFFFEFFFFFFFFFF │ 0x0000010000000000 │
+│ CMN_CCG_WP_RXDAT_COUNT                       │ Download  │ DAT     │ Secondary │ 0x00FFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_CCG_WP_TXRSP_RETRY_COUNT                 │ Upload    │ RSP     │ Primary   │ 0x003FFFFFFFF07FFF │ 0x0000000000018000 │
+│ CMN_CCG_WP_TXRSP_COUNT                       │ Upload    │ RSP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_CCG_WP_TXSNP_COUNT                       │ Upload    │ SNP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_CCG_WP_TXDAT_COUNT                       │ Upload    │ DAT     │ Secondary │ 0x00FFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_CCG_WP_RXRSP_COUNT                       │ Download  │ RSP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_CCG_WP_TXREQ_COUNT                       │ Upload    │ REQ     │ Primary   │ 0xFFFFFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_CCG_WP_64B_TXREQ_COUNT                   │ Upload    │ REQ     │ Primary   │ 0xFFFFFF8FFFFFFFFF │ 0x0000006000000000 │
+│ CMN_CCG_WP_TXREQ_SINGLE_COUNT                │ Upload    │ REQ     │ Primary   │ 0xFFFFFEFFFFFFFFFF │ 0x0000010000000000 │
+│ CMN_CCG_WP_RXSNP_COUNT                       │ Download  │ SNP     │ Primary   │ 0x003FFFFFFFFFFFFF │ 0x0000000000000000 │
+│ CMN_CCG_WP_RXRSP_RETRY_COUNT                 │ Download  │ RSP     │ Primary   │ 0x003FFFFFFFF07FFF │ 0x0000000000018000 │
+│ CMN_CCG_WP_TXREQ_CLEANUNIQUE_COUNT           │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010160000000 │
+│ CMN_CCG_WP_TXREQ_STASHONCEUNIQUE_COUNT       │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010460000000 │
+│ CMN_CCG_WP_TXREQ_STASHONCESEPUNIQUE_COUNT    │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010900000000 │
+│ CMN_CCG_WP_TXREQ_STASHONCESHARED_COUNT       │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010440000000 │
+│ CMN_CCG_WP_TXREQ_STASHONCESEPSHARED_COUNT    │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000108E0000000 │
+│ CMN_CCG_WP_TXREQ_CLEANSHARED_COUNT           │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010100000000 │
+│ CMN_CCG_WP_TXREQ_CLEANSHAREDPERSIST_COUNT    │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000104E0000000 │
+│ CMN_CCG_WP_TXREQ_CLEANSHAREDPERSISTSEP_COUNT │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010260000000 │
+│ CMN_CCG_WP_TXREQ_CLEANINVALID_COUNT          │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010120000000 │
+│ CMN_CCG_WP_TXREQ_CLEANINVALIDPOPA_COUNT      │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000109A0000000 │
+│ CMN_CCG_WP_TXREQ_MAKEINVALID_COUNT           │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010140000000 │
+│ CMN_CCG_WP_RXREQ_CLEANUNIQUE_COUNT           │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010160000000 │
+│ CMN_CCG_WP_RXREQ_STASHONCEUNIQUE_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010460000000 │
+│ CMN_CCG_WP_RXREQ_STASHONCESEPUNIQUE_COUNT    │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010900000000 │
+│ CMN_CCG_WP_RXREQ_STASHONCESHARED_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010440000000 │
+│ CMN_CCG_WP_RXREQ_STASHONCESEPSHARED_COUNT    │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000108E0000000 │
+│ CMN_CCG_WP_RXREQ_CLEANSHARED_COUNT           │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010100000000 │
+│ CMN_CCG_WP_RXREQ_CLEANSHAREDPERSIST_COUNT    │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000104E0000000 │
+│ CMN_CCG_WP_RXREQ_CLEANSHAREDPERSISTSEP_COUNT │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010260000000 │
+│ CMN_CCG_WP_RXREQ_CLEANINVALID_COUNT          │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010120000000 │
+│ CMN_CCG_WP_RXREQ_CLEANINVALIDPOPA_COUNT      │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000109A0000000 │
+│ CMN_CCG_WP_RXREQ_MAKEINVALID_COUNT           │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010140000000 │
+│ CMN_CCG_WP_TXREQ_READNOTSHAREDDIRTY_COUNT    │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000104C0000000 │
+│ CMN_CCG_WP_TXREQ_MAKEREADUNIQUE_COUNT        │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010820000000 │
+│ CMN_CCG_WP_TXREQ_READUNIQUE_COUNT            │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000100E0000000 │
+│ CMN_CCG_WP_TXREQ_READPREFERUNIQUE_COUNT      │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010980000000 │
+│ CMN_CCG_WP_TXREQ_READONCE_COUNT              │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010060000000 │
+│ CMN_CCG_WP_TXREQ_WRITEBACKFULL_COUNT         │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010360000000 │
+│ CMN_CCG_WP_TXREQ_WRITEEVICTOREVICT_COUNT     │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010840000000 │
+│ CMN_CCG_WP_TXREQ_EVICT_COUNT                 │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000101A0000000 │
+│ CMN_CCG_WP_TXREQ_WRITEUNIQUEFULL_COUNT       │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010320000000 │
+│ CMN_CCG_WP_TXREQ_WRITENOSNOOPFULL_COUNT      │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000103A0000000 │
+│ CMN_CCG_WP_TXREQ_MAKEUNIQUE_COUNT            │ Upload    │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010180000000 │
+│ CMN_CCG_WP_RXREQ_READNOTSHAREDDIRTY_COUNT    │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000104C0000000 │
+│ CMN_CCG_WP_RXREQ_MAKEREADUNIQUE_COUNT        │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010820000000 │
+│ CMN_CCG_WP_RXREQ_READUNIQUE_COUNT            │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000100E0000000 │
+│ CMN_CCG_WP_RXREQ_READPREFERUNIQUE_COUNT      │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010980000000 │
+│ CMN_CCG_WP_RXREQ_READONCE_COUNT              │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010060000000 │
+│ CMN_CCG_WP_RXREQ_WRITEBACKFULL_COUNT         │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010360000000 │
+│ CMN_CCG_WP_RXREQ_WRITEEVICTOREVICT_COUNT     │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010840000000 │
+│ CMN_CCG_WP_RXREQ_EVICT_COUNT                 │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000101A0000000 │
+│ CMN_CCG_WP_RXREQ_WRITEUNIQUEFULL_COUNT       │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010320000000 │
+│ CMN_CCG_WP_RXREQ_WRITENOSNOOPFULL_COUNT      │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x00000103A0000000 │
+│ CMN_CCG_WP_RXREQ_MAKEUNIQUE_COUNT            │ Download  │ REQ     │ Primary   │ 0xFFFFFEF01FFFFFFF │ 0x0000010180000000 │
+│ CMN_CCG_WP_RXSNP_SNPUNIQUE_COUNT             │ Download  │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x00000000E0000000 │
+│ CMN_CCG_WP_RXSNP_SNPUNIQUEFWD_COUNT          │ Download  │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x00000002E0000000 │
+│ CMN_CCG_WP_RXSNP_SNPMAKEINVALID_COUNT        │ Download  │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000140000000 │
+│ CMN_CCG_WP_RXSNP_SNPCLEANINVALID_COUNT       │ Download  │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000120000000 │
+│ CMN_CCG_WP_RXSNP_SNPNOTSHAREDDIRTYFWD_COUNT  │ Download  │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000280000000 │
+│ CMN_CCG_WP_RXSNP_SNPNOTSHAREDDIRTY_COUNT     │ Download  │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000080000000 │
+│ CMN_CCG_WP_RXSNP_SNPONCE_COUNT               │ Download  │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x0000000060000000 │
+│ CMN_CCG_WP_RXSNP_SNPPREFERUNIQUE_COUNT       │ Download  │ SNP     │ Primary   │ 0x003FFFF81FFFFFFF │ 0x00000002A0000000 │
+└──────────────────────────────────────────────┴───────────┴─────────┴───────────┴────────────────────┴────────────────────┘

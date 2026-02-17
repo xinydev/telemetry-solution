@@ -1,0 +1,1 @@
+TopdownMetricDetails(title='Bandwidth Metrics for RNF', description='Bandwidth requested by all local RN-F (CPU) instances', formula='cmn_rnf_txreq_withdata_rate * 64 * SYS_FREQUENCY', units='Bytes per second', base_metrics=['cmn_rnf_txreq_withdata_rate'], topdown_metrics=[])

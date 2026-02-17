@@ -1,0 +1,1 @@
+TopdownMetricDetails(title='Bandwidth Metrics for SLC', description='Total bandwidth delivered by all local SLC instances', formula='(cmn_hnf_slc_hit_rate + cmn_hns_slc_hit_rate) * 64 * SYS_FREQUENCY', units='Bytes per second', base_metrics=['cmn_hnf_slc_hit_rate', 'cmn_hns_slc_hit_rate'], topdown_metrics=[])

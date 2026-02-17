@@ -1,0 +1,23 @@
+run,time,level,stage,group,metric,node,nodeid,value,interrupted,units
+1,,,,HNS_Analysis_Rate,cmn_hns_memcntrl_retry_rate,Global,,514.7752479829853,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_memreq_rate,Global,,424.50955044675084,,Requests per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_address_hazard_rate,Global,,650.6720775965551,,Addr hazard per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_pocq_retry_rate,Global,,1395.6957392980864,,Retry responses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_hit_rate,Global,,620.1288286067016,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_lookup_rate,Global,,1143.1561671666607,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_miss_rate,Global,,523.0273385599588,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_sf_snoop_sent_rate,Global,,164.48715354704845,,Snoops per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_hit_rate,Global,,982.5194134535622,,Hits per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_lookup_rate,Global,,1143.1561671666607,,Accesses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate,Global,,160.63675371309824,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_hbt_requests_selected,Global,,1362.5113478784588,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_slc_miss_rate__hbt_lbt_filter_lbt_requests_selected,Global,,803.4000061988307,,Misses per 1K clks
+1,,,,HNS_Analysis_Rate,cmn_hns_txreq_rate,Global,,939.2847984297362,,Requests per 1K clks
+1,,,,RNF_CHI_Egress_Traffic,cmn_rnf_txreq_rate,Global,,35700.90193397514,,Requests per 1K clks
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_rxcxs_avg_size,Global,,249.2961386388788,,Bytes
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_rxcxs_rate,Global,,464.68070530709343,,Flit per 1K clks
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_txcxs_avg_size,Global,,299.50922394745635,,Bytes
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_txcxs_rate,Global,,674.6511309120331,,Flit per 1K clks
+1,,,,CCG_LA_Effectiveness,cmn_ccgla_txcxs_stall_rate,Global,,1120.8788294523952,,Stalls per 1K clks
+1,,,,CCG_Req_Opcode_Mix,cmn_ccg_rxreq_withdata_rate,Global,,-34025.93453600441,,Requests per 1K clks
+1,,,,CCG_Req_Opcode_Mix,cmn_ccg_txreq_withdata_rate,Global,,-36284.289986847296,,Requests per 1K clks

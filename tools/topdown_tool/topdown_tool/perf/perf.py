@@ -280,3 +280,15 @@ class Perf(ABC):
     @classmethod
     @abstractmethod
     def update_perf_path(cls, perf_path: str) -> None: ...
+
+    @classmethod
+    @abstractmethod
+    def get_cmn_version(cls) -> Dict[int, Union[int, str]]: ...
+
+    @classmethod
+    @abstractmethod
+    def get_cmn_frequency(cls, cmn_index: int) -> float: ...
+
+    @classmethod
+    @abstractmethod
+    def get_cmn_mux_interval(cls, cmn_index: int) -> int: ...

@@ -1,0 +1,1 @@
+MetricDetails(title='HNI Egress read request stall rate on AXI interfaces.', description='This metric represents the HNI read request stall rate observed at the AXI interfaces', sample_events=['PMU_HNI_ARVALID_NO_ARREADY'], formula='PMU_HNI_ARVALID_NO_ARREADY / SYS_CMN_CYCLES * 1000', units='Stalls per 1K clks')
