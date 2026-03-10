@@ -38,3 +38,11 @@ repos:
     hooks:
       - id: codespell
         args: ["--ignore-words", "tools/topdown_tool/.codespell-ignore-words.txt"]
+  - repo: local
+    hooks:
+      - id: check-branding-name
+        name: check-branding-name
+        entry: tools/topdown_tool/scripts/pre-commit/check_branding_name.sh
+        language: system
+        pass_filenames: true
+        files: '^tools/topdown_tool/.*\.(md|rst|txt|py|toml|yaml|yml|json)$'

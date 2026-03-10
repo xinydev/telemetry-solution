@@ -1,9 +1,9 @@
-# Topdown Tool
-Topdown tool runs top down performance analysis on supported Arm CPUs.
+# Arm Top-Down tool
+Arm Top-Down tool runs top down performance analysis on supported Arm CPUs.
 
 For each supported CPU Arm distributes a telemetry specification JSON file which describes topdown metrics to compute.
 
-Topdown Tool captures PMU events for the required metrics using [`perf stat` on Linux](https://perf.wiki.kernel.org/index.php/Main_Page) on Linux and [WindowsPerf](https://gitlab.com/Linaro/WindowsPerf/windowsperf) on Microsoft Windows.
+Arm Top-Down tool captures PMU events for the required metrics using [`perf stat` on Linux](https://perf.wiki.kernel.org/index.php/Main_Page) on Linux and [WindowsPerf](https://gitlab.com/Linaro/WindowsPerf/windowsperf) on Microsoft Windows.
 
 # Requirements
 * A working [Linux Perf](https://perf.wiki.kernel.org/index.php/Main_Page) or [WindowsPerf](https://gitlab.com/Linaro/WindowsPerf/windowsperf) (3.3.3 or later) setup.
@@ -89,7 +89,7 @@ After that, ensure that the `topdown-tool` command is available from the command
 
 ### Linux
 
-topdown-tool needs to access performance monitoring counters (PMUs) in system-wide mode.
+Arm Top-Down tool needs to access performance monitoring counters (PMUs) in system-wide mode.
 This requires elevated permissions. There are a few ways you can satisfy this requirement:
 
 - **Changing `/proc/sys/kernel/perf_event_paranoid` to `-1` (recommended for most cases):** This is the quickest and most practical method, especially on a single-user machine or in a throwaway environment.
@@ -171,7 +171,7 @@ The remote options must be supplied on each invocation and they replace the loca
 
 ## Choosing what to monitor
 
-topdown-tool lets you fine-tune what is being monitored:
+Arm Top-Down tool lets you fine-tune what is being monitored:
 
 - The `--core` or `-C` options let you restrict monitoring to specific CPU cores. For instance, to monitor only cores 0 and 1:
 
@@ -222,7 +222,7 @@ Starting system-wide profiling. Hit Ctrl-C to stop. (See --help for usage inform
 
 ## Probe selection
 
-Topdown-tool is extensible and can load one or more "probes" that monitor your system's subsystems. The CPU probe is selected by default.
+Arm Top-Down tool is extensible and can load one or more "probes" that monitor your system's subsystems. The CPU probe is selected by default.
 
 - List available probes:
 ```sh
@@ -456,7 +456,7 @@ See `conftest.py` for more details on this workflow.
 
 ### Probes and Factories
 
-The “Probe” and “ProbeFactory” pattern is at the heart of topdown-tool. Each probe is a self-contained measurement and reporting unit. Factories set up CLI options, handle user arguments, and instantiate their probe(s). Browse `probe/probe.py` for base class documentation.
+The “Probe” and “ProbeFactory” pattern is at the heart of Arm Top-Down tool. Each probe is a self-contained measurement and reporting unit. Factories set up CLI options, handle user arguments, and instantiate their probe(s). Browse `probe/probe.py` for base class documentation.
 
 - **To add a new probe:**
  Create a new factory/probe pair, and register your factory using Python’s entry point system.

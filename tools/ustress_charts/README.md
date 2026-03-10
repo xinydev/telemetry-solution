@@ -1,6 +1,6 @@
 # Chart generating script
 
-`ustress-charts.py` uses topdown-tool to capture metric data for selected ustress suite workloads and then generates charts from collected data.
+`ustress-charts.py` uses Arm Top-Down tool to capture metric data for selected ustress suite workloads and then generates charts from collected data.
 
 ## Getting started
 

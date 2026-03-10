@@ -40,7 +40,7 @@ The Arm CPU Telemetry Solution enables collection, analysis, and representation 
 - Each supported CPU provides a Telemetry Specification defining PMU events and a metric-driven hierarchical decision tree for hotspot detection. This decision tree is Arm’s implementation of the Topdown Methodology for performance analysis.
 
 - Telemetry data is structured in the Arm Telemetry Framework, which standardizes events/metrics into machine-readable JSON (MRS). This supports large-scale data collection, processing, and integration with profiling tools.
-- The solution includes the Arm Topdown Tool, a simple CLI for profiling applications. It parses the MRS to collect telemetry data and deliver performance insights. The tool is supported on Linux and Windows.
+- The solution includes the Arm Top-Down tool, a simple CLI for profiling applications. It parses the MRS to collect telemetry data and deliver performance insights. The tool is supported on Linux and Windows.
 
 For more information about Arm CPU Telemetry Solution, see Arm® Telemetry on Arm Developer, see [Arm CPU Telemetry Solution Topdown Methodology Specification](https://developer.arm.com/documentation/109542/latest/). 
 
@@ -51,7 +51,7 @@ Key chapters from this solution architecture specification are as below:
 | Arm Topdown Methodology                          | Topdown methodology and stages for performance analysis (Stage 1 and Stage 2).            |
 | Arm Telemetry Framework for CPUs                 | Arm telemetry framework and data model standardization.                                   |
 | Arm Telemetry Specification and Profiling Tools  | Details on how telemetry specification is enabled for Linux and Windows perf tools.       |
-| Arm Topdown Tool Example                         | Arm Topdown tool data collection example.                                                 |
+| Arm Top-Down tool Example                        | Arm Top-Down tool data collection example.                                                 |
 | Linux perf data collection                       | Linux perf tool data collection example.                                                  |
 | Windows perf data collection                     | Windows perf tool data collection example.                                                |
 
@@ -145,7 +145,7 @@ The tools folder contains a collection of telemetry tools used for performance a
 
 | Name                | Description | Folder |
 |---------------------|-------------|--------|
-| Arm Topdown Tool        | Tool to support the Arm topdown methodology by collecting derived metrics based on Performance Monitoring Unit (PMU) events. | [tools/topdown_tool](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/topdown_tool) |
+| Arm Top-Down tool       | Tool to support the Arm topdown methodology by collecting derived metrics based on Performance Monitoring Unit (PMU) events. | [tools/topdown_tool](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/topdown_tool) |
 | Perf JSON Generator | Tool to generate JSON files for Linux perf tool which enable and document Arm PMU events and metrics. | [tools/perf_json_generator](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/perf_json_generator) |
 | SPE Parser          | Tool to parse SPE raw data and generate a Parquet or CSV file for further processing and analysis. | [tools/spe_parser](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/spe_parser) |
 | UStress Test    | Validation test suite to stress test major CPU resources. | [tools/ustress](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/ustress) |

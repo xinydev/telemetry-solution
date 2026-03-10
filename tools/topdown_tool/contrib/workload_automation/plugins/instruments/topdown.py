@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2025 Arm Limited
 
-"""Workload Automation instrument for integrating topdown-tool."""
+"""Workload Automation instrument for integrating Arm Top-Down tool."""
 
 import glob
 import os
@@ -45,7 +45,7 @@ class TopdownInstrument(Instrument):
     """Instrument that configures and drives ``topdown-tool`` alongside WA workloads."""
 
     name: str = "topdown"
-    description: str = "Runs topdown-tool with structured CPU/perf configuration and CSV export."
+    description: str = "Runs Arm Top-Down tool with structured CPU/perf configuration and CSV export."
 
     _DEFAULT_CSV_SUBDIR = "topdown_output"
 
@@ -114,7 +114,7 @@ class TopdownInstrument(Instrument):
 
         self._start_probes(self._running_probes)
         self._capture_active = True
-        self.logger.info("Topdown-tool capture started for %d probe(s)", len(self._running_probes))
+        self.logger.info("Arm Top-Down tool capture started for %d probe(s)", len(self._running_probes))
 
     def _reset_state(self) -> None:
         self._clear_probe_state()
@@ -140,7 +140,7 @@ class TopdownInstrument(Instrument):
         perf_factory.configure(config)
         if not perf_factory.have_perf_privilege():
             raise RuntimeError(
-                "topdown-tool requires perf_event_paranoid=-1, CAP_PERFMON, or CAP_SYS_ADMIN"
+                "Arm Top-Down tool requires perf_event_paranoid=-1, CAP_PERFMON, or CAP_SYS_ADMIN"
             )
         if not perf_factory.is_perf_runnable():
             raise RuntimeError(
@@ -389,7 +389,7 @@ class TopdownInstrument(Instrument):
         if not self._probes and not self._running_probes:
             return
 
-        self.logger.info("Stopping topdown-tool capture...")
+        self.logger.info("Stopping Arm Top-Down tool capture...")
 
         errors = False
         if self._capture_active:
@@ -419,7 +419,7 @@ class TopdownInstrument(Instrument):
                 self.logger.exception("Failed to clean remote target directories: %s", exc)
 
         if errors:
-            raise RuntimeError("Errors occurred while stopping topdown-tool capture. See logs.")
+            raise RuntimeError("Errors occurred while stopping Arm Top-Down tool capture. See logs.")
 
     def update_output(self, context: ExecutionContext):
         """

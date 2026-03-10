@@ -1,13 +1,13 @@
 RELEASE NOTES
 
-Product: Telemetry Solution, Arm Topdown Tool
+Product: Telemetry Solution, Arm Top-Down tool
 Version: 2025.09
 Quality Status: Release (Rel)
 License: See LICENSE.md
 Confidentiality: Public
 
 Changes:
- - Refactored PMU support in Topdown Tool.
+ - Refactored PMU support in Arm Top-Down tool.
  - Add support for systems with heterogeneous cores.
  - Refactored CLI UX: Refactor CSV generation, improve command line arguments, improve metric display. 
  - Updated existing CPU JSON specifications.

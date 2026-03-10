@@ -35,7 +35,7 @@ class PlotDataSeries(TypedDict):
 
 def main() -> None:
     parser = ArgumentParser(
-        description="Test compiled ustress workloads with topdown tool",
+        description="Test compiled ustress workloads with Arm Top-Down tool",
         allow_abbrev=False,
     )
     parser.add_argument(
@@ -74,7 +74,7 @@ def main() -> None:
     else:
         dataset_path = Path()
 
-    # For each workload collect data with topdown-tool and save it to CSV
+    # For each workload collect data with Arm Top-Down tool and save it to CSV
     cpu_name = None
     for workload in args.workload:
         for n in range(args.run):

@@ -1,7 +1,7 @@
 # Workload Automation Plugin
 
 This directory provides an optional Workload Automation (WA) instrument that wraps
-`topdown-tool` so it can be launched as part of WA runs.
+Arm Top-Down tool so it can be launched as part of WA runs.
 
 ## Contents
 
@@ -11,7 +11,7 @@ This directory provides an optional Workload Automation (WA) instrument that wra
 
 ## Installation
 
-1. Ensure `topdown-tool` is installed in the same Python environment as
+1. Ensure Arm Top-Down tool is installed in the same Python environment as
    Workload Automation so `import topdown_tool` works inside WA.
 
 2. Copy the instrument into one of WA's plugin search locations.
@@ -33,7 +33,7 @@ This directory provides an optional Workload Automation (WA) instrument that wra
    ```
 
    The listing should show `topdown` with the description
-   "Runs topdown-tool with structured CPU/perf configuration and CSV export."
+   "Runs Arm Top-Down tool with structured CPU/perf configuration and CSV export."
 
 ## Usage
 

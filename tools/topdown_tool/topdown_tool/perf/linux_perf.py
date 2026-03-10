@@ -76,7 +76,7 @@ class LinuxPerf(LinuxPerfBase):
             # Start with events disabled.
             # Create control and acknowledgement pipes
             # The control pipe will be used to enable events,
-            # while the acknowledgement pipe will be used to resume topdown tool.
+            # while the acknowledgement pipe will be used to resume Arm Top-Down tool.
             self._ctl_pipe: Optional[Tuple[int, int]] = os.pipe2(0)
             self._ack_pipe: Optional[Tuple[int, int]] = os.pipe2(0)
             os.set_blocking(self._ack_pipe[0], False)

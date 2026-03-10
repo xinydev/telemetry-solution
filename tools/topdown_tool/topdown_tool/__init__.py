@@ -3,7 +3,8 @@
 """Public entry points for interacting with Topdown telemetry probes.
 
 The package surface mirrors the canonical probe interfaces and exposes helpers
-for working with optional devlib targets when embedding Topdown in other tools.
+for working with optional devlib targets when embedding Arm Top-Down tool in
+other tools.
 
 .. code-block:: python
 
