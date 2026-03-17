@@ -24,7 +24,7 @@ description = "Utility to collect topdown performance analysis metrics for Arm N
 readme = "README.md"
 keywords = ["Arm", "perf", "topdown", "metrics"]
 license = "Apache-2.0"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Environment :: Console",
@@ -75,6 +75,7 @@ editable_wheel = "topdown_tool.build_info.EditableWheelWithBuildInfo"
 
 
 [tool.mypy]
+python_version = "3.10"
 exclude = ["^\\.venv/.*", "^venv", "pmu_discovery", "^tests/"]
 check_untyped_defs = true
 disallow_untyped_defs = true

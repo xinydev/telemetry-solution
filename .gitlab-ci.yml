@@ -154,7 +154,6 @@ topdown-tool:
         - py312
         - py311
         - py310
-        - py39
         - codestyle,pkg_meta
         - mypy
   script:
@@ -235,7 +234,7 @@ perf-json-generator:
 
 topdown-tool-create-package:
   extends: .build-base
-  image: python:3.9.23-bullseye
+  image: python:3.10.18-bullseye
   tags: [linux_arm64]
   when: manual
   script:

@@ -6,8 +6,8 @@ import sys
 import os
 import os.path
 
-if sys.version_info < (3, 9):
-    print("Python 3.9 or later is required to run this script.", file=sys.stderr)
+if sys.version_info < (3, 10):
+    print("Python 3.10 or later is required to run this script.", file=sys.stderr)
     sys.exit(1)
 
 # Allow relative imports when running file/package directly (not as a module).

@@ -7,7 +7,7 @@ Arm Top-Down tool captures PMU events for the required metrics using [`perf stat
 
 # Requirements
 * A working [Linux Perf](https://perf.wiki.kernel.org/index.php/Main_Page) or [WindowsPerf](https://gitlab.com/Linaro/WindowsPerf/windowsperf) (3.3.3 or later) setup.
-* Python 3.9 or later.
+* Python 3.10 or later.
 * Under Linux: `inotifywait` from `inotify-tools` package
 
 Platform prerequisites quickstart:

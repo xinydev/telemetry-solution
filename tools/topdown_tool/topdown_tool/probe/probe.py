@@ -252,18 +252,8 @@ def load_probe_factories() -> Sequence[ProbeFactory[object]]:
         Sequence[ProbeFactory]: A sequence of ProbeFactory instances.
     """
     eps = importlib.metadata.entry_points()
-
-    entries: Sequence[EntryPoint]
+    entries: Sequence[EntryPoint] = eps.select(group="topdown_tool.probe_factories")
     factory_classes: List[ProbeFactory[object]] = []
-
-    # For Python 3.10+, use the `select` method
-    if hasattr(eps, "select"):
-        entries = eps.select(group="topdown_tool.probe_factories")
-    elif hasattr(eps, "get"):
-        # For Python 3.9, entries are organized as a dict keyed by group
-        entries = eps.get("topdown_tool.probe_factories", tuple())
-    else:
-        return factory_classes
 
     for ep in entries:
         try:
