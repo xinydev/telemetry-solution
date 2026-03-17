@@ -1,12 +1,20 @@
 # SPDX-License-Identifier: Apache-2.0
-# Copyright 2022-2025 Arm Limited
+# Copyright 2022-2026 Arm Limited
 
 [build-system]
-requires = ["hatchling>=1.25"]
-build-backend = "hatchling.build"
+requires = [
+  "setuptools>=68",
+  "tomli; python_version < \"3.11\"",
+]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "topdown-tool"
+# Versioning summary:
+# - This static field is the source of truth for release versioning.
+# - BuildPyWithBuildInfo stamps _version.py/_build_info.py from this value during sdist/wheel builds.
+# - Runtime may enrich missing branch/SHA from git (set TOPDOWN_TOOL_SKIP_GIT_FALLBACK=1 to disable).
+# - Release bump: update this value, then rebuild artifacts.
 version = "1.0.0"
 authors = [
   {name = "Vincent Coubard", email = "vincent.coubard@arm.com"},
@@ -21,7 +29,6 @@ classifiers = [
   "Development Status :: 3 - Alpha",
   "Environment :: Console",
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: Apache Software License",
   "Natural Language :: English",
   "Operating System :: POSIX :: Linux",
   "Programming Language :: Python :: 3"
@@ -29,7 +36,11 @@ classifiers = [
 dependencies = ["rich==14.1.0", "pydantic==2.11.7", "jsonschema==4.25.1"]
 
 [project.optional-dependencies]
-test = ["pytest==8.4.1", "tox==4.28.4", "pytest-mock==3.14.1"]
+test = [
+  "pytest==8.4.1",
+  "tox==4.28.4",
+  "pytest-mock==3.14.1"
+]
 lint = [
   "flake8==7.3.0",
   "mypy==1.17.1",
@@ -49,12 +60,19 @@ validate-cpu-spec = "topdown_tool.cpu_probe.cpu_model:main"
 [project.entry-points."topdown_tool.probe_factories"]
 cpu_probe_factory = "topdown_tool.cpu_probe.cpu_factory:CpuProbeFactory"
 
-[tool.hatch.build]
-include = [
-  "topdown_tool/**/*.py",
-  "topdown_tool/cpu_probe/metrics/*.json",
-  "topdown_tool/cpu_probe/schemas/*.json"
+[tool.setuptools.packages.find]
+include = ["topdown_tool*"]
+
+[tool.setuptools.package-data]
+topdown_tool = [
+  "cpu_probe/metrics/*.json",
+  "cpu_probe/schemas/*.json",
 ]
+
+[tool.setuptools.cmdclass]
+build_py = "topdown_tool.build_info.BuildPyWithBuildInfo"
+editable_wheel = "topdown_tool.build_info.EditableWheelWithBuildInfo"
+
 
 [tool.mypy]
 exclude = ["^\\.venv/.*", "^venv", "pmu_discovery", "^tests/"]
@@ -81,6 +99,3 @@ line_length = 100
 
 [tool.black]
 line_length = 100
-
-[tool.hatch.metadata]
-allow-direct-references = true

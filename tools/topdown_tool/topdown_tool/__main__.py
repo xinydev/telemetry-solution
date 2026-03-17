@@ -25,6 +25,7 @@ from typing import Iterable, List, Optional, Sequence, Set
 from rich import get_console
 import rich.traceback
 from rich.console import Console
+from rich.pretty import Pretty
 from rich.table import Table
 from topdown_tool.probe.probe import load_probe_factories
 from topdown_tool.perf import perf_factory
@@ -32,6 +33,7 @@ from topdown_tool.probe import Probe, ProbeFactory
 from topdown_tool.workload import CommandWorkload, PidWorkload, SystemwideWorkload
 from topdown_tool.common import remote_target_manager
 from topdown_tool.common.devlib_types import Target
+from topdown_tool.version import as_dict as version_as_dict, get_build_info
 
 # Install rich pretty exception handler globally and show local variables in tracebacks
 rich.traceback.install(show_locals=True)
@@ -140,6 +142,17 @@ def create_base_arg_parser() -> argparse.ArgumentParser:
 
     # Add general perf options
     perf_factory.add_cli_arguments(parser)
+
+    parser.add_argument(
+        "--version",
+        action="store_true",
+        help="Print topdown-tool version information (use with --verbose for detailed build info) and exit.",
+    )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Show detailed build information when combined with --version.",
+    )
 
     return parser
 
@@ -418,6 +431,14 @@ def main(
 
     # Parse known args (so we can identify selected probes before extending the parser)
     args, _ = parser.parse_known_args(_args)
+
+    if args.version:
+        if args.verbose:
+            console.print(Pretty(version_as_dict(), expand_all=True))
+        else:
+            console.print(get_build_info().build_identifier)
+        return
+
     # Remote targets need to be configured before privilege checks run.
     remote_target_manager.configure_from_args(args)
     perf_factory.configure_from_cli_arguments(args)

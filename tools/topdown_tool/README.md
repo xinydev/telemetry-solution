@@ -126,6 +126,10 @@ Use the command below to validate the installation and display the CLI help (usa
 topdown-tool --help
 ```
 
+## Version information
+
+Use `topdown-tool --version` to print the build identifier (base version with the short Git SHA, and the branch name when not on main). Add `--verbose` to emit structured metadata including branch, SHA, dirty/editable flags, and build timestamp. If git is available and the stamped metadata lacks branch/SHA, the tool will attempt to fill them from git.
+
 ## Remote targets (devlib)
 
 The tool can collect metrics from a remote Linux or Android target through [devlib](https://gitlab.arm.com/tooling/workload-automation/devlib). Install the optional remote dependencies before using these options:

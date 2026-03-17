@@ -11,3 +11,7 @@
 *.pyc
 /.tox
 /reports
+/build/
+/topdown_tool.egg-info/
+/topdown_tool/_build_info.py
+/topdown_tool/_version.py
