@@ -3,7 +3,6 @@
 
 import csv
 import os
-from typing import List
 from unittest import TestCase, main
 
 import pandas as pd
@@ -54,7 +53,7 @@ class TestParser(TestCase):
             * `wperf record -e arm_spe_0/b=1,ts=1/ -- ...` respectively.
         """
 
-        def get_csv_data_from_file(file_path: str) -> List[List[str]]:
+        def get_csv_data_from_file(file_path: str) -> list[list[str]]:
             """Reads a CSV file and returns its contents as a list of rows.
             Args:
                 file_path (str): The path to the CSV file to be read.

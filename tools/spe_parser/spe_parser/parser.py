@@ -11,7 +11,6 @@ import shutil
 import sys
 from dataclasses import dataclass
 from io import BytesIO
-from typing import Tuple
 
 import pyarrow.csv as pc
 import pyarrow.parquet as pq
@@ -248,7 +247,7 @@ def parse(
     parse_symbols: bool,
     parse_raw: bool,
     concurrency: int,
-) -> Tuple[int, str]:
+) -> tuple[int, str]:
     """
     parse() function is used to parse the perf.data and generate a lots
     of parquet files, each of which contains the formatted SPE records

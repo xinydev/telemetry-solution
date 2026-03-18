@@ -2,7 +2,6 @@
 # Copyright 2023-2025 Arm Limited
 
 from enum import Enum
-from typing import Dict, List
 
 import spe_parser.errors as err
 from spe_parser.schema import (
@@ -21,7 +20,7 @@ class RecordType(Enum):
 
 
 class Record:
-    def __init__(self, data: Dict[str, List[str]], cpu: int) -> None:
+    def __init__(self, data: dict[str, list[str]], cpu: int) -> None:
         self.data = data
         self.cpu = cpu
 
@@ -249,7 +248,7 @@ class OtherRecord(Record):
         return record
 
 
-def create_record(data: Dict[str, List[str]], cpu: int) -> Record:
+def create_record(data: dict[str, list[str]], cpu: int) -> Record:
     # an example of data:
     #   {"SVE-OTHER": ["EVLEN","32"], "TS": ["193890286826374"], "PC": ["0xaaaaab110e5c"], ...}
     # for different packets, there are special different keys
@@ -281,7 +280,7 @@ DATASOURCE_MAP = {
 }
 
 
-def translate_data_source(values: List[str]) -> str:
+def translate_data_source(values: list[str]) -> str:
     """translate data source id to string value
 
     Args:

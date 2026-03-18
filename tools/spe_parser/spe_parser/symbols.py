@@ -7,7 +7,6 @@ import multiprocessing
 import os
 from bisect import bisect_right
 from functools import lru_cache
-from typing import Dict, List, Tuple
 
 from elftools.common.exceptions import ELFError
 from elftools.elf.elffile import ELFFile
@@ -16,8 +15,8 @@ from spe_parser.perf_decoder import get_mmap_records
 
 def __decode_elf_symbols(
     binary_path: str, base_addr: int
-) -> Dict[int, Tuple[str, int]]:
-    symbols: Dict[int, Tuple[str, int]] = {}
+) -> dict[int, tuple[str, int]]:
+    symbols: dict[int, tuple[str, int]] = {}
     with open(binary_path, "rb") as file:
         try:
             elffile = ELFFile(file)
@@ -51,7 +50,7 @@ def __decode_elf_symbols(
 
 def get_mmap_loaded_symbols(
     perf_path: str, concurrency: int
-) -> Dict[int, Tuple[str, int]]:
+) -> dict[int, tuple[str, int]]:
     records = []
     # filter out the records that we are not interested in
     for rec in get_mmap_records(perf_path):
@@ -77,7 +76,7 @@ def get_mmap_loaded_symbols(
     return symbols
 
 
-def get_kernel_symbols() -> Dict[int, Tuple[str, int]]:
+def get_kernel_symbols() -> dict[int, tuple[str, int]]:
     kallsyms_lines = []
     try:
         with open("/proc/kallsyms") as f:
@@ -129,7 +128,7 @@ def get_kernel_symbols() -> Dict[int, Tuple[str, int]]:
 @lru_cache(maxsize=2)
 def init_search_symbols(
     perf_path: str, concurrency: int
-) -> Tuple[List[int], Dict[int, Tuple[str, int]]]:
+) -> tuple[list[int], dict[int, tuple[str, int]]]:
     # prepare and cache all the data structures used for bisect for better performance
     logging.info("symbols: start to parse all symbols")
     # {start_addr: (symbol_name, end_addr), ...}
@@ -145,8 +144,8 @@ def init_search_symbols(
 
 
 def search_symbols_by_addr_batch(
-    perf_path: str, addr_list: List[int], concurrency: int
-) -> List[str]:
+    perf_path: str, addr_list: list[int], concurrency: int
+) -> list[str]:
     start_addr_list, all_symbols = init_search_symbols(perf_path, concurrency)
 
     addr_symbol_map = {}

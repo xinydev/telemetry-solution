@@ -3,7 +3,6 @@
 
 import io
 import logging
-from typing import List
 from unittest import TestCase
 
 from spe_parser.perf_decoder import get_spe_records_regions
@@ -11,7 +10,7 @@ from spe_parser.spe_decoder import gen_mask, get_packets
 from spe_parser.testutils import TESTDATA, cd
 
 
-def decode_by_py_decoder(file_path: str) -> List[str]:
+def decode_by_py_decoder(file_path: str) -> list[str]:
     # Parse a binary perf.data directly.
     regions = get_spe_records_regions(file_path)
     pkts = []
@@ -23,7 +22,7 @@ def decode_by_py_decoder(file_path: str) -> List[str]:
     return pkts
 
 
-def decode_by_perf_raw(file_path: str) -> List[str]:
+def decode_by_perf_raw(file_path: str) -> list[str]:
     # Parse a perf.raw file, which can be converted
     # from a perf.data file.
     has_spe_auxtrace = False

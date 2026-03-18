@@ -8,7 +8,7 @@
 
 import logging
 from functools import lru_cache
-from typing import BinaryIO, Generator, Optional
+from typing import BinaryIO, Generator
 
 import spe_parser.errors as err
 
@@ -289,7 +289,7 @@ def spe_get_op_type(hdr: int, fh: BinaryIO) -> str:
     return f"{' '.join(ops)}"
 
 
-def spe_get_addr(hdr: int, ext_hdr: Optional[int], fh: BinaryIO) -> str:
+def spe_get_addr(hdr: int, ext_hdr: int | None, fh: BinaryIO) -> str:
     if ext_hdr:
         index = get_extended_header_index(hdr, ext_hdr)
     else:
@@ -313,7 +313,7 @@ def spe_get_addr(hdr: int, ext_hdr: Optional[int], fh: BinaryIO) -> str:
     raise err.InvalidAddrPacket()
 
 
-def spe_get_counter(hdr: int, ext_hdr: Optional[int], fh: BinaryIO) -> str:
+def spe_get_counter(hdr: int, ext_hdr: int | None, fh: BinaryIO) -> str:
     if ext_hdr:
         index = get_extended_header_index(hdr, ext_hdr)
     else:
@@ -322,7 +322,7 @@ def spe_get_counter(hdr: int, ext_hdr: Optional[int], fh: BinaryIO) -> str:
     return f"LAT {payload} {PKT_COUNTER_TYPE[index]}"
 
 
-def spe_get_payload(hdr: int, ext_hdr: Optional[int], fh: BinaryIO) -> int:
+def spe_get_payload(hdr: int, ext_hdr: int | None, fh: BinaryIO) -> int:
     if ext_hdr:
         payload_len = 1 << ((ext_hdr & 48) >> 4)
     else:

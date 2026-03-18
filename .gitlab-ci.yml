@@ -132,7 +132,6 @@ spe-parser:
         - py312
         - py311
         - py310
-        - py39
         - fix,type,pkg_meta
   script:
     - |

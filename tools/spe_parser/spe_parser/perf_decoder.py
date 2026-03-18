@@ -9,7 +9,7 @@
 
 import logging
 from functools import lru_cache
-from typing import Any, Dict, List, Set, Tuple
+from typing import Any
 
 from construct import (
     Aligned,
@@ -213,7 +213,7 @@ def __parse_perf_data(perf_path: str) -> Any:
     return perf_data.parse_file(perf_path)
 
 
-def get_spe_records_regions(perf_path: str) -> List[Dict]:
+def get_spe_records_regions(perf_path: str) -> list[dict]:
     """
     The SPE records have been stored in different locations within
     the perf.data file (following the AUXTRACE event, which defines
@@ -249,7 +249,7 @@ def get_spe_records_regions(perf_path: str) -> List[Dict]:
     return spe_regions
 
 
-def get_mmap_records(perf_path) -> Set[Tuple[str, int]]:
+def get_mmap_records(perf_path) -> set[tuple[str, int]]:
     mmap_records = set()
     parsed_data = __parse_perf_data(perf_path)
     for evt in parsed_data.event:

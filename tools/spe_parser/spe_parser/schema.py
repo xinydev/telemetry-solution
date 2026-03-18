@@ -2,9 +2,9 @@
 # Copyright 2023-2025 Arm Limited
 
 import pydoc
-from typing import Any, Dict, Optional
+from typing import Any
 
-__spe_parser_schema: Dict[str, Any] = {
+__spe_parser_schema: dict[str, Any] = {
     "cpu": {
         "description": "CPU number.",
         "type": int,
@@ -276,8 +276,8 @@ OTHER_COLS = [
 ]
 
 
-def __gen_default_record(cols) -> Dict[str, Any]:
-    ret: Dict[str, Any] = {}
+def __gen_default_record(cols) -> dict[str, Any]:
+    ret: dict[str, Any] = {}
     for col in cols:
         t = __spe_parser_schema[col]["type"]
         if t == str:
@@ -289,15 +289,15 @@ def __gen_default_record(cols) -> Dict[str, Any]:
     return ret
 
 
-def get_branch_default_record() -> Dict[str, Any]:
+def get_branch_default_record() -> dict[str, Any]:
     return __gen_default_record(BRANCH_COLS)
 
 
-def get_ldst_default_record() -> Dict[str, Any]:
+def get_ldst_default_record() -> dict[str, Any]:
     return __gen_default_record(LDST_COLS)
 
 
-def get_other_default_record() -> Dict[str, Any]:
+def get_other_default_record() -> dict[str, Any]:
     return __gen_default_record(OTHER_COLS)
 
 
@@ -309,7 +309,7 @@ class SchemaRenderer:
     def __init__(self, schema):
         self.schema = schema
 
-    def render(self, additional_contents: Optional[str] = None) -> None:
+    def render(self, additional_contents: str | None = None) -> None:
         """
         render schema content
         if additional_contents are not empty, render them together as well.
@@ -318,7 +318,7 @@ class SchemaRenderer:
 
 
 class PlainSchemaRenderer(SchemaRenderer):
-    def render(self, additional_contents: Optional[str] = None) -> None:
+    def render(self, additional_contents: str | None = None) -> None:
         contents = ""
         if additional_contents:
             contents += f"{additional_contents}\n\n"

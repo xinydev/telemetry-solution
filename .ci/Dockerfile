@@ -14,8 +14,8 @@ RUN set -ex; \
     apt-get update; \
     apt-get -y install gcc make zip git \
                           python3 python3-pip python3-venv \
-                          python3.8 python3.9 python3.10 python3.11 python3.12 python3.13 \
-                          python3.8-distutils python3.9-distutils curl openjdk-21-jdk jq; \
+                          python3.10 python3.11 python3.12 python3.13 \
+                          curl openjdk-21-jdk jq; \
     if [ "$(uname -m)" = "aarch64" ]; then \
         apt-get -y install gcc-10; \
     else \

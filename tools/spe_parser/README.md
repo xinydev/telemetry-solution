@@ -11,7 +11,7 @@ For an introduction to Statistical Profiling Extension, refer to the [Arm Archit
 Ensure you have the following prerequisites before installing the `spe-parser` tool:
 
 - pip version 18.0.0 or higher (Use `pip install --upgrade pip` to update pip)
-- python version 3.8 or higher
+- python version 3.10 or higher
 
 To install `spe-parser`:
 

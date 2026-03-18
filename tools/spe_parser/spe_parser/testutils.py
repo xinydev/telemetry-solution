@@ -11,7 +11,7 @@ import requests
 
 _dname = os.path.dirname
 
-PARSER_ROOT = _dname(_dname(os.path.abspath(__file__)))
+PARSER_ROOT = _dname(_dname(__file__))
 TESTDATA = os.path.join(PARSER_ROOT, "tests/testdata")
 
 
