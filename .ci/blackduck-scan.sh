@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2025 Arm Limited
 
+set -euo pipefail
+
 BASELINE_VERSION=$1
 CURRENT_VERSION=$2
 PROJECT_ID=$3
@@ -12,7 +14,7 @@ echo BASELINE_VERSION:$BASELINE_VERSION
 echo CURRENT_VERSION:$CURRENT_VERSION
 
 python -m pip freeze > requirements.txt
-curl -s -L $BLACKDUCK_DETECT_SCRIPT_URL -o detect_arm.sh
+curl -fsSL $BLACKDUCK_DETECT_SCRIPT_URL -o detect_arm.sh
 chmod +x ./detect_arm.sh
 ./detect_arm.sh \
     --blackduck.url=$BLACKDUCK_HOST_URL \
@@ -51,7 +53,7 @@ blackduck_get_json() {
     local bearer_token=$1
     local link_to_download=$2
 
-    curl -s -X GET --header "Content-Type:application/json" --header "Authorization: bearer $bearer_token" $link_to_download
+    curl -fsS -X GET --header "Content-Type:application/json" --header "Authorization: bearer $bearer_token" $link_to_download
 }
 
 get_snippets() {
@@ -87,7 +89,7 @@ get_risk() {
     blackduck_get_json $bearer_token $risk_uri | jq -r '.items[] | "\(.componentName)|\(._meta.href)"'
 }
 
-BEARER_TOKEN=$(curl -s -X POST -H "Accept: application/vnd.blackducksoftware.user-4+json" -H "Content-Type: application/json" -H "Authorization: token $BLACKDUCK_SVC_ACCOUNT_API_KEY" ${BLACKDUCK_HOST_URL}/api/tokens/authenticate | jq -r '.bearerToken')
+BEARER_TOKEN=$(curl -fsS -X POST -H "Accept: application/vnd.blackducksoftware.user-4+json" -H "Content-Type: application/json" -H "Authorization: token $BLACKDUCK_SVC_ACCOUNT_API_KEY" ${BLACKDUCK_HOST_URL}/api/tokens/authenticate | jq -r '.bearerToken')
 
 BASELINE_COMPONENTS_LINK=$(get_components_link $BEARER_TOKEN $BASELINE_VERSION)
 

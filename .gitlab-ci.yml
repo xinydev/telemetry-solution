@@ -185,7 +185,7 @@ topdown-tool-blackduck:
       BASELINE_VERSION=$(cat .ci/blackduck-baseline-version)
       cd tools/topdown_tool
       python -m pip install .
-      CURRENT_VERSION=$(python -m pip show topdown-tool | grep Version | awk '{print $2}')-$CI_COMMIT_SHORT_SHA
+      CURRENT_VERSION="${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME:-$CI_COMMIT_REF_NAME}"
       ../../.ci/blackduck-scan.sh $BASELINE_VERSION $CURRENT_VERSION $BLACKDUCK_TOPDOWN_TOOL_PROJECT_ID $BLACKDUCK_TOPDOWN_TOOL_PROJECT_NAME './topdown_tool,./tests'
 
 validate-cpu-specs:
