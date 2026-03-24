@@ -124,32 +124,38 @@ check_for_new_items() {
     local items_to_check=$2
     local items_to_check_against=$3
 
-    local arr1=($items_to_check)
-    local arr2=($items_to_check_against)
+    local line
+    local item_stripped
+    declare -A baseline_seen
 
-    local arr2_stripped=("${arr2[@]/|*/}")
+    while IFS= read -r line; do
+        [[ -z "$line" ]] && continue
+        item_stripped="${line%%|*}"
+        [[ -z "$item_stripped" ]] && continue
+        baseline_seen["$item_stripped"]=1
+    done <<< "$items_to_check_against"
 
-    echo "${arr1[@]}"
-    echo "${arr2_stripped[@]}"
+    while IFS= read -r line; do
+        [[ -z "$line" ]] && continue
+        item_stripped="${line%%|*}"
+        [[ -z "$item_stripped" ]] && continue
 
-    for item in "${arr1[@]}"; do
-        local item_stripped="${item%%|*}"
-        if [[ ! " ${arr2_stripped[@]} " =~ " ${item_stripped} " ]]; then
-            echo "New $item_type finding: "
-            echo "$item" | tr '|' '\n'
+        if [[ -z "${baseline_seen[$item_stripped]}" ]]; then
+            echo "New $item_type finding:"
+            echo "$line" | tr '|' '\n'
             echo
             OVERALL_RESULT=1
         fi
-    done
+    done <<< "$items_to_check"
 }
 
 check_for_new_items "operational HIGH risk" "$CURRENT_OPERATIONAL_HIGH" "$BASELINE_OPERATIONAL_HIGH"
-check_for_new_items "operational MEDIUM risk" "$CURRENT_OPERATIONAL_MEDIUM" "$BASELINE_OPERATIONAL_HIGH $BASELINE_OPERATIONAL_MEDIUM"
+check_for_new_items "operational MEDIUM risk" "$CURRENT_OPERATIONAL_MEDIUM" "$(printf '%s\n%s\n' "$BASELINE_OPERATIONAL_HIGH" "$BASELINE_OPERATIONAL_MEDIUM")"
 check_for_new_items "license HIGH risk" "$CURRENT_LICENSE_HIGH" "$BASELINE_LICENSE_HIGH"
-check_for_new_items "license MEDIUM risk" "$CURRENT_LICENSE_MEDIUM" "$BASELINE_LICENSE_HIGH $BASELINE_LICENSE_MEDIUM"
+check_for_new_items "license MEDIUM risk" "$CURRENT_LICENSE_MEDIUM" "$(printf '%s\n%s\n' "$BASELINE_LICENSE_HIGH" "$BASELINE_LICENSE_MEDIUM")"
 check_for_new_items "security CRITICAL risk" "$CURRENT_SECURITY_CRITICAL" "$BASELINE_SECURITY_CRITICAL"
-check_for_new_items "security HIGH risk" "$CURRENT_SECURITY_HIGH" "$BASELINE_SECURITY_CRITICAL $BASELINE_SECURITY_HIGH"
-check_for_new_items "security MEDIUM risk" "$CURRENT_SECURITY_MEDIUM" "$BASELINE_SECURITY_CRITICAL $BASELINE_SECURITY_HIGH $BASELINE_SECURITY_MEDIUM"
+check_for_new_items "security HIGH risk" "$CURRENT_SECURITY_HIGH" "$(printf '%s\n%s\n' "$BASELINE_SECURITY_CRITICAL" "$BASELINE_SECURITY_HIGH")"
+check_for_new_items "security MEDIUM risk" "$CURRENT_SECURITY_MEDIUM" "$(printf '%s\n%s\n%s\n' "$BASELINE_SECURITY_CRITICAL" "$BASELINE_SECURITY_HIGH" "$BASELINE_SECURITY_MEDIUM")"
 CURRENT_SNIPPETS=$(get_snippets $BEARER_TOKEN $CURRENT_VERSION)
 BASELINE_SNIPPETS=$(get_snippets $BEARER_TOKEN $BASELINE_VERSION)
 
