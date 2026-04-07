@@ -10,7 +10,7 @@ run,time,level,stage,group,metric,node,nodeid,value,interrupted,units
 1,,,,HNS_Req_Opcode_Mix,cmn_hns_rxreq_writeevictorevict_rate,Global,,34746.402536398404,,Requests per 1K clks
 1,,,,HNS_Req_Opcode_Mix,cmn_hns_rxreq_writenosnoopfull_rate,Global,,33674.94272967638,,Requests per 1K clks
 1,,,,HNS_Req_Opcode_Mix,cmn_hns_rxreq_writeuniquefull_rate,Global,,36375.28561081543,,Requests per 1K clks
-1,,,,RNI_CHI_Egress_Traffic,cmn_rni_txreq_rate,Global,,12290.904687407463,,Requests per 1K clks
+1,,,,RNI_CHI_Egress_Traffic,cmn_rni_txreq_rate,Global,,7154.0373099189055,,Requests per 1K clks
 1,,,,RNI_CHI_Egress_Traffic,cmn_rni_txreq_replay_rate,Global,,826.3806277138499,,Requests per 1K clks
 1,,,,RNI_CHI_Egress_Traffic,cmn_rni_txreq_retry_rate,Global,,349.5126320477538,,Requests per 1K clks
 1,,,,RNI_CHI_Egress_Traffic,cmn_rni_txreq_retry_ratio,Global,,135.6070740477362,,Percentage

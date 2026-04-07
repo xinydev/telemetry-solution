@@ -44,9 +44,9 @@ HNS_Req_Opcode_Mix,cmn_hns_rxreq_writeuniquefull_rate,CMN_HNS_WP_RXREQ_WRITEUNIQ
 HNS_Req_Opcode_Mix,cmn_hns_rxreq_writeuniquefull_rate,SYS_CMN_CYCLES,1,,,,,5863234722.0
 HNS_Req_Opcode_Mix,cmn_hns_rxreq_writeuniquefull_rate,CMN_HNS_WP_RXREQ_WRITEUNIQUEFULL_COUNT,1,,,,,213276837616.0
 RNI_CHI_Egress_Traffic,cmn_rni_txreq_rate,SYS_CMN_CYCLES,0,,,,,1671430825.0
-RNI_CHI_Egress_Traffic,cmn_rni_txreq_rate,CMN_RNI_WP_TXREQ_COUNT,0,,,,,38084878239.0
+RNI_CHI_Egress_Traffic,cmn_rni_txreq_rate,CMN_RNI_WP_TXREQ_COUNT,0,,,,,30574306835.0
 RNI_CHI_Egress_Traffic,cmn_rni_txreq_rate,SYS_CMN_CYCLES,1,,,,,2931617361.0
-RNI_CHI_Egress_Traffic,cmn_rni_txreq_rate,CMN_RNI_WP_TXREQ_COUNT,1,,,,,36032229564.0
+RNI_CHI_Egress_Traffic,cmn_rni_txreq_rate,CMN_RNI_WP_TXREQ_COUNT,1,,,,,20972899979.0
 RNI_CHI_Egress_Traffic,cmn_rni_txreq_replay_rate,SYS_CMN_CYCLES,0,,,,,1671430825.0
 RNI_CHI_Egress_Traffic,cmn_rni_txreq_replay_rate,PMU_RNI_TXREQFLITV_REPLAYED,0,,,,,3280572410.0
 RNI_CHI_Egress_Traffic,cmn_rni_txreq_replay_rate,SYS_CMN_CYCLES,1,,,,,2931617361.0

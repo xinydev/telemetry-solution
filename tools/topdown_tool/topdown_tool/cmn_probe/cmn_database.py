@@ -409,6 +409,10 @@ class CmnDatabase:
                     )
                     port_id = cursor.lastrowid
                     for device in port.get("devices", []):
+                        # FIXME: Workaround for RN-I under CCG
+                        # Allow RN-I (Node Dev. 0xA) to exist only under RN_I port (Port Dev. 0x1)
+                        if device["type"] == 0xA and port["type"] != 0x1:
+                            continue
                         cursor.execute(
                             "INSERT INTO nodes (port_id, type, node_id) VALUES (?, ?, ?)",
                             (port_id, device["type"], device["id"]),

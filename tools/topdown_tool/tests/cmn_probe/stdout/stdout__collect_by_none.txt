@@ -3,10 +3,10 @@ Topdown Metrics CMN-700 R0P0 at index 0
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
 ┃ Metric                 ┃ Value                ┃ Units ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
-│ CCG Request Proportion │ 0.038079464719361314 │ None  │
-│ RND Request Proportion │ 0.017952384771988093 │ None  │
-│ RNF Request Proportion │ 0.7044709186979622   │ None  │
-│ RNI Request Proportion │ 0.23949723181068847  │ None  │
+│ CCG Request Proportion │ 0.039967124895508056 │ None  │
+│ RND Request Proportion │ 0.018842313295161766 │ None  │
+│ RNF Request Proportion │ 0.7393926726742864   │ None  │
+│ RNI Request Proportion │ 0.20179788913504373  │ None  │
 └────────────────────────┴──────────────────────┴───────┘
             CMN Requestor Target Characterization Level Two            
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
@@ -32,7 +32,7 @@ Topdown Metrics CMN-700 R0P0 at index 0
 │ Bandwidth Metrics for CCG-C2C │ -7906531904137164.0    │ Bytes per second │
 │ Bandwidth Metrics for RND     │ -3983971267091595.0    │ Bytes per second │
 │ Bandwidth Metrics for RNF     │ 5.857474997010469e+16  │ Bytes per second │
-│ Bandwidth Metrics for RNI     │ -3.583789496479868e+16 │ Bytes per second │
+│ Bandwidth Metrics for RNI     │ -2.793136306066151e+16 │ Bytes per second │
 └───────────────────────────────┴────────────────────────┴──────────────────┘
                                  CMN Completer Bandwidth                                  
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
@@ -126,7 +126,7 @@ Topdown Metrics CMN-700 R0P0 at index 0
 │ RND Egress retried request rate on CHI interface.  │ 332.88225134893037 │ Requests per 1K clks │
 │ RND retry ratio compared to request count.         │ 83.07628395238474  │ Percentage           │
 │ RNI Egress replayed request rate on CHI interface. │ 1962.7329835801013 │ Requests per 1K clks │
-│ RNI Egress Request rate                            │ 22785.793865564254 │ Requests per 1K clks │
+│ RNI Egress Request rate                            │ 18292.295665302212 │ Requests per 1K clks │
 │ RNI Egress retried request rate on CHI interface.  │ 332.88225134893037 │ Requests per 1K clks │
 │ RNI retry ratio compared to request count.         │ 83.07628395238474  │ Percentage           │
 └────────────────────────────────────────────────────┴────────────────────┴──────────────────────┘
@@ -231,10 +231,10 @@ Topdown Metrics CMN-700 R0P0 at index 1
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
 ┃ Metric                 ┃ Value                ┃ Units ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
-│ CCG Request Proportion │ 0.04250548255564924  │ None  │
-│ RND Request Proportion │ 0.024035998131660793 │ None  │
-│ RNF Request Proportion │ 0.6943958438640647   │ None  │
-│ RNI Request Proportion │ 0.23906267544862517  │ None  │
+│ CCG Request Proportion │ 0.04722380063348331  │ None  │
+│ RND Request Proportion │ 0.026704112400330077 │ None  │
+│ RNF Request Proportion │ 0.7714772052857858   │ None  │
+│ RNI Request Proportion │ 0.15459488168040078  │ None  │
 └────────────────────────┴──────────────────────┴───────┘
             CMN Requestor Target Characterization Level Two            
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
@@ -260,7 +260,7 @@ Topdown Metrics CMN-700 R0P0 at index 1
 │ Bandwidth Metrics for CCG-C2C │ -4992718302190188.0     │ Bytes per second │
 │ Bandwidth Metrics for RND     │ -2226563005353958.2     │ Bytes per second │
 │ Bandwidth Metrics for RNF     │ 3.593225705961918e+16   │ Bytes per second │
-│ Bandwidth Metrics for RNI     │ -2.1856795206864516e+16 │ Bytes per second │
+│ Bandwidth Metrics for RNI     │ -1.6864076904674328e+16 │ Bytes per second │
 └───────────────────────────────┴─────────────────────────┴──────────────────┘
                                CMN Completer Bandwidth                                
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
@@ -354,7 +354,7 @@ Topdown Metrics CMN-700 R0P0 at index 1
 │ RND Egress retried request rate on CHI interface.  │ 349.5126320477538  │ Requests per 1K clks │
 │ RND retry ratio compared to request count.         │ 135.6070740477362  │ Percentage           │
 │ RNI Egress replayed request rate on CHI interface. │ 826.3806277138499  │ Requests per 1K clks │
-│ RNI Egress Request rate                            │ 12290.904687407463 │ Requests per 1K clks │
+│ RNI Egress Request rate                            │ 7154.0373099189055 │ Requests per 1K clks │
 │ RNI Egress retried request rate on CHI interface.  │ 349.5126320477538  │ Requests per 1K clks │
 │ RNI retry ratio compared to request count.         │ 135.6070740477362  │ Percentage           │
 └────────────────────────────────────────────────────┴────────────────────┴──────────────────────┘

@@ -19,7 +19,7 @@ Regular Metrics CMN-700 R0P0 at index 0
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Metric                                             ┃ Global             ┃ Units                ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
-│ RNI Egress Request rate                            │ 22785.793865564254 │ Requests per 1K clks │
+│ RNI Egress Request rate                            │ 18292.295665302212 │ Requests per 1K clks │
 │ RNI Egress replayed request rate on CHI interface. │ 1962.7329835801013 │ Requests per 1K clks │
 │ RNI Egress retried request rate on CHI interface.  │ 332.88225134893037 │ Requests per 1K clks │
 │ RNI retry ratio compared to request count.         │ 83.07628395238474  │ Percentage           │
@@ -45,7 +45,7 @@ Regular Metrics CMN-700 R0P0 at index 1
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Metric                                             ┃ Global             ┃ Units                ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
-│ RNI Egress Request rate                            │ 12290.904687407463 │ Requests per 1K clks │
+│ RNI Egress Request rate                            │ 7154.0373099189055 │ Requests per 1K clks │
 │ RNI Egress replayed request rate on CHI interface. │ 826.3806277138499  │ Requests per 1K clks │
 │ RNI Egress retried request rate on CHI interface.  │ 349.5126320477538  │ Requests per 1K clks │
 │ RNI retry ratio compared to request count.         │ 135.6070740477362  │ Percentage           │
