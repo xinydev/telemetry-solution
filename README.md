@@ -1,11 +1,24 @@
 # Arm Telemetry Solution
 
-Arm Telemetry Solution provides a standardized solution with a set of key components, a top-down performance analysis methodology, a telemetry data framework, and a command-line based profiling tool. The solution leverages telemetry data from Arm IP to identify performance bottlenecks and improve execution efficiency. 
+Arm Telemetry Solution provides a standardized framework for system-level performance analysis across Arm platforms, including CPUs and interconnects such as CMN. It includes telemetry specifications, a data framework, a top-down performance analysis methodology, command-line tools, and validation workloads.
 
-This repo contains Arm telemetry specifications, telemetry tools and test suites.
-- **data** Contains the telemetry specification JSON for all supported Arm products.
-- **tools** Contains telemetry tools and utilities for telemetry data collection and validation.
-- **benchmarks** Contains validation test suites such as `ustress`.
+The solution leverages telemetry data from Arm IP to identify performance bottlenecks and improve execution efficiency across the full system stack.
+
+This repository is organized into the following components:
+
+- **data** Contains the telemetry specification JSON for all supported Arm products, including CPU and CMN interconnect.
+- **tools** Contains telemetry tools and utilities for telemetry data collection, analysis, and visualization.
+- **benchmarks** Contains validation test suites such as `ustress` and `systress`.
+
+## How It Fits Together
+
+The Arm Telemetry Solution enables a unified performance analysis workflow:
+
+1. **Telemetry Specifications (JSON)** define PMU events, metrics, and methodology for CPU and CMN  
+2. **Topdown Tool** consumes these specifications to collect telemetry data, compute metrics, and apply the Topdown methodology
+3. **Benchmarks (UStress / SysTress)** validate telemetry metrics and stress specific system components  
+
+This enables consistent, methodology-driven analysis across compute and system components.
 
 ## Content
 
@@ -13,19 +26,23 @@ This repo contains Arm telemetry specifications, telemetry tools and test suites
   - [Content](#content)
   - [Arm Topdown Methodology](#arm-topdown-methodology)
   - [Arm CPU Telemetry Solution](#arm-cpu-telemetry-solution)
+  - [Arm CMN Telemetry Solution](#arm-cmn-telemetry-solution)
   - [Arm Telemetry Framework](#arm-telemetry-framework)
-  - [CPU Telemetry Specifications \& JSON Schema](#cpu-telemetry-specifications--json-schema)
-    - [Event Field Definitions](#event-field-definitions)
-    - [Metric Field Definitions](#metric-field-definitions)
-    - [Topdown Methodology Field Definitions](#topdown-methodology-field-definitions)
+  - [Telemetry Specifications \& JSON Schema](#telemetry-specifications--json-schema)
+    - [CPU JSON Schema](#cpu-json-schema)
+      - [Event Field Definitions](#event-field-definitions)
+      - [Metric Field Definitions](#metric-field-definitions)
+      - [Topdown Methodology Field Definitions](#topdown-methodology-field-definitions)
+    - [CMN JSON Schema](#cmn-json-schema)
   - [Tools](#tools)
+  - [Benchmarks](#benchmarks)
   - [Support](#support)
   - [License](#license)
 
 
 ## Arm Topdown Methodology
 
-Arm Topdown Methodology specifies a set of metrics and performance analysis methodology using hardware PMU events, to help identify processor bottlenecks during workload execution.
+Arm Topdown Methodology specifies a set of metrics and performance analysis methodology using hardware PMU events, to help identify processor & system bottlenecks during workload execution. The methodology applies across compute and system components, enabling hierarchical analysis from CPU pipeline inefficiencies to interconnect and memory subsystem bottlenecks.
 
 Arm Topdown methodology can be conducted in two stages:
 
@@ -33,6 +50,7 @@ Arm Topdown methodology can be conducted in two stages:
 
 - **Stage 2: Micro-architecture Exploration** Deeper analysis stage to further analyze bottlenecked resources, using per micro-architecture resource effectiveness metric groups and metrics.
 
+With support for both CPU and CMN telemetry, the solution enables cross-component analysis, correlating CPU behavior with interconnect and memory system activity.
 
 ## Arm CPU Telemetry Solution
 
@@ -74,6 +92,20 @@ Key chapters from this whitepaper are as below:
 
 The Arm CPU Telemetry Solution is supported across all Neoverse and Lumex CPUs, with PMU events, metrics, and methodology defined and upstreamed in Linux perf. Support for additional Arm CPUs will be available soon.
 
+## Arm CMN Telemetry Solution
+
+The Arm CMN Telemetry Solution extends the telemetry framework to Arm Coherent Mesh Network (CMN) interconnects, enabling system-level performance analysis beyond CPU cores.
+
+- CMN telemetry specifications define PMU events and derived metrics for key interconnect components such as RN-F, HN-F, SN-F, and mesh links.
+- These metrics enable visibility into bandwidth utilization, congestion, latency, and traffic distribution across the mesh.
+- CMN telemetry integrates with the Arm Topdown methodology and tooling, enabling correlated CPU + interconnect analysis.
+- CMN specifications follow the same JSON-based telemetry schema, enabling seamless integration with existing tools and workflows.
+
+This support enables users to:
+- Identify system bottlenecks caused by memory and interconnect pressure
+- Correlate CPU stalls with fabric-level behavior
+- Perform end-to-end performance analysis across compute and data movement
+
 ## Arm Telemetry Framework
 
 The building blocks of the Telemetry Framework are as follows. 
@@ -87,9 +119,11 @@ The building blocks of the Telemetry Framework are as follows.
 - **Methodology** specifies different performance analysis approaches common among software consumers or performance analysts.
 
 
-## CPU Telemetry Specifications & JSON Schema
+## Telemetry Specifications & JSON Schema
 
-Arm provides a standardized JSON schema to describe PMU events, derived metrics, and the methodology tree for a CPU in a single file, enabling seamless integration with tooling.
+Arm provides a standardized JSON schema to describe PMU events, derived metrics, and methodology for supported IP blocks (e.g., CPU and CMN) in a single file, enabling seamless integration with tooling.
+
+### CPU JSON Schema
 
 High level schema structure is as follows:
 
@@ -105,7 +139,7 @@ High level schema structure is as follows:
   }
 }
 
-### Event Field Definitions
+#### Event Field Definitions
 
 | Field                 | Definition |
 |-----------------------|------------|
@@ -113,11 +147,11 @@ High level schema structure is as follows:
 | `title`               | Title of the event |
 | `description`         | Description of what is being counted for the event |
 | `accesses`            | Access interface – PMU/ETM |
-| `architecture_dfined` | Architecturally defined event, included in Arm Architecture Reference Manual |
+| `architecture_defined` | Architecturally defined event, included in Arm Architecture Reference Manual |
 | `product_defined`     | Micro-architecture implementation specific event, specified by the product architecture |
 
 
-### Metric Field Definitions
+#### Metric Field Definitions
 
 | Field                |   Definition                                                        |
 |----------------------|---------------------------------------------------------------------|
@@ -129,7 +163,7 @@ High level schema structure is as follows:
 | `sample_events`      |   Events for sampling if a bottleneck is detected with this metric  |
 
 
-### Topdown Methodology Field Definitions
+#### Topdown Methodology Field Definitions
 
 | Field             | Definition  |
 |-------------------|-------------|
@@ -138,14 +172,17 @@ High level schema structure is as follows:
 | `metric_grouping` | Metric groups used for each stage of the methodology added as lists  |
 | decision tree     | Stage 1 topdown analysis tree with root_nodes and child metrics. Each metric has the following fields:<br><ul><li>**`name`:** metric name<br><li>**`group`:** metric groups the metric belong to<li>**`next_items`:** leaves of the node<li>**`sample_events`:** Events for sampling if the bottleneck is detected at this specific metric node</ul> |
 
+### CMN JSON Schema
+
+CMN telemetry specifications use the same JSON schema structure as CPU, with component-specific definitions for events, metrics, and methodology. This ensures consistent tooling support and enables unified analysis across compute and interconnect domains.
 
 ## Tools
 
-The tools folder contains a collection of telemetry tools used for performance analysis on Arm-based platforms. `topdown_tool` performs topdown analysis, `spe_parser` processes Arm SPE data, `perf_json_generator` generates CPU definitions for Linux perf from Arm CPU JSON specifications, and `ustress_charts` provides visualization support for ustress results.
+The tooling stack enables collection, parsing, and analysis of telemetry data. The Arm Top-Down tool serves as the primary entry point for methodology-driven performance analysis across CPU and CMN telemetry.
 
 | Name                | Description | Folder |
 |---------------------|-------------|--------|
-| Arm Top-Down tool       | Tool to support the Arm topdown methodology by collecting derived metrics based on Performance Monitoring Unit (PMU) events. | [tools/topdown_tool](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/topdown_tool) |
+| Arm Top-Down tool | Primary CLI tool implementing the Arm Topdown methodology across CPU and CMN telemetry. It consumes telemetry specifications (JSON) to collect PMU & hardware telemetry data, compute metrics, and apply the Topdown methodology for quick analysis| [tools/topdown_tool](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/topdown_tool) |
 | Perf JSON Generator | Tool to generate JSON files for Linux perf tool which enable and document Arm PMU events and metrics. | [tools/perf_json_generator](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/perf_json_generator) |
 | SPE Parser          | Tool to parse SPE raw data and generate a Parquet or CSV file for further processing and analysis. | [tools/spe_parser](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/spe_parser) |
 | UStress Charts      | Visualization tooling for metrics generated from the ustress suite workloads. | [tools/ustress_charts](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/tools/ustress_charts) |
@@ -153,11 +190,12 @@ The tools folder contains a collection of telemetry tools used for performance a
 
 ## Benchmarks
 
-The benchmarks folder contains validation test suites used to stress major CPU resources and validate the telemetry solution.
+The benchmarks folder contains validation test suites used to stress CPU and system resources (including interconnect and memory subsystem) and validate the telemetry solution.
 
 | Name           | Description | Folder |
 |----------------|-------------|--------|
-| UStress Suite  | Validation workload suite to stress test major CPU resources. | [benchmarks/ustress](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/benchmarks/ustress) |
+| Ustress Suite  | Validation workload suite to stress test major CPU resources. | [benchmarks/ustress](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/benchmarks/ustress) |
+| Systress Suite  | System-level stress and validation suite targeting CMN and memory subsystem behavior. | [benchmarks/systress](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/benchmarks/systress) |
 | Matrix Multiplication Kernels | Dense matmul variants (naïve, loop-reordered, blocked) for locality and cache reuse studies. | [benchmarks/matmul](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/benchmarks/matmul) |
 | Random Pointer Access | Pointer-chasing microbenchmark with optional software prefetch tuning. | [benchmarks/random_pointer_access](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/benchmarks/random_pointer_access) |
 
