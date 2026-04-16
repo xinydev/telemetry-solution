@@ -19,6 +19,18 @@ After building, you will find the executables in:
 
 # Tests Included
 
+### Memory Bandwidth Test
+
+This is a streaming ADD test, calculating C=A+B on large arrays.
+To modify runtime, change the define for NTIMES in the CMakeLists.txt
+Execute using ./mem_bw
+
+### SLC Bandwidth Test
+
+This is a streaming ADD test, calculating C=A+B on arrays sized to fit in system cache.
+To modify runtime, change the define for TESTREPS in the CMakeLists.txt
+Execute using ./slc_bw
+
 ### Contention Test
 
 This is a test where all threads attempt to acquire a simple spinlock.
