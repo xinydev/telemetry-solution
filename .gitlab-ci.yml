@@ -124,6 +124,26 @@ build-ustress:
       - benchmarks/ustress/ustress-*.zip
     expire_in: 7 days
 
+build-sysstress:
+  extends: .build-base
+  script:
+    - |
+      cd benchmarks/sysstress
+      DIRS=`ls -d */`
+      mkdir bin
+      cd bin
+      CC=aarch64-linux-gnu-gcc-10 CXX=aarch64-linux-gnu-g++-10 cmake ..
+      make
+      EXECUTABLES=`find $DIRS -executable -type f`
+      mkdir ../zip
+      cp $EXECUTABLES ../zip/
+      cd ../zip
+      zip -9X ../sysstress.zip *
+  artifacts:
+    paths:
+      - benchmarks/sysstress/sysstress.zip
+    expire_in: 7 days
+
 build-random-pointer-access:
   extends: .build-base
   script:

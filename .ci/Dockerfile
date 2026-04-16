@@ -12,13 +12,13 @@ RUN set -ex; \
     apt-get -y install software-properties-common; \
     add-apt-repository -y ppa:deadsnakes/ppa; \
     apt-get update; \
-    apt-get -y install gcc make zip git \
+    apt-get -y install gcc make zip git cmake \
                           python3 python3-pip python3-venv \
                           python3.10 python3.11 python3.12 python3.13 \
                           curl openjdk-21-jdk jq; \
     if [ "$(uname -m)" = "aarch64" ]; then \
         apt-get -y install gcc-10; \
     else \
-        apt-get -y install gcc-10-aarch64-linux-gnu gcc-aarch64-linux-gnu; \
+        apt-get -y install gcc-10-aarch64-linux-gnu g++-10-aarch64-linux-gnu gcc-aarch64-linux-gnu; \
     fi; \
     rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*;

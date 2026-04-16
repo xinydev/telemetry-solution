@@ -198,6 +198,7 @@ The benchmarks folder contains validation test suites used to stress CPU and sys
 | Systress Suite  | System-level stress and validation suite targeting CMN and memory subsystem behavior. | [benchmarks/systress](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/benchmarks/systress) |
 | Matrix Multiplication Kernels | Dense matmul variants (naïve, loop-reordered, blocked) for locality and cache reuse studies. | [benchmarks/matmul](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/benchmarks/matmul) |
 | Random Pointer Access | Pointer-chasing microbenchmark with optional software prefetch tuning. | [benchmarks/random_pointer_access](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/benchmarks/random_pointer_access) |
+| SysStress Suite | Validation workload suite to stress milticore CPUs. | [benchmarks/sysstress](https://gitlab.arm.com/telemetry-solution/telemetry-solution/-/tree/main/benchmarks/sysstress) |
 
 
 
