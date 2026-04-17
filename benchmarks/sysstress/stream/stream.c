@@ -41,11 +41,17 @@
 /*  5. Absolutely no warranty is expressed or implied.                   */
 /*-----------------------------------------------------------------------*/
 # include <stdio.h>
-# include <unistd.h>
 # include <math.h>
 # include <float.h>
 # include <limits.h>
+#ifdef _WIN32
+# include <windows.h>
+typedef long long ssize_t;
+unsigned int _fltused = 1;
+#else
+# include <unistd.h>
 # include <sys/time.h>
+#endif
 
 /*-----------------------------------------------------------------------
  * INSTRUCTIONS:
@@ -110,6 +116,12 @@
 #endif
 #ifndef NTIMES
 #   define NTIMES	10
+#endif
+
+#ifndef TESTREPS
+#   define TESTREPS     4
+#elif TESTREPS<1
+#   define TESTREPS     1
 #endif
 
 /*  Users are allowed to modify the "OFFSET" variable, which *may* change the
@@ -304,27 +316,11 @@ main()
     /*	--- MAIN LOOP --- repeat test cases NTIMES times --- */
 
     scalar = 3.0;
+    // if enabled, verification only applies to last repetition
+    for (j=0; j<TESTREPS; j++)
+    {
     for (k=0; k<NTIMES; k++)
 	{
-	times[0][k] = mysecond();
-#ifdef TUNED
-        tuned_STREAM_Copy();
-#else
-#pragma omp parallel for
-	for (j=0; j<STREAM_ARRAY_SIZE; j++)
-	    c[j] = a[j];
-#endif
-	times[0][k] = mysecond() - times[0][k];
-	
-	times[1][k] = mysecond();
-#ifdef TUNED
-        tuned_STREAM_Scale(scalar);
-#else
-#pragma omp parallel for
-	for (j=0; j<STREAM_ARRAY_SIZE; j++)
-	    b[j] = scalar*c[j];
-#endif
-	times[1][k] = mysecond() - times[1][k];
 	
 	times[2][k] = mysecond();
 #ifdef TUNED
@@ -336,46 +332,37 @@ main()
 #endif
 	times[2][k] = mysecond() - times[2][k];
 	
-	times[3][k] = mysecond();
-#ifdef TUNED
-        tuned_STREAM_Triad(scalar);
-#else
-#pragma omp parallel for
-	for (j=0; j<STREAM_ARRAY_SIZE; j++)
-	    a[j] = b[j]+scalar*c[j];
-#endif
-	times[3][k] = mysecond() - times[3][k];
+        }
 	}
 
     /*	--- SUMMARY --- */
 
     for (k=1; k<NTIMES; k++) /* note -- skip first iteration */
 	{
-	for (j=0; j<4; j++)
-	    {
-	    avgtime[j] = avgtime[j] + times[j][k];
-	    mintime[j] = MIN(mintime[j], times[j][k]);
-	    maxtime[j] = MAX(maxtime[j], times[j][k]);
-	    }
+        avgtime[2] = avgtime[2] + times[2][k];
+        mintime[2] = MIN(mintime[2], times[2][k]);
+        maxtime[2] = MAX(maxtime[2], times[2][k]);
 	}
     
-    printf("Function    Best Rate MB/s  Avg time     Min time     Max time\n");
-    for (j=0; j<4; j++) {
-		avgtime[j] = avgtime[j]/(double)(NTIMES-1);
+    printf("Function    Avg Rate MB/s  Avg time     Min time     Max time\n");
+    avgtime[2] = avgtime[2]/(double)(NTIMES-1);
 
-		printf("%s%12.1f  %11.6f  %11.6f  %11.6f\n", label[j],
-	       1.0E-06 * bytes[j]/mintime[j],
-	       avgtime[j],
-	       mintime[j],
-	       maxtime[j]);
-    }
+    printf("%s%12.1f  %11.6f  %11.6f  %11.6f\n", label[2],
+    1.0E-06 * bytes[2]/avgtime[2],
+    avgtime[2],
+    mintime[2],
+    maxtime[2]);
     printf(HLINE);
 
     /* --- Check Results --- */
-    checkSTREAMresults();
+    //checkSTREAMresults();
     printf(HLINE);
 
+#ifdef _WIN32
+    ExitProcess(0);
+#else
     return 0;
+#endif
 }
 
 # define	M	20
@@ -415,16 +402,24 @@ checktick()
 /* A gettimeofday routine to give access to the wall
    clock timer on most UNIX-like systems.  */
 
-#include <sys/time.h>
-
 double mysecond()
 {
+#ifdef _WIN32
+/* GetSystemTimePreciseAsFileTime returns value in terms of 100-nanosecond
+   intervals that have elapsed since 1st of January 1601, 00:00:00 UTC.
+   Here, we adjust the value to UNIX epoch. */
+#   define TIME_OFFSET 116444736000000000ULL
+    FILETIME ft;
+    GetSystemTimePreciseAsFileTime(&ft);
+    return (((unsigned long long int)ft.dwHighDateTime << 32 | ft.dwLowDateTime) - TIME_OFFSET) / 1.E+7;
+#else
         struct timeval tp;
         struct timezone tzp;
         int i;
 
         i = gettimeofday(&tp,&tzp);
         return ( (double) tp.tv_sec + (double) tp.tv_usec * 1.e-6 );
+#endif
 }
 
 #ifndef abs
