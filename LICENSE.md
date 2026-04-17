@@ -1,3 +1,10 @@
+Telemetry Solution is licensed under the Apache 2.0 licence. A copy of the license text is provided below.
+
+Telemetry Solution uses STREAM as a test-case. STREAM is subject to a different license; see [STREAM License](benchmarks/sysstress/stream/LICENSE.txt).
+
+Note that STREAM has been modified to support this use-case and the STREAM license places limitations on the use of benchmark results. Details of these limitations are given in the [STREAM license file](benchmarks/sysstress/stream/LICENSE.txt).
+
+Telemetry Solution License:
 
                                  Apache License
                            Version 2.0, January 2004
