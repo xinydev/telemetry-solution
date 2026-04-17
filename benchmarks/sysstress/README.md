@@ -19,9 +19,15 @@ After building, you will find the executables in:
 
 # Tests Included
 
-### Memory Bandwidth Test
+### Contention Test
 
-This is a streaming ADD test, calculating C=A+B on large arrays.
-To modify runtime, change the define for NTIMES
-Execute using ./mem_bw
+This is a test where all threads attempt to acquire a simple spinlock.
+A counter is modified in between acquire and release of the spinlock.
+A small delay is added after release to avoid the releasing thread re-acquiring the lock.
+Because of this delay, there may be some slack at very low thread counts, so results for fewer than 4 threads may not be intuitive.
+Execute using ./contention -t <thread count>
+To modify runtime, change the define for NUMITER or pass "-l <iterations>" as an argument
 
+TODO: Additional tests to add:
+ - Memory Bandwidth Test
+ - SLC Bandwidth Test
