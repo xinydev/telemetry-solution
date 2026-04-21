@@ -1,6 +1,6 @@
 #!/bin/bash
 # SPDX-License-Identifier: Apache-2.0
-# Copyright 2025 Arm Limited
+# Copyright 2026 Arm Limited
 
 set -euo pipefail
 
@@ -9,9 +9,111 @@ CURRENT_VERSION=$2
 PROJECT_ID=$3
 PROJECT_NAME=$4
 SIGNATURE_SCAN_PATHS=$5
+VERSIONS_LIMIT=24
 
 echo BASELINE_VERSION:$BASELINE_VERSION
 echo CURRENT_VERSION:$CURRENT_VERSION
+
+blackduck_get_json() {
+    local bearer_token=$1
+    local link_to_download=$2
+
+    curl -fsS -X GET --header "Content-Type:application/json" --header "Authorization: bearer $bearer_token" "$link_to_download"
+}
+
+cleanup_old_project_versions() {
+    local bearer_token=$1
+    local project_id=$2
+    local versions_limit=$3
+    local current_version=$4
+    local keep_count=$((versions_limit - 1))
+
+    if [ "$keep_count" -lt 0 ]; then
+        keep_count=0
+    fi
+
+    local versions_api_url=$BLACKDUCK_HOST_URL'/api/projects/'$project_id'/versions/?limit=1000'
+    local versions_json=$(blackduck_get_json $bearer_token $versions_api_url)
+    local current_version_exists=$(echo "$versions_json" | jq -r --arg version "$current_version" 'any((.items // [])[]; .versionName == $version)')
+
+    if [ "$current_version_exists" = "true" ]; then
+        echo "Current version $current_version already exists, skipping version cleanup"
+        return
+    fi
+
+    local total_versions=$(echo "$versions_json" | jq -r '.totalCount // (.items | length)')
+
+    if [ "$total_versions" -le "$keep_count" ]; then
+        echo "Project has $total_versions versions, no cleanup needed"
+        return
+    fi
+
+    local delete_count_needed=$((total_versions - keep_count))
+    local in_development_count=$(echo "$versions_json" | jq -r '
+        (.items // [])
+        | map(select(((.phase // "") | ascii_upcase | gsub("-"; "_")) == "DEVELOPMENT"))
+        | length
+    ')
+
+    if [ "$in_development_count" -lt "$delete_count_needed" ]; then
+        echo "Need to delete $delete_count_needed version(s), but only $in_development_count DEVELOPMENT version(s) exist. Skipping cleanup."
+        return
+    fi
+
+    local versions_to_delete=$(echo "$versions_json" | jq -r --argjson delete_count "$delete_count_needed" '
+        (.items // [])
+        | map(select(((.phase // "") | ascii_upcase | gsub("-"; "_")) == "DEVELOPMENT"))
+        | sort_by(.lastScanDate // .lastBomUpdateDate // .updatedAt // .createdAt // "")
+        | .[:$delete_count]
+        | .[]
+        | @base64
+    ')
+
+    if [ -z "$versions_to_delete" ]; then
+        echo "No old DEVELOPMENT versions eligible for cleanup"
+        return
+    fi
+
+    for encoded_version in $versions_to_delete; do
+        local version_json=$(echo "$encoded_version" | base64 -d)
+        local version_name=$(echo "$version_json" | jq -r '.versionName // "<unknown>"')
+        local version_href=$(echo "$version_json" | jq -r '._meta.href // empty')
+        echo "version_href: $version_href"
+
+        if [ -z "$version_href" ]; then
+            continue
+        fi
+
+        echo "Deleting old DEVELOPMENT version: $version_name"
+        local delete_response
+        local curl_exit_code
+        if delete_response=$(curl -fsS -X DELETE \
+            --header "Content-Type:application/json" \
+            --header "Authorization: bearer $bearer_token" \
+            -w "\nHTTP_STATUS:%{http_code}\n" \
+            "$version_href" 2>&1); then
+            curl_exit_code=0
+        else
+            curl_exit_code=$?
+        fi
+
+        if [ "$curl_exit_code" -ne 0 ]; then
+            local http_status=$(echo "$delete_response" | awk -F: '/^HTTP_STATUS:/{status=$2} END{print status}')
+            local response_body=$(echo "$delete_response" | sed '/^HTTP_STATUS:/d')
+            echo "Failed to delete version '$version_name' at '$version_href'"
+            echo "Delete curl exit code: $curl_exit_code"
+            echo "Delete HTTP status: ${http_status:-<none>}"
+            if [ -n "$response_body" ]; then
+                echo "Delete response body:"
+                echo "$response_body"
+            fi
+            exit "$curl_exit_code"
+        fi
+    done
+}
+
+BEARER_TOKEN=$(curl -fsS -X POST -H "Accept: application/vnd.blackducksoftware.user-4+json" -H "Content-Type: application/json" -H "Authorization: token $BLACKDUCK_SVC_ACCOUNT_API_KEY" ${BLACKDUCK_HOST_URL}/api/tokens/authenticate | jq -r '.bearerToken')
+cleanup_old_project_versions $BEARER_TOKEN $PROJECT_ID $VERSIONS_LIMIT $CURRENT_VERSION
 
 python -m pip freeze > requirements.txt
 curl -fsSL $BLACKDUCK_DETECT_SCRIPT_URL -o detect_arm.sh
@@ -49,13 +151,6 @@ export BDS_JAVA_HOME=/usr/lib/jvm/java-21-openjdk-arm64/
       --detect.blackduck.signature.scanner.paths=$SIGNATURE_SCAN_PATHS \
       --detect.blackduck.signature.scanner.upload.source.mode=true
 
-blackduck_get_json() {
-    local bearer_token=$1
-    local link_to_download=$2
-
-    curl -fsS -X GET --header "Content-Type:application/json" --header "Authorization: bearer $bearer_token" $link_to_download
-}
-
 get_snippets() {
     local bearer_token=$1
     local version=$2
@@ -88,8 +183,6 @@ get_risk() {
 
     blackduck_get_json $bearer_token $risk_uri | jq -r '.items[] | "\(.componentName)|\(._meta.href)"'
 }
-
-BEARER_TOKEN=$(curl -fsS -X POST -H "Accept: application/vnd.blackducksoftware.user-4+json" -H "Content-Type: application/json" -H "Authorization: token $BLACKDUCK_SVC_ACCOUNT_API_KEY" ${BLACKDUCK_HOST_URL}/api/tokens/authenticate | jq -r '.bearerToken')
 
 BASELINE_COMPONENTS_LINK=$(get_components_link $BEARER_TOKEN $BASELINE_VERSION)
 
