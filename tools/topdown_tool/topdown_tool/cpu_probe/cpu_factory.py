@@ -42,6 +42,7 @@ from topdown_tool.common import ArgsError, range_decode, unwrap
 from topdown_tool.cpu_probe.common import (
     COMBINED_STAGES,
     DEFAULT_ALL_STAGES,
+    CpuModifier,
     CpuProbeConfiguration,
 )
 from topdown_tool.cpu_probe.cpu_detector import (
@@ -117,7 +118,7 @@ class CpuProbeFactoryConfigBuilder(
 
             - Specification inclusion: --cpu, --sme
             - Specification inspection: --cpu-list-cores, --cpu-list-groups, --cpu-list-metrics, --cpu-list-events, --cpu-descriptions, --cpu-show-sample-events
-            - Capture selection: --core, --cpu-no-multiplex, --cpu-collect-by, --cpu-metric-group, --cpu-node, --cpu-stages
+            - Capture selection: --core, --cpu-no-multiplex, --cpu-collect-by, --cpu-metric-group, --cpu-node, --cpu-stages, --cpu-events-modifier
             - Output control: --cpu-generate-csv
         """
 
@@ -219,6 +220,12 @@ class CpuProbeFactoryConfigBuilder(
             default=DEFAULT_ALL_STAGES,
             help='Methodology stages to collect. One of: topdown, uarch, 1, 2, all, combined. Combine with commas (e.g., "topdown,uarch"). "combined" collects topdown metrics as a tree.',
         )
+        capture_group.add_argument(
+            "--cpu-events-modifiers",
+            type=lambda s: [x.strip().lower() for x in s.split(",") if x.strip()],
+            metavar="u[,k]",
+            help='Apply "u" or "k" modifier to events to capture only in EL0 or EL1 respectively',
+        )
 
         # Output control
         output_group.add_argument(
@@ -277,6 +284,14 @@ class CpuProbeFactoryConfigBuilder(
         metric_groups = getattr(args, "cpu_metric_group", None) or []
         stages = getattr(args, "cpu_stages", None)
         stages_list = list(stages) if stages is not None else list(DEFAULT_ALL_STAGES)
+        events_modifiers_str: Optional[List[str]] = getattr(args, "cpu_events_modifiers", None)
+        events_modifiers: Optional[List[CpuModifier]] = None
+        if events_modifiers_str is not None:
+            for events_modifier_str in events_modifiers_str:
+                events_modifier = CpuModifier.from_string(events_modifier_str)
+                if events_modifiers is None:
+                    events_modifiers = []
+                events_modifiers.append(events_modifier)
         runtime = CpuProbeConfiguration(
             cpu_dump_events=getattr(args, "cpu_dump_events", None),
             cpu_generate_csv=list(getattr(args, "cpu_generate_csv", []) or []),
@@ -289,6 +304,7 @@ class CpuProbeFactoryConfigBuilder(
             node=getattr(args, "cpu_node", None),
             level=getattr(args, "cpu_level", None),
             stages=stages_list,
+            events_modifiers=tuple(events_modifiers) if events_modifiers is not None else None,
             descriptions=getattr(args, "cpu_descriptions", False),
             show_sample_events=getattr(args, "cpu_show_sample_events", False),
         )

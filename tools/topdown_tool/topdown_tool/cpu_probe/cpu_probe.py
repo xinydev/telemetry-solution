@@ -33,6 +33,7 @@ from topdown_tool.cpu_probe.common import (
     DEFAULT_ALL_STAGES,
     CpuAggregate,
     CpuProbeConfiguration,
+    CpuEventOptions
 )
 from topdown_tool.cpu_probe.cpu_cli_renderer import CpuCliRenderer
 from topdown_tool.cpu_probe.cpu_csv_renderer import CpuCsvRenderer  # added import
@@ -118,7 +119,9 @@ class CpuProbe(Base.Probe):
         self._capture_data: bool = capture_data
         self._base_csv_dir: Optional[str] = base_csv_dir
 
-        self._db: TelemetryDatabase = TelemetryDatabase(spec)
+        options = CpuEventOptions(modifiers=self._conf.events_modifiers)
+
+        self._db: TelemetryDatabase = TelemetryDatabase(spec, options)
 
         self._cli_renderer = CpuCliRenderer(get_console(), self._db)
         self._csv_renderer = CpuCsvRenderer()

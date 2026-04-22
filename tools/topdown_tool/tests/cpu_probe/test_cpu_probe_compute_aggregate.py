@@ -11,7 +11,7 @@ from topdown_tool.cpu_probe.cpu_telemetry_database import Event
 
 def create_event(name: str, code: int = 0) -> Event:
     # Create a real Event instance; title and description are set to dummy values.
-    return Event(name=name, title=name, description="dummy", code=code)
+    return Event(name=name, title=name, description="dummy", code=code, modifiers=None)
 
 
 # Helper type for event group

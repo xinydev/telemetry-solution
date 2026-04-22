@@ -33,6 +33,7 @@ from topdown_tool.cpu_probe.cpu_model import (
     TelemetrySpecification,
     TopdownMethodology as TopdownMethodologyModel,
 )
+from topdown_tool.cpu_probe.common import CpuEventOptions, CpuModifier
 from topdown_tool.perf import PerfEvent
 
 
@@ -54,10 +55,14 @@ class Event(PerfEvent):
     title: str
     description: str
     code: int
+    modifiers: Optional[Tuple[CpuModifier, ...]]
 
     def perf_name(self) -> str:
         """Return a performance-compatible event name."""
-        return f"r{self.code:x}"
+        modifiers: Optional[str] = None
+        if self.modifiers is not None and len(self.modifiers) > 0:
+            modifiers = "".join(map(str, self.modifiers))
+        return f"r{self.code:x}{':' + modifiers if modifiers is not None else ''}"
 
     def __repr__(self) -> str:
         return self.name
@@ -417,7 +422,7 @@ class TelemetryDatabase:
         topdown (TopdownMethodology): Instance of the top-down methodology analysis.
     """
 
-    def __init__(self, spec: TelemetrySpecification) -> None:
+    def __init__(self, spec: TelemetrySpecification, options: Optional[CpuEventOptions] = None) -> None:
         """Initialize TelemetryDatabase with a telemetry specification.
 
         Parses the specification to build events, metrics, and groups and initializes the top-down methodology.
@@ -429,6 +434,8 @@ class TelemetryDatabase:
         self.events: Dict[str, Event] = {}
         self.metrics: Dict[str, Metric] = {}
         self.groups: Dict[str, Group] = {}
+
+        self.options: CpuEventOptions = options if options is not None else CpuEventOptions()
 
         self._import_spec(spec)
         self.topdown = TopdownMethodology(self, spec.methodologies.topdown_methodology)
@@ -444,6 +451,7 @@ class TelemetryDatabase:
                 code=int(v.code, 16),
                 title=v.title,
                 description=v.description,
+                modifiers=self.options.modifiers
             )
             for k, v in spec.events.items()
         }

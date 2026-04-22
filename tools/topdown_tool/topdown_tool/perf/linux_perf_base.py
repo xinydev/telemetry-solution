@@ -213,7 +213,7 @@ class LinuxPerfBase(Perf, ABC):
 
                     for event_idx, (event_name, _value, time) in enumerate(values):
                         assert time == base_time
-                        assert event_name == event_group[event_idx].perf_name()
+                        assert event_name == self._strip_modifier(event_group[event_idx].perf_name())
 
                     records[location].setdefault(base_time, PerfResults())
                     assert records[location][base_time].get(tuple(event_group)) is None

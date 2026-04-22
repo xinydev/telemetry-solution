@@ -21,8 +21,8 @@ def test_compute_metrics_none_mode_all_defined(pid_tracking) -> None:
     time_key = None
 
     # Create events and metric with formula "A+B"
-    eA = Event(name="A", title="A", description="", code=1)
-    eB = Event(name="B", title="B", description="", code=2)
+    eA = Event(name="A", title="A", description="", code=1, modifiers=None)
+    eB = Event(name="B", title="B", description="", code=2, modifiers=None)
     m1 = Metric(
         db=None,
         name="M1",
@@ -56,8 +56,8 @@ def test_compute_metrics_none_mode_with_missing_value(pid_tracking):
     else:
         cpu = Uncore()
     time_key = 0.0
-    eA = Event(name="A", title="A", description="", code=1)
-    eB = Event(name="B", title="B", description="", code=2)
+    eA = Event(name="A", title="A", description="", code=1, modifiers=None)
+    eB = Event(name="B", title="B", description="", code=2, modifiers=None)
     m1 = Metric(
         db=None,
         name="M1",
@@ -88,8 +88,8 @@ def test_compute_metrics_metric_mode_all_defined(pid_tracking):
         cpu = Uncore()
     time_key = None
     time_key = 1.0
-    eA = Event(name="A", title="A", description="", code=1)
-    eB = Event(name="B", title="B", description="", code=2)
+    eA = Event(name="A", title="A", description="", code=1, modifiers=None)
+    eB = Event(name="B", title="B", description="", code=2, modifiers=None)
     # Using formula "A*B"
     m1 = Metric(
         db=None,
@@ -119,9 +119,9 @@ def test_compute_metrics_group_mode_all_defined(pid_tracking) -> None:
     else:
         cpu = Uncore()
     time_key = 2.0
-    eA = Event(name="A", title="A", description="", code=1)
-    eB = Event(name="B", title="B", description="", code=2)
-    eC = Event(name="C", title="C", description="", code=3)
+    eA = Event(name="A", title="A", description="", code=1, modifiers=None)
+    eB = Event(name="B", title="B", description="", code=2, modifiers=None)
+    eC = Event(name="C", title="C", description="", code=3, modifiers=None)
     m1 = Metric(
         db=None,
         name="M1",
@@ -166,10 +166,10 @@ def test_compute_metrics_metric_multiple_cpus_time():
     time2 = 1.0
 
     # Create events for Metric 1 and Metric 2
-    eA = Event(name="A", title="A", description="", code=1)
-    eB = Event(name="B", title="B", description="", code=2)
-    eC = Event(name="C", title="C", description="", code=3)
-    eD = Event(name="D", title="D", description="", code=4)
+    eA = Event(name="A", title="A", description="", code=1, modifiers=None)
+    eB = Event(name="B", title="B", description="", code=2, modifiers=None)
+    eC = Event(name="C", title="C", description="", code=3, modifiers=None)
+    eD = Event(name="D", title="D", description="", code=4, modifiers=None)
 
     # Metric1: formula "A+B"
     m1 = Metric(

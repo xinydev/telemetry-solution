@@ -14,7 +14,7 @@ from topdown_tool.cpu_probe.common import COMBINED_STAGES
 
 
 def make_event(name, code=None):
-    return Event(name=name, title=name, description="desc", code=code or 0)
+    return Event(name=name, title=name, description="desc", code=code or 0, modifiers=None)
 
 
 class DummyFakePerf:
