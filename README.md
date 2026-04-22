@@ -16,7 +16,7 @@ The Arm Telemetry Solution enables a unified performance analysis workflow:
 
 1. **Telemetry Specifications (JSON)** define PMU events, metrics, and methodology for CPU and CMN  
 2. **Topdown Tool** consumes these specifications to collect telemetry data, compute metrics, and apply the Topdown methodology
-3. **Benchmarks (UStress / SysTress)** validate telemetry metrics and stress specific system components  
+3. **Benchmarks (UStress / Systress)** validate telemetry metrics and stress specific system components  
 
 This enables consistent, methodology-driven analysis across compute and system components.
 
@@ -105,6 +105,20 @@ This support enables users to:
 - Identify system bottlenecks caused by memory and interconnect pressure
 - Correlate CPU stalls with fabric-level behavior
 - Perform end-to-end performance analysis across compute and data movement
+
+Refer to the [Arm Neoverse CMN-700 Performance Analysis Methodology White Paper](https://developer.arm.com/documentation/111028/01), for an example
+Neoverse CMN Topdown Methodology with example case studies.
+
+Key chapters from this whitepaper are as below:
+
+| Chapter | Content |
+|---------|--------|
+| 2       | Overview of Neoverse CMN architecture, telemetry capabilities, and framework |
+| 3       | Arm Topdown methodology for Neoverse CMNs, including Stage 1 analysis and metric groups |
+| 4       | CMN telemetry specifications and Topdown tool support |
+| 5       | Validation of CMN Topdown methodology using the Systress benchmark suite |
+| 6       | Case studies demonstrating system-level performance analysis using CMN telemetry |
+| Appendix A/B | Data collection using Linux perf and example usage of the Topdown tool |
 
 ## Arm Telemetry Framework
 
