@@ -333,6 +333,15 @@ SCENARIOS: List[Scenario] = [
         ],
         "collect_by": CollectBy.METRIC,
     },
+    # Test Topdown Groups with "capture_per_device_id"
+    {
+        "capture_per_device_id": True,
+        "groups": [
+            "CMN_Requestor_Target_Characterization_Level_One",
+            "CMN_Requestor_Bandwidth",
+        ],
+        "collect_by": CollectBy.NONE,
+    },
 ]
 
 

@@ -86,6 +86,8 @@ class MetricDetails:
     sample_events: FrozenSet[str]
     formula: str
     units: str
+    node_device_id: Optional[int]
+    port_device_id: Optional[int]
 
 
 @dataclass(frozen=True)

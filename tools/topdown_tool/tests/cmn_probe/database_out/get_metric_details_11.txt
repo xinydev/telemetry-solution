@@ -1,1 +1,1 @@
-MetricDetails(title='Average size of CXS flits received at CCG LA.', description='This metric represents the average CXS flit size received at CCG LA', sample_events=['PMU_CCLA_RX_CXS_AVG_SIZE'], formula='PMU_CCLA_RX_CXS_AVG_SIZE * 256 / SYS_CMN_CYCLES', units='Bytes')
+MetricDetails(title='Average size of CXS flits received at CCG LA.', description='This metric represents the average CXS flit size received at CCG LA', sample_events=['PMU_CCLA_RX_CXS_AVG_SIZE'], formula='PMU_CCLA_RX_CXS_AVG_SIZE * 256 / SYS_CMN_CYCLES', units='Bytes', node_device_id=261, port_device_id=None)

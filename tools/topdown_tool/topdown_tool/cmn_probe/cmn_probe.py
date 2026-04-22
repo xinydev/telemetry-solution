@@ -279,6 +279,8 @@ class CmnProbe(Base.Probe):
         for group_name, metrics in self.metrics_to_collect.items():
             is_topdown_group: bool = group_name in topdown_groups
 
+            global_only = not self.conf.capture_per_device_id
+
             self.group_data[group_name] = {
                 "events_values": {},
                 "metrics_values": {},
@@ -299,7 +301,7 @@ class CmnProbe(Base.Probe):
                         List[Union[Event, List[Event], Watchpoint, List[Watchpoint]]],
                     ],
                     self.database.get_schedulable_events_for_metric(
-                        metric_name, is_topdown_group or not self.conf.capture_per_device_id
+                        metric_name, global_only
                     ),
                 )
                 self.database.merge_events(
@@ -310,7 +312,7 @@ class CmnProbe(Base.Probe):
                             List[Union[Event, List[Event], Watchpoint, List[Watchpoint]]],
                         ],
                         self.database.get_schedulable_xp_events_for_metric(
-                            metric_name, is_topdown_group or not self.conf.capture_per_device_id
+                            metric_name, global_only
                         ),
                     ),
                 )
@@ -322,7 +324,7 @@ class CmnProbe(Base.Probe):
                             List[Union[Event, List[Event], Watchpoint, List[Watchpoint]]],
                         ],
                         self.database.get_schedulable_watchpoints_for_metric(
-                            metric_name, is_topdown_group or not self.conf.capture_per_device_id, platform == "linux"
+                            metric_name, global_only, platform == "linux"
                         ),
                     ),
                 )
@@ -820,7 +822,7 @@ class CmnProbe(Base.Probe):
             if self.conf.cmn_generate_metrics_csv:
                 self.write_topdown_metrics_to_csv()
             self.print_topdown_metrics_with_values()
-        if self.base_metrics_capture:
+        if self.base_metrics_capture or self.conf.capture_per_device_id:
             if self.conf.cmn_generate_metrics_csv:
                 self.write_regular_metrics_to_csv()
             self.print_regular_metrics_with_values()
@@ -1134,149 +1136,157 @@ class CmnProbe(Base.Probe):
         for cmn_index in self.used_cmns:
             console.print(Header(f"Regular Metrics CMN-{self.version} at index {cmn_index}", 1))
             for group_name in self.group_data:
-                if self.group_data[group_name]["topdown_group"]:
+                if self.group_data[group_name]["topdown_group"] and not self.conf.capture_per_device_id:
                     continue
                 group = self.group_data[group_name]["metrics_values"]
-                # Node Locations
-                node_locations: Set[NodeLocation] = set()
-                for metric in group.values():
-                    for location in metric:
-                        if isinstance(location, NodeLocation) and location.cmn_index == cmn_index:
-                            node_locations.add(location)
-                node_locations_sorted: List[NodeLocation] = sorted(
-                    node_locations, key=lambda location: location.node_id
-                )
-                # Port Locations
-                port_locations: Set[PortLocation] = set()
-                for metric in group.values():
-                    for location in metric:
-                        if isinstance(location, PortLocation) and location.cmn_index == cmn_index:
-                            port_locations.add(location)
-                port_locations_sorted: List[PortLocation] = sorted(
-                    port_locations, key=lambda location: location.xp_id + location.port
-                )
-                # XP Locations
-                xp_locations: Set[XpLocation] = set()
-                for metric in group.values():
-                    for location in metric:
-                        if isinstance(location, XpLocation) and location.cmn_index == cmn_index:
-                            xp_locations.add(location)
-                xp_locations_sorted: List[XpLocation] = sorted(
-                    xp_locations, key=lambda location: location.xp_id
-                )
 
-                # Iterators
-                node_iterator = iter(node_locations_sorted)
-                port_iterator = iter(port_locations_sorted)
-                xp_iterator = iter(xp_locations_sorted)
-
-                # Initial values
-                node_location = next(node_iterator, None)
-                port_location = next(port_iterator, None)
-                xp_location = next(xp_iterator, None)
-
-                columns: List[Set[Location]] = [{CmnLocation(cmn_index=cmn_index)}]
-
-                # Merge locations
-                while (
-                    node_location is not None
-                    or port_location is not None
-                    or xp_location is not None
-                ):
-                    new_node_location = node_location
-                    new_port_location = port_location
-                    new_xp_location = xp_location
-
-                    column: Set[Location] = set()
-                    if (
-                        xp_location is not None
-                        and (node_location is None or xp_location.xp_id <= node_location.xp_id)
-                        and (port_location is None or xp_location.xp_id <= port_location.xp_id)
-                    ):
-                        column.add(xp_location)
-                        new_xp_location = next(xp_iterator, None)
-                    if (
-                        port_location is not None
-                        and (xp_location is None or port_location.xp_id <= xp_location.xp_id)
-                        and (
-                            node_location is None
-                            or port_location.xp_id <= node_location.xp_id
-                            and port_location.port <= node_location.port
-                        )
-                    ):
-                        column.add(port_location)
-                        new_port_location = next(port_iterator, None)
-                    if (
-                        node_location is not None
-                        and (xp_location is None or node_location.xp_id <= xp_location.xp_id)
-                        and (
-                            port_location is None
-                            or node_location.xp_id <= port_location.xp_id
-                            and node_location.port <= port_location.port
-                        )
-                    ):
-                        column.add(node_location)
-                        new_node_location = next(node_iterator, None)
-                    columns.append(column)
-
-                    node_location = new_node_location
-                    port_location = new_port_location
-                    xp_location = new_xp_location
-
-                mapping: Dict[Location, int] = {}
-
-                for index, locations in enumerate(columns):
-                    for location in locations:
-                        mapping[location] = index
-
-                # Table Header Prefix
-                header_row_prefix = ["Metric"]
-                if self.conf.descriptions:
-                    header_row_prefix.append("Description")
-                if self.conf.show_sample_events:
-                    header_row_prefix.append("Sample events")
-
-                # Table Header Locations
-                label_priority = {
-                    CmnLocation: 1,
-                    NodeLocation: 2,
-                    PortLocation: 3,
-                    XpLocation: 4,
-                }
-                sorted_columns: List[List[Location]] = [
-                    sorted(locations, key=lambda location: label_priority[type(location)])
-                    for locations in columns
-                ]
-                header_row_data = [str(label[0]) for label in sorted_columns]
-
-                # Table Header Suffix
-                header_row_suffix = ["Units"]
-
-                table = SplitTable(
-                    header_row_prefix,
-                    header_row_data,
-                    header_row_suffix,
-                    self.database.get_group_title(group_name),
-                )
-                for metric_name, metric in self.group_data[group_name]["metrics_values"].items():
-                    # Data
-                    row_data = ["❌"] * len(header_row_data)
-                    for location, value in metric.items():
-                        if location.cmn_index == cmn_index and value is not None and value == value:
-                            row_data[mapping[location]] = str(value)
-                    # Prefix
+                device_groups: Dict[Tuple[Optional[int], Optional[int]], Dict[str, Dict[Location, Optional[float]]]] = {}
+                for metric_name, metric_values in group.items():
                     metric_details = self.metrics_details[metric_name]
-                    row_prefix = [metric_details.title]
-                    if self.conf.descriptions:
-                        row_prefix.append(metric_details.description)
-                    if self.conf.show_sample_events:
-                        row_prefix.append(", ".join(sorted(metric_details.sample_events)))
-                    # Suffix
-                    row_suffix = [metric_details.units]
-                    # Append Row
-                    table.add_row(row_prefix, row_data, row_suffix)
+                    key = (metric_details.node_device_id, metric_details.port_device_id)
+                    device_groups.setdefault(key, {})[metric_name] = metric_values
 
-                console.print(table)
+                for device_group in device_groups.values():
+                    # Node Locations
+                    node_locations: Set[NodeLocation] = set()
+                    for metric in device_group.values():
+                        for location in metric:
+                            if isinstance(location, NodeLocation) and location.cmn_index == cmn_index:
+                                node_locations.add(location)
+                    node_locations_sorted: List[NodeLocation] = sorted(
+                        node_locations, key=lambda location: location.node_id
+                    )
+                    # Port Locations
+                    port_locations: Set[PortLocation] = set()
+                    for metric in device_group.values():
+                        for location in metric:
+                            if isinstance(location, PortLocation) and location.cmn_index == cmn_index:
+                                port_locations.add(location)
+                    port_locations_sorted: List[PortLocation] = sorted(
+                        port_locations, key=lambda location: location.xp_id + location.port
+                    )
+                    # XP Locations
+                    xp_locations: Set[XpLocation] = set()
+                    for metric in device_group.values():
+                        for location in metric:
+                            if isinstance(location, XpLocation) and location.cmn_index == cmn_index:
+                                xp_locations.add(location)
+                    xp_locations_sorted: List[XpLocation] = sorted(
+                        xp_locations, key=lambda location: location.xp_id
+                    )
+
+                    # Iterators
+                    node_iterator = iter(node_locations_sorted)
+                    port_iterator = iter(port_locations_sorted)
+                    xp_iterator = iter(xp_locations_sorted)
+
+                    # Initial values
+                    node_location = next(node_iterator, None)
+                    port_location = next(port_iterator, None)
+                    xp_location = next(xp_iterator, None)
+
+                    columns: List[Set[Location]] = [{CmnLocation(cmn_index=cmn_index)}]
+
+                    # Merge locations
+                    while (
+                        node_location is not None
+                        or port_location is not None
+                        or xp_location is not None
+                    ):
+                        new_node_location = node_location
+                        new_port_location = port_location
+                        new_xp_location = xp_location
+
+                        column: Set[Location] = set()
+                        if (
+                            xp_location is not None
+                            and (node_location is None or xp_location.xp_id <= node_location.xp_id)
+                            and (port_location is None or xp_location.xp_id <= port_location.xp_id)
+                        ):
+                            column.add(xp_location)
+                            new_xp_location = next(xp_iterator, None)
+                        if (
+                            port_location is not None
+                            and (xp_location is None or port_location.xp_id <= xp_location.xp_id)
+                            and (
+                                node_location is None
+                                or port_location.xp_id <= node_location.xp_id
+                                and port_location.port <= node_location.port
+                            )
+                        ):
+                            column.add(port_location)
+                            new_port_location = next(port_iterator, None)
+                        if (
+                            node_location is not None
+                            and (xp_location is None or node_location.xp_id <= xp_location.xp_id)
+                            and (
+                                port_location is None
+                                or node_location.xp_id <= port_location.xp_id
+                                and node_location.port <= port_location.port
+                            )
+                        ):
+                            column.add(node_location)
+                            new_node_location = next(node_iterator, None)
+                        columns.append(column)
+
+                        node_location = new_node_location
+                        port_location = new_port_location
+                        xp_location = new_xp_location
+
+                    mapping: Dict[Location, int] = {}
+
+                    for index, locations in enumerate(columns):
+                        for location in locations:
+                            mapping[location] = index
+
+                    # Table Header Prefix
+                    header_row_prefix = ["Metric"]
+                    if self.conf.descriptions:
+                        header_row_prefix.append("Description")
+                    if self.conf.show_sample_events:
+                        header_row_prefix.append("Sample events")
+
+                    # Table Header Locations
+                    label_priority = {
+                        CmnLocation: 1,
+                        NodeLocation: 2,
+                        PortLocation: 3,
+                        XpLocation: 4,
+                    }
+                    sorted_columns: List[List[Location]] = [
+                        sorted(locations, key=lambda location: label_priority[type(location)])
+                        for locations in columns
+                    ]
+                    header_row_data = [str(label[0]) for label in sorted_columns]
+
+                    # Table Header Suffix
+                    header_row_suffix = ["Units"]
+
+                    table = SplitTable(
+                        header_row_prefix,
+                        header_row_data,
+                        header_row_suffix,
+                        self.database.get_topdown_group_title(group_name) if self.group_data[group_name]["topdown_group"] else self.database.get_group_title(group_name)
+                    )
+                    for metric_name, metric in device_group.items():
+                        # Data
+                        row_data = ["❌"] * len(header_row_data)
+                        for location, value in metric.items():
+                            if location.cmn_index == cmn_index and value is not None and value == value:
+                                row_data[mapping[location]] = str(value)
+                        # Prefix
+                        metric_details = self.metrics_details[metric_name]
+                        row_prefix = [metric_details.title]
+                        if self.conf.descriptions:
+                            row_prefix.append(metric_details.description)
+                        if self.conf.show_sample_events:
+                            row_prefix.append(", ".join(sorted(metric_details.sample_events)))
+                        # Suffix
+                        row_suffix = [metric_details.units]
+                        # Append Row
+                        table.add_row(row_prefix, row_data, row_suffix)
+
+                    console.print(table)
 
     # pylint: disable=line-too-long
     def write_topdown_metrics_to_csv(self) -> None:
@@ -1356,7 +1366,7 @@ class CmnProbe(Base.Probe):
                 )
                 # Data rows
                 for group_name in self.group_data:
-                    if self.group_data[group_name]["topdown_group"]:
+                    if self.group_data[group_name]["topdown_group"] and not self.conf.capture_per_device_id:
                         continue
                     groups = self.group_data[group_name]["metrics_values"]
                     for metric_name, metric in groups.items():

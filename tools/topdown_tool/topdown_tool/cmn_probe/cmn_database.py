@@ -2761,7 +2761,9 @@ class CmnDatabase:
                 title,
                 description,
                 formula,
-                units
+                units,
+                node_device_id,
+                port_device_id
             FROM
                 metrics
             WHERE
@@ -2769,7 +2771,7 @@ class CmnDatabase:
         """,
             (metric,),
         )
-        metric_id, title, description, formula, units = statement.fetchone()
+        metric_id, title, description, formula, units, node_device_id, port_device_id = statement.fetchone()
 
         sample_events: List[str] = []
         statement = self.db_connection.execute(
@@ -2793,6 +2795,8 @@ class CmnDatabase:
             sample_events=frozenset(sample_events),
             formula=formula,
             units=units,
+            node_device_id=node_device_id,
+            port_device_id=port_device_id,
         )
 
     def get_group_title(self, group: str) -> str:

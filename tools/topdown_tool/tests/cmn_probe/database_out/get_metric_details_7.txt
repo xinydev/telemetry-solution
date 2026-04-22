@@ -1,1 +1,1 @@
-MetricDetails(title='RND Egress Request rate', description='This metric represents the rate at which RND sends requests at the CHI interface', sample_events=['SYS_CMN_CYCLES'], formula='CMN_RND_WP_TXREQ_COUNT / SYS_CMN_CYCLES * 1000', units='Requests per 1K clks')
+MetricDetails(title='RND Egress Request rate', description='This metric represents the rate at which RND sends requests at the CHI interface', sample_events=['SYS_CMN_CYCLES'], formula='CMN_RND_WP_TXREQ_COUNT / SYS_CMN_CYCLES * 1000', units='Requests per 1K clks', node_device_id=13, port_device_id=None)
