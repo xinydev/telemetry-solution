@@ -939,6 +939,10 @@
             "additionalProperties": false,
             "description": "PMUSpecification output dataclass",
             "properties": {
+                "$schema": {
+                    "title": "$schema",
+                    "type": "string"
+                },
                 "_type": {
                     "const": "PMU_Specification",
                     "default": "PMU_Specification",
