@@ -39,7 +39,3 @@ A small delay is added after release to avoid the releasing thread re-acquiring 
 Because of this delay, there may be some slack at very low thread counts, so results for fewer than 4 threads may not be intuitive.
 Execute using ./contention -t <thread count>
 To modify runtime, change the define for NUMITER or pass "-l <iterations>" as an argument
-
-TODO: Additional tests to add:
- - Memory Bandwidth Test
- - SLC Bandwidth Test
