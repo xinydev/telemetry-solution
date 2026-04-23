@@ -27,6 +27,8 @@ Execute using ./mem_bw
 
 ### SLC Bandwidth Test
 
+To modify data size, change the define for STREAM_ARRAY_SIZE such that three double arrays fit within in the sum of total L2 cache and shared cache. Example: `STREAM_ARRAY_SIZE = (Total_L2_B + (2*Total_SLC_B/3) ) / 24)`.
+
 This is a streaming ADD test, calculating C=A+B on arrays sized to fit in system cache.
 To modify runtime, change the define for TESTREPS in the CMakeLists.txt
 Execute using ./slc_bw
