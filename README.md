@@ -34,6 +34,11 @@ This enables consistent, methodology-driven analysis across compute and system c
       - [Metric Field Definitions](#metric-field-definitions)
       - [Topdown Methodology Field Definitions](#topdown-methodology-field-definitions)
     - [CMN JSON Schema](#cmn-json-schema)
+      - [CMN Event Field Definitions](#cmn-event-field-definitions)
+      - [CMN Watchpoint Field Definitions](#cmn-watchpoint-field-definitions)
+      - [CMN Metric Field Definitions](#cmn-metric-field-definitions)
+      - [CMN Filter Field Definitions](#cmn-filter-field-definitions)
+      - [CMN Group Field Definitions](#cmn-group-field-definitions)
   - [Tools](#tools)
   - [Benchmarks](#benchmarks)
   - [Support](#support)
@@ -188,7 +193,104 @@ High level schema structure is as follows:
 
 ### CMN JSON Schema
 
-CMN telemetry specifications use the same JSON schema structure as CPU, with component-specific definitions for events, metrics, and methodology. This ensures consistent tooling support and enables unified analysis across compute and interconnect domains.
+CMN telemetry specifications have two layers:
+
+- top-level data describing the CMN version and revision, plus global system events, metrics, and metric groups
+- per-component data under `components` describing CMN internal devices and port components, with their events, watchpoints, metrics, filters, and groups
+
+The specification contains static information for a CMN revision. It must be completed with mesh topology discovery to know which CMN instances, XP IDs, node IDs, and ports exist on a given system.
+
+High level schema structure is as follows:
+
+```jsonc
+{
+  "document": {},               // Document metadata
+  "product_configuration": {},  // CMN version and revision for the file
+  "events": {},                 // Global/system helper inputs such as SYS_FREQUENCY
+  "metrics": {},                // Top-level composite metrics
+  "groups": {
+    "metrics": {}               // Top-level metric groups
+  },
+  "components": {
+    "<component_name>": {       // Example: HNF, HNS, RNF, SNF, CCG
+      "product_configuration": {
+        "device_id": 5          // Internal CMN device identifier when applicable
+      },
+      "filter_specification": {}, // Optional component-local filter catalog
+      "events": {},               // Component-local PMU events
+      "watchpoints": {},          // Component-local watchpoint definitions
+      "metrics": {},              // Component-local derived metrics
+      "groups": {
+        "function": {},           // Functional groups of related events
+        "metrics": {}             // Groups of related derived metrics
+      }
+    }
+  }
+}
+```
+
+At the top level, `product_configuration` identifies the CMN version and revision described by the file. On Linux, this corresponds to the CMN perf device `identifier`. Global `events` and `metrics` define helper inputs and top-level derived metrics. The `components` section contains the per-component content used for analysis.
+
+Within `components`, CMN internal devices are identified by `product_configuration.device_id`. Port components such as `RNF`, `SNF`, and `CCG` are resolved from the component name against the port device types defined for the system. Not every component has every optional section.
+
+#### CMN Event Field Definitions
+
+| Field         | Definition |
+|---------------|------------|
+| `code`        | Event selector value for a CMN internal device event |
+| `title`       | Human-readable event name |
+| `description` | Description of what the event counts |
+| `system`      | Optional flag marking a system/global helper event rather than a normal component-local PMU event |
+
+Events are the basic PMU inputs used by CMN metrics. They apply to CMN internal device components, such as HN-F or HN-I. The specification also includes some global helper inputs, such as `SYS_FREQUENCY` and `SYS_CMN_CYCLES`, which are used by metrics but are not ordinary component-local event definitions.
+
+#### CMN Watchpoint Field Definitions
+
+| Field                       | Definition |
+|-----------------------------|------------|
+| `description`               | Description of what the watchpoint is intended to count |
+| `wp_val`                    | Value programmed into the watchpoint match |
+| `wp_mask`                   | Mask that selects which bits participate in the match |
+| `mesh_flit_dir`             | CHI flit direction to monitor |
+| `wp_chn_sel`                | CHI channel to monitor |
+| `wp_grp`                    | CMN watchpoint group to use |
+| `field_name` / `field_value`| Decoded interpretation of the mask/value pair |
+
+Watchpoints count protocol traffic patterns at the port level. This is important because a single port can contain multiple devices. They are especially important for port components such as `RNF`, `SNF`, and `CCG`, and are also used by some internal-device metrics.
+
+#### CMN Metric Field Definitions
+
+| Field         | Definition |
+|---------------|------------|
+| `title`       | Human-readable metric name |
+| `formula`     | Expression used to compute the metric |
+| `description` | Description of what the metric means |
+| `units`       | Unit for the computed value |
+| `events`      | Raw PMU event inputs needed to calculate the metric |
+| `watchpoints` | Watchpoint inputs needed to calculate the metric |
+| `metrics`     | Dependent metrics that must be resolved first |
+| `filters`     | Optional filter settings applied to specific metric events |
+
+Metrics are the user-facing derived values reported by the tooling. A metric can combine several kinds of inputs: raw PMU events, watchpoints, or other metrics. In the shipped CMN files, the `RNF`, `SNF`, and `CCG` metrics are typically watchpoint-based metrics normalized by `SYS_CMN_CYCLES`.
+
+#### CMN Filter Field Definitions
+
+| Field        | Definition |
+|--------------|------------|
+| `encodings`  | Mapping from symbolic filter names to numeric encoding values |
+| `access.register` | Register name where the filter is defined |
+| `access.field`    | Register field controlled by the filter |
+
+`filter_specification` is the component-local catalog of filters that metrics can refer to. The main operational information is the `encodings` map, which lets a tool resolve a symbolic filter name to the numeric selector value needed for that metric.
+
+#### CMN Group Field Definitions
+
+| Field               | Definition |
+|---------------------|------------|
+| `groups.function`   | Groups of related raw events for a functional area |
+| `groups.metrics`    | Groups of related derived metrics |
+
+Groups are convenience bundles that help users and tools select a meaningful set of events or metrics without listing them one by one. They do not change the underlying event or watchpoint definitions.
 
 ## Tools
 
