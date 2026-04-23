@@ -340,7 +340,7 @@ class TelemetrySpecification(BaseModel):
                             ) from e
 
                     try:
-                        # jsonschema.validate(instance=data, schema=schema)
+                        jsonschema.validate(instance=data, schema=schema)
                         jsonschema.Draft3Validator(schema, format_checker=jsonschema.FormatChecker())
                     except jsonschema.exceptions.ValidationError as e:
                         raise ValueError(
