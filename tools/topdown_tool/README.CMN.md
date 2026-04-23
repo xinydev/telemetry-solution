@@ -278,6 +278,183 @@ HNS_SLC_Effectiveness,cmn_hns_slc_alloc_invalid_way_rate,PMU_HNS_SLC_FILL_INVALI
   validate-cmn-spec --spec-dir topdown_tool/cmn_probe/metrics --schema-dir topdown_tool/cmn_probe/schemas
   ```
 
+## CMN Telemetry JSON Shape
+
+This section describes the practical CMN shape used by CMN telemetry specifications JSON such as `cmn_700_r0p0_pmu.json`.
+
+A JSON specification file gives static information for a CMN product revision: event definitions, watchpoint definitions, derived metrics, filters, and groups. It does not describe the topology of a specific machine. To count per-node or per-port events you still need discovered topology to know which CMN indices, XP IDs, node IDs, and ports actually exist on the target system.
+
+### Root structure
+
+```jsonc
+{
+  "$schema": "v1.2.schema.json",
+  "document": { "...": "metadata" },
+  "product_configuration": {
+    "product_name": "CMN 700",
+    "major_revision": "0",
+    "minor_revision": "0"
+  },
+  "events": {
+    "SYS_FREQUENCY": { "...": "global event" }
+  },
+  "metrics": {
+    "cmn_bw_total": { "...": "top-level composite metric" }
+  },
+  "groups": {
+    "metrics": {
+      "CMN_Requestor_Bandwidth": { "...": "top-level metric group" }
+    }
+  },
+  "components": {
+    "HNF": { "...": "component definition" }
+  }
+}
+```
+
+- `product_configuration` identifies the CMN product version and revision for the file as a whole. On Linux, the matching hardware identifier is exposed through the CMN perf device `identifier` file.
+- Root `events` are global/system helper inputs such as `SYS_FREQUENCY`.
+- Root `metrics` are top-level composite metrics, usually built from component metrics and sometimes global events.
+- Root `groups.metrics` groups those top-level metrics for selection and display.
+- `components` contains the real node and port-device definitions.
+
+### Component structure
+
+```jsonc
+"components": {
+  "HNF": {
+    "product_configuration": {
+      "device_id": 5
+    },
+    "filter_specification": {
+      "description": "...",
+      "filters": {
+        "occupancy_filter": { "...": "filter definition" }
+      }
+    },
+    "events": {
+      "PMU_HNF_CACHE_MISS": { "...": "component event" }
+    },
+    "watchpoints": {
+      "CMN_HNF_WP_RXREQ_COUNT": { "...": "component watchpoint" }
+    },
+    "metrics": {
+      "cmn_hnf_memreq_ratio": { "...": "component metric" }
+    },
+    "groups": {
+      "function": {
+        "HNF": { "...": "event group" }
+      },
+      "metrics": {
+        "HNF_SLC_Effectiveness": { "...": "metric group" }
+      }
+    }
+  }
+}
+```
+
+- CMN internal device components are identified by `product_configuration.device_id`. In practice this is the starting point for the PMU `type=` value used to build CMN perf events for that device class, although Linux may apply a device-type fixup for some components.
+- Port components such as `RNF`, `SNF`, and `CCG` are handled differently. In practice they are resolved from the component name and compared to the port device types defined for the system. These components are watchpoint-based.
+- Not every component has every optional section. For example, some components have no `filter_specification`, no `watchpoints`, or no metric groups.
+
+### Events
+
+Events are the basic PMU counters used as inputs to metrics.
+
+Important fields:
+- `code`: the event selector value
+- `title`: human-readable event name
+- `description`: explains what the event counts
+
+How to use them:
+- This applies to CMN internal device components, the ones identified by `product_configuration.device_id`.
+- To build a perf event, combine the component `device_id` with the event `code`.
+
+- In the JSON, `code` is written as a hexadecimal string such as `0x000F`. For perf, use its numeric value as `eventid=`.
+- For a CMN instance-wide event, the Linux perf shape is:
+  ```text
+  arm_cmn_<index>/type=<device_id>,eventid=<code>/
+  ```
+- To target a specific discovered node, add `bynodeid,nodeid=<node_id>`:
+  ```text
+  arm_cmn_<index>/type=<device_id>,eventid=<code>,bynodeid,nodeid=<node_id>/
+  ```
+- `title` and `description` are documentation fields to help users understand what they are counting.
+
+Special cases:
+- On Linux, `RNI` is identified as `RND` by the perf driver, so the runtime remaps the perf `type=` accordingly.
+- `SYS_CMN_CYCLES` is a special case used by many metrics. It is not built from a normal event `code`; the runtime treats it as a cycle event with `type=3` and no `eventid`.
+
+### Watchpoints
+
+Watchpoints count protocol traffic patterns at the port level, identified by CHI flit direction, channel, group, and masked value matching. A port may contain multiple devices underneath it.
+
+Important fields:
+- `description`: explains what the watchpoint is intended to count
+- `wp_val`: value programmed into the watchpoint match
+- `wp_mask`: mask that selects which bits participate in the match
+- `mesh_flit_dir`: CHI flit direction to monitor
+- `wp_chn_sel`: CHI channel to monitor
+- `wp_grp`: CMN watchpoint group to use
+- `field_name` and `field_value`: decoded interpretation of the mask/value pair
+
+How to use them:
+- `mesh_flit_dir` selects upload vs download and maps to `watchpoint_up` or `watchpoint_down` in perf.
+- `wp_chn_sel` selects the CHI channel and maps `REQ`/`RSP`/`SNP`/`DAT` to `0`/`1`/`2`/`3` in perf.
+- `wp_grp` selects the watchpoint group and maps `Primary`/`Secondary`/`Tertiary`/`Quaternary` to `0`/`1`/`2`/`3` in perf.
+- `wp_mask` and `wp_val` define the bit match.
+- For a local watchpoint tied to a specific discovered XP and port, the Linux perf shape is:
+  ```text
+  arm_cmn_<index>/watchpoint_<up|down>,bynodeid,nodeid=<xp_id>,wp_dev_sel=<port>,wp_chn_sel=<channel>,wp_grp=<group>,wp_mask=<mask>,wp_val=<value>/
+  ```
+- Topology is required to know which XP/port pairs exist and where a given port component is present.
+
+### Metrics
+
+Metrics are the user-facing derived values reported by the tool. A metric combines one or more inputs, which can be raw PMU events, watchpoints, or other metrics.
+
+Important fields:
+- `title`: human-readable metric name
+- `formula`: expression used to compute the metric
+- `description`: explains what the metric means
+- `units`: unit for the computed value
+- `events`: raw PMU event inputs to collect
+- `watchpoints`: watchpoint inputs to collect
+- `metrics`: dependent metrics that must be resolved first
+- `filters`: optional filter settings applied to specific metric events
+
+How to use them:
+- Resolve any referenced metrics in `metrics` first.
+- If a metric has `filters`, use each entry to modify the referenced event before building the perf event:
+  - `filter_name` selects a filter definition from the same component's `filter_specification`
+  - `encodings` selects one of that filter's symbolic encoding names
+  - the selected encoding resolves to a numeric value, which is applied to the event as the occupancy selector (`occupid` in the runtime/perf representation)
+- Collect every dependency listed in `events` and `watchpoints`.
+- Apply `formula` to produce the final metric value.
+
+### Filters
+
+`filter_specification` is the component-local catalog of filters that metrics can refer to:
+- the `encodings` map is the key operational data
+- `register` and `field` under `access` are useful metadata explaining where the filter comes from in the hardware view
+
+### Groups
+
+Groups are convenience bundles that help users and tools select a meaningful set of things to collect or display without naming every item individually:
+- `groups.function` bundles related raw events for a functional area
+- `groups.metrics` bundles derived metrics
+
+Groups do not change perf encoding. They only describe how events and metrics should be organized and selected.
+
+### Cross-reference rules
+
+- In practice, internal CMN devices use `device_id`, while port components are resolved from the component name against discovered topology.
+- Component metrics reference events and watchpoints defined in the same component.
+- Component function groups reference local component events.
+- Component metric groups reference local component metrics.
+- Root metrics and root metric groups can reference root metrics plus component metrics.
+- Event, watchpoint, metric, and group names are expected to be unique across components, with the existing special-case duplicate `SYS_CMN_CYCLES`.
+
 ## Key flags (CMN)
 
 ### Common selection
